@@ -6,7 +6,7 @@ doctype html
 //if IE 8
     <html class="no-js lt-ie9">
 // [if gt IE 8] <!
-html.no-js(ng-app="hlu.ui.core", ng-cloak='', ng-controller='AppCtrl')
+html.no-js(ng-app="hermes.ui", ng-cloak='', ng-controller='AppCtrl')
     // <![endif]
 
     include default/_header
@@ -18,10 +18,6 @@ html.no-js(ng-app="hlu.ui.core", ng-cloak='', ng-controller='AppCtrl')
         div(growl='')
 
         include /parts/navbar
-
-        include /parts/tour
-
-        //include /parts/sidebar
 
         // Application content
         div(id='main', ui-view='', autoscroll='false', class='am-fade')

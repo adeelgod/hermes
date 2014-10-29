@@ -1,0 +1,35 @@
+header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='NavbarCtrl')
+    .container-fluid
+        .navbar-header
+            button.navbar-toggle(type='button', ng-click='menuShow()')
+                span.sr-only Menu
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+        #hlunavbar.collapse.navbar-collapse
+            ul.nav.navbar-nav.navbar-left
+                li#tour_menu
+                    a(href='', ng-click='menuShow()')
+                        i.fa.fa-bars
+            ul.nav.navbar-nav.navbar-right
+                li#tour_buy.hidden-xs
+                    button.btn.navbar-btn.btn-success(type='button', ui-sref='packages.main')
+                        i.fa.fa-shopping-cart
+                li#tour_search.hidden-xs
+                    form.navbar-form(role='search')
+                        .input-group
+                            input.form-control(type='text', placeholder='Search...', ng-model='query', ng-keypress='search($event)')
+                            .input-group-addon
+                                .i.fa.fa-search
+                li#tour_search.hidden-xs
+                    a(href='', data-animation='am-fade-and-slide-top', data-trigger='click', data-template='parts/category.tpl.html', bs-dropdown='categories')
+                        i.fa.fa-ellipsis-v
+                li#tour_systeminfo.hidden-xs
+                    a(href='', data-placement='bottom', data-animation='am-flip-x', bs-popover='popover', trigger='click', title='System Info', html='true', template='parts/system.html')
+                        i.fa.fa-info-circle
+                li#tour_status
+                    a(href='', data-animation='am-fade-and-slide-top', data-trigger='click', data-template='parts/chat/status.tpl.html', bs-dropdown='')
+                        i.fa.fa-check
+                li#tour_signin
+                    .btn-group
+                        button.btn.navbar-btn.btn-primary(type='button', ui-sref='signin') Sign in

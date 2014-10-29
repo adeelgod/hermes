@@ -1,0 +1,81 @@
+// font-awesome
+@import "../bower_components/font-awesome/less/font-awesome";
+
+// bootstrap
+@import "../bower_components/bootstrap/less/bootstrap";
+@import "variables";
+
+// bootstrap-additions for angular-strap
+@import "../bower_components/bootstrap-additions/src/alert/alert";
+@import "../bower_components/bootstrap-additions/src/aside/aside";
+@import "../bower_components/bootstrap-additions/src/callout/callout";
+@import "../bower_components/bootstrap-additions/src/modal/modal";
+@import "../bower_components/bootstrap-additions/src/popover/popover";
+@import "../bower_components/bootstrap-additions/src/tooltip/tooltip";
+
+@import "animation";
+@import "xeditable";
+
+
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding-top: @navbar-height + @navbar-padding-vertical;
+  padding-bottom: @navbar-height + @navbar-padding-vertical;
+  overflow: hidden;
+  //background: url(../images/background.jpg) repeat scroll center top transparent;
+  @media (max-width: @screen-sm-max) {
+    padding-bottom: 0;
+  }
+}
+
+#main {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+// bootstrap additions override
+.aside {
+  //background: rgba(0, 0, 0, .25);
+  max-width: 240px;
+  @media (max-width: @screen-sm-max) {
+    max-width: 180px;
+  }
+  .aside-dialog {
+    .aside-header {
+      .modal-header;
+      background: @brand-primary;
+      color: @text-color;
+      .close {
+        color: @text-color;
+      }
+    }
+    .aside-body {
+      margin-left: 5px;
+      margin-right: 5px;
+      overflow-x: hidden;
+      padding: 0;
+    }
+  }
+}
+
+footer {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}

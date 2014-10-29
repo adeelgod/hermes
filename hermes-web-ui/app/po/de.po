@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: hlu-web-ui-core-1.0.0-SNAPSHOT\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Hotlabuyo <info@hotlabuyo.com>\n"
+"Language-Team: Hotlabuyo <info@hotlabuyo.com>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: /home/spaddo/workspace/hotlabuyo/hlu-web-ui-core/.tmp/index.html
+#: /home/spaddo/workspace/hotlabuyo/hlu-web-ui-core/.tmp/parts/footer.html
+msgid "About"
+msgstr "Über uns"
+
+#: /home/spaddo/workspace/hotlabuyo/hlu-web-ui-core/.tmp/index.html
+#: /home/spaddo/workspace/hotlabuyo/hlu-web-ui-core/.tmp/parts/footer.html
+msgid "Terms"
+msgstr "Bedingungen"
