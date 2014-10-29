@@ -81,7 +81,7 @@ public class Main {
             ResourceHandler resourceHandler = new ResourceHandler();
             resourceHandler.setDirectoriesListed(true);
             resourceHandler.setWelcomeFiles(new String[]{"index.html"});
-            resourceHandler.setBaseResource(Resource.newResource(Main.class.getResource("/ui")));
+            resourceHandler.setBaseResource(Resource.newResource(Main.class.getResource("/hermes-web-ui")));
 
             handlers.setHandlers(new Handler[]{resourceHandler, context, defaultHandler});
 
