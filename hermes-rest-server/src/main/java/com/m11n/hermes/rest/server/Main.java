@@ -1,13 +1,12 @@
 package com.m11n.hermes.rest.server;
 
-import com.m11n.hermes.rest.server.config.JettyCorsConfig;
-import com.m11n.hermes.rest.server.config.JettyJerseyConfig;
-import com.m11n.hermes.rest.server.config.JettyShiroConfig;
-import com.m11n.hermes.rest.server.config.LogConfig;
+import com.m11n.hermes.rest.server.config.*;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +77,13 @@ public class Main {
             defaultHandler.setServeIcon(false);
             defaultHandler.setShowContexts(false);
 
-            handlers.setHandlers(new Handler[]{context, defaultHandler});
+            // static content
+            ResourceHandler resourceHandler = new ResourceHandler();
+            resourceHandler.setDirectoriesListed(true);
+            resourceHandler.setWelcomeFiles(new String[]{"index.html"});
+            resourceHandler.setBaseResource(Resource.newResource(Main.class.getResource("/ui")));
+
+            handlers.setHandlers(new Handler[]{resourceHandler, context, defaultHandler});
 
             server.setHandler(handlers);
 
