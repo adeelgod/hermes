@@ -69,6 +69,7 @@
             <modules>
                 <module>hermes-core</module>
                 <module>hermes-service</module>
+                <module>hermes-web</module>
                 <module>hermes-rest</module>
             </modules>
         </profile>
