@@ -33,6 +33,10 @@ public class Printer extends DirectBean
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private List<PrinterMedia> medias;
 
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    private PrinterStatus status;
+
     public Printer() {
 
     }
@@ -119,6 +123,31 @@ public class Printer extends DirectBean
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Gets the status.
+     * @return the value of the property
+     */
+    public PrinterStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets the status.
+     * @param status  the new value of the property
+     */
+    public void setStatus(PrinterStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * Gets the the {@code status} property.
+     * @return the property, not null
+     */
+    public final Property<PrinterStatus> status() {
+        return metaBean().status().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
     @Override
     public Printer clone() {
         return JodaBeanUtils.cloneAlways(this);
@@ -132,7 +161,8 @@ public class Printer extends DirectBean
         if (obj != null && obj.getClass() == this.getClass()) {
             Printer other = (Printer) obj;
             return JodaBeanUtils.equal(getName(), other.getName()) &&
-                    JodaBeanUtils.equal(getMedias(), other.getMedias());
+                    JodaBeanUtils.equal(getMedias(), other.getMedias()) &&
+                    JodaBeanUtils.equal(getStatus(), other.getStatus());
         }
         return false;
     }
@@ -142,12 +172,13 @@ public class Printer extends DirectBean
         int hash = getClass().hashCode();
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
         hash += hash * 31 + JodaBeanUtils.hashCode(getMedias());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getStatus());
         return hash;
     }
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(96);
+        StringBuilder buf = new StringBuilder(128);
         buf.append("Printer{");
         int len = buf.length();
         toString(buf);
@@ -161,6 +192,7 @@ public class Printer extends DirectBean
     protected void toString(StringBuilder buf) {
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
         buf.append("medias").append('=').append(JodaBeanUtils.toString(getMedias())).append(',').append(' ');
+        buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
     }
 
     //-----------------------------------------------------------------------
@@ -185,12 +217,18 @@ public class Printer extends DirectBean
         private final MetaProperty<List<PrinterMedia>> medias = DirectMetaProperty.ofReadWrite(
                 this, "medias", Printer.class, (Class) List.class);
         /**
+         * The meta-property for the {@code status} property.
+         */
+        private final MetaProperty<PrinterStatus> status = DirectMetaProperty.ofReadWrite(
+                this, "status", Printer.class, PrinterStatus.class);
+        /**
          * The meta-properties.
          */
         private final Map<String, MetaProperty<?>> metaPropertyMap$ = new DirectMetaPropertyMap(
                 this, null,
                 "name",
-                "medias");
+                "medias",
+                "status");
 
         /**
          * Restricted constructor.
@@ -205,6 +243,8 @@ public class Printer extends DirectBean
                     return name;
                 case -1078031089:  // medias
                     return medias;
+                case -892481550:  // status
+                    return status;
             }
             return super.metaPropertyGet(propertyName);
         }
@@ -241,6 +281,14 @@ public class Printer extends DirectBean
             return medias;
         }
 
+        /**
+         * The meta-property for the {@code status} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<PrinterStatus> status() {
+            return status;
+        }
+
         //-----------------------------------------------------------------------
         @Override
         protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
@@ -249,6 +297,8 @@ public class Printer extends DirectBean
                     return ((Printer) bean).getName();
                 case -1078031089:  // medias
                     return ((Printer) bean).getMedias();
+                case -892481550:  // status
+                    return ((Printer) bean).getStatus();
             }
             return super.propertyGet(bean, propertyName, quiet);
         }
@@ -262,6 +312,9 @@ public class Printer extends DirectBean
                     return;
                 case -1078031089:  // medias
                     ((Printer) bean).setMedias((List<PrinterMedia>) newValue);
+                    return;
+                case -892481550:  // status
+                    ((Printer) bean).setStatus((PrinterStatus) newValue);
                     return;
             }
             super.propertySet(bean, propertyName, newValue, quiet);

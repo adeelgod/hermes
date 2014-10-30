@@ -37,13 +37,32 @@ angular.module('hermes.ui', [
         .state('home', {
             abstract: false,
             url: '/',
-            templateUrl: 'views/main.html'
+            templateUrl: 'views/orders.html',
+            controller: 'OrderCtrl'
         })
         .state('about', {
             abstract: false,
             url: '/about',
             templateUrl: 'views/about.html',
             controller: 'AboutCtrl'
+        })
+        .state('printers', {
+            abstract: false,
+            url: '/printers',
+            templateUrl: 'views/printers.html',
+            controller: 'PrinterCtrl'
+        })
+        .state('orders', {
+            abstract: false,
+            url: '/orders',
+            templateUrl: 'views/orders.html',
+            controller: 'OrderCtrl'
+        })
+        .state('signin', {
+            abstract: false,
+            url: '/signin',
+            templateUrl: 'views/signin.html',
+            controller: 'SignInCtrl'
         })
         .state('terms', {
             abstract: false,

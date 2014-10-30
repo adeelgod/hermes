@@ -1,5 +1,6 @@
 package com.m11n.hermes.service.pdf;
 
+import com.m11n.hermes.core.service.PdfService;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
@@ -24,8 +25,8 @@ public class PdfServiceTest
 {
     private static final Logger logger = LoggerFactory.getLogger(ExperimentsTest.class);
 
-    //@Inject
-    //private PdfService pdfService;
+    @Inject
+    private PdfService pdfService;
 
     @Inject
     private ProducerTemplate producer;
@@ -35,6 +36,11 @@ public class PdfServiceTest
 
     @Before
     public void setUp() {
+    }
+
+    @Test
+    public void testStatus() {
+        logger.info("++++++++++++++++++++++++++++ STATUS: {}", pdfService.status("PDF"));
     }
 
     @Test

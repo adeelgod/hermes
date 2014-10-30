@@ -2,6 +2,7 @@ package com.m11n.hermes.service.pdf;
 
 import com.m11n.hermes.core.model.Printer;
 import com.m11n.hermes.core.model.PrinterMedia;
+import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PdfService;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.IOUtils;
@@ -18,7 +19,10 @@ import javax.inject.Inject;
 import javax.print.DocFlavor;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.print.attribute.AttributeSet;
 import javax.print.attribute.standard.Media;
+import javax.print.attribute.standard.PrinterState;
+import javax.print.attribute.standard.PrinterStateReason;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -79,6 +83,32 @@ public class DefaultPdfService implements PdfService {
         return result.get(0);
     }
 
+    public PrinterStatus status(String printerName) {
+        PrintService printer = printer(printerName);
+
+        if(printer!=null) {
+            AttributeSet attributes = printer.getAttributes();
+            Object state = attributes.get(PrinterState.class);
+            Object reason = attributes.get(PrinterStateReason.class);
+
+            return new PrinterStatus(state==null ? "" : state.toString(), reason==null ? "" : reason.toString());
+        }
+
+        return null;
+    }
+
+    private PrintService printer(String name) {
+        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+
+        for (PrintService printer : printServices) {
+            if(printer.getName().equals(name)) {
+                return printer;
+            }
+        }
+
+        return null;
+    }
+
     public void print(String file, String printer, String orientation, String mediaId, int copies) throws Exception {
         // TODO: make remote printer configurable
         String dest = String.format("lpr://localhost/%s?copies=%s&flavor=DocFlavor.INPUT_STREAM&mimeType=AUTOSENSE&mediaTray=%s", printer, copies, mediaId);
@@ -95,6 +125,8 @@ public class DefaultPdfService implements PdfService {
 
         for (PrintService printer : printServices) {
             Printer p = new Printer(printer.getName());
+
+            p.setStatus(status(printer.getName()));
 
             DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
             Object o = printer.getSupportedAttributeValues(Media.class, flavor, null);

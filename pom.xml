@@ -73,6 +73,60 @@
                 <module>hermes-rest</module>
             </modules>
         </profile>
+
+        <profile>
+            <id>hermes.java</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-core</module>
+                <module>hermes-service</module>
+                <module>hermes-rest</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.core</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-core</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.service</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-core</module>
+                <module>hermes-service</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.rest</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-core</module>
+                <module>hermes-rest</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.web</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-web</module>
+            </modules>
+        </profile>
     </profiles>
 
     <build>

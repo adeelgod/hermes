@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -24,5 +25,12 @@ public class PrinterResource {
     @Produces(APPLICATION_JSON)
     public Response list() {
         return Response.ok(pdfService.printers()).build();
+    }
+
+    @GET
+    @Path("/{name}/status")
+    @Produces(APPLICATION_JSON)
+    public Response status(@PathParam("name") String name) {
+        return Response.ok(pdfService.status(name)).build();
     }
 }

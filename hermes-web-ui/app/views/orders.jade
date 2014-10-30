@@ -1,0 +1,19 @@
+extends /layouts/_page
+block content
+    .row
+        .col-md-6
+            form.form-inline(role='form', name='orderForm', novalidate='')
+                .form-group
+                    h2
+                        | Order Search
+                        | &nbsp;
+                        i.fa.fa-calendar
+                        | &nbsp;
+                        i.fa.fa-arrows-h
+                        | &nbsp;
+                        i.fa.fa-calendar
+                    hr
+                    .form-group(ng-class="{'has-error': orderForm.fromDate.$invalid}")
+                        input.form-control(name='fromDate', ng-model='fromDate', placeholder='From', bs-datepicker='', type='text')
+                    .form-group(ng-class="{'has-error': orderForm.untilDate.$invalid}")
+                        input.form-control(name='untilDate', ng-model='untilDate', placeholder='Until', bs-datepicker='', type='text')

@@ -1,0 +1,27 @@
+extends /layouts/_page
+block content
+    .row
+        .col-xs-12.text-center
+            h1 Printers
+    .row
+        .col-md-4(ng-repeat='printer in printers')
+            .panel.panel-default
+                .panel-heading.text-center
+                    h2 {{printer.name}}
+                .panel-body
+                    h3 Media
+                    table.table.table-compact
+                        thead
+                            tr
+                                th ID
+                                th Name
+                        tbody
+                            tr(ng-repeat='media in printer.medias')
+                                td {{media.id}}
+                                td {{media.name}}
+                .panel-footer
+                    h3
+                        | Status:
+                        | &nbsp;
+                        span.label.label-success
+                            i.fa.fa-check
