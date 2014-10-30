@@ -102,29 +102,13 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
 
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeTypes>zip</includeTypes>
-                            <stripVersion>true</stripVersion>
-                            <outputDirectory>${project.build.outputDirectory}/generated-resources</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <excludeTransitive>true</excludeTransitive>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
             </plugin>
-            -->
         </plugins>
     </build>
 

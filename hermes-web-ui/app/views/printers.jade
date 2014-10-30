@@ -7,9 +7,15 @@ block content
         .col-md-4(ng-repeat='printer in printers')
             .panel.panel-default
                 .panel-heading.text-center
-                    h2 {{printer.name}}
+                    h2
+                        i.fa.fa-print
+                        | &nbsp;
+                        | {{printer.name}}
                 .panel-body
-                    h3 Media
+                    h3
+                        i.fa.fa-inbox
+                        | &nbsp;
+                        | Media
                     table.table.table-compact
                         thead
                             tr
