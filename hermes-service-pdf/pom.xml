@@ -21,6 +21,16 @@
             <artifactId>pdfbox</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+
         <!-- Camel -->
         <dependency>
             <groupId>org.apache.camel</groupId>

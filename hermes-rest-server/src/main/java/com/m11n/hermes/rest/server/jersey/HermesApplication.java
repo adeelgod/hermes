@@ -11,9 +11,9 @@ public class HermesApplication extends ResourceConfig {
     private static final Logger logger = LoggerFactory.getLogger(HermesApplication.class);
 
     public HermesApplication() {
-        setApplicationName("hlu")
+        setApplicationName("hermes")
         // see here: https://jersey.java.net/documentation/latest/deployment.html#deployment.autodiscovery.config
-        .packages("com.m11m.hermes")
+        .packages("com.m11n.hermes")
         // Spring
         .register(RequestContextFilter.class)
         //.register(CsrfProtectionFilter.class) // TODO: enable this in production

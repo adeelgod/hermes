@@ -21,4 +21,12 @@
     <name>Hermes :: REST :: API</name>
     <description>Hermes REST API</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>hermes-service-pdf</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>

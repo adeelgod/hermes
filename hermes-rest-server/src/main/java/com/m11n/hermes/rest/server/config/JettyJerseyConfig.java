@@ -20,7 +20,7 @@ public class JettyJerseyConfig {
     @SuppressWarnings("unchecked")
     public static void addServlet(ServletContextHandler context, String mapping, boolean comsat) throws Exception {
 
-        logger.info("=================================== Adding Jersey Servlet with context {}", mapping);
+        logger.info("=================================== Adding Jersey Servlet with context {} {}", mapping, HermesApplication.class.getName());
 
         JettySpringConfig.addListener(context);
 

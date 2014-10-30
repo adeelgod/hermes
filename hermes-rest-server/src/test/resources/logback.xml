@@ -13,6 +13,7 @@
     <logger name="org.apache.shiro" level="DEBUG" />
     -->
     <logger name="com.m11n.hermes" level="DEBUG" />
+    <logger name="org.glassfish" level="DEBUG" />
 
     <root level="WARN">
         <appender-ref ref="STDOUT" />

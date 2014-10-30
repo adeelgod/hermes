@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-pdf</artifactId>
+            <artifactId>hermes-rest-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -53,13 +53,6 @@
         <dependency>
             <groupId>co.paralleluniverse</groupId>
             <artifactId>comsat-jetty-loader</artifactId>
-        </dependency>
-
-        <!-- REST -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-rest-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <!-- Jersey -->
