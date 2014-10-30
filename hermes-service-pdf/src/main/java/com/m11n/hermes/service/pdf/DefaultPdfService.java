@@ -133,8 +133,6 @@ public class DefaultPdfService implements PdfService {
             if (o != null && o.getClass().isArray()) {
                 for (Media media : (Media[]) o) {
                     p.addMedia(new PrinterMedia(media.getValue()+"", media.getName()));
-
-                    logger.info("ID: {} - Name: {} - Category: {}", media.getValue(), media, media.getClass().getName()); // TODO: remove this in production
                 }
             }
 

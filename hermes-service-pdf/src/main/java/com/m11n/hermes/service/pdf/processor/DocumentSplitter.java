@@ -15,14 +15,18 @@ public class DocumentSplitter {
     @Inject
     private PdfService pdfService;
 
-    private String baseDir = "/tmp/hermes"; // TODO: make this configurable
+    private String baseDir = System.getProperty("java.io.tmpdir"); // TODO: make this configurable
 
     @PostConstruct
     public void init() {
-        File f = new File(baseDir);
+        try {
+            File f = new File(baseDir);
 
-        if(!f.exists()) {
-            f.mkdirs();
+            if(!f.exists()) {
+                f.mkdirs();
+            }
+        } catch (Throwable t) {
+            // ignore
         }
     }
 
