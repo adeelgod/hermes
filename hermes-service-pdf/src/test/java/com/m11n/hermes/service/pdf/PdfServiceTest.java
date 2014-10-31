@@ -57,7 +57,12 @@ public class PdfServiceTest
     }
 
     @Test
-    public void testPrint() throws Exception {
+    public void testExtract() throws Exception {
         producer.sendBody("vm:extract", new FileInputStream("src/test/resources/invoice.pdf"));
+    }
+
+    @Test
+    public void testPrint() throws Exception {
+        pdfService.print("src/test/resources/invoice.pdf", "PDF", "landscape", "", 1);
     }
 }

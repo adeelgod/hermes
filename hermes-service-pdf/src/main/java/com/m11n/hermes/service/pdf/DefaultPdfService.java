@@ -5,7 +5,6 @@ import com.m11n.hermes.core.model.PrinterAttribute;
 import com.m11n.hermes.core.model.PrinterAttributeCategory;
 import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PdfService;
-import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -16,13 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
+import javax.print.*;
 import javax.print.attribute.Attribute;
 import javax.print.attribute.AttributeSet;
 import javax.print.attribute.EnumSyntax;
+import javax.print.attribute.HashAttributeSet;
 import javax.print.attribute.standard.*;
+import javax.print.event.PrintJobEvent;
+import javax.print.event.PrintJobListener;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -37,8 +37,8 @@ public class DefaultPdfService implements PdfService {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultPdfService.class);
 
-    @Inject
-    private ProducerTemplate producer;
+    //@Inject
+    //private ProducerTemplate producer;
 
     //private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class, Copies.class, PageRanges.class, JobSheets.class, Chromaticity.class);
     private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class);
@@ -114,12 +114,64 @@ public class DefaultPdfService implements PdfService {
     }
 
     public void print(String file, String printer, String orientation, String mediaId, int copies) throws Exception {
-        // TODO: make remote printer configurable
-        String dest = String.format("lpr://localhost/%s?copies=%s&flavor=DocFlavor.INPUT_STREAM&mimeType=AUTOSENSE&mediaTray=%s", printer, copies, mediaId);
+        //String dest = String.format("lpr://localhost/%s?copies=%s&flavor=DocFlavor.INPUT_STREAM&mimeType=AUTOSENSE&mediaTray=%s", printer, copies, mediaId);
+        //logger.info("=================== PRINTER: {}", dest);
+        //producer.sendBody(dest, new FileInputStream(file));
 
-        logger.info("=================== PRINTER: {}", dest);
+        InputStream fis = new FileInputStream(file);
 
-        producer.sendBody(dest, new FileInputStream(file));
+        DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+
+        DocPrintJob job = printer(printer).createPrintJob();
+        job.addPrintJobListener(new PrintJobListener() {
+            @Override
+            public void printDataTransferCompleted(PrintJobEvent pje) {
+                logger.debug("####################### JOB - TRANSFERRED: {}", pje.getPrintJob().getPrintService().getName());
+            }
+
+            @Override
+            public void printJobCompleted(PrintJobEvent pje) {
+                logger.debug("####################### JOB - COMPLETED: {}", pje.getPrintJob().getPrintService().getName());
+            }
+
+            @Override
+            public void printJobFailed(PrintJobEvent pje) {
+                logger.debug("####################### JOB - FAILED: {}", pje.getPrintJob().getPrintService().getName());
+            }
+
+            @Override
+            public void printJobCanceled(PrintJobEvent pje) {
+                logger.debug("####################### JOB - CANCELLED: {}", pje.getPrintJob().getPrintService().getName());
+            }
+
+            @Override
+            public void printJobNoMoreEvents(PrintJobEvent pje) {
+                logger.debug("####################### JOB - MORE: {}", pje.getPrintJob().getPrintService().getName());
+            }
+
+            @Override
+            public void printJobRequiresAttention(PrintJobEvent pje) {
+                logger.debug("####################### JOB - ATTENTION: {}", pje.getPrintJob().getPrintService().getName());
+            }
+        });
+
+        AttributeSet attributes = new HashAttributeSet();
+
+        //attributes.add(MediaTray.BOTTOM);
+        if(OrientationRequested.PORTRAIT.toString().equals(orientation)) {
+            attributes.add(OrientationRequested.PORTRAIT);
+        } else if(OrientationRequested.LANDSCAPE.toString().equals(orientation)) {
+            attributes.add(OrientationRequested.LANDSCAPE);
+        } else if(OrientationRequested.REVERSE_PORTRAIT.toString().equals(orientation)) {
+            attributes.add(OrientationRequested.REVERSE_PORTRAIT);
+        } else if(OrientationRequested.REVERSE_LANDSCAPE.toString().equals(orientation)) {
+            attributes.add(OrientationRequested.REVERSE_LANDSCAPE);
+        }
+        attributes.add(new Copies(copies));
+
+        Doc doc = new SimpleDoc(fis, flavor, null);
+        job.print(doc, null);
+        fis.close();
     }
 
     public List<Printer> printers() {
