@@ -31,10 +31,6 @@ public class Printer extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    private List<PrinterAttribute> attributes;
-
-    @PropertyDefinition
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private List<PrinterAttributeCategory> attributeCategories;
 
     @PropertyDefinition
@@ -47,15 +43,6 @@ public class Printer extends DirectBean
 
     public Printer(String name) {
         this.name = name;
-    }
-
-    @Deprecated
-    public void addAttribute(PrinterAttribute attribute) {
-        if(attributes==null) {
-            attributes = new ArrayList<>();
-        }
-
-        attributes.add(attribute);
     }
 
     public void addAttributeCategory(PrinterAttributeCategory category) {
@@ -108,31 +95,6 @@ public class Printer extends DirectBean
      */
     public final Property<String> name() {
         return metaBean().name().createProperty(this);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the attributes.
-     * @return the value of the property
-     */
-    public List<PrinterAttribute> getAttributes() {
-        return attributes;
-    }
-
-    /**
-     * Sets the attributes.
-     * @param attributes  the new value of the property
-     */
-    public void setAttributes(List<PrinterAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    /**
-     * Gets the the {@code attributes} property.
-     * @return the property, not null
-     */
-    public final Property<List<PrinterAttribute>> attributes() {
-        return metaBean().attributes().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -199,7 +161,6 @@ public class Printer extends DirectBean
         if (obj != null && obj.getClass() == this.getClass()) {
             Printer other = (Printer) obj;
             return JodaBeanUtils.equal(getName(), other.getName()) &&
-                    JodaBeanUtils.equal(getAttributes(), other.getAttributes()) &&
                     JodaBeanUtils.equal(getAttributeCategories(), other.getAttributeCategories()) &&
                     JodaBeanUtils.equal(getStatus(), other.getStatus());
         }
@@ -210,7 +171,6 @@ public class Printer extends DirectBean
     public int hashCode() {
         int hash = getClass().hashCode();
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getAttributes());
         hash += hash * 31 + JodaBeanUtils.hashCode(getAttributeCategories());
         hash += hash * 31 + JodaBeanUtils.hashCode(getStatus());
         return hash;
@@ -218,7 +178,7 @@ public class Printer extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(160);
+        StringBuilder buf = new StringBuilder(128);
         buf.append("Printer{");
         int len = buf.length();
         toString(buf);
@@ -231,7 +191,6 @@ public class Printer extends DirectBean
 
     protected void toString(StringBuilder buf) {
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
-        buf.append("attributes").append('=').append(JodaBeanUtils.toString(getAttributes())).append(',').append(' ');
         buf.append("attributeCategories").append('=').append(JodaBeanUtils.toString(getAttributeCategories())).append(',').append(' ');
         buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
     }
@@ -252,12 +211,6 @@ public class Printer extends DirectBean
         private final MetaProperty<String> name = DirectMetaProperty.ofReadWrite(
                 this, "name", Printer.class, String.class);
         /**
-         * The meta-property for the {@code attributes} property.
-         */
-        @SuppressWarnings({"unchecked", "rawtypes" })
-        private final MetaProperty<List<PrinterAttribute>> attributes = DirectMetaProperty.ofReadWrite(
-                this, "attributes", Printer.class, (Class) List.class);
-        /**
          * The meta-property for the {@code attributeCategories} property.
          */
         @SuppressWarnings({"unchecked", "rawtypes" })
@@ -274,7 +227,6 @@ public class Printer extends DirectBean
         private final Map<String, MetaProperty<?>> metaPropertyMap$ = new DirectMetaPropertyMap(
                 this, null,
                 "name",
-                "attributes",
                 "attributeCategories",
                 "status");
 
@@ -289,8 +241,6 @@ public class Printer extends DirectBean
             switch (propertyName.hashCode()) {
                 case 3373707:  // name
                     return name;
-                case 405645655:  // attributes
-                    return attributes;
                 case 1378957784:  // attributeCategories
                     return attributeCategories;
                 case -892481550:  // status
@@ -324,14 +274,6 @@ public class Printer extends DirectBean
         }
 
         /**
-         * The meta-property for the {@code attributes} property.
-         * @return the meta-property, not null
-         */
-        public final MetaProperty<List<PrinterAttribute>> attributes() {
-            return attributes;
-        }
-
-        /**
          * The meta-property for the {@code attributeCategories} property.
          * @return the meta-property, not null
          */
@@ -353,8 +295,6 @@ public class Printer extends DirectBean
             switch (propertyName.hashCode()) {
                 case 3373707:  // name
                     return ((Printer) bean).getName();
-                case 405645655:  // attributes
-                    return ((Printer) bean).getAttributes();
                 case 1378957784:  // attributeCategories
                     return ((Printer) bean).getAttributeCategories();
                 case -892481550:  // status
@@ -369,9 +309,6 @@ public class Printer extends DirectBean
             switch (propertyName.hashCode()) {
                 case 3373707:  // name
                     ((Printer) bean).setName((String) newValue);
-                    return;
-                case 405645655:  // attributes
-                    ((Printer) bean).setAttributes((List<PrinterAttribute>) newValue);
                     return;
                 case 1378957784:  // attributeCategories
                     ((Printer) bean).setAttributeCategories((List<PrinterAttributeCategory>) newValue);
