@@ -23,7 +23,7 @@ import java.io.FileInputStream;
 @ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext-hermes.xml"})
 public class PdfServiceTest
 {
-    private static final Logger logger = LoggerFactory.getLogger(ExperimentsTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(PdfServiceTest.class);
 
     @Inject
     private PdfService pdfService;
@@ -39,34 +39,7 @@ public class PdfServiceTest
     }
 
     @Test
-    public void testStatus() {
-        String printerName = "Officejet_4630";
-        //String printerName = "PDF";
-        logger.info("++++++++++++++++++++++++++++ STATUS: {}", pdfService.status(printerName));
-    }
-
-    @Test
-    public void testListPrinters() {
-        // NOTE: see details here https://www.darklaunch.com/2011/02/26/ubuntu-print-to-pdf-install-a-pdf-printer
-
-        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-        logger.info("Number of print services: " + printServices.length);
-
-        for (PrintService printer : printServices) {
-            logger.info("Printer: " + printer.getName());
-        }
-
-    }
-
-    @Test
     public void testExtract() throws Exception {
         producer.sendBody("vm:extract", new FileInputStream("src/test/resources/invoice.pdf"));
-    }
-
-    @Test
-    public void testPrint() throws Exception {
-        //String printerName = "Officejet_4630";
-        String printerName = "PDF";
-        pdfService.print("src/test/resources/invoice-1.pdf", "1-1", printerName, "landscape", "", 1);
     }
 }

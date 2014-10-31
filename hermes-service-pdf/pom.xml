@@ -16,10 +16,12 @@
     <name>Hermes :: Service :: PDF</name>
 
     <dependencies>
+        <!--
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
         </dependency>
+        -->
 
         <dependency>
             <groupId>commons-io</groupId>

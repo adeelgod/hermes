@@ -1,6 +1,6 @@
 package com.m11n.hermes.rest.api;
 
-import com.m11n.hermes.core.service.PdfService;
+import com.m11n.hermes.core.service.PrinterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +19,18 @@ public class PrinterResource {
     private static final Logger logger = LoggerFactory.getLogger(PrinterResource.class);
 
     @Inject
-    private PdfService pdfService;
+    private PrinterService printerService;
 
     @GET
     @Produces(APPLICATION_JSON)
     public Response list() {
-        return Response.ok(pdfService.printers()).build();
+        return Response.ok(printerService.printers()).build();
     }
 
     @GET
     @Path("/{name}/status")
     @Produces(APPLICATION_JSON)
     public Response status(@PathParam("name") String name) {
-        return Response.ok(pdfService.status(name)).build();
+        return Response.ok(printerService.status(name)).build();
     }
 }
