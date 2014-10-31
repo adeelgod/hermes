@@ -4,6 +4,7 @@ import com.m11n.hermes.core.service.PdfService;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -39,7 +40,16 @@ public class PdfServiceTest
     }
 
     @Test
-    public void testExtract() throws Exception {
+    public void testSend() throws Exception {
         producer.sendBody("vm:extract", new FileInputStream("src/test/resources/invoice.pdf"));
+    }
+
+    @Test
+    public void testExtract() throws Exception {
+        String result = pdfService.value(new FileInputStream("src/test/resources/invoice.pdf"), 1, "Bestellnummer:");
+
+        logger.info("==================================================== ORDER ID: {}", result);
+
+        Assert.assertEquals("300009816", result);
     }
 }
