@@ -4,7 +4,7 @@ block content
         .col-xs-12.text-center
             h1 Printers
     .row
-        .col-md-4(ng-repeat='printer in printers')
+        .col-md-6(ng-repeat='printer in printers')
             .panel.panel-default
                 .panel-heading.text-center
                     h2
@@ -12,22 +12,24 @@ block content
                         | &nbsp;
                         | {{printer.name}}
                 .panel-body
-                    h3
-                        i.fa.fa-inbox
-                        | &nbsp;
-                        | Media
-                    table.table.table-compact
+                    table.table.table-compact(ng-repeat='category in printer.attributeCategories')
                         thead
                             tr
-                                th ID
+                                th(colspan='2')
+                                    h3
+                                        i.fa(class='{{ getCategoryIcon(category.name) }}')
+                                        | &nbsp;
+                                        | {{ getCategoryName(category.name) }}
+                            tr
                                 th Name
+                                th Value
                         tbody
-                            tr(ng-repeat='media in printer.medias')
-                                td {{media.id}}
-                                td {{media.name}}
+                            tr(ng-repeat='attribute in category.attributes')
+                                td {{attribute.name}}
+                                td {{attribute.value}}
                 .panel-footer
                     h3
-                        | Status:
-                        | &nbsp;
                         span.label.label-success
+                            | Status:
+                            | &nbsp;
                             i.fa.fa-check

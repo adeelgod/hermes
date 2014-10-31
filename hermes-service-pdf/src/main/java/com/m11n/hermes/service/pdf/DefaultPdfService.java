@@ -1,7 +1,8 @@
 package com.m11n.hermes.service.pdf;
 
 import com.m11n.hermes.core.model.Printer;
-import com.m11n.hermes.core.model.PrinterMedia;
+import com.m11n.hermes.core.model.PrinterAttribute;
+import com.m11n.hermes.core.model.PrinterAttributeCategory;
 import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PdfService;
 import org.apache.camel.ProducerTemplate;
@@ -16,19 +17,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.print.DocFlavor;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.print.attribute.Attribute;
 import javax.print.attribute.AttributeSet;
-import javax.print.attribute.standard.Media;
-import javax.print.attribute.standard.PrinterState;
-import javax.print.attribute.standard.PrinterStateReason;
+import javax.print.attribute.EnumSyntax;
+import javax.print.attribute.standard.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -38,6 +39,9 @@ public class DefaultPdfService implements PdfService {
 
     @Inject
     private ProducerTemplate producer;
+
+    //private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class, Copies.class, PageRanges.class, JobSheets.class, Chromaticity.class);
+    private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class);
 
     public PDDocument parse(InputStream is) throws Exception {
         PDFParser parser = new PDFParser(is);
@@ -128,11 +132,34 @@ public class DefaultPdfService implements PdfService {
 
             p.setStatus(status(printer.getName()));
 
-            DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
-            Object o = printer.getSupportedAttributeValues(Media.class, flavor, null);
-            if (o != null && o.getClass().isArray()) {
-                for (Media media : (Media[]) o) {
-                    p.addMedia(new PrinterMedia(media.getValue()+"", media.getName()));
+            for(Class category : printer.getSupportedAttributeCategories()) {
+                Object o = printer.getSupportedAttributeValues(category, null, null);
+
+                boolean match = attributeCategories.contains(category);
+
+                logger.debug("++++++++++++++++++++++++++++++++++++++++++++ CATEGORY: {} ({})", category.getName(), match);
+
+                if (o != null && o.getClass().isArray() && match) {
+                    PrinterAttributeCategory attributeCategory = new PrinterAttributeCategory(category.getName());
+                    p.addAttributeCategory(attributeCategory);
+
+                    for (Attribute attribute : (Attribute[]) o) {
+                        String value = null;
+
+                        /**
+                        if(attribute instanceof EnumSyntax) {
+                            //value = ((EnumSyntax)attribute).getValue() + "";
+                            value = attribute.toString();
+                        } else if(attribute instanceof SetOfIntegerSyntax) {
+                            //value = Arrays.toString(((SetOfIntegerSyntax) attribute).getMembers());
+                            value = attribute.toString();
+                        }
+                         */
+                        if(attribute instanceof EnumSyntax) {
+                            value = attribute.toString();
+                        }
+                        attributeCategory.addAttribute(new PrinterAttribute(attribute.getName(), value, attribute.getCategory().getName()));
+                    }
                 }
             }
 
