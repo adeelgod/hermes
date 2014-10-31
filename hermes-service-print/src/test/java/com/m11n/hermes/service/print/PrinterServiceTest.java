@@ -59,9 +59,8 @@ public class PrinterServiceTest
             String printerName = "PDF";
 
             String file = "src/test/resources/invoice-1.pdf";
-            //String file = "/tmp/hermes-test.pdf";
 
-            printerService.print(file, "1-1", printerName, "landscape", null, 2);
+            //printerService.print(file, "1-1", printerName, "landscape", null, 2);
             printerService.print(file, printerName);
         } catch (Throwable t) {
             // ignore for CI server

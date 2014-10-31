@@ -22,9 +22,6 @@ public class DefaultPdfService implements PdfService {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultPdfService.class);
 
-    //@Inject
-    //private ProducerTemplate producer;
-
     public PDDocument parse(InputStream is) throws Exception {
         PDFParser parser = new PDFParser(is);
         parser.parse();
