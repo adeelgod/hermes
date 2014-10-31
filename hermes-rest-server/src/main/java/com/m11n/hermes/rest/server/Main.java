@@ -1,6 +1,9 @@
 package com.m11n.hermes.rest.server;
 
-import com.m11n.hermes.rest.server.config.*;
+import com.m11n.hermes.rest.server.config.JettyCorsConfig;
+import com.m11n.hermes.rest.server.config.JettyJerseyConfig;
+import com.m11n.hermes.rest.server.config.JettyShiroConfig;
+import com.m11n.hermes.rest.server.config.LogConfig;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -10,6 +13,8 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
+import java.net.URI;
 import java.util.Arrays;
 
 public class Main {
@@ -101,9 +106,25 @@ public class Main {
             }
 
             server.start();
+
             if(optHelper.hasDebug()) {
                 server.dump(System.err);
             }
+
+            if(Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+
+                try {
+                    String url = "http://" + optHelper.getHost() + ":" + optHelper.getPort();
+
+                    logger.info("=================================== Opening default browser at: {}", url);
+
+                    desktop.browse(new URI(url));
+                } catch (Exception e) {
+                    logger.error(e.toString(), e);
+                }
+            }
+
             server.join();
         } catch(Exception e) {
             throw new RuntimeException(e);
