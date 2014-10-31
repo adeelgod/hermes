@@ -5,6 +5,7 @@ import com.m11n.hermes.core.model.PrinterAttribute;
 import com.m11n.hermes.core.model.PrinterAttributeCategory;
 import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PrinterService;
+import org.apache.pdfbox.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.print.*;
 import javax.print.attribute.*;
 import javax.print.attribute.standard.*;
+import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
 import java.awt.print.PrinterJob;
@@ -60,7 +62,8 @@ public class DefaultPrinterService implements PrinterService {
         PrinterJob.getPrinterJob().defaultPage();
 
         DocPrintJob job = printer(printer).createPrintJob();
-        job.addPrintJobListener(new HermesJobListener());
+        //job.addPrintJobListener(new HermesJobListener());
+        HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
         PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 
@@ -75,14 +78,19 @@ public class DefaultPrinterService implements PrinterService {
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
-        fis.close();
+
+        watcher.waitForDone();
+        logger.debug("###################################### JOB DONE: {}", file);
+
+        IOUtils.closeQuietly(fis);
     }
 
     public void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception {
         PrinterJob.getPrinterJob().defaultPage();
 
         DocPrintJob job = printer(printer).createPrintJob();
-        job.addPrintJobListener(new HermesJobListener());
+        //job.addPrintJobListener(new HermesJobListener());
+        HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
         PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 
@@ -108,7 +116,11 @@ public class DefaultPrinterService implements PrinterService {
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
-        fis.close();
+
+        watcher.waitForDone();
+        logger.debug("###################################### JOB DONE: {}", file);
+
+        IOUtils.closeQuietly(fis);
     }
 
     /**
@@ -243,6 +255,45 @@ public class DefaultPrinterService implements PrinterService {
         @Override
         public void printJobRequiresAttention(PrintJobEvent pje) {
             logger.debug("####################### JOB - ATTENTION: {}", pje.getPrintJob().getPrintService().getName());
+        }
+    }
+
+    private static class HermesPrintJobWatcher {
+        // true iff it is safe to close the print job's input stream
+        boolean done = false;
+
+        HermesPrintJobWatcher(DocPrintJob job) {
+            // Add a listener to the print job
+            job.addPrintJobListener(new PrintJobAdapter() {
+                public void printJobCanceled(PrintJobEvent pje) {
+                    allDone();
+                }
+                public void printJobCompleted(PrintJobEvent pje) {
+                    allDone();
+                }
+                public void printJobFailed(PrintJobEvent pje) {
+                    allDone();
+                }
+                public void printJobNoMoreEvents(PrintJobEvent pje) {
+                    allDone();
+                }
+                void allDone() {
+                    synchronized (HermesPrintJobWatcher.this) {
+                        done = true;
+                        HermesPrintJobWatcher.this.notify();
+                    }
+                }
+            });
+        }
+
+        public synchronized void waitForDone() {
+            try {
+                while (!done) {
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                // ignore
+            }
         }
     }
 
