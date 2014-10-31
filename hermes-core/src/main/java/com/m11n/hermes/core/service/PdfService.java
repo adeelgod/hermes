@@ -19,7 +19,7 @@ public interface PdfService {
 
     PrinterStatus status(String printerName);
 
-    void print(String file, String printer, String orientation, String mediaId, int copies) throws Exception;
+    void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception;
 
     List<Printer> printers();
 }

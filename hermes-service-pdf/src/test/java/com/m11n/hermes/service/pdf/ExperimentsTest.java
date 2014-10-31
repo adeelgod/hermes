@@ -35,8 +35,9 @@ public class ExperimentsTest {
         PDDocument doc = parser.getPDDocument();
 
         Splitter splitter = new Splitter();
-        splitter.setStartPage(1);
-        splitter.setEndPage(1);
+        //splitter.setStartPage(1);
+        //splitter.setEndPage(2);
+        splitter.setSplitAtPage(2);
         List<PDDocument> result = splitter.split(doc);
 
         int i = 0;

@@ -40,7 +40,9 @@ public class PdfServiceTest
 
     @Test
     public void testStatus() {
-        logger.info("++++++++++++++++++++++++++++ STATUS: {}", pdfService.status("PDF"));
+        String printerName = "Officejet_4630";
+        //String printerName = "PDF";
+        logger.info("++++++++++++++++++++++++++++ STATUS: {}", pdfService.status(printerName));
     }
 
     @Test
@@ -48,10 +50,10 @@ public class PdfServiceTest
         // NOTE: see details here https://www.darklaunch.com/2011/02/26/ubuntu-print-to-pdf-install-a-pdf-printer
 
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-        System.out.println("Number of print services: " + printServices.length);
+        logger.info("Number of print services: " + printServices.length);
 
         for (PrintService printer : printServices) {
-            System.out.println("Printer: " + printer.getName());
+            logger.info("Printer: " + printer.getName());
         }
 
     }
@@ -63,6 +65,8 @@ public class PdfServiceTest
 
     @Test
     public void testPrint() throws Exception {
-        pdfService.print("src/test/resources/invoice.pdf", "PDF", "landscape", "", 1);
+        //String printerName = "Officejet_4630";
+        String printerName = "PDF";
+        pdfService.print("src/test/resources/invoice-1.pdf", "1-1", printerName, "landscape", "", 1);
     }
 }
