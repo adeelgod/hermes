@@ -1,0 +1,8 @@
+- route invoices and labels to separate queues
+- splite separate pages and move to temp folder
+- extract order id
+- create folder with order id as name
+- rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
+- create database entries
+- everything is overwrite
+

@@ -79,8 +79,8 @@ public class DefaultPrinterService implements PrinterService {
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
 
-        watcher.waitForDone();
-        logger.debug("###################################### JOB DONE: {}", file);
+        JobStatus status = watcher.waitForDone();
+        logger.debug("###################################### JOB DONE: {} ({})", file, status);
 
         IOUtils.closeQuietly(fis);
     }
@@ -117,8 +117,8 @@ public class DefaultPrinterService implements PrinterService {
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
 
-        watcher.waitForDone();
-        logger.debug("###################################### JOB DONE: {}", file);
+        JobStatus status = watcher.waitForDone();
+        logger.debug("###################################### JOB DONE: {} ({})", file, status);
 
         IOUtils.closeQuietly(fis);
     }
@@ -261,32 +261,34 @@ public class DefaultPrinterService implements PrinterService {
     private static class HermesPrintJobWatcher {
         // true iff it is safe to close the print job's input stream
         boolean done = false;
+        JobStatus status = JobStatus.UNKNOWN;
 
         HermesPrintJobWatcher(DocPrintJob job) {
             // Add a listener to the print job
             job.addPrintJobListener(new PrintJobAdapter() {
                 public void printJobCanceled(PrintJobEvent pje) {
-                    allDone();
+                    done(JobStatus.CANCELLED);
                 }
                 public void printJobCompleted(PrintJobEvent pje) {
-                    allDone();
+                    done(JobStatus.COMPLETED);
                 }
                 public void printJobFailed(PrintJobEvent pje) {
-                    allDone();
+                    done(JobStatus.FAILED);
                 }
                 public void printJobNoMoreEvents(PrintJobEvent pje) {
-                    allDone();
+                    done(JobStatus.NO_MORE_EVENTS);
                 }
-                void allDone() {
+                void done(JobStatus s) {
                     synchronized (HermesPrintJobWatcher.this) {
                         done = true;
+                        status = s;
                         HermesPrintJobWatcher.this.notify();
                     }
                 }
             });
         }
 
-        public synchronized void waitForDone() {
+        public synchronized JobStatus waitForDone() {
             try {
                 while (!done) {
                     wait();
@@ -294,6 +296,8 @@ public class DefaultPrinterService implements PrinterService {
             } catch (InterruptedException e) {
                 // ignore
             }
+
+            return status;
         }
     }
 
