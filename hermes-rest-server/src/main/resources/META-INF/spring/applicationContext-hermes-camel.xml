@@ -17,16 +17,6 @@
         </property>
     </bean>
 
-    <!--
-    <bean id="extractFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
-        <property name="fileStore">
-            <bean class="java.io.File">
-                <constructor-arg value="./.extractcache" />
-            </bean>
-        </property>
-    </bean>
-    -->
-
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route>
             <from uri="file://./inbox/?noop=true&amp;idempotentKey=${file:name}-${file:size}-${file:modified}}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
