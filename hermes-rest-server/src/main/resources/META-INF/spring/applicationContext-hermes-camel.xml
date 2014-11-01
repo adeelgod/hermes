@@ -5,15 +5,42 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
+    <bean id="pdfFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*.pdf"/>
+    </bean>
+
+    <bean id="splitFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
+        <property name="fileStore">
+            <bean class="java.io.File">
+                <constructor-arg value="./.splitcache" />
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+    <bean id="extractFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
+        <property name="fileStore">
+            <bean class="java.io.File">
+                <constructor-arg value="./.extractcache" />
+            </bean>
+        </property>
+    </bean>
+    -->
+
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route>
-            <from uri="vm:extract" />
-            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="Extracting data from PDF..." />
-            <!--
-            <to uri="lpr://localhost/PDF?copies=2&amp;flavor=DocFlavor.INPUT_STREAM&amp;mimeType=AUTOSENSE&amp;mediaSize=NA_LETTER&amp;sides=one-sided" />
-            <to uri="lpr://localhost/TRAY2?copies=2&amp;flavor=DocFlavor.INPUT_STREAM&amp;mimeType=AUTOSENSE&amp;sides=two-sided" />
-            -->
-            <to uri="mock:result"/>
+            <from uri="file://./inbox/?noop=true&amp;idempotentKey=${file:name}-${file:size}-${file:modified}}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
+            <to uri="bean:documentSplitProcessor"/>
+        </route>
+
+        <!--
+        -->
+        <route>
+            <from uri="file://./extract/?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
+            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... ${file:name}" />
+            <to uri="bean:documentMetaDataProcessor"/>
+            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... type: ${headers.HERMES_DOCUMENT_TYPE} id: ${headers.HERMES_ORDER_ID}" />
+            <to uri="file://./result/" />
         </route>
     </camelContext>
 

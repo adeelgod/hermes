@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.activation.FileDataSource;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -50,19 +51,40 @@ public class DefaultPdfService implements PdfService {
         while(it.hasNext()) {
             String l = it.next().trim();
             if(l.startsWith(fieldName)) {
-                return l.substring(fieldName.length(), l.length()).trim();
+                return l.substring(fieldName.length(), l.length()).replace(":", "").trim();
             }
         }
 
         return null;
     }
 
-    public PDDocument split(PDDocument doc, int page) throws Exception {
+    public List<PDDocument> split(String file, int page) throws Exception {
+        FileDataSource fd = new FileDataSource(file);
+
+        PDFParser parser = new PDFParser(fd.getInputStream());
+        parser.parse();
+
+        PDDocument doc = parser.getPDDocument();
+
+        return split(doc, page);
+    }
+
+    public List<PDDocument> split(InputStream is, int page) throws Exception {
+        PDFParser parser = new PDFParser(is);
+        parser.parse();
+        PDDocument doc = parser.getPDDocument();
+        doc.close();
+
+        return split(doc, page);
+    }
+
+    public List<PDDocument> split(PDDocument doc, int page) throws Exception {
         Splitter splitter = new Splitter();
-        splitter.setStartPage(page);
-        splitter.setEndPage(page);
+        splitter.setSplitAtPage(page);
+        //splitter.setStartPage(page);
+        //splitter.setEndPage(page);
         List<PDDocument> result = splitter.split(doc);
 
-        return result.get(0);
+        return result;
     }
 }

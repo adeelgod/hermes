@@ -28,6 +28,11 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -46,13 +51,14 @@
             <artifactId>javassist</artifactId>
         </dependency>
 
-        <!-- Groovy -->
+        <!-- Groovy
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
         </dependency>
+        -->
 
-        <!-- RX -->
+        <!-- RX
         <dependency>
             <groupId>io.reactivex</groupId>
             <artifactId>rxgroovy</artifactId>
@@ -67,6 +73,7 @@
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava-computation-expressions</artifactId>
         </dependency>
+        -->
 
         <!-- Test -->
         <dependency>
