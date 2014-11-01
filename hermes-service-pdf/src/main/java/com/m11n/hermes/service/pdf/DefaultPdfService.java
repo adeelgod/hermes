@@ -74,9 +74,9 @@ public class DefaultPdfService implements PdfService {
 
     public List<PDDocument> split(PDDocument doc, int page) throws Exception {
         Splitter splitter = new Splitter();
-        splitter.setSplitAtPage(page);
-        //splitter.setStartPage(page);
-        //splitter.setEndPage(page);
+        //splitter.setSplitAtPage(page);
+        splitter.setStartPage(page);
+        splitter.setEndPage(page);
         List<PDDocument> result = splitter.split(doc);
 
         return result;

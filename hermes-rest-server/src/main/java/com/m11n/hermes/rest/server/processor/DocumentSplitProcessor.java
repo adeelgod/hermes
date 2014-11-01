@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
 @Component
@@ -34,26 +33,28 @@ public class DocumentSplitProcessor {
         }
     }
 
-    //public void process(@Header("CamelFileName") String fileName, @Header("CamelFilePath") String filePath, InputStream is) {
+    // TODO: find out if this is really necessary
     public synchronized void process(File f) {
         String fileName = f.getName();
         String filePath = f.getAbsolutePath();
 
         try {
-            logger.debug("##################### PATH: {}", f.getAbsolutePath());
+            PDDocument parent = PDDocument.load(filePath);
 
-            //List<PDDocument> documents = pdfService.split(PDDocument.load(filePath), 1);
-            List<PDDocument> documents = pdfService.split(new FileInputStream(f), 1);
+            for(int i=1; i<=parent.getNumberOfPages(); i++) {
+                // NOTE: splitting one by one is the best approach without concurrency problems
+                List<PDDocument> documents = pdfService.split(parent, i);
 
-            String prefix = "unknown";
+                PDDocument document = documents.get(0);
 
-            if(fileName.toLowerCase().contains("invoice")) {
-                prefix = "invoice";
-            } else if(fileName.toLowerCase().contains("label")) {
-                prefix = "label";
-            }
+                String prefix = "unknown";
 
-            for(PDDocument document : documents) {
+                if(fileName.toLowerCase().contains("invoice")) {
+                    prefix = "invoice";
+                } else if(fileName.toLowerCase().contains("label")) {
+                    prefix = "label";
+                }
+
                 String orderId = null;
 
                 if(prefix.equals("invoice")) {
@@ -79,13 +80,5 @@ public class DocumentSplitProcessor {
             logger.error("xxxxxxxxxx: {} ({})", t.getMessage(), filePath);
             logger.error(t.toString(), t);
         }
-    }
-
-    private void lock(String file) throws Exception {
-        new File(file).createNewFile();
-    }
-
-    private void unlock(String file) throws Exception {
-        new File(file).delete();
     }
 }
