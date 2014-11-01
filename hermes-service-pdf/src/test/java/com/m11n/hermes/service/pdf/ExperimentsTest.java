@@ -26,8 +26,17 @@ public class ExperimentsTest {
     }
 
     @Test
-    public void testSplit() throws Exception {
-        FileDataSource fd = new FileDataSource("src/test/resources/invoice.pdf");
+    public void testSplitInvoice() throws Exception {
+        split("src/test/resources/invoice.pdf");
+    }
+
+    @Test
+    public void testSplitLabel() throws Exception {
+        split("src/test/resources/labels.pdf");
+    }
+
+    private void split(String file) throws Exception {
+        FileDataSource fd = new FileDataSource(file);
 
         PDFParser parser = new PDFParser(fd.getInputStream());
         parser.parse();
@@ -44,7 +53,7 @@ public class ExperimentsTest {
 
         for(PDDocument d : result) {
             i++;
-            d.save("target/invoice-" + i + ".pdf");
+            d.save("target/" + new File(file).getName() + "-" + i + ".pdf");
         }
     }
 
