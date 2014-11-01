@@ -1,7 +1,6 @@
 package com.m11n.hermes.rest.server.processor;
 
 import com.m11n.hermes.core.service.PdfService;
-import org.apache.camel.Header;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +9,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.File;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class DocumentSplitProcessor {
@@ -21,7 +19,7 @@ public class DocumentSplitProcessor {
     @Inject
     private PdfService pdfService;
 
-    private String dir = "./extract"; // TODO: make this configurable
+    private String dir = "./result"; // TODO: make this configurable
 
     @PostConstruct
     public void init() {
@@ -36,31 +34,58 @@ public class DocumentSplitProcessor {
         }
     }
 
-    public void process(@Header("CamelFileName") String fileName, @Header("CamelFilePath") String filePath, InputStream is) {
+    //public void process(@Header("CamelFileName") String fileName, @Header("CamelFilePath") String filePath, InputStream is) {
+    public synchronized void process(File f) {
+        String fileName = f.getName();
+        String filePath = f.getAbsolutePath();
+
         try {
-            logger.debug("##################### PATH: {}", filePath);
+            logger.debug("##################### PATH: {}", f.getAbsolutePath());
 
-            List<PDDocument> documents = pdfService.split(PDDocument.load(filePath), 1);
+            //List<PDDocument> documents = pdfService.split(PDDocument.load(filePath), 1);
+            List<PDDocument> documents = pdfService.split(new FileInputStream(f), 1);
 
-            String prefix = "unknown-";
+            String prefix = "unknown";
 
             if(fileName.toLowerCase().contains("invoice")) {
-                prefix = "invoice-";
+                prefix = "invoice";
             } else if(fileName.toLowerCase().contains("label")) {
-                prefix = "label-";
+                prefix = "label";
             }
 
             for(PDDocument document : documents) {
-                String fileNameTmp = dir + "/" + prefix + UUID.randomUUID().toString() + ".pdf";
-                logger.debug("##################### SAVING: {}", fileNameTmp);
-                //document.close();
-                document.save(fileNameTmp);
+                String orderId = null;
+
+                if(prefix.equals("invoice")) {
+                    orderId = pdfService.value(document, 1, "Bestellnummer");
+                } else if(prefix.equals("label")) {
+                    orderId = pdfService.value(document, 1, "Referenznr.");
+                }
+
+                if(orderId!=null) {
+                    String tmpDir = dir + "/" + orderId;
+                    File t = new File(tmpDir);
+                    if(!t.exists()) {
+                        t.mkdirs();
+                    }
+                    String fileNameTmp = tmpDir + "/" + prefix + ".pdf";
+                    logger.debug("##################### SAVING: {} ({})", fileNameTmp, filePath);
+                    document.save(fileNameTmp);
+                }
             }
 
             // TODO: save transaction in database
         } catch(Throwable t) {
-            logger.error(t.getMessage());
+            logger.error("xxxxxxxxxx: {} ({})", t.getMessage(), filePath);
             logger.error(t.toString(), t);
         }
+    }
+
+    private void lock(String file) throws Exception {
+        new File(file).createNewFile();
+    }
+
+    private void unlock(String file) throws Exception {
+        new File(file).delete();
     }
 }

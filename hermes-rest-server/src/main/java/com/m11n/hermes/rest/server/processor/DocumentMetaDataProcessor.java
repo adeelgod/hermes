@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import java.io.InputStream;
 
 @Component
+@Deprecated
 public class DocumentMetaDataProcessor {
     private static final Logger logger = LoggerFactory.getLogger(DocumentMetaDataProcessor.class);
 

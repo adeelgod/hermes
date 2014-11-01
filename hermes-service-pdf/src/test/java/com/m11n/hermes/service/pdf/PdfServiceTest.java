@@ -1,9 +1,6 @@
 package com.m11n.hermes.service.pdf;
 
 import com.m11n.hermes.core.service.PdfService;
-import org.apache.camel.EndpointInject;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -15,8 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
 import java.io.FileInputStream;
 
 @FixMethodOrder
@@ -29,27 +24,25 @@ public class PdfServiceTest
     @Inject
     private PdfService pdfService;
 
-    @Inject
-    private ProducerTemplate producer;
-
-    @EndpointInject(uri = "mock:result")
-    protected MockEndpoint resultEndpoint;
-
     @Before
     public void setUp() {
     }
 
     @Test
-    public void testSend() throws Exception {
-        producer.sendBody("vm:extract", new FileInputStream("src/test/resources/invoice.pdf"));
-    }
-
-    @Test
-    public void testExtract() throws Exception {
+    public void testExtractInvoice() throws Exception {
         String result = pdfService.value(new FileInputStream("src/test/resources/invoice.pdf"), 1, "Bestellnummer:");
 
         logger.info("==================================================== ORDER ID: {}", result);
 
         Assert.assertEquals("300009816", result);
+    }
+
+    @Test
+    public void testExtractLabels() throws Exception {
+        String result = pdfService.value(new FileInputStream("src/test/resources/labels.pdf"), 1, "Referenznr.");
+
+        logger.info("==================================================== ORDER ID: {}", result);
+
+        Assert.assertEquals("300009624", result);
     }
 }

@@ -61,19 +61,13 @@ public class DefaultPdfService implements PdfService {
     public List<PDDocument> split(String file, int page) throws Exception {
         FileDataSource fd = new FileDataSource(file);
 
-        PDFParser parser = new PDFParser(fd.getInputStream());
-        parser.parse();
-
-        PDDocument doc = parser.getPDDocument();
-
-        return split(doc, page);
+        return split(fd.getInputStream(), page);
     }
 
     public List<PDDocument> split(InputStream is, int page) throws Exception {
         PDFParser parser = new PDFParser(is);
         parser.parse();
         PDDocument doc = parser.getPDDocument();
-        doc.close();
 
         return split(doc, page);
     }

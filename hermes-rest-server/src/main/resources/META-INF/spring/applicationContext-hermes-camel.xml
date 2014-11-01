@@ -34,7 +34,6 @@
         </route>
 
         <!--
-        -->
         <route>
             <from uri="file://./extract/?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
             <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... ${file:name}" />
@@ -42,6 +41,7 @@
             <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... type: ${headers.HERMES_DOCUMENT_TYPE} id: ${headers.HERMES_ORDER_ID}" />
             <to uri="file://./result/" />
         </route>
+        -->
     </camelContext>
 
 </beans>
