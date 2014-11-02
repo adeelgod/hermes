@@ -19,11 +19,11 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,7 +55,7 @@ implements ReportService
     @Value("${hermes.reporting.virtualizer.type}")
     private String virtualizerType;
     
-    @Autowired
+    @Inject
     private DataSource dataSource;
     
     @PostConstruct
