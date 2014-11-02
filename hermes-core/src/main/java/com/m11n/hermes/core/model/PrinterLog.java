@@ -2,8 +2,6 @@ package com.m11n.hermes.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.joda.beans.*;
-import org.joda.beans.impl.direct.*;
 import org.springframework.data.annotation.Id;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,8 +22,8 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 
 @BeanDefinition
 @JsonIgnoreProperties({"meta", "metaBean"})
-@XmlRootElement(name = "log")
-public class Log extends DirectBean
+@XmlRootElement(name = "printer_log")
+public class PrinterLog extends DirectBean
 {
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -66,6 +64,10 @@ public class Log extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    private Boolean selected;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private String file;
 
     @PropertyDefinition
@@ -78,17 +80,17 @@ public class Log extends DirectBean
      * The meta-bean for {@code Log}.
      * @return the meta-bean, not null
      */
-    public static Log.Meta meta() {
-        return Log.Meta.INSTANCE;
+    public static PrinterLog.Meta meta() {
+        return PrinterLog.Meta.INSTANCE;
     }
 
     static {
-        JodaBeanUtils.registerMetaBean(Log.Meta.INSTANCE);
+        JodaBeanUtils.registerMetaBean(PrinterLog.Meta.INSTANCE);
     }
 
     @Override
-    public Log.Meta metaBean() {
-        return Log.Meta.INSTANCE;
+    public PrinterLog.Meta metaBean() {
+        return PrinterLog.Meta.INSTANCE;
     }
 
     //-----------------------------------------------------------------------
@@ -368,7 +370,7 @@ public class Log extends DirectBean
 
     //-----------------------------------------------------------------------
     @Override
-    public Log clone() {
+    public PrinterLog clone() {
         return JodaBeanUtils.cloneAlways(this);
     }
 
@@ -378,7 +380,7 @@ public class Log extends DirectBean
             return true;
         }
         if (obj != null && obj.getClass() == this.getClass()) {
-            Log other = (Log) obj;
+            PrinterLog other = (PrinterLog) obj;
             return JodaBeanUtils.equal(getUid(), other.getUid()) &&
                     JodaBeanUtils.equal(getCharge(), other.getCharge()) &&
                     JodaBeanUtils.equal(getOrderId(), other.getOrderId()) &&
@@ -452,57 +454,57 @@ public class Log extends DirectBean
          * The meta-property for the {@code uid} property.
          */
         private final MetaProperty<String> uid = DirectMetaProperty.ofReadWrite(
-                this, "uid", Log.class, String.class);
+                this, "uid", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code charge} property.
          */
         private final MetaProperty<String> charge = DirectMetaProperty.ofReadWrite(
-                this, "charge", Log.class, String.class);
+                this, "charge", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code orderId} property.
          */
         private final MetaProperty<String> orderId = DirectMetaProperty.ofReadWrite(
-                this, "orderId", Log.class, String.class);
+                this, "orderId", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code unitId} property.
          */
         private final MetaProperty<String> unitId = DirectMetaProperty.ofReadWrite(
-                this, "unitId", Log.class, String.class);
+                this, "unitId", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code invoiceId} property.
          */
         private final MetaProperty<String> invoiceId = DirectMetaProperty.ofReadWrite(
-                this, "invoiceId", Log.class, String.class);
+                this, "invoiceId", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code shippingId} property.
          */
         private final MetaProperty<String> shippingId = DirectMetaProperty.ofReadWrite(
-                this, "shippingId", Log.class, String.class);
+                this, "shippingId", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code processedAt} property.
          */
         private final MetaProperty<Date> processedAt = DirectMetaProperty.ofReadWrite(
-                this, "processedAt", Log.class, Date.class);
+                this, "processedAt", PrinterLog.class, Date.class);
         /**
          * The meta-property for the {@code productType} property.
          */
         private final MetaProperty<String> productType = DirectMetaProperty.ofReadWrite(
-                this, "productType", Log.class, String.class);
+                this, "productType", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code status} property.
          */
         private final MetaProperty<String> status = DirectMetaProperty.ofReadWrite(
-                this, "status", Log.class, String.class);
+                this, "status", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code file} property.
          */
         private final MetaProperty<String> file = DirectMetaProperty.ofReadWrite(
-                this, "file", Log.class, String.class);
+                this, "file", PrinterLog.class, String.class);
         /**
          * The meta-property for the {@code page} property.
          */
         private final MetaProperty<Integer> page = DirectMetaProperty.ofReadWrite(
-                this, "page", Log.class, Integer.TYPE);
+                this, "page", PrinterLog.class, Integer.TYPE);
         /**
          * The meta-properties.
          */
@@ -556,13 +558,13 @@ public class Log extends DirectBean
         }
 
         @Override
-        public BeanBuilder<? extends Log> builder() {
-            return new DirectBeanBuilder<Log>(new Log());
+        public BeanBuilder<? extends PrinterLog> builder() {
+            return new DirectBeanBuilder<PrinterLog>(new PrinterLog());
         }
 
         @Override
-        public Class<? extends Log> beanType() {
-            return Log.class;
+        public Class<? extends PrinterLog> beanType() {
+            return PrinterLog.class;
         }
 
         @Override
@@ -664,27 +666,27 @@ public class Log extends DirectBean
         protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
             switch (propertyName.hashCode()) {
                 case 115792:  // uid
-                    return ((Log) bean).getUid();
+                    return ((PrinterLog) bean).getUid();
                 case -1361632588:  // charge
-                    return ((Log) bean).getCharge();
+                    return ((PrinterLog) bean).getCharge();
                 case -1207110391:  // orderId
-                    return ((Log) bean).getOrderId();
+                    return ((PrinterLog) bean).getOrderId();
                 case -840527425:  // unitId
-                    return ((Log) bean).getUnitId();
+                    return ((PrinterLog) bean).getUnitId();
                 case -1739442904:  // invoiceId
-                    return ((Log) bean).getInvoiceId();
+                    return ((PrinterLog) bean).getInvoiceId();
                 case 2113549161:  // shippingId
-                    return ((Log) bean).getShippingId();
+                    return ((PrinterLog) bean).getShippingId();
                 case 203012129:  // processedAt
-                    return ((Log) bean).getProcessedAt();
+                    return ((PrinterLog) bean).getProcessedAt();
                 case -1491615543:  // productType
-                    return ((Log) bean).getProductType();
+                    return ((PrinterLog) bean).getProductType();
                 case -892481550:  // status
-                    return ((Log) bean).getStatus();
+                    return ((PrinterLog) bean).getStatus();
                 case 3143036:  // file
-                    return ((Log) bean).getFile();
+                    return ((PrinterLog) bean).getFile();
                 case 3433103:  // page
-                    return ((Log) bean).getPage();
+                    return ((PrinterLog) bean).getPage();
             }
             return super.propertyGet(bean, propertyName, quiet);
         }
@@ -693,37 +695,37 @@ public class Log extends DirectBean
         protected void propertySet(Bean bean, String propertyName, Object newValue, boolean quiet) {
             switch (propertyName.hashCode()) {
                 case 115792:  // uid
-                    ((Log) bean).setUid((String) newValue);
+                    ((PrinterLog) bean).setUid((String) newValue);
                     return;
                 case -1361632588:  // charge
-                    ((Log) bean).setCharge((String) newValue);
+                    ((PrinterLog) bean).setCharge((String) newValue);
                     return;
                 case -1207110391:  // orderId
-                    ((Log) bean).setOrderId((String) newValue);
+                    ((PrinterLog) bean).setOrderId((String) newValue);
                     return;
                 case -840527425:  // unitId
-                    ((Log) bean).setUnitId((String) newValue);
+                    ((PrinterLog) bean).setUnitId((String) newValue);
                     return;
                 case -1739442904:  // invoiceId
-                    ((Log) bean).setInvoiceId((String) newValue);
+                    ((PrinterLog) bean).setInvoiceId((String) newValue);
                     return;
                 case 2113549161:  // shippingId
-                    ((Log) bean).setShippingId((String) newValue);
+                    ((PrinterLog) bean).setShippingId((String) newValue);
                     return;
                 case 203012129:  // processedAt
-                    ((Log) bean).setProcessedAt((Date) newValue);
+                    ((PrinterLog) bean).setProcessedAt((Date) newValue);
                     return;
                 case -1491615543:  // productType
-                    ((Log) bean).setProductType((String) newValue);
+                    ((PrinterLog) bean).setProductType((String) newValue);
                     return;
                 case -892481550:  // status
-                    ((Log) bean).setStatus((String) newValue);
+                    ((PrinterLog) bean).setStatus((String) newValue);
                     return;
                 case 3143036:  // file
-                    ((Log) bean).setFile((String) newValue);
+                    ((PrinterLog) bean).setFile((String) newValue);
                     return;
                 case 3433103:  // page
-                    ((Log) bean).setPage((Integer) newValue);
+                    ((PrinterLog) bean).setPage((Integer) newValue);
                     return;
             }
             super.propertySet(bean, propertyName, newValue, quiet);

@@ -68,6 +68,7 @@
             </activation>
             <modules>
                 <module>hermes-core</module>
+                <module>hermes-persistence</module>
                 <module>hermes-service</module>
                 <module>hermes-web</module>
                 <module>hermes-rest</module>
@@ -81,6 +82,7 @@
             </activation>
             <modules>
                 <module>hermes-core</module>
+                <module>hermes-persistence</module>
                 <module>hermes-service</module>
                 <module>hermes-rest</module>
             </modules>
@@ -97,12 +99,23 @@
         </profile>
 
         <profile>
+            <id>hermes.persistence</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-persistence</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>hermes.service</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
                 <module>hermes-core</module>
+                <module>hermes-persistence</module>
                 <module>hermes-service</module>
             </modules>
         </profile>
@@ -113,7 +126,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>hermes-core</module>
                 <module>hermes-rest</module>
             </modules>
         </profile>

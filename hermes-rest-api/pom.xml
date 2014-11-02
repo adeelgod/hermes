@@ -24,6 +24,11 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>hermes-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>hermes-service-pdf</artifactId>
             <version>${project.version}</version>
         </dependency>
