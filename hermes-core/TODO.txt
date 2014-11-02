@@ -5,5 +5,9 @@
 - x rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
 - create database entries
 - print queues (start, stop, resume)
+- report:
+  - upload
+  - print
+- SQL "functions" with forms
 - everything is overwrite
 
