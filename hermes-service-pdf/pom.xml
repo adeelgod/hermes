@@ -16,33 +16,10 @@
     <name>Hermes :: Service :: PDF</name>
 
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-        </dependency>
-        -->
-
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
         </dependency>
-
-        <!-- Camel -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-spring</artifactId>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-printer</artifactId>
-        </dependency>
-        -->
 
         <!-- Test -->
         <dependency>

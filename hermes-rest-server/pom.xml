@@ -37,6 +37,12 @@
             <artifactId>jopt-simple</artifactId>
         </dependency>
 
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
+
         <!-- Jetty -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -81,8 +87,26 @@
         <!-- Camel -->
         <dependency>
             <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
             <artifactId>camel-metrics</artifactId>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-printer</artifactId>
+        </dependency>
+        -->
 
         <!-- UI -->
         <dependency>
