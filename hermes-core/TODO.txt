@@ -1,8 +1,9 @@
 - x route invoices and labels to separate queues
 - x split separate pages and move to temp folder
 - x extract order id
-- create folder with order id as name
-- rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
+- x create folder with order id as name
+- x rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
 - create database entries
+- print queues (start, stop, resume)
 - everything is overwrite
 
