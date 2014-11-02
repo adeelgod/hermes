@@ -45,7 +45,7 @@ public class PrinterLog extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "order_id")
+    @Column(name = "order_id", unique = true)
     private String orderId;
 
     @PropertyDefinition
@@ -77,6 +77,16 @@ public class PrinterLog extends DirectBean
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "status")
     private String status;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "invoice")
+    private Boolean invoice;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "label")
+    private Boolean label;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -329,6 +339,56 @@ public class PrinterLog extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the invoice.
+     * @return the value of the property
+     */
+    public Boolean getInvoice() {
+        return invoice;
+    }
+
+    /**
+     * Sets the invoice.
+     * @param invoice  the new value of the property
+     */
+    public void setInvoice(Boolean invoice) {
+        this.invoice = invoice;
+    }
+
+    /**
+     * Gets the the {@code invoice} property.
+     * @return the property, not null
+     */
+    public final Property<Boolean> invoice() {
+        return metaBean().invoice().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the label.
+     * @return the value of the property
+     */
+    public Boolean getLabel() {
+        return label;
+    }
+
+    /**
+     * Sets the label.
+     * @param label  the new value of the property
+     */
+    public void setLabel(Boolean label) {
+        this.label = label;
+    }
+
+    /**
+     * Gets the the {@code label} property.
+     * @return the property, not null
+     */
+    public final Property<Boolean> label() {
+        return metaBean().label().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the selected.
      * @return the value of the property
      */
@@ -374,6 +434,8 @@ public class PrinterLog extends DirectBean
                     JodaBeanUtils.equal(getProcessedAt(), other.getProcessedAt()) &&
                     JodaBeanUtils.equal(getProductType(), other.getProductType()) &&
                     JodaBeanUtils.equal(getStatus(), other.getStatus()) &&
+                    JodaBeanUtils.equal(getInvoice(), other.getInvoice()) &&
+                    JodaBeanUtils.equal(getLabel(), other.getLabel()) &&
                     JodaBeanUtils.equal(getSelected(), other.getSelected());
         }
         return false;
@@ -391,13 +453,15 @@ public class PrinterLog extends DirectBean
         hash += hash * 31 + JodaBeanUtils.hashCode(getProcessedAt());
         hash += hash * 31 + JodaBeanUtils.hashCode(getProductType());
         hash += hash * 31 + JodaBeanUtils.hashCode(getStatus());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getInvoice());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getLabel());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSelected());
         return hash;
     }
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(352);
+        StringBuilder buf = new StringBuilder(416);
         buf.append("PrinterLog{");
         int len = buf.length();
         toString(buf);
@@ -418,6 +482,8 @@ public class PrinterLog extends DirectBean
         buf.append("processedAt").append('=').append(JodaBeanUtils.toString(getProcessedAt())).append(',').append(' ');
         buf.append("productType").append('=').append(JodaBeanUtils.toString(getProductType())).append(',').append(' ');
         buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
+        buf.append("invoice").append('=').append(JodaBeanUtils.toString(getInvoice())).append(',').append(' ');
+        buf.append("label").append('=').append(JodaBeanUtils.toString(getLabel())).append(',').append(' ');
         buf.append("selected").append('=').append(JodaBeanUtils.toString(getSelected())).append(',').append(' ');
     }
 
@@ -477,6 +543,16 @@ public class PrinterLog extends DirectBean
         private final MetaProperty<String> status = DirectMetaProperty.ofReadWrite(
                 this, "status", PrinterLog.class, String.class);
         /**
+         * The meta-property for the {@code invoice} property.
+         */
+        private final MetaProperty<Boolean> invoice = DirectMetaProperty.ofReadWrite(
+                this, "invoice", PrinterLog.class, Boolean.class);
+        /**
+         * The meta-property for the {@code label} property.
+         */
+        private final MetaProperty<Boolean> label = DirectMetaProperty.ofReadWrite(
+                this, "label", PrinterLog.class, Boolean.class);
+        /**
          * The meta-property for the {@code selected} property.
          */
         private final MetaProperty<Boolean> selected = DirectMetaProperty.ofReadWrite(
@@ -495,6 +571,8 @@ public class PrinterLog extends DirectBean
                 "processedAt",
                 "productType",
                 "status",
+                "invoice",
+                "label",
                 "selected");
 
         /**
@@ -524,6 +602,10 @@ public class PrinterLog extends DirectBean
                     return productType;
                 case -892481550:  // status
                     return status;
+                case 1960198957:  // invoice
+                    return invoice;
+                case 102727412:  // label
+                    return label;
                 case 1191572123:  // selected
                     return selected;
             }
@@ -619,6 +701,22 @@ public class PrinterLog extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code invoice} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Boolean> invoice() {
+            return invoice;
+        }
+
+        /**
+         * The meta-property for the {@code label} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Boolean> label() {
+            return label;
+        }
+
+        /**
          * The meta-property for the {@code selected} property.
          * @return the meta-property, not null
          */
@@ -648,6 +746,10 @@ public class PrinterLog extends DirectBean
                     return ((PrinterLog) bean).getProductType();
                 case -892481550:  // status
                     return ((PrinterLog) bean).getStatus();
+                case 1960198957:  // invoice
+                    return ((PrinterLog) bean).getInvoice();
+                case 102727412:  // label
+                    return ((PrinterLog) bean).getLabel();
                 case 1191572123:  // selected
                     return ((PrinterLog) bean).getSelected();
             }
@@ -683,6 +785,12 @@ public class PrinterLog extends DirectBean
                     return;
                 case -892481550:  // status
                     ((PrinterLog) bean).setStatus((String) newValue);
+                    return;
+                case 1960198957:  // invoice
+                    ((PrinterLog) bean).setInvoice((Boolean) newValue);
+                    return;
+                case 102727412:  // label
+                    ((PrinterLog) bean).setLabel((Boolean) newValue);
                     return;
                 case 1191572123:  // selected
                     ((PrinterLog) bean).setSelected((Boolean) newValue);

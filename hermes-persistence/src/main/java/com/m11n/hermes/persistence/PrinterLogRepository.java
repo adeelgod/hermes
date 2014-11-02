@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PrinterLogRepository extends CrudRepository<PrinterLog, String> {
+    PrinterLog findByOrderId(String orderId);
 }

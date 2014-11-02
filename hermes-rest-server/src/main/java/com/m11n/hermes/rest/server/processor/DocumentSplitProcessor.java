@@ -1,6 +1,8 @@
 package com.m11n.hermes.rest.server.processor;
 
+import com.m11n.hermes.core.model.PrinterLog;
 import com.m11n.hermes.core.service.PdfService;
+import com.m11n.hermes.persistence.PrinterLogRepository;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,9 @@ public class DocumentSplitProcessor {
 
     @Inject
     private PdfService pdfService;
+
+    @Inject
+    private PrinterLogRepository printerLogRepository;
 
     @Value("${hermes.result.dir}}")
     private String dir;
@@ -63,24 +68,31 @@ public class DocumentSplitProcessor {
                     prefix = "label";
                 }
 
-                String orderId = null;
+                PrinterLog printerLog = null;
 
                 if(prefix.equals("invoice")) {
-                    orderId = pdfService.value(document, 1, invoiceField);
+                    printerLog = getPrinterLog(pdfService.value(document, 1, invoiceField));
+                    printerLog.setInvoice(Boolean.TRUE);
                 } else if(prefix.equals("label")) {
-                    orderId = pdfService.value(document, 1, labelField);
+                    printerLog = getPrinterLog(pdfService.value(document, 1, labelField));
+                    printerLog.setLabel(Boolean.TRUE);
                 }
 
-                if(orderId!=null) {
-                    String tmpDir = dir + "/" + orderId;
+                if(printerLog!=null && printerLog.getOrderId()!=null) {
+                    String tmpDir = dir + "/" + printerLog.getOrderId();
                     File t = new File(tmpDir);
                     if(!t.exists()) {
                         t.mkdirs();
                     }
                     String fileNameTmp = tmpDir + "/" + prefix + ".pdf";
-                    logger.debug("##################### SAVING: {} ({})", fileNameTmp, filePath);
+                    //logger.debug("##################### SAVING: {} ({})", fileNameTmp, filePath);
                     document.save(fileNameTmp);
+
+                    printerLogRepository.save(printerLog);
+                    logger.debug("##################### LOG ENTRIES: {}", printerLogRepository.count());
                 }
+
+                // TODO: decide if we should store the not detected files too
             }
 
             // TODO: save transaction in database
@@ -88,5 +100,16 @@ public class DocumentSplitProcessor {
             logger.error("XXXXX: {} ({})", t.getMessage(), filePath);
             logger.error(t.toString(), t);
         }
+    }
+
+    private PrinterLog getPrinterLog(String orderId) {
+        PrinterLog printerLog = printerLogRepository.findByOrderId(orderId);
+
+        if(printerLog==null) {
+            printerLog = new PrinterLog();
+            printerLog.setOrderId(orderId);
+        }
+
+        return printerLog;
     }
 }
