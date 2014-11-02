@@ -18,6 +18,7 @@
     <modules>
         <module>../hermes-service-pdf</module>
         <module>../hermes-service-print</module>
+        <module>../hermes-service-report</module>
     </modules>
 
     <dependencies>
