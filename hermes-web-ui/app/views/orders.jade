@@ -17,3 +17,27 @@ block content
                         input.form-control(name='fromDate', ng-model='fromDate', placeholder='From', bs-datepicker='', type='text')
                     .form-group(ng-class="{'has-error': orderForm.untilDate.$invalid}")
                         input.form-control(name='untilDate', ng-model='untilDate', placeholder='Until', bs-datepicker='', type='text')
+                    .form-group
+                        button.btn.btn-primary(type='button', ng-click='search()')
+                            i.fa.fa-paper-plane
+    .row(ng-show='orders')
+        .col-md-12
+            table.table.table-condensed
+                thead
+                    tr
+                        td Order ID
+                        td Label
+                        td Invoice
+                tbody
+                    tr(ng-repeat='entry in orders.content')
+                        td {{entry.orderId}}
+                        td
+                            span.label(ng-class="{ 'label-success': entry.label, 'label-danger': !entry.label }")
+                                i.fa(ng-class="{ 'fa-check': entry.label, 'fa-close': !entry.label }")
+                        td
+                            span.label(ng-class="{ 'label-success': entry.invoice, 'label-danger': !entry.invoice }")
+                                i.fa(ng-class="{ 'fa-check': entry.invoice, 'fa-close': !entry.invoice }")
+            nav
+                ul.pagination
+                    li(ng-repeat='page in pages()')
+                        a {{page}}
