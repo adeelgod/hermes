@@ -1,16 +1,14 @@
 package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.service.ReportService;
-import com.m11n.hermes.persistence.PrinterLogRepository;
-import org.apache.commons.io.filefilter.FileFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-
 import java.io.File;
 import java.io.FilenameFilter;
 
