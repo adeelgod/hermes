@@ -1,0 +1,50 @@
+extends /layouts/_page
+block content
+    .row
+        .col-md-12
+            form(role='form', name='configurationForm', novalidate='')
+                .form-group
+                    h2
+                        | Configuration
+                        | &nbsp;
+                        i.fa.fa-cog
+                    hr
+                .form-group
+                    label(for='') Database Driver
+                    input.form-control(name='dbDriver', ng-model="configuration['hermes.db.driver']", placeholder='Database Driver', type='text')
+                .form-group
+                    label(for='') Database URL
+                    input.form-control(name='dbUrl', ng-model="configuration['hermes.db.url']", placeholder='Database URL', type='text')
+                .form-group
+                    label(for='') Database Username
+                    input.form-control(name='dbUsername', ng-model="configuration['hermes.db.username']", placeholder='Username', type='text')
+                .form-group
+                    label(for='') Database Password
+                    input.form-control(name='dbPassword', ng-model="configuration['hermes.db.password']", placeholder='Password', type='password')
+                .form-group
+                    label(for='') Inbox Directory
+                    input.form-control(name='inbox', ng-model="configuration['hermes.inbox.dir']", placeholder='Inbox Directory', type='text')
+                .form-group
+                    label(for='') Result Directory
+                    input.form-control(name='result', ng-model="configuration['hermes.result.dir']", placeholder='Result Directory', type='text')
+                .form-group
+                    label(for='') Examples Directory
+                    input.form-control(name='examples', ng-model="configuration['hermes.examples.dir']", placeholder='Examples Directory', type='text')
+                .form-group
+                    label(for='') Invoice Field
+                    input.form-control(name='invoiceField', ng-model="configuration['hermes.invoice.field']", placeholder='Invoice Field', type='text')
+                .form-group
+                    label(for='') Label Field
+                    input.form-control(name='labelField', ng-model="configuration['hermes.label.field']", placeholder='Label Field', type='text')
+                .form-group
+                    label(for='') Template Directory
+                    input.form-control(name='templateDir', ng-model="configuration['hermes.reporting.template.dir']", placeholder='Template Directory', type='text')
+                .form-group
+                    label(for='') Virtualizer Directory
+                    input.form-control(name='virtualizerDir', ng-model="configuration['hermes.reporting.virtualizer.dir']", placeholder='Virtualizer Directory', type='text')
+                .form-group
+                    label(for='') Virtualizer Type
+                    input.form-control(name='virtualizerType', ng-model="configuration['hermes.reporting.virtualizer.type']", placeholder='Virtualizer Type', type='text')
+                .form-group
+                    button.btn.btn-primary(type='button', ng-click='save()')
+                        i.fa.fa-check
