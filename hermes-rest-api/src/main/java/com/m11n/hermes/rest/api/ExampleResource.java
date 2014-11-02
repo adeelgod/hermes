@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -17,6 +18,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/examples")
 @Produces(APPLICATION_JSON)
+@Controller
 public class ExampleResource {
     private static final Logger logger = LoggerFactory.getLogger(ExampleResource.class);
 
@@ -37,15 +39,16 @@ public class ExampleResource {
         logger.info("######### EXAMPLE INBOX: {}", inboxDir);
 
         copyFile(examplesDir + "/invoice.pdf", inboxDir);
-        copyFile(examplesDir + "/examples/labels.pdf", inboxDir);
+        copyFile(examplesDir + "/labels.pdf", inboxDir);
 
         return Response.ok().build();
     }
 
     private synchronized void copyFile(String source, String target) throws Exception {
-        lock(target);
-        FileUtils.copyFileToDirectory(new File(source), new File(target));
-        unlock(target);
+        File sourceFile = new File(source);
+        lock(target + "/" + sourceFile.getName());
+        FileUtils.copyFileToDirectory(sourceFile, new File(target));
+        unlock(target + "/" + sourceFile.getName());
     }
 
     // NOTE: produces corrupted PDFs; not usuable for the moment
