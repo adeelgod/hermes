@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <jpa:repositories base-package="com.m11n.hermes.persistence"/>
+
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource">
+        <property name="username" value="" />
+        <property name="password" value="" />
+        <property name="driverClass" value="" />
+        <property name="jdbcUrl" value="" />
+    </bean>
+
+    <!-- Transaction -->
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- the transactional advice (i.e. what 'happens'; see the <aop:advisor/> bean below) -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- the transactional semantics... -->
+        <tx:attributes>
+            <!-- tx:method name="c*" read-only="true" propagation="SUPPORTS"/ -->
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="daoOperation" expression="execution(* com.m11n.hermes.persistence.*Repository.*(..))"/>
+        <aop:advisor id="serviceTx" advice-ref="txAdvice" pointcut-ref="daoOperation"/>
+    </aop:config>
+</beans>

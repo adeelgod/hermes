@@ -3,7 +3,7 @@
 - x extract order id
 - x create folder with order id as name
 - x rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
-- create database entries
+- x create database entries
 - print queues (start, stop, resume)
 - report:
   - upload
