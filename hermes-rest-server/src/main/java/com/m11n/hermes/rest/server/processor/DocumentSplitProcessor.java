@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -88,6 +89,7 @@ public class DocumentSplitProcessor {
                     //logger.debug("##################### SAVING: {} ({})", fileNameTmp, filePath);
                     document.save(fileNameTmp);
 
+                    printerLog.setProcessedAt(new Date());
                     printerLogRepository.save(printerLog);
                     logger.debug("##################### LOG ENTRIES: {}", printerLogRepository.count());
                 }
