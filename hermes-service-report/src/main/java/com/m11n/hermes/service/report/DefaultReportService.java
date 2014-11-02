@@ -46,9 +46,6 @@ implements ReportService
     @Value("${hermes.reporting.template.dir}")
     private String templateDir;
     
-    @Value("${hermes.reporting.output.dir}")
-    private String outputDir;
-    
     @Value("${hermes.reporting.virtualizer.dir}")
     private String virtualizerDir;
     
@@ -66,7 +63,7 @@ implements ReportService
 
     @Override
     @SuppressWarnings("unchecked")
-    public void generate(String template, Map<String, Object> parameters, String format, String outputName)
+    public void generate(String template, Map<String, Object> parameters, String format, String outputFile)
     {
         if(template!=null)
         {
@@ -116,7 +113,7 @@ implements ReportService
                     jasperPrint = JasperFillManager.fillReport(DefaultReportService.class.getClassLoader().getResourceAsStream(template), parameters, connection);
                 }
                 
-                File f = new File(getDir(outputDir) + outputName);
+                File f = new File(outputFile);
                 
                 if(!f.getParentFile().exists())
                 {
@@ -185,7 +182,6 @@ implements ReportService
         try
         {
             new File(templateDir).mkdirs();
-            new File(outputDir).mkdirs();
             new File(virtualizerDir).mkdirs();
         }
         catch (Exception e)
