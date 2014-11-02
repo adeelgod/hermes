@@ -4,6 +4,7 @@ import com.m11n.hermes.core.service.PdfService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +19,14 @@ public class DocumentSplitProcessor {
     @Inject
     private PdfService pdfService;
 
-    private String dir = "./result"; // TODO: make this configurable
+    @Value("${hermes.result.dir}}")
+    private String dir;
+
+    @Value("${hermes.invoice.field}}")
+    private String invoiceField;
+
+    @Value("${hermes.label.field}}")
+    private String labelField;
 
     @PostConstruct
     public void init() {
@@ -58,9 +66,9 @@ public class DocumentSplitProcessor {
                 String orderId = null;
 
                 if(prefix.equals("invoice")) {
-                    orderId = pdfService.value(document, 1, "Bestellnummer");
+                    orderId = pdfService.value(document, 1, invoiceField);
                 } else if(prefix.equals("label")) {
-                    orderId = pdfService.value(document, 1, "Referenznr.");
+                    orderId = pdfService.value(document, 1, labelField);
                 }
 
                 if(orderId!=null) {
@@ -77,7 +85,7 @@ public class DocumentSplitProcessor {
 
             // TODO: save transaction in database
         } catch(Throwable t) {
-            logger.error("xxxxxxxxxx: {} ({})", t.getMessage(), filePath);
+            logger.error("XXXXX: {} ({})", t.getMessage(), filePath);
             logger.error(t.toString(), t);
         }
     }

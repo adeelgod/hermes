@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,15 +20,21 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ExampleResource {
     private static final Logger logger = LoggerFactory.getLogger(ExampleResource.class);
 
+    @Value("${hermes.examples.dir}")
+    private String examplesDir;
+
+    @Value("${hermes.inbox.dir}")
+    private String inboxDir;
+
     @GET
     @Path("/queue")
     @Produces(APPLICATION_JSON)
     public Response queue() throws Exception {
-        //copyStream("labels.pdf", "./inbox/labels.pdf");
-        //copyStream("invoice.pdf", "./inbox/invoice.pdf");
+        //copyStream("labels.pdf", inboxDir + "/labels.pdf");
+        //copyStream("invoice.pdf", inboxDir + "/invoice.pdf");
 
-        copyFile("./examples/invoice.pdf", "./inbox");
-        copyFile("./examples/labels.pdf", "./inbox");
+        copyFile(examplesDir + "/invoice.pdf", inboxDir);
+        copyFile(examplesDir + "/examples/labels.pdf", inboxDir);
 
         return Response.ok().build();
     }
@@ -38,6 +45,7 @@ public class ExampleResource {
         unlock(target);
     }
 
+    // NOTE: produces corrupted PDFs; not usuable for the moment
     private synchronized void copyStream(String source, String target) throws Exception {
         lock(target);
         IOUtils.copy(ExampleResource.class.getClassLoader().getResourceAsStream(source), new FileOutputStream(target));
