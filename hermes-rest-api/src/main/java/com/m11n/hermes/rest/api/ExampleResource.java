@@ -33,6 +33,9 @@ public class ExampleResource {
         //copyStream("labels.pdf", inboxDir + "/labels.pdf");
         //copyStream("invoice.pdf", inboxDir + "/invoice.pdf");
 
+        logger.info("######### EXAMPLE      : {}", examplesDir);
+        logger.info("######### EXAMPLE INBOX: {}", inboxDir);
+
         copyFile(examplesDir + "/invoice.pdf", inboxDir);
         copyFile(examplesDir + "/examples/labels.pdf", inboxDir);
 

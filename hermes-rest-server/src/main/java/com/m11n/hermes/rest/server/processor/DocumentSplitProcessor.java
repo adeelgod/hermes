@@ -25,13 +25,13 @@ public class DocumentSplitProcessor {
     @Inject
     private PrinterLogRepository printerLogRepository;
 
-    @Value("${hermes.result.dir}}")
+    @Value("${hermes.result.dir}")
     private String dir;
 
-    @Value("${hermes.invoice.field}}")
+    @Value("${hermes.invoice.field}")
     private String invoiceField;
 
-    @Value("${hermes.label.field}}")
+    @Value("${hermes.label.field}")
     private String labelField;
 
     @PostConstruct
