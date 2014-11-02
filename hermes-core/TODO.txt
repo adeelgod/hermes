@@ -4,8 +4,9 @@
 - x create folder with order id as name
 - x rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
 - x create database entries
-- log entries REST (HATEOAS)
+- x log entries REST (HATEOAS)
 - print queues (start, stop, resume)
+- configuration UI
 - x report:
   - upload
   - x print
