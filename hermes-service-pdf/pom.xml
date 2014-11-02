@@ -20,14 +20,6 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
         </dependency>
-
-        <!-- Test -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-test-spring</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
 </project>
