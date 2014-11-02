@@ -81,22 +81,6 @@
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
 
-        <!-- ReactiveX -->
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava-computation-expressions</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava-joins</artifactId>
-        </dependency>
-
         <!-- Commons -->
         <dependency>
             <groupId>com.google.guava</groupId>
