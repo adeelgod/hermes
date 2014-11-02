@@ -15,6 +15,5 @@
     </context:component-scan>
 
     <import resource="applicationContext-hermes-persistence.xml" />
-    <import resource="applicationContext-hermes-camel-test.xml" />
 
 </beans>

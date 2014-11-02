@@ -12,10 +12,13 @@
     <jpa:repositories base-package="com.m11n.hermes.persistence"/>
 
     <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource">
-        <property name="username" value="" />
-        <property name="password" value="" />
-        <property name="driverClass" value="" />
-        <property name="jdbcUrl" value="" />
+        <property name="username" value="${hermes.db.username}" />
+        <property name="password" value="${hermes.db.password}" />
+        <!--
+        <property name="driverClass" value="com.mysql.fabric.jdbc.FabricMySQLDriver" />
+        -->
+        <property name="driverClass" value="${hermes.db.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.url}" />
     </bean>
 
     <!-- Transaction -->
@@ -24,6 +27,24 @@
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- Entity Manager -->
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.m11n.hermes" />
+        <property name="jpaPropertyMap">
+            <map>
+                <!--
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+                -->
+                <entry key="hibernate.dialect" value="${hibernate.dialect}" />
+                <entry key="hibernate.ejb.naming_strategy" value="${hibernate.ejb.naming_strategy}" />
+                <entry key="hibernate.format_sql" value="${hibernate.format_sql}" />
+                <entry key="hibernate.show_sql" value="${hibernate.show_sql}" />
+            </map>
+        </property>
     </bean>
 
     <!-- the transactional advice (i.e. what 'happens'; see the <aop:advisor/> bean below) -->
