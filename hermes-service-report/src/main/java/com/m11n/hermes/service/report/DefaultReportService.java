@@ -190,6 +190,11 @@ implements ReportService
         }
     }
 
+    @Override
+    public String getTemplateDir() {
+        return templateDir;
+    }
+
     private Exporter getExporter(String format)
     {
         Exporter exporter = null;
