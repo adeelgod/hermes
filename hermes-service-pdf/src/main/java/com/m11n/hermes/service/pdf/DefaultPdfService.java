@@ -77,8 +77,7 @@ public class DefaultPdfService implements PdfService {
         //splitter.setSplitAtPage(page);
         splitter.setStartPage(page);
         splitter.setEndPage(page);
-        List<PDDocument> result = splitter.split(doc);
 
-        return result;
+        return splitter.split(doc);
     }
 }
