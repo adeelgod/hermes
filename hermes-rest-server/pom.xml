@@ -93,6 +93,7 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jackson</artifactId>
@@ -101,7 +102,6 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-metrics</artifactId>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-printer</artifactId>

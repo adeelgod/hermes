@@ -82,16 +82,16 @@
             <artifactId>javassist</artifactId>
         </dependency>
 
-        <!-- Metrics -->
+        <!-- Metrics
         <dependency>
             <groupId>com.codahale.metrics</groupId>
             <artifactId>metrics-core</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.codahale.metrics</groupId>
             <artifactId>metrics-annotation</artifactId>
         </dependency>
+        -->
 
         <!-- Test -->
         <dependency>
