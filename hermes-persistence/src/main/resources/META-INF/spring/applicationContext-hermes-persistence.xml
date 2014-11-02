@@ -28,17 +28,19 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    
+    <bean id="vendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="generateDdl" value="true" />
+    </bean>
 
     <!-- Entity Manager -->
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter" ref="vendorAdapter" />
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="com.m11n.hermes" />
         <property name="jpaPropertyMap">
             <map>
-                <!--
-                <entry key="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-                -->
                 <entry key="hibernate.dialect" value="${hibernate.dialect}" />
                 <entry key="hibernate.ejb.naming_strategy" value="${hibernate.ejb.naming_strategy}" />
                 <entry key="hibernate.format_sql" value="${hibernate.format_sql}" />

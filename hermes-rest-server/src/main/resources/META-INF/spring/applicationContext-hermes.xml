@@ -16,6 +16,8 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
 
+    <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
+
     <import resource="applicationContext-hermes-persistence.xml" />
     <import resource="applicationContext-hermes-camel.xml" />
 

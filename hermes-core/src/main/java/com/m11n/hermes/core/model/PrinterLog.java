@@ -32,7 +32,8 @@ public class PrinterLog extends DirectBean
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Id
-    @GeneratedValue(generator = "hibernate-uuid")
+    @javax.persistence.Id
+    @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "uuid", unique = true)
     private String uid;
