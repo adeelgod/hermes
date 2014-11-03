@@ -73,9 +73,11 @@ public class DocumentSplitProcessor {
 
                 if(prefix.equals("invoice")) {
                     printerLog = getPrinterLog(pdfService.value(document, 1, invoiceField));
+                    printerLog.setInvoiceId(pdfService.value(document, 1, "Rechnungsnummer")); // TODO: make this configurable
                     printerLog.setInvoice(Boolean.TRUE);
                 } else if(prefix.equals("label")) {
                     printerLog = getPrinterLog(pdfService.value(document, 1, labelField));
+                    printerLog.setShippingId(pdfService.value(document, 1, "Sendungsnr.")); // TODO: make this configurable
                     printerLog.setLabel(Boolean.TRUE);
                 }
 
