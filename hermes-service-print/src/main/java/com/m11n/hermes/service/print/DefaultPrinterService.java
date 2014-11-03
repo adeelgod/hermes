@@ -73,18 +73,25 @@ public class DefaultPrinterService implements PrinterService {
         for(PrinterLog printerLog : printerLogRepository.findBySelected(true)) {
             i++;
 
+            JobStatus status = null;
+
             if((printerLog.getInvoicePrinted()==null || !printerLog.getInvoicePrinted()) && printerLog.getInvoice()) {
-                print(resultDir + "/" + printerLog.getOrderId() + "/invoice.pdf", printerInvoice);
+                status = print(resultDir + "/" + printerLog.getOrderId() + "/invoice.pdf", printerInvoice);
+                // TODO: check status
                 printerLog.setInvoicePrinted(true);
                 printerLog.setInvoicePrintedAt(new Date());
                 printerLog = printerLogRepository.save(printerLog);
             }
             if((printerLog.getLabelPrinted()==null || !printerLog.getLabelPrinted()) && printerLog.getLabel()) {
-                print(resultDir + "/" + printerLog.getOrderId() + "/label.pdf", printerLabel);
+                status = print(resultDir + "/" + printerLog.getOrderId() + "/label.pdf", printerLabel);
+                // TODO: check status
                 printerLog.setLabelPrinted(true);
                 printerLog.setLabelPrintedAt(new Date());
                 printerLog = printerLogRepository.save(printerLog);
             }
+            // TODO: check status
+            printerLog.setSelected(false);
+            printerLog = printerLogRepository.save(printerLog);
 
             if(i%chargeSize==0) {
                 // TODO: what's the best way to print the report?!?
@@ -101,7 +108,7 @@ public class DefaultPrinterService implements PrinterService {
         return printQueueStatus;
     }
 
-    public void print(String file, String printer) throws Exception {
+    public JobStatus print(String file, String printer) throws Exception {
         PrinterJob.getPrinterJob().defaultPage();
 
         DocPrintJob job = printer(printer).createPrintJob();
@@ -126,6 +133,8 @@ public class DefaultPrinterService implements PrinterService {
         logger.debug("###################################### JOB DONE: {} ({})", file, status);
 
         IOUtils.closeQuietly(fis);
+
+        return status;
     }
 
     public void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception {

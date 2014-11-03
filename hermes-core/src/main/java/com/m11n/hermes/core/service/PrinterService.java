@@ -18,7 +18,7 @@ public interface PrinterService {
 
     String getPrintQueueStatus();
 
-    void print(String file, String printer) throws Exception;
+    JobStatus print(String file, String printer) throws Exception;
 
     void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception;
 

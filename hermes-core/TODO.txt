@@ -9,6 +9,7 @@
   - x select
   - x start
   - configure
+  - check status
   - stop
   - resume
 - authentication
