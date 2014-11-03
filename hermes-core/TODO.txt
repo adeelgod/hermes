@@ -8,10 +8,10 @@
 - print queues
   - x select
   - x start
-  - configure
-  - check status
-  - stop
-  - resume
+  - x configure
+  - check printer status
+  - ? stop
+  - ? resume
 - authentication
 - x paging
 - x configuration UI

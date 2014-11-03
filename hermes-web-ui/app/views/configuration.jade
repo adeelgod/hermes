@@ -15,6 +15,8 @@ block content
                     a(href='', ng-click="tab='parse'", role='tab') Parse
                 li(role='presentation', ng-class="{'active': tab=='reporting'}")
                     a(href='', ng-click="tab='reporting'", role='tab') Reporting
+                li(role='presentation', ng-class="{'active': tab=='print'}")
+                    a(href='', ng-click="tab='print'", role='tab') Printers
             .tab-content
                 .tab-pane(role='tabpanel', id='database', ng-class="{'active': tab=='database'}")
                     form(role='form', name='databaseForm', novalidate='')
@@ -87,5 +89,16 @@ block content
                         .form-group
                             label(for='virtualizerType') Virtualizer Type
                             input.form-control(name='virtualizerType', ng-model="configuration['hermes.reporting.virtualizer.type']", placeholder='Virtualizer Type', type='text')
+                .tab-pane(role='tabpanel', id='print', ng-class="{'active': tab=='print'}")
+                    form(role='form', name='parseForm', novalidate='')
+                        .form-group
+                            label(for='invoicePrinter') Invoice Printer
+                            input.form-control(name='invoicePrinter', ng-model="configuration['hermes.printer.invoice']", placeholder='Invoice Printer', type='text')
+                        .form-group
+                            label(for='labelPrinter') Label Printer
+                            input.form-control(name='labelPrinter', ng-model="configuration['hermes.printer.label']", placeholder='Label Printer', type='text')
+                        .form-group
+                            label(for='reportPrinter') Report Printer
+                            input.form-control(name='reportPrinter', ng-model="configuration['hermes.printer.report']", placeholder='Report Printer', type='text')
             button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
                 i.fa.fa-check
