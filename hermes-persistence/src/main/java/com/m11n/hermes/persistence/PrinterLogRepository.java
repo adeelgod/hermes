@@ -14,5 +14,7 @@ public interface PrinterLogRepository extends PagingAndSortingRepository<Printer
 
     List<PrinterLog> findByProcessedAtBetween(Date from, Date until);
 
+    List<PrinterLog> findBySelected(Boolean selected);
+
     List<PrinterLog> findByProcessedAtBetween(Date from, Date until, Pageable pageable);
 }

@@ -12,6 +12,12 @@ public interface PrinterService {
 
     PrinterStatus status(String printerName);
 
+    void printSelected() throws Exception;
+
+    void setPrintQueueStatus(String printQueueStatus);
+
+    String getPrintQueueStatus();
+
     void print(String file, String printer) throws Exception;
 
     void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception;

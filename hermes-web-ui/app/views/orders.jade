@@ -25,6 +25,8 @@ block content
                                 i.fa.fa-check
                             button.btn.btn-danger(type='button', ng-click='unselect()')
                                 i.fa.fa-close
+                            button.btn.btn-default(type='button', ng-click='print()', ng-disabled='printing')
+                                i.fa.fa-print
         .col-md-6
             nav
                 ul.pagination

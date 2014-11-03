@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, PrinterLogSvc, ConfigurationSvc) {
+    $scope.printing = false;
+
     $scope.search = function() {
         PrinterLogSvc.list({page: 0, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
             $scope.orders = data;
@@ -19,6 +21,17 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
             //$scope.selected = data;
             $alert({content: 'Entries unselected: ' + data, placement: 'top', type: 'success', show: true, duration: 3});
             $scope.search();
+        });
+    };
+
+    $scope.print = function() {
+        $scope.printing = true;
+        PrinterLogSvc.print().success(function(data) {
+            $alert({content: 'Print scheduled', placement: 'top', type: 'success', show: true, duration: 3});
+            $scope.printing = false;
+        }).error(function(data) {
+            $alert({content: 'Print failed', placement: 'top', type: 'danger', show: true, duration: 3});
+            $scope.printing = false;
         });
     };
 

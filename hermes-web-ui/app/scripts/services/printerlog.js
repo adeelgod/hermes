@@ -17,6 +17,12 @@ angular.module('hermes.ui')
                     url: 'api/printers/logs/select',
                     params: params
                 });
+            },
+            print: function() {
+                return $http({
+                    method: 'GET',
+                    url: 'api/printers/logs/print'
+                });
             }
         };
     });

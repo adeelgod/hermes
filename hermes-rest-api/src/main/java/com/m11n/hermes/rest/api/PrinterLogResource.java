@@ -1,6 +1,7 @@
 package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.model.PrinterLog;
+import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.persistence.PrinterLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,9 @@ public class PrinterLogResource {
 
     @Inject
     private PrinterLogRepository printerLogRepository;
+
+    @Inject
+    private PrinterService printerService;
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -43,5 +47,14 @@ public class PrinterLogResource {
         }
 
         return Response.ok(result.size()).build();
+    }
+
+    @GET
+    @Path("/print")
+    @Produces(APPLICATION_JSON)
+    public Response print() throws Exception {
+        printerService.printSelected();
+
+        return Response.ok().build();
     }
 }

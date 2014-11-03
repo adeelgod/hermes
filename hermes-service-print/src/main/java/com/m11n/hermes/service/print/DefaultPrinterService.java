@@ -1,15 +1,14 @@
 package com.m11n.hermes.service.print;
 
-import com.m11n.hermes.core.model.Printer;
-import com.m11n.hermes.core.model.PrinterAttribute;
-import com.m11n.hermes.core.model.PrinterAttributeCategory;
-import com.m11n.hermes.core.model.PrinterStatus;
+import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.PrinterService;
+import com.m11n.hermes.persistence.PrinterLogRepository;
 import org.apache.pdfbox.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import javax.print.*;
 import javax.print.attribute.*;
 import javax.print.attribute.standard.*;
@@ -19,10 +18,7 @@ import javax.print.event.PrintJobListener;
 import java.awt.print.PrinterJob;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class DefaultPrinterService implements PrinterService {
@@ -31,6 +27,11 @@ public class DefaultPrinterService implements PrinterService {
 
     //private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class, Copies.class, PageRanges.class, JobSheets.class, Chromaticity.class);
     private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class);
+
+    private String printQueueStatus;
+
+    @Inject
+    private PrinterLogRepository printerLogRepository;
 
     public PrinterStatus status(String printerName) {
         PrintService printer = printer(printerName);
@@ -56,6 +57,48 @@ public class DefaultPrinterService implements PrinterService {
         }
 
         return null;
+    }
+
+    public void printSelected() throws Exception {
+        // TODO: implement this
+        logger.info("####################### PRINTING SELECTED...");
+
+        int chargeSize = 20; // TODO: retrieve from configuration
+        String resultDir = "./result"; // TODO: retrieve from configuration
+        String printerInvoice = "PDF"; // TODO: retrieve from configuration
+        String printerLabel = "PDF"; // TODO: retrieve from configuration
+
+        int i = 0;
+
+        for(PrinterLog printerLog : printerLogRepository.findBySelected(true)) {
+            i++;
+
+            if((printerLog.getInvoicePrinted()==null || !printerLog.getInvoicePrinted()) && printerLog.getInvoice()) {
+                print(resultDir + "/" + printerLog.getOrderId() + "/invoice.pdf", printerInvoice);
+                printerLog.setInvoicePrinted(true);
+                printerLog.setInvoicePrintedAt(new Date());
+                printerLog = printerLogRepository.save(printerLog);
+            }
+            if((printerLog.getLabelPrinted()==null || !printerLog.getLabelPrinted()) && printerLog.getLabel()) {
+                print(resultDir + "/" + printerLog.getOrderId() + "/label.pdf", printerLabel);
+                printerLog.setLabelPrinted(true);
+                printerLog.setLabelPrintedAt(new Date());
+                printerLog = printerLogRepository.save(printerLog);
+            }
+
+            if(i%chargeSize==0) {
+                // TODO: what's the best way to print the report?!?
+                //print(resultDir + "/" + printerLog.getOrderId() + "/label.pdf", printerLabel);
+            }
+        }
+    }
+
+    public void setPrintQueueStatus(String printQueueStatus) {
+        this.printQueueStatus = printQueueStatus;
+    }
+
+    public String getPrintQueueStatus() {
+        return printQueueStatus;
     }
 
     public void print(String file, String printer) throws Exception {

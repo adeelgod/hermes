@@ -7,7 +7,8 @@
 - x log entries REST (HATEOAS)
 - print queues
   - x select
-  - start
+  - x start
+  - configure
   - stop
   - resume
 - authentication
