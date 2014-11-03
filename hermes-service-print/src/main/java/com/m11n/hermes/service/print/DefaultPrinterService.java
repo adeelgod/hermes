@@ -195,7 +195,7 @@ public class DefaultPrinterService implements PrinterService {
 
                 boolean match = attributeCategories.contains(category);
 
-                logger.debug("++++++++++++++++++++++++++++++++++++++++++++ CATEGORY: {} ({})", category.getName(), match);
+                //logger.debug("++++++++++++++++++++++++++++++++++++++++++++ CATEGORY: {} ({})", category.getName(), match);
 
                 if (o != null && o.getClass().isArray() && match) {
                     PrinterAttributeCategory attributeCategory = new PrinterAttributeCategory(category.getName());
