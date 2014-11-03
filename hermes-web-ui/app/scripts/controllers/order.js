@@ -1,9 +1,24 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, PrinterLogSvc, ConfigurationSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, PrinterLogSvc, ConfigurationSvc) {
     $scope.search = function() {
-        PrinterLogSvc.list({page: 0}).success(function(data) {
+        PrinterLogSvc.list({page: 0, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
             $scope.orders = data;
+        });
+    };
+
+    $scope.select = function() {
+        PrinterLogSvc.select({from: $scope.fromDate, until: $scope.untilDate, selected: true}).success(function(data) {
+            $alert({content: 'Entries selected: ' + data, placement: 'top', type: 'success', show: true, duration: 3});
+            $scope.search();
+        });
+    };
+
+    $scope.unselect = function() {
+        PrinterLogSvc.select({from: $scope.fromDate, until: $scope.untilDate, selected: false}).success(function(data) {
+            //$scope.selected = data;
+            $alert({content: 'Entries unselected: ' + data, placement: 'top', type: 'success', show: true, duration: 3});
+            $scope.search();
         });
     };
 
@@ -20,7 +35,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, PrinterLog
     };
 
     $scope.go = function(p) {
-        PrinterLogSvc.list({page: p-1}).success(function(data) {
+        PrinterLogSvc.list({page: p-1, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
             $scope.orders = data;
         });
     };
@@ -34,13 +49,13 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, PrinterLog
     };
 
     $scope.next = function() {
-        PrinterLogSvc.list({page: $scope.orders.number+1}).success(function(data) {
+        PrinterLogSvc.list({page: $scope.orders.number+1, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
             $scope.orders = data;
         });
     };
 
     $scope.previous = function() {
-        PrinterLogSvc.list({page: $scope.orders.number-1}).success(function(data) {
+        PrinterLogSvc.list({page: $scope.orders.number-1, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
             $scope.orders = data;
         });
     };

@@ -70,6 +70,11 @@ public class PrinterLog extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "printed_at")
+    private Date printedAt;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "product_type")
     private String productType;
 
@@ -289,6 +294,31 @@ public class PrinterLog extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the printedAt.
+     * @return the value of the property
+     */
+    public Date getPrintedAt() {
+        return printedAt;
+    }
+
+    /**
+     * Sets the printedAt.
+     * @param printedAt  the new value of the property
+     */
+    public void setPrintedAt(Date printedAt) {
+        this.printedAt = printedAt;
+    }
+
+    /**
+     * Gets the the {@code printedAt} property.
+     * @return the property, not null
+     */
+    public final Property<Date> printedAt() {
+        return metaBean().printedAt().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the productType.
      * @return the value of the property
      */
@@ -432,6 +462,7 @@ public class PrinterLog extends DirectBean
                     JodaBeanUtils.equal(getInvoiceId(), other.getInvoiceId()) &&
                     JodaBeanUtils.equal(getShippingId(), other.getShippingId()) &&
                     JodaBeanUtils.equal(getProcessedAt(), other.getProcessedAt()) &&
+                    JodaBeanUtils.equal(getPrintedAt(), other.getPrintedAt()) &&
                     JodaBeanUtils.equal(getProductType(), other.getProductType()) &&
                     JodaBeanUtils.equal(getStatus(), other.getStatus()) &&
                     JodaBeanUtils.equal(getInvoice(), other.getInvoice()) &&
@@ -451,6 +482,7 @@ public class PrinterLog extends DirectBean
         hash += hash * 31 + JodaBeanUtils.hashCode(getInvoiceId());
         hash += hash * 31 + JodaBeanUtils.hashCode(getShippingId());
         hash += hash * 31 + JodaBeanUtils.hashCode(getProcessedAt());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getPrintedAt());
         hash += hash * 31 + JodaBeanUtils.hashCode(getProductType());
         hash += hash * 31 + JodaBeanUtils.hashCode(getStatus());
         hash += hash * 31 + JodaBeanUtils.hashCode(getInvoice());
@@ -461,7 +493,7 @@ public class PrinterLog extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(416);
+        StringBuilder buf = new StringBuilder(448);
         buf.append("PrinterLog{");
         int len = buf.length();
         toString(buf);
@@ -480,6 +512,7 @@ public class PrinterLog extends DirectBean
         buf.append("invoiceId").append('=').append(JodaBeanUtils.toString(getInvoiceId())).append(',').append(' ');
         buf.append("shippingId").append('=').append(JodaBeanUtils.toString(getShippingId())).append(',').append(' ');
         buf.append("processedAt").append('=').append(JodaBeanUtils.toString(getProcessedAt())).append(',').append(' ');
+        buf.append("printedAt").append('=').append(JodaBeanUtils.toString(getPrintedAt())).append(',').append(' ');
         buf.append("productType").append('=').append(JodaBeanUtils.toString(getProductType())).append(',').append(' ');
         buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
         buf.append("invoice").append('=').append(JodaBeanUtils.toString(getInvoice())).append(',').append(' ');
@@ -533,6 +566,11 @@ public class PrinterLog extends DirectBean
         private final MetaProperty<Date> processedAt = DirectMetaProperty.ofReadWrite(
                 this, "processedAt", PrinterLog.class, Date.class);
         /**
+         * The meta-property for the {@code printedAt} property.
+         */
+        private final MetaProperty<Date> printedAt = DirectMetaProperty.ofReadWrite(
+                this, "printedAt", PrinterLog.class, Date.class);
+        /**
          * The meta-property for the {@code productType} property.
          */
         private final MetaProperty<String> productType = DirectMetaProperty.ofReadWrite(
@@ -569,6 +607,7 @@ public class PrinterLog extends DirectBean
                 "invoiceId",
                 "shippingId",
                 "processedAt",
+                "printedAt",
                 "productType",
                 "status",
                 "invoice",
@@ -598,6 +637,8 @@ public class PrinterLog extends DirectBean
                     return shippingId;
                 case 203012129:  // processedAt
                     return processedAt;
+                case -1796473505:  // printedAt
+                    return printedAt;
                 case -1491615543:  // productType
                     return productType;
                 case -892481550:  // status
@@ -685,6 +726,14 @@ public class PrinterLog extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code printedAt} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Date> printedAt() {
+            return printedAt;
+        }
+
+        /**
          * The meta-property for the {@code productType} property.
          * @return the meta-property, not null
          */
@@ -742,6 +791,8 @@ public class PrinterLog extends DirectBean
                     return ((PrinterLog) bean).getShippingId();
                 case 203012129:  // processedAt
                     return ((PrinterLog) bean).getProcessedAt();
+                case -1796473505:  // printedAt
+                    return ((PrinterLog) bean).getPrintedAt();
                 case -1491615543:  // productType
                     return ((PrinterLog) bean).getProductType();
                 case -892481550:  // status
@@ -779,6 +830,9 @@ public class PrinterLog extends DirectBean
                     return;
                 case 203012129:  // processedAt
                     ((PrinterLog) bean).setProcessedAt((Date) newValue);
+                    return;
+                case -1796473505:  // printedAt
+                    ((PrinterLog) bean).setPrintedAt((Date) newValue);
                     return;
                 case -1491615543:  // productType
                     ((PrinterLog) bean).setProductType((String) newValue);

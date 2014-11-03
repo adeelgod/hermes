@@ -5,7 +5,11 @@
 - x rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
 - x create database entries
 - x log entries REST (HATEOAS)
-- print queues (start, stop, resume)
+- print queues
+  - x select
+  - start
+  - stop
+  - resume
 - authentication
 - x paging
 - x configuration UI
