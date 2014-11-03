@@ -16,6 +16,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/reports")
 @Produces(APPLICATION_JSON)
+@Deprecated
 public class ReportResource {
     private static final Logger logger = LoggerFactory.getLogger(ReportResource.class);
 

@@ -39,5 +39,5 @@ block content
                                 i.fa(ng-class="{ 'fa-check': entry.invoice, 'fa-close': !entry.invoice }")
             nav
                 ul.pagination
-                    li(ng-repeat='page in pages()')
-                        a {{page}}
+                    li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
+                        a(href='', ng-click='go(page)') {{page}}
