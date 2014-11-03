@@ -12,14 +12,14 @@
   - check printer status
   - ? stop
   - ? resume
-- authentication
 - x paging
 - x configuration UI
 - x configuration save
 - x report:
   - x upload
   - x print
+- report
+- authentication
 - SQL "functions" with forms
 - x everything is overwrite
 - installer
-
