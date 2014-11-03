@@ -13,7 +13,8 @@ angular.module('hermes.ui')
             save: function(config) {
                 return $http({
                     method: 'POST',
-                    url: 'api/configuration'
+                    url: 'api/configuration',
+                    data: config
                 });
             }
         };

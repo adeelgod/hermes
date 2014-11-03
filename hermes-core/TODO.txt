@@ -6,9 +6,11 @@
 - x create database entries
 - x log entries REST (HATEOAS)
 - print queues (start, stop, resume)
+- paging
 - x configuration UI
+- x configuration save
 - x report:
-  - upload
+  - x upload
   - x print
 - SQL "functions" with forms
 - x everything is overwrite
