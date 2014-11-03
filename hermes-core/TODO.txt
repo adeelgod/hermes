@@ -6,6 +6,7 @@
 - x create database entries
 - x log entries REST (HATEOAS)
 - print queues (start, stop, resume)
+- authentication
 - x paging
 - x configuration UI
 - x configuration save

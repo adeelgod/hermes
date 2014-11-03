@@ -32,6 +32,10 @@ block content
                             input.form-control(name='dbPassword', ng-model="configuration['hermes.db.password']", placeholder='Password', type='password')
                         hr
                         .form-group
+                            label(for='chargeSize') Charge Size
+                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", placeholder='Charge Size', type='text')
+                        hr
+                        .form-group
                             label(for='') Hibernate Dialect
                             input.form-control(name='hibernateDialect', ng-model="configuration['hibernate.dialect']", placeholder='Dialect', type='text')
                         .form-group
