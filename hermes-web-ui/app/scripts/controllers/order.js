@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, PrinterLogSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, PrinterLogSvc, ConfigurationSvc) {
     $scope.search = function() {
         PrinterLogSvc.list({page: 0}).success(function(data) {
             $scope.orders = data;
@@ -44,4 +44,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, PrinterLog
             $scope.orders = data;
         });
     };
+
+    ConfigurationSvc.list().success(function(data) {
+        $scope.configuration = data;
+    });
 });

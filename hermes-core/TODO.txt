@@ -15,4 +15,5 @@
   - x print
 - SQL "functions" with forms
 - x everything is overwrite
+- installer
 
