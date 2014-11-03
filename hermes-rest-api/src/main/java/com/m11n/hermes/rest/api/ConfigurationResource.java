@@ -2,6 +2,10 @@ package com.m11n.hermes.rest.api;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeMultipart;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -44,15 +50,18 @@ public class ConfigurationResource {
 
     @POST
     @Path("/templates")
+    @Consumes(MULTIPART_FORM_DATA)
     @Produces(APPLICATION_JSON)
-    public Response upload(MimeMultipart entity) throws Exception {
+    //public Response upload(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail) throws Exception {
+    public Response upload(FormDataMultiPart formParams) throws Exception {
+
         // TODO: implement this
-        logger.info("########################### CONFIG UPLOAD...");
 
-        for(int i=0; i<entity.getCount(); i++) {
-            MimeBodyPart part = entity.getBodyPart(i);
-
-            logger.info("########################### CONFIG UPLOAD: {} ({})", part.getContentID(), part.getContentType());
+        for(Map.Entry<String, List<FormDataBodyPart>> entry : formParams.getFields().entrySet()) {
+            //FormDataBodyPart field = entry.getValue();
+            for(FormDataBodyPart field : entry.getValue()) {
+                logger.info("########################### CONFIG UPLOAD... {} - {} ({})", entry.getKey(), field.getName(), field.getMediaType());
+            }
         }
 
         return Response.ok().build();
