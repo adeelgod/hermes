@@ -14,16 +14,27 @@
     <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource">
         <property name="username" value="${hermes.db.username}" />
         <property name="password" value="${hermes.db.password}" />
+        <property name="driverClass" value="${hermes.db.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.url}" />
+    </bean>
+
+    <bean id="dataSourceShop" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.shop.db.username}" />
+        <property name="password" value="${hermes.shop.db.password}" />
         <!--
         <property name="driverClass" value="com.mysql.fabric.jdbc.FabricMySQLDriver" />
         -->
-        <property name="driverClass" value="${hermes.db.driver}" />
-        <property name="jdbcUrl" value="${hermes.db.url}" />
+        <property name="driverClass" value="${hermes.shop.db.driver}" />
+        <property name="jdbcUrl" value="${hermes.shop.db.url}" />
     </bean>
 
     <!-- Transaction -->
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="transactionManagerShop" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceShop" />
+    </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSource" />
@@ -46,6 +57,7 @@
                 <entry key="hibernate.ejb.naming_strategy" value="${hibernate.ejb.naming_strategy}" />
                 <entry key="hibernate.format_sql" value="${hibernate.format_sql}" />
                 <entry key="hibernate.show_sql" value="${hibernate.show_sql}" />
+                <entry key="hibernate.hbm2ddl.auto" value="update" />
             </map>
         </property>
     </bean>
