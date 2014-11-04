@@ -29,8 +29,6 @@ public class PrinterLogResource {
     @GET
     @Produces(APPLICATION_JSON)
     public Response list(@QueryParam("from") Long from, @QueryParam("until") Long until, @QueryParam("page") @DefaultValue("0") Integer page, @QueryParam("size") @DefaultValue("20") Integer size) throws Exception {
-        logger.info("############ FROM: {}", new Date(from));
-        logger.info("############ UNTIL: {}", new Date(until));
         return Response.ok(printerLogRepository.findAll(new PageRequest(page, size))).build();
     }
 
@@ -41,7 +39,6 @@ public class PrinterLogResource {
         List<PrinterLog> result = printerLogRepository.findByProcessedAtBetween(new Date(from), new Date(until));
 
         for(PrinterLog printerLog : result) {
-            //logger.info("############ SELECT: {}", printerLog);
             printerLog.setSelected(selected);
             printerLogRepository.save(printerLog);
         }
