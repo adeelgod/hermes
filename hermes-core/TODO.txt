@@ -20,6 +20,9 @@
   - x print
 - report
 - authentication
-- SQL "functions" with forms
+- SQL "functions" with forms:
+  - JSON config files (text, boolean, date/time fields)
+  - list config files
+  - create/upload
 - x everything is overwrite
 - installer

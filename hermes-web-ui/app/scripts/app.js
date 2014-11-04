@@ -46,6 +46,12 @@ angular.module('hermes.ui', [
             templateUrl: 'views/configuration.html',
             controller: 'ConfigurationCtrl'
         })
+        .state('form', {
+            abstract: false,
+            url: '/form',
+            templateUrl: 'views/form.html',
+            controller: 'FormCtrl'
+        })
         .state('about', {
             abstract: false,
             url: '/about',
