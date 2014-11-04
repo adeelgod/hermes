@@ -6,10 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.joda.beans.*;
 import org.joda.beans.impl.direct.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +43,13 @@ public class FormField extends DirectBean
     @Column(name = "uuid", unique = true)
     private String uid;
 
+    //private String form;
+
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "form")
-    private String form;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "formId", nullable = false)
+    private Form form;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -134,7 +134,7 @@ public class FormField extends DirectBean
      * Gets the form.
      * @return the value of the property
      */
-    public String getForm() {
+    public Form getForm() {
         return form;
     }
 
@@ -142,7 +142,7 @@ public class FormField extends DirectBean
      * Sets the form.
      * @param form  the new value of the property
      */
-    public void setForm(String form) {
+    public void setForm(Form form) {
         this.form = form;
     }
 
@@ -150,7 +150,7 @@ public class FormField extends DirectBean
      * Gets the the {@code form} property.
      * @return the property, not null
      */
-    public final Property<String> form() {
+    public final Property<Form> form() {
         return metaBean().form().createProperty(this);
     }
 
@@ -357,8 +357,8 @@ public class FormField extends DirectBean
         /**
          * The meta-property for the {@code form} property.
          */
-        private final MetaProperty<String> form = DirectMetaProperty.ofReadWrite(
-                this, "form", FormField.class, String.class);
+        private final MetaProperty<Form> form = DirectMetaProperty.ofReadWrite(
+                this, "form", FormField.class, Form.class);
         /**
          * The meta-property for the {@code name} property.
          */
@@ -452,7 +452,7 @@ public class FormField extends DirectBean
          * The meta-property for the {@code form} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<String> form() {
+        public final MetaProperty<Form> form() {
             return form;
         }
 
@@ -525,7 +525,7 @@ public class FormField extends DirectBean
                     ((FormField) bean).setUid((String) newValue);
                     return;
                 case 3148996:  // form
-                    ((FormField) bean).setForm((String) newValue);
+                    ((FormField) bean).setForm((Form) newValue);
                     return;
                 case 3373707:  // name
                     ((FormField) bean).setName((String) newValue);
