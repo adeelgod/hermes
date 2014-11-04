@@ -5,6 +5,7 @@
 - x rename files (label.pdf, invoice.pdf) and store them in order id folder (coming from temp folder)
 - x create database entries
 - x log entries REST (HATEOAS)
+- order sql statement completely configurable
 - print queues
   - x select
   - x start
@@ -26,3 +27,9 @@
   - create/upload
 - x everything is overwrite
 - installer
+- mysql:
+  - db: Auswertung
+  - host: http://188.138.99.252/phpmyadmin
+  - username: print
+  - password: edgtds45
+  - tunnel: ssh print@188.138.99.252 -L 13306:127.0.0.1:3306 -N
