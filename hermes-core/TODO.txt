@@ -27,7 +27,8 @@
   - create/upload
 - x everything is overwrite
 - installer
-- mysql:
+- x ssh tunnel
+- x mysql:
   - db: Auswertung
   - host: http://188.138.99.252/phpmyadmin
   - username: print
