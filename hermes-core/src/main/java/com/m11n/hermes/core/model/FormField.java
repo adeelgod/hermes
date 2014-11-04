@@ -31,7 +31,7 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 @JsonIgnoreProperties({"meta", "metaBean"})
 @XmlRootElement(name = "form_field")
 @Entity
-@Table(name = "form_field")
+@Table(name = "hermes_form_field")
 public class FormField extends DirectBean
 {
     public static enum Type {

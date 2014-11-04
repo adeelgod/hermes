@@ -26,7 +26,7 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 @JsonIgnoreProperties({"meta", "metaBean"})
 @XmlRootElement(name = "printer_log")
 @Entity
-@Table(name = "printer_log")
+@Table(name = "hermes_printer_log")
 public class PrinterLog extends DirectBean
 {
     @PropertyDefinition

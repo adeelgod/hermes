@@ -27,7 +27,7 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 @JsonIgnoreProperties({"meta", "metaBean"})
 @XmlRootElement(name = "form_field")
 @Entity
-@Table(name = "form")
+@Table(name = "hermes_form")
 public class Form extends DirectBean
 {
     @PropertyDefinition
