@@ -19,28 +19,28 @@ block content
             hr
     .row
         .col-md-12
-            .btn-group
-                form(role='form', name='fieldForm', novalidate='')
-                    .form-group
-                        label(for='name') Field Name
-                        input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
-                    .form-group
-                        label(for='type') Type
-                        input.form-control(name='type', ng-model="field.type", placeholder='Type', type='text')
-                    .form-group
-                        label(for='defaultValue') Default
-                        input.form-control(name='defaultValue', ng-model="field.defaultValue", placeholder='Default', type='text')
-                    .form-group
-                        label(for='position') Position
-                        input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
-                button.btn.btn-success(type='button', ng-click='add()')
-                    i.fa.fa-plus
-                hr
+            form(role='form', name='fieldForm', novalidate='')
+                .form-group
+                    label(for='name') Field Name
+                    input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
+                .form-group
+                    label(for='type') Type
+                    input.form-control(name='type', ng-model="field.type", placeholder='Type', type='text')
+                .form-group
+                    label(for='defaultValue') Default
+                    input.form-control(name='defaultValue', ng-model="field.defaultValue", placeholder='Default', type='text')
+                .form-group
+                    label(for='position') Position
+                    input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
+            button.btn.btn-success(type='button', ng-click='add()')
+                i.fa.fa-plus
     .row(ng-show='form.fields')
         .col-md-12
+            hr
             table.table.table-condensed
                 thead
                     tr
+                        td
                         td Name
                         td Type
                         td Default

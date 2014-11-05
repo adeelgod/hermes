@@ -1,15 +1,13 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, $log, PrinterLogSvc, ConfigurationSvc, FormSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, PrinterLogSvc, ConfigurationSvc, FormSvc) {
     $scope.printing = false;
 
     $scope.params = {};
 
     $scope.getForm = function(name) {
-        $log.debug('Getting form...' + name);
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
-            $alert({content: 'Got form...', placement: 'top', type: 'success', show: true, duration: 2});
         });
     };
 
@@ -79,7 +77,6 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, $l
         $scope.configuration = data;
 
         // TODO: use configured form
-        $log.debug('Calling form...');
         $scope.getForm('orders');
     });
 });

@@ -24,6 +24,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, For
 
     $scope.save = function() {
         FormSvc.save($scope.form).success(function(data) {
+            $scope.form = data;
             $alert({content: 'Form saved: ' + form.name, placement: 'top', type: 'success', show: true, duration: 3});
             $scope.list();
         });
@@ -37,11 +38,13 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, For
     };
 
     $scope.removeField = function(index) {
-        var id = $scope.form.fields[index].id;
+        var id = angular.copy($scope.form.fields[index].id);
         if(id) {
             FormSvc.removeField({id: id}).success(function(data) {
-                $alert({content: 'Field deleted: ' + field.name, placement: 'top', type: 'success', show: true, duration: 3});
+                $alert({content: 'Field deleted: ' + index, placement: 'top', type: 'success', show: true, duration: 3});
                 $scope.list();
+            }).error(function(data) {
+                $alert({content: 'Error while deleting file: ' + index, placement: 'top', type: 'danger', show: true, duration: 3});
             });
         }
         // else?!?

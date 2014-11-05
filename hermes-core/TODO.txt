@@ -24,9 +24,9 @@
 - report (send order parameters as report parameters)
 - authentication
 - SQL "functions" with forms:
-  - text, boolean, date/time fields
-  - list forms
-  - create/save
+  - x text, boolean, date/time fields
+  - x list forms
+  - x create/save
 - x everything is overwrite
 - installer
 - x ssh tunnel

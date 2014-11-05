@@ -22,8 +22,8 @@ public class FormFieldResource {
     @GET
     @Path("{uid}")
     @Produces(APPLICATION_JSON)
-    public Response get(@PathParam("uid") String uid) {
-        return Response.ok(formFieldRepository.findOne(uid)).build();
+    public Response get(@PathParam("id") String id) {
+        return Response.ok(formFieldRepository.findOne(id)).build();
     }
 
     @GET
@@ -40,8 +40,8 @@ public class FormFieldResource {
 
     @DELETE
     @Produces(APPLICATION_JSON)
-    public Response remove(@QueryParam("uid") String uid) {
-        formFieldRepository.delete(uid);
+    public Response remove(@QueryParam("id") String id) {
+        formFieldRepository.delete(id);
         return Response.ok().build();
     }
 }
