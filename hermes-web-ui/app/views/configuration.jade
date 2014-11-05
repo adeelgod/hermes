@@ -17,6 +17,8 @@ block content
                     a(href='', ng-click="tab='reporting'", role='tab') Reporting
                 li(role='presentation', ng-class="{'active': tab=='print'}")
                     a(href='', ng-click="tab='print'", role='tab') Printers
+                li(role='presentation', ng-class="{'active': tab=='ssh'}")
+                    a(href='', ng-click="tab='ssh'", role='tab') SSH
             .tab-content
                 .tab-pane(role='tabpanel', id='database', ng-class="{'active': tab=='database'}")
                     form(role='form', name='databaseForm', novalidate='')
@@ -90,7 +92,7 @@ block content
                             label(for='virtualizerType') Virtualizer Type
                             input.form-control(name='virtualizerType', ng-model="configuration['hermes.reporting.virtualizer.type']", placeholder='Virtualizer Type', type='text')
                 .tab-pane(role='tabpanel', id='print', ng-class="{'active': tab=='print'}")
-                    form(role='form', name='parseForm', novalidate='')
+                    form(role='form', name='printForm', novalidate='')
                         .form-group
                             label(for='invoicePrinter') Invoice Printer
                             input.form-control(name='invoicePrinter', ng-model="configuration['hermes.printer.invoice']", placeholder='Invoice Printer', type='text')
@@ -100,5 +102,28 @@ block content
                         .form-group
                             label(for='reportPrinter') Report Printer
                             input.form-control(name='reportPrinter', ng-model="configuration['hermes.printer.report']", placeholder='Report Printer', type='text')
+                .tab-pane(role='tabpanel', id='ssh', ng-class="{'active': tab=='ssh'}")
+                    form(role='form', name='sshForm', novalidate='')
+                        .form-group
+                            label(for='sshPort') SSH Port
+                            input.form-control(name='sshPort', ng-model="configuration['hermes.ssh.port']", placeholder='SSH Port', type='text')
+                        .form-group
+                            label(for='sshUsername') Username
+                            input.form-control(name='sshUsername', ng-model="configuration['hermes.ssh.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='sshPassword') Password
+                            input.form-control(name='sshPassword', ng-model="configuration['hermes.ssh.password']", placeholder='Password', type='password')
+                        .form-group
+                            label(for='sshLocalPort') Local Port
+                            input.form-control(name='sshLocalPort', ng-model="configuration['hermes.ssh.local.port']", placeholder='Local Port', type='text')
+                        .form-group
+                            label(for='sshRemoteHost') Remote Host
+                            input.form-control(name='sshRemoteHost', ng-model="configuration['hermes.ssh.remote.host']", placeholder='Remote Host', type='text')
+                        .form-group
+                            label(for='sshRemotePort') Remote Port
+                            input.form-control(name='sshRemotePort', ng-model="configuration['hermes.ssh.remote.port']", placeholder='Remote Port', type='text')
+                        .form-group
+                            label(for='sshRemoteBinding') Remote Binding
+                            input.form-control(name='sshRemoteBinding', ng-model="configuration['hermes.ssh.remote.binding']", placeholder='Remote Binding', type='text')
             button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
                 i.fa.fa-check

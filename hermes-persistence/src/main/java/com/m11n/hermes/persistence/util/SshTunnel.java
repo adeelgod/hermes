@@ -5,6 +5,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,11 +15,26 @@ import javax.annotation.PreDestroy;
 public class SshTunnel {
     private static final Logger logger = LoggerFactory.getLogger(SshTunnel.class);
 
-    private String host = "188.138.99.252";
-    private int port = 3306;
-    private final String username = "print";
-    private final String password = "edgtds45";
-    private int localPort = 13306;
+    @Value("${hermes.ssh.username}")
+    private int sshPort;
+
+    @Value("${hermes.ssh.username}")
+    private String username;
+
+    @Value("${hermes.ssh.password}")
+    private String password;
+
+    @Value("${hermes.ssh.remote.host}")
+    private String remoteHost;
+
+    @Value("${hermes.ssh.remote.port}")
+    private int remotePort;
+
+    @Value("${hermes.ssh.remote.binding}")
+    private String remoteBinding = "localhost";
+
+    @Value("${hermes.ssh.local.port}")
+    private int localPort;
 
     private Session session;
 
@@ -28,9 +44,9 @@ public class SshTunnel {
         try {
             JSch jsch = new JSch();
 
-            // Create SSH session.  Port 22 is your SSH port which
+            // Create SSH session.  Port 22 is your SSH remotePort which
             // is open in your firewall setup.
-            session = jsch.getSession(username, host, 22);
+            session = jsch.getSession(username, remoteHost, sshPort);
             session.setPassword(password);
 
             // Additional SSH options.  See your ssh_config manual for
@@ -51,9 +67,9 @@ public class SshTunnel {
 
             logger.info("######## CHANNEL CONNECTED: {}", channel.isConnected());
 
-            // NOTE: the second host parameter is the binding address of the MySQL server... which is listening only on localhost
-            //assignedPort = session.setPortForwardingL("127.0.0.1", localPort, host, port);
-            assignedPort = session.setPortForwardingL(localPort, "localhost", port);
+            // NOTE: the second remoteHost parameter is the binding address of the MySQL server... which is listening only on localhost
+            //assignedPort = session.setPortForwardingL("127.0.0.1", localPort, remoteHost, remotePort);
+            assignedPort = session.setPortForwardingL(localPort, remoteBinding, remotePort);
 
             logger.info("######## SESSION CONNECTED: {}", session.isConnected());
 
@@ -114,7 +130,6 @@ public class SshTunnel {
         SshTunnel tunnel = new SshTunnel();
         tunnel.start();
         tunnel.test();
-        System.in.read();
         tunnel.stop();
     }
 }
