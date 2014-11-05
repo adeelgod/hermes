@@ -2,21 +2,25 @@ extends /layouts/_page
 block content
     .row
         .col-md-6
-            form.form-inline(role='form', name='orderForm', novalidate='')
+            form(role='form', name='orderForm', novalidate='')
                 .form-group
                     h2
+                        i.fa.fa-calendar
+                        | &nbsp;
                         | Order Search
-                        | &nbsp;
-                        i.fa.fa-calendar
-                        | &nbsp;
-                        i.fa.fa-arrows-h
-                        | &nbsp;
-                        i.fa.fa-calendar
                     hr
-                    .form-group(ng-class="{'has-error': orderForm.fromDate.$invalid}")
-                        input.form-control(name='fromDate', ng-model='fromDate', data-date-format='dd-MM-yyyy', data-date-type='number', placeholder='From', bs-datepicker='', type='text')
-                    .form-group(ng-class="{'has-error': orderForm.untilDate.$invalid}")
-                        input.form-control(name='untilDate', ng-model='untilDate', data-date-format='dd-MM-yyyy', data-date-type='number', placeholder='Until', bs-datepicker='', type='text')
+                    //
+                        p {{frm | json}}
+                        p {{frm['fields'] | json}}
+                        p {{params | json}}
+                        hr
+                    .form-group(ng-repeat='field in frm.fields')
+                        label(for='{{field.name}}') {{field.name}}
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='TEXT'", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='DATE'", data-date-format='dd-MM-yyyy', data-date-type='number', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        br
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.type=='BOOLEAN'", bs-checkbox='')
+                            i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
                         .btn-group
                             button.btn.btn-primary(type='button', ng-click='search()')

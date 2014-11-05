@@ -10,10 +10,10 @@ angular.module('hermes.ui')
                     url: 'api/forms'
                 });
             },
-            get: function(uid) {
+            get: function(name) {
                 return $http({
                     method: 'GET',
-                    url: 'api/forms/' + uid
+                    url: 'api/forms/' + name
                 });
             },
             save: function(form) {

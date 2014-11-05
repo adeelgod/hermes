@@ -26,10 +26,10 @@ public class FormResource {
     }
 
     @GET
-    @Path("{uid}")
+    @Path("{name}")
     @Produces(APPLICATION_JSON)
-    public Response get(@PathParam("uid") String uid) {
-        return Response.ok(formRepository.findOne(uid)).build();
+    public Response get(@PathParam("name") String name) {
+        return Response.ok(formRepository.findByName(name)).build();
     }
 
     @POST

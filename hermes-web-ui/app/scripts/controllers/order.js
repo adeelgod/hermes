@@ -1,14 +1,26 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, PrinterLogSvc, ConfigurationSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, $log, PrinterLogSvc, ConfigurationSvc, FormSvc) {
     $scope.printing = false;
 
+    $scope.params = {};
+
+    $scope.getForm = function(name) {
+        $log.debug('Getting form...' + name);
+        FormSvc.get(name).success(function(data) {
+            $scope.frm = data;
+            $alert({content: 'Got form...', placement: 'top', type: 'success', show: true, duration: 2});
+        });
+    };
+
+    // deprecated
     $scope.search = function() {
         PrinterLogSvc.list({page: 0, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
             $scope.orders = data;
         });
     };
 
+    // deprecated
     $scope.select = function() {
         PrinterLogSvc.select({from: $scope.fromDate, until: $scope.untilDate, selected: true}).success(function(data) {
             $alert({content: 'Entries selected: ' + data, placement: 'top', type: 'success', show: true, duration: 3});
@@ -16,6 +28,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
         });
     };
 
+    // deprecated
     $scope.unselect = function() {
         PrinterLogSvc.select({from: $scope.fromDate, until: $scope.untilDate, selected: false}).success(function(data) {
             //$scope.selected = data;
@@ -24,6 +37,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
         });
     };
 
+    // deprecated
     $scope.print = function() {
         $scope.printing = true;
         PrinterLogSvc.print().success(function(data) {
@@ -61,19 +75,11 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
         return false;
     };
 
-    $scope.next = function() {
-        PrinterLogSvc.list({page: $scope.orders.number+1, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
-            $scope.orders = data;
-        });
-    };
-
-    $scope.previous = function() {
-        PrinterLogSvc.list({page: $scope.orders.number-1, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
-            $scope.orders = data;
-        });
-    };
-
     ConfigurationSvc.list().success(function(data) {
         $scope.configuration = data;
+
+        // TODO: use configured form
+        $log.debug('Calling form...');
+        $scope.getForm('orders');
     });
 });

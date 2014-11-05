@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('FormCtrl', function ($scope, FormSvc) {
+angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, FormSvc) {
     $scope.form = {};
     $scope.forms = [];
     $scope.field = {};

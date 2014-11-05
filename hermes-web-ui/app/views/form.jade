@@ -2,21 +2,21 @@ extends /layouts/_page
 block content
     .row
         .col-md-12
+            form(role='form', name='fieldForm', novalidate='')
+                .form-group
+                    label(for='form') Form Name
+                    input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
+                    br
+                    button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
+                .form-group
+                    label(for='sql') SQL
+                    textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
             .btn-group
-                form(role='form', name='fieldForm', novalidate='')
-                    .form-group
-                        label(for='form') Form Name
-                        input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
-                        br
-                        button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
-                    .form-group
-                        label(for='sql') SQL
-                        textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
-                .btn-group
-                    button.btn.btn-primary(type='button', ng-click='save()')
-                        i.fa.fa-check
-                    button.btn.btn-danger(type='button', ng-click='removeForm()')
-                        i.fa.fa-close
+                button.btn.btn-primary(type='button', ng-click='save()')
+                    i.fa.fa-check
+                button.btn.btn-danger(type='button', ng-click='removeForm()')
+                    i.fa.fa-close
+            hr
     .row
         .col-md-12
             .btn-group
@@ -33,9 +33,9 @@ block content
                     .form-group
                         label(for='position') Position
                         input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
-                .btn-group
-                    button.btn.btn-success(type='button', ng-click='add()')
-                        i.fa.fa-plus
+                button.btn.btn-success(type='button', ng-click='add()')
+                    i.fa.fa-plus
+                hr
     .row(ng-show='form.fields')
         .col-md-12
             table.table.table-condensed
@@ -57,8 +57,3 @@ block content
                                     i.fa.fa-check
                                 button.btn.btn-danger(type='button', ng-click='removeField($index)')
                                     i.fa.fa-close
-                                //
-                                    button.btn.btn-danger(type='button', ng-click='up(field)')
-                                        i.fa.fa-caret-up
-                                    button.btn.btn-default(type='button', ng-click='down(field)')
-                                        i.fa.fa-caret-down
