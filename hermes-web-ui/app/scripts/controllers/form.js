@@ -1,38 +1,56 @@
 'use strict';
 
 angular.module('hermes.ui').controller('FormCtrl', function ($scope, FormSvc) {
-    $scope.name = '';
+    $scope.form = {};
+    $scope.forms = [];
     $scope.field = {};
 
-    $scope.listForms = function() {
-        FormSvc.listForms().success(function(data) {
+    $scope.list = function() {
+        FormSvc.list().success(function(data) {
             $scope.forms = data;
         });
     };
 
-    $scope.listFields = function() {
-        FormSvc.listFields($scope.name).success(function(data) {
-            $scope.fields = data;
-        });
+    $scope.add = function() {
+        if(!$scope.form.fields) {
+            $scope.form.fields = [];
+        }
+
+        $scope.field.formId = $scope.form.id;
+
+        $scope.form.fields.push(angular.copy($scope.field));
+        $scope.field = {};
     };
 
     $scope.save = function() {
-        FormSvc.save($scope.field).success(function(data) {
-            $alert({content: 'Field saved: ' + field.name, placement: 'top', type: 'success', show: true, duration: 3});
-            $scope.listFields();
+        FormSvc.save($scope.form).success(function(data) {
+            $alert({content: 'Form saved: ' + form.name, placement: 'top', type: 'success', show: true, duration: 3});
+            $scope.list();
         });
     };
 
-    $scope.remove = function(field) {
-        FormSvc.remove({uid: field.uid}).success(function(data) {
-            $alert({content: 'Field deleted: ' + field.name, placement: 'top', type: 'success', show: true, duration: 3});
-            $scope.listFields();
+    $scope.removeForm = function() {
+        FormSvc.removeField({id: $scope.form.id}).success(function(data) {
+            $alert({content: 'Form deleted: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
+            $scope.list();
         });
+    };
+
+    $scope.removeField = function(index) {
+        var id = $scope.form.fields[index].id;
+        if(id) {
+            FormSvc.removeField({id: id}).success(function(data) {
+                $alert({content: 'Field deleted: ' + field.name, placement: 'top', type: 'success', show: true, duration: 3});
+                $scope.list();
+            });
+        }
+        // else?!?
+        $scope.form.fields.splice(index, 1);
     };
 
     $scope.select = function(field) {
         $scope.field = field;
     };
 
-    $scope.listForms();
+    $scope.list();
 });

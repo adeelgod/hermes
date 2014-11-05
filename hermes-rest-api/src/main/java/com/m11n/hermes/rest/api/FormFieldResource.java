@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/forms")
+@Path("/forms/fields")
 @Produces(APPLICATION_JSON)
 public class FormFieldResource {
     private static final Logger logger = LoggerFactory.getLogger(FormFieldResource.class);
@@ -20,16 +20,16 @@ public class FormFieldResource {
     private FormFieldRepository formFieldRepository;
 
     @GET
+    @Path("{uid}")
     @Produces(APPLICATION_JSON)
-    public Response list() {
-        return Response.ok(formFieldRepository.findFormGroupByForm()).build();
+    public Response get(@PathParam("uid") String uid) {
+        return Response.ok(formFieldRepository.findOne(uid)).build();
     }
 
     @GET
-    @Path("{form}")
     @Produces(APPLICATION_JSON)
-    public Response list(@PathParam("form") String form) {
-        return Response.ok(formFieldRepository.findByFormOrderByPosition(form)).build();
+    public Response list(@QueryParam("formId") String formId) {
+        return Response.ok(formFieldRepository.findByFormId(formId)).build();
     }
 
     @POST

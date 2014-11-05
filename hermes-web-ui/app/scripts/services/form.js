@@ -4,16 +4,16 @@ angular.module('hermes.ui')
     .factory('FormSvc', function ($http) {
         // Public API here
         return {
-            listForms: function() {
+            list: function() {
                 return $http({
                     method: 'GET',
                     url: 'api/forms'
                 });
             },
-            listFields: function(form) {
+            get: function(uid) {
                 return $http({
                     method: 'GET',
-                    url: 'api/forms/' + form
+                    url: 'api/forms/' + uid
                 });
             },
             save: function(form) {
@@ -23,10 +23,24 @@ angular.module('hermes.ui')
                     data: form
                 });
             },
+            saveField: function(field) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/forms/fields',
+                    data: field
+                });
+            },
             remove: function(params) {
                 return $http({
                     method: 'DELETE',
                     url: 'api/forms',
+                    params: params
+                });
+            },
+            removeField: function(params) {
+                return $http({
+                    method: 'DELETE',
+                    url: 'api/forms/fields',
                     params: params
                 });
             }

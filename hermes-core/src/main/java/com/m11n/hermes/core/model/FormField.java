@@ -41,15 +41,12 @@ public class FormField extends DirectBean
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "uuid", unique = true)
-    private String uid;
-
-    //private String form;
+    private String id;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "formId", nullable = false)
-    private Form form;
+    @Column(name = "form_id")
+    private String formId;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -106,52 +103,52 @@ public class FormField extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the uid.
+     * Gets the id.
      * @return the value of the property
      */
-    public String getUid() {
-        return uid;
+    public String getId() {
+        return id;
     }
 
     /**
-     * Sets the uid.
-     * @param uid  the new value of the property
+     * Sets the id.
+     * @param id  the new value of the property
      */
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
-     * Gets the the {@code uid} property.
+     * Gets the the {@code id} property.
      * @return the property, not null
      */
-    public final Property<String> uid() {
-        return metaBean().uid().createProperty(this);
+    public final Property<String> id() {
+        return metaBean().id().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the form.
+     * Gets the formId.
      * @return the value of the property
      */
-    public Form getForm() {
-        return form;
+    public String getFormId() {
+        return formId;
     }
 
     /**
-     * Sets the form.
-     * @param form  the new value of the property
+     * Sets the formId.
+     * @param formId  the new value of the property
      */
-    public void setForm(Form form) {
-        this.form = form;
+    public void setFormId(String formId) {
+        this.formId = formId;
     }
 
     /**
-     * Gets the the {@code form} property.
+     * Gets the the {@code formId} property.
      * @return the property, not null
      */
-    public final Property<Form> form() {
-        return metaBean().form().createProperty(this);
+    public final Property<String> formId() {
+        return metaBean().formId().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -292,8 +289,8 @@ public class FormField extends DirectBean
         }
         if (obj != null && obj.getClass() == this.getClass()) {
             FormField other = (FormField) obj;
-            return JodaBeanUtils.equal(getUid(), other.getUid()) &&
-                    JodaBeanUtils.equal(getForm(), other.getForm()) &&
+            return JodaBeanUtils.equal(getId(), other.getId()) &&
+                    JodaBeanUtils.equal(getFormId(), other.getFormId()) &&
                     JodaBeanUtils.equal(getName(), other.getName()) &&
                     JodaBeanUtils.equal(getDefaultValue(), other.getDefaultValue()) &&
                     JodaBeanUtils.equal(getPosition(), other.getPosition()) &&
@@ -306,8 +303,8 @@ public class FormField extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash += hash * 31 + JodaBeanUtils.hashCode(getUid());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getForm());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getId());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getFormId());
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
         hash += hash * 31 + JodaBeanUtils.hashCode(getDefaultValue());
         hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
@@ -330,8 +327,8 @@ public class FormField extends DirectBean
     }
 
     protected void toString(StringBuilder buf) {
-        buf.append("uid").append('=').append(JodaBeanUtils.toString(getUid())).append(',').append(' ');
-        buf.append("form").append('=').append(JodaBeanUtils.toString(getForm())).append(',').append(' ');
+        buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
+        buf.append("formId").append('=').append(JodaBeanUtils.toString(getFormId())).append(',').append(' ');
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
         buf.append("defaultValue").append('=').append(JodaBeanUtils.toString(getDefaultValue())).append(',').append(' ');
         buf.append("position").append('=').append(JodaBeanUtils.toString(getPosition())).append(',').append(' ');
@@ -350,15 +347,15 @@ public class FormField extends DirectBean
         static final Meta INSTANCE = new Meta();
 
         /**
-         * The meta-property for the {@code uid} property.
+         * The meta-property for the {@code id} property.
          */
-        private final MetaProperty<String> uid = DirectMetaProperty.ofReadWrite(
-                this, "uid", FormField.class, String.class);
+        private final MetaProperty<String> id = DirectMetaProperty.ofReadWrite(
+                this, "id", FormField.class, String.class);
         /**
-         * The meta-property for the {@code form} property.
+         * The meta-property for the {@code formId} property.
          */
-        private final MetaProperty<Form> form = DirectMetaProperty.ofReadWrite(
-                this, "form", FormField.class, Form.class);
+        private final MetaProperty<String> formId = DirectMetaProperty.ofReadWrite(
+                this, "formId", FormField.class, String.class);
         /**
          * The meta-property for the {@code name} property.
          */
@@ -389,8 +386,8 @@ public class FormField extends DirectBean
          */
         private final Map<String, MetaProperty<?>> metaPropertyMap$ = new DirectMetaPropertyMap(
                 this, null,
-                "uid",
-                "form",
+                "id",
+                "formId",
                 "name",
                 "defaultValue",
                 "position",
@@ -406,10 +403,10 @@ public class FormField extends DirectBean
         @Override
         protected MetaProperty<?> metaPropertyGet(String propertyName) {
             switch (propertyName.hashCode()) {
-                case 115792:  // uid
-                    return uid;
-                case 3148996:  // form
-                    return form;
+                case 3355:  // id
+                    return id;
+                case -1268779777:  // formId
+                    return formId;
                 case 3373707:  // name
                     return name;
                 case -659125328:  // defaultValue
@@ -441,19 +438,19 @@ public class FormField extends DirectBean
 
         //-----------------------------------------------------------------------
         /**
-         * The meta-property for the {@code uid} property.
+         * The meta-property for the {@code id} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<String> uid() {
-            return uid;
+        public final MetaProperty<String> id() {
+            return id;
         }
 
         /**
-         * The meta-property for the {@code form} property.
+         * The meta-property for the {@code formId} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<Form> form() {
-            return form;
+        public final MetaProperty<String> formId() {
+            return formId;
         }
 
         /**
@@ -500,10 +497,10 @@ public class FormField extends DirectBean
         @Override
         protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
             switch (propertyName.hashCode()) {
-                case 115792:  // uid
-                    return ((FormField) bean).getUid();
-                case 3148996:  // form
-                    return ((FormField) bean).getForm();
+                case 3355:  // id
+                    return ((FormField) bean).getId();
+                case -1268779777:  // formId
+                    return ((FormField) bean).getFormId();
                 case 3373707:  // name
                     return ((FormField) bean).getName();
                 case -659125328:  // defaultValue
@@ -521,11 +518,11 @@ public class FormField extends DirectBean
         @Override
         protected void propertySet(Bean bean, String propertyName, Object newValue, boolean quiet) {
             switch (propertyName.hashCode()) {
-                case 115792:  // uid
-                    ((FormField) bean).setUid((String) newValue);
+                case 3355:  // id
+                    ((FormField) bean).setId((String) newValue);
                     return;
-                case 3148996:  // form
-                    ((FormField) bean).setForm((Form) newValue);
+                case -1268779777:  // formId
+                    ((FormField) bean).setFormId((String) newValue);
                     return;
                 case 3373707:  // name
                     ((FormField) bean).setName((String) newValue);

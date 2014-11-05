@@ -6,9 +6,21 @@ block content
                 form(role='form', name='fieldForm', novalidate='')
                     .form-group
                         label(for='form') Form Name
-                        input.form-control(name='form', ng-model="field.form", placeholder='Form', type='text')
+                        input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
                         br
-                        button.btn.btn-default(type='button', ng-model='field.form', ng-options='form for form in forms', bs-select='')
+                        button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
+                    .form-group
+                        label(for='sql') SQL
+                        textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
+                .btn-group
+                    button.btn.btn-primary(type='button', ng-click='save()')
+                        i.fa.fa-check
+                    button.btn.btn-danger(type='button', ng-click='removeForm()')
+                        i.fa.fa-close
+    .row
+        .col-md-12
+            .btn-group
+                form(role='form', name='fieldForm', novalidate='')
                     .form-group
                         label(for='name') Field Name
                         input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
@@ -21,9 +33,10 @@ block content
                     .form-group
                         label(for='position') Position
                         input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
-                button.btn.btn-primary(type='button', ng-click='save()')
-                    i.fa.fa-plus
-    .row(ng-show='fields')
+                .btn-group
+                    button.btn.btn-success(type='button', ng-click='add()')
+                        i.fa.fa-plus
+    .row(ng-show='form.fields')
         .col-md-12
             table.table.table-condensed
                 thead
@@ -33,17 +46,17 @@ block content
                         td Default
                         td
                 tbody
-                    tr(ng-repeat='field in fields')
+                    tr(ng-repeat='field in form.fields')
                         td {{field.position}}
                         td {{field.name}}
                         td {{field.type}}
                         td {{field.defaultValue}}
                         td
                             .btn-group
-                                button.btn.btn-success(type='button', ng-click='remove(field)')
-                                    i.fa.fa-close
                                 button.btn.btn-success(type='button', ng-click='select(field)')
                                     i.fa.fa-check
+                                button.btn.btn-danger(type='button', ng-click='removeField($index)')
+                                    i.fa.fa-close
                                 //
                                     button.btn.btn-danger(type='button', ng-click='up(field)')
                                         i.fa.fa-caret-up
