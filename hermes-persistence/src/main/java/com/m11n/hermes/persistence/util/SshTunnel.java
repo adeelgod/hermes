@@ -15,7 +15,7 @@ import javax.annotation.PreDestroy;
 public class SshTunnel {
     private static final Logger logger = LoggerFactory.getLogger(SshTunnel.class);
 
-    @Value("${hermes.ssh.username}")
+    @Value("${hermes.ssh.port}")
     private int sshPort;
 
     @Value("${hermes.ssh.username}")
