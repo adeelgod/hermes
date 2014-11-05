@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,6 +54,7 @@ implements ReportService
     private String virtualizerType;
     
     @Inject
+    @Named("dataSourceShop") // TODO: remove this later when data sources unified
     private DataSource dataSource;
     
     @PostConstruct
