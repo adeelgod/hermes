@@ -11,6 +11,13 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
         });
     };
 
+    $scope.query = function() {
+        $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
+        FormSvc.query($scope.params).success(function(data) {
+            $scope.orderstmp = data;
+        });
+    };
+
     // deprecated
     $scope.search = function() {
         PrinterLogSvc.list({page: 0, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {

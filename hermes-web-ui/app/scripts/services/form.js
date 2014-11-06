@@ -16,6 +16,13 @@ angular.module('hermes.ui')
                     url: 'api/forms/' + name
                 });
             },
+            query: function(params) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/forms/query',
+                    data: params
+                });
+            },
             save: function(form) {
                 return $http({
                     method: 'POST',

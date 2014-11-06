@@ -9,6 +9,7 @@ block content
                         | &nbsp;
                         | Order Search
                     hr
+                    p {{orderstmp | json}}
                     //
                         p {{frm | json}}
                         p {{frm['fields'] | json}}
@@ -17,13 +18,13 @@ block content
                     .form-group(ng-repeat='field in frm.fields')
                         label(for='{{field.name}}') {{field.name}}
                         input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='TEXT'", placeholder='{{field.name}}', type='text')
-                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='DATE'", data-date-format='dd-MM-yyyy', data-date-type='number', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='DATE'", data-date-format='dd-MM-yyyy', placeholder='{{field.name}}', bs-datepicker='', type='text')
                         br
                         button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.type=='BOOLEAN'", bs-checkbox='')
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
                         .btn-group
-                            button.btn.btn-primary(type='button', ng-click='search()')
+                            button.btn.btn-primary(type='button', ng-click='query()')
                                 i.fa.fa-search
                             button.btn.btn-success(type='button', ng-click='select()')
                                 i.fa.fa-check

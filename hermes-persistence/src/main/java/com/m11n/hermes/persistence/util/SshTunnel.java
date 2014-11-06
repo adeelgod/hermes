@@ -126,8 +126,73 @@ public class SshTunnel {
         }
     }
 
+    public int getSshPort() {
+        return sshPort;
+    }
+
+    public void setSshPort(int sshPort) {
+        this.sshPort = sshPort;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRemoteHost() {
+        return remoteHost;
+    }
+
+    public void setRemoteHost(String remoteHost) {
+        this.remoteHost = remoteHost;
+    }
+
+    public int getRemotePort() {
+        return remotePort;
+    }
+
+    public void setRemotePort(int remotePort) {
+        this.remotePort = remotePort;
+    }
+
+    public String getRemoteBinding() {
+        return remoteBinding;
+    }
+
+    public void setRemoteBinding(String remoteBinding) {
+        this.remoteBinding = remoteBinding;
+    }
+
+    public int getLocalPort() {
+        return localPort;
+    }
+
+    public void setLocalPort(int localPort) {
+        this.localPort = localPort;
+    }
+
+    @Deprecated
+    // TODO: remove this in production
     public static void main(String... args) throws Exception {
         SshTunnel tunnel = new SshTunnel();
+        tunnel.setSshPort(22);
+        tunnel.setUsername("print");
+        tunnel.setPassword("edgtds45");
+        tunnel.setLocalPort(13306);
+        tunnel.setRemoteBinding("localhost");
+        tunnel.setRemoteHost("188.138.99.252");
+        tunnel.setRemotePort(3306);
         tunnel.start();
         tunnel.test();
         tunnel.stop();

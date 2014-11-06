@@ -1,7 +1,26 @@
 'use strict';
 
-angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $log, ConfigurationSvc, FileUploader) {
+angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $log, ConfigurationSvc, FileUploader, FormSvc, PrinterSvc) {
+    $scope.database = {};
+
+    $scope.databases = [
+        {'name': 'H2 (embedded)', 'driver': 'org.h2.Driver', 'dialect': 'org.hibernate.dialect.H2Dialect', 'url': 'jdbc:h2:mem:Auswertung', 'username': 'sa', 'password': ''},
+        {'name': 'MySQL', 'driver': 'com.mysql.jdbc.Driver', 'dialect': 'org.hibernate.dialect.MySQLDialect', 'url': 'jdbc:mysql://127.0.0.1:13306/Auswertung', 'username': 'print', 'password': ''}
+    ];
+
     $scope.tab = 'database';
+
+    $scope.updateDatabase = function() {
+        $scope.configuration['hermes.db.driver'] = $scope.database.driver;
+        $scope.configuration['hibernate.dialect'] = $scope.database.dialect;
+        $scope.configuration['hermes.db.url'] = $scope.database.url;
+        $scope.configuration['hermes.db.username'] = $scope.database.username;
+        $scope.configuration['hermes.db.password'] = $scope.database.password;
+    };
+
+    $scope.$watch('database', function() {
+        $scope.updateDatabase();
+    });
 
     $scope.save = function() {
         ConfigurationSvc.save($scope.configuration);
@@ -56,5 +75,13 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
 
     ConfigurationSvc.list().success(function(data) {
         $scope.configuration = data;
+    });
+
+    PrinterSvc.printers().success(function(data) {
+        $scope.printers = data;
+    });
+
+    FormSvc.list().success(function(data) {
+        $scope.forms = data;
     });
 });

@@ -28,6 +28,10 @@
         <property name="jdbcUrl" value="${hermes.shop.db.url}" />
     </bean>
 
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceShop" />
+    </bean>
+
     <!-- Transaction -->
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
