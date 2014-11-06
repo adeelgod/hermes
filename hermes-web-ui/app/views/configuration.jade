@@ -83,6 +83,11 @@ block content
                 .tab-pane(role='tabpanel', id='report', ng-class="{'active': tab=='reporting'}")
                     form(role='form', name='reportForm', novalidate='')
                         .form-group
+                            //p {{reports}}
+                            label(for='orderReportTemplate') Order Report Template
+                            //input.form-control(name='orderReportTemplate', ng-model="configuration['hermes.reporting.template.default']", placeholder='Order Report Template', type='text')
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.reporting.template.default']", ng-options='rep for rep in reports', bs-select='')
+                        .form-group
                             label(for='templateDir') Template Directory
                             input.form-control(name='templateDir', ng-model="configuration['hermes.reporting.template.dir']", placeholder='Template Directory', type='text')
                         .form-group

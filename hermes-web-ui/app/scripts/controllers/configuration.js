@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $log, ConfigurationSvc, FileUploader, FormSvc, PrinterSvc) {
+angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $log, ConfigurationSvc, FileUploader, FormSvc, PrinterSvc, ReportSvc) {
     $scope.database = {};
 
     $scope.databases = [
@@ -83,5 +83,9 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
 
     FormSvc.list().success(function(data) {
         $scope.forms = data;
+    });
+
+    ReportSvc.list().success(function(data) {
+        $scope.reports = data;
     });
 });
