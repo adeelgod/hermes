@@ -44,12 +44,4 @@ public class FormResource {
         formRepository.delete(uid);
         return Response.ok().build();
     }
-
-    @DELETE
-    @Path("fields")
-    @Produces(APPLICATION_JSON)
-    public Response removeField(@QueryParam("uid") String uid) {
-        formRepository.delete(uid);
-        return Response.ok().build();
-    }
 }
