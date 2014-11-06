@@ -47,10 +47,14 @@ block content
                             input.form-control(name='hibernateDialect', ng-model="configuration['hibernate.dialect']", placeholder='Dialect', type='text', disabled='')
                         .form-group
                             label(for='') Hibernate Show SQL
-                            input.form-control(name='hibernate', ng-model="configuration['hibernate.show_sql']", placeholder='Show SQL', type='text')
+                            //input.form-control(name='hibernate', ng-model="configuration['hibernate.show_sql']", placeholder='Show SQL', type='text')
+                            button.btn.btn-default(type='button', ng-model="configuration['hibernate.show_sql']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hibernate.show_sql'], 'fa-circle-o': !configuration['hibernate.show_sql']}")
                         .form-group
                             label(for='') Hibernate Format SQL
-                            input.form-control(name='hibernate', ng-model="configuration['hibernate.format_sql']", placeholder='Format SQL', type='text')
+                            //input.form-control(name='hibernate', ng-model="configuration['hibernate.format_sql']", placeholder='Format SQL', type='text')
+                            button.btn.btn-default(type='button', ng-model="configuration['hibernate.format_sql']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hibernate.format_sql'], 'fa-circle-o': !configuration['hibernate.format_sql']}")
                         .form-group
                             label(for='') Hibernate Naming Strategy
                             input.form-control(name='hibernate', ng-model="configuration['hibernate.ejb.naming_strategy']", placeholder='Naming Strategy', type='text', disabled='')
@@ -69,7 +73,6 @@ block content
                     form(role='form', name='parseForm', novalidate='')
                         .form-group
                             label(for='ordersForm') Orders Form
-                            //input.form-control(name='ordersForm', ng-model="configuration['hermes.orders.form']", placeholder='Orders Form', type='text')
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name as form.name for form in forms', bs-select='')
                         .form-group
                             label(for='invoiceField') Invoice Field
