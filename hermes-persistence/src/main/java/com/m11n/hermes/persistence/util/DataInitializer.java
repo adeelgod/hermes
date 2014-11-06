@@ -12,6 +12,7 @@ import java.util.List;
 
 @Component
 public class DataInitializer {
+
     @Inject
     private FormRepository formRepository;
 
@@ -19,7 +20,7 @@ public class DataInitializer {
     public void init() {
         Form form = new Form();
         form.setName("orders");
-        form.setSqlStatement("SELECT `order_id`, `Bestellung`, concat(\"Bestellung: \",`Bestellung`),`shipping_lable` FROM `mage_custom_order` WHERE `Status` = \"complete\" and `Datum_Lieferung` > \":from\" and `Datum_Lieferung` < \":until\"");
+        form.setSqlStatement("SELECT order_id, Bestellung, shipping_lable FROM mage_custom_order WHERE Status = \"complete\" and Datum_Lieferung > :from and Datum_Lieferung < :until");
         form = formRepository.save(form);
 
         List<FormField> fields = new ArrayList<>();
@@ -31,5 +32,9 @@ public class DataInitializer {
         form.setFields(fields);
 
         formRepository.save(form);
+    }
+
+    private void test() {
+        String sql = "SELECT order_id, Bestellung, shipping_lable FROM mage_custom_order WHERE Status = \"complete\" and Datum_Lieferung > \"2014-11-06 00:00:00\" and Datum_Lieferung < \"2014-11-07 00:00:00\"";
     }
 }
