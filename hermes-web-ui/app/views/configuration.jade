@@ -70,7 +70,7 @@ block content
                         .form-group
                             label(for='ordersForm') Orders Form
                             //input.form-control(name='ordersForm', ng-model="configuration['hermes.orders.form']", placeholder='Orders Form', type='text')
-                            button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name for form in forms track by form.name', bs-select='')
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name as form.name for form in forms', bs-select='')
                         .form-group
                             label(for='invoiceField') Invoice Field
                             input.form-control(name='invoiceField', ng-model="configuration['hermes.invoice.field']", placeholder='Invoice Field', type='text')
@@ -103,15 +103,15 @@ block content
                         .form-group
                             label(for='invoicePrinter') Invoice Printer
                             //input.form-control(name='invoicePrinter', ng-model="configuration['hermes.printer.invoice']", placeholder='Invoice Printer', type='text')
-                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.invoice']", ng-options='printer.name for printer in printers track by printer.name', bs-select='')
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.invoice']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
                         .form-group
                             label(for='labelPrinter') Label Printer
                             //input.form-control(name='labelPrinter', ng-model="configuration['hermes.printer.label']", placeholder='Label Printer', type='text')
-                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.label']", ng-options='printer.name for printer in printers track by printer.name', bs-select='')
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.label']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
                         .form-group
                             label(for='reportPrinter') Report Printer
                             //input.form-control(name='reportPrinter', ng-model="configuration['hermes.printer.report']", placeholder='Report Printer', type='text')
-                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.report']", ng-options='printer.name for printer in printers track by printer.name', bs-select='')
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.report']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
                 .tab-pane(role='tabpanel', id='ssh', ng-class="{'active': tab=='ssh'}")
                     form(role='form', name='sshForm', novalidate='')
                         .form-group

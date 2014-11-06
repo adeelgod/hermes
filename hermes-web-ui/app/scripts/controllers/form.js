@@ -5,6 +5,12 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, For
     $scope.forms = [];
     $scope.field = {};
 
+    $scope.types = [
+        {'name': 'Date', 'code': 'DATE'},
+        {'name': 'Text', 'code': 'TEXT'},
+        {'name': 'Boolean', 'code': 'BOOLEAN'}
+    ];
+
     $scope.list = function() {
         FormSvc.list().success(function(data) {
             $scope.forms = data;

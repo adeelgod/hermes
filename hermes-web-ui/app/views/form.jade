@@ -25,7 +25,8 @@ block content
                     input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
                 .form-group
                     label(for='type') Type
-                    input.form-control(name='type', ng-model="field.type", placeholder='Type', type='text')
+                    //input.form-control(name='type', ng-model="field.type", placeholder='Type', type='text')
+                    button.btn.btn-default(type='button', ng-model='field.type', ng-options='type.code as type.code for type in types', bs-select='')
                 .form-group
                     label(for='defaultValue') Default
                     input.form-control(name='defaultValue', ng-model="field.defaultValue", placeholder='Default', type='text')
@@ -46,7 +47,7 @@ block content
                         td Default
                         td
                 tbody
-                    tr(ng-repeat='field in form.fields')
+                    tr(ng-repeat="field in form.fields | orderBy: 'position'")
                         td {{field.position}}
                         td {{field.name}}
                         td {{field.type}}

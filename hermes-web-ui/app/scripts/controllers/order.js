@@ -8,6 +8,12 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
+            angular.forEach($scope.frm.fields, function(field) {
+                if(field) {
+                    var val = field.type==='BOOLEAN' ? (field.defaultValue==='true') : field.defaultValue;
+                    $scope.params[field.name] = val;
+                }
+            });
         });
     };
 
