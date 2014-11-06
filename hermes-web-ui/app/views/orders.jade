@@ -9,8 +9,8 @@ block content
                         | &nbsp;
                         | Order Search
                     hr
-                    p {{orderstmp | json}}
                     //
+                        p {{orderstmp | json}}
                         p {{frm | json}}
                         p {{frm['fields'] | json}}
                         p {{params | json}}
@@ -37,7 +37,7 @@ block content
                 ul.pagination
                     li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
                         a(href='', ng-click='go(page)') {{page}}
-    .row(ng-show='orders')
+    .row(ng-show='orderstmp')
         .col-md-12
             table.table.table-condensed
                 thead
@@ -48,17 +48,31 @@ block content
                         td Invoice ID
                         td Shipping ID
                 tbody
-                    tr(ng-repeat='entry in orders.content')
-                        td
-                            span(ng-show="$index%configuration['hermes.charge.size']==0") {{ $index/configuration['hermes.charge.size']+1+orders.number }}
-                        td
-                            i.fa(ng-class="{ 'fa-check': entry.selected, 'fa-minus': !entry.selected }")
+                    tr(ng-repeat='entry in orderstmp')
+                        td ---
+                        td ---
                         td {{entry.orderId}}
                         td
-                            span.label(ng-class="{ 'label-success': entry.invoice, 'label-danger': !entry.invoice }")
-                                i.fa(ng-class="{ 'fa-check': entry.invoice, 'fa-close': !entry.invoice }")
+                            span.label(ng-class="{ 'label-success': entry.invoiceId, 'label-danger': !entry.invoiceId }")
+                                i.fa(ng-class="{ 'fa-check': entry.invoiceId, 'fa-close': !entry.invoiceId }")
                             | &nbsp;{{entry.invoiceId}}
                         td
-                            span.label(ng-class="{ 'label-success': entry.label, 'label-danger': !entry.label }")
-                                i.fa(ng-class="{ 'fa-check': entry.label, 'fa-close': !entry.label }")
+                            span.label(ng-class="{ 'label-success': entry.shippingId, 'label-danger': !entry.shippingId }")
+                                i.fa(ng-class="{ 'fa-check': entry.shippingId, 'fa-close': !entry.shippingId }")
                             | &nbsp;{{entry.shippingId}}
+
+                    //
+                        tr(ng-repeat='entry in orders.content')
+                            td
+                                span(ng-show="$index%configuration['hermes.charge.size']==0") {{ $index/configuration['hermes.charge.size']+1+orders.number }}
+                            td
+                                i.fa(ng-class="{ 'fa-check': entry.selected, 'fa-minus': !entry.selected }")
+                            td {{entry.orderId}}
+                            td
+                                span.label(ng-class="{ 'label-success': entry.invoice, 'label-danger': !entry.invoice }")
+                                    i.fa(ng-class="{ 'fa-check': entry.invoice, 'fa-close': !entry.invoice }")
+                                | &nbsp;{{entry.invoiceId}}
+                            td
+                                span.label(ng-class="{ 'label-success': entry.label, 'label-danger': !entry.label }")
+                                    i.fa(ng-class="{ 'fa-check': entry.label, 'fa-close': !entry.label }")
+                                | &nbsp;{{entry.shippingId}}

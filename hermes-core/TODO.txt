@@ -6,7 +6,7 @@
 - x create database entries
 - x log entries REST (HATEOAS)
 - x order sql statement completely configurable
-  - SELECT `order_id`, `Bestellung`, concat("Bestellung: ",`Bestellung`),`shipping_lable` FROM `mage_custom_order` WHERE `Status` = "complete" and `Datum_Lieferung` > "2014-11-02 12:04:12" and `Datum_Lieferung` < "2014-11-03 12:04:12";
+  - x SELECT `order_id`, `Bestellung`, concat("Bestellung: ",`Bestellung`),`shipping_lable` FROM `mage_custom_order` WHERE `Status` = "complete" and `Datum_Lieferung` > "2014-11-02 12:04:12" and `Datum_Lieferung` < "2014-11-03 12:04:12";
   - SELECT COUNT( * ) AS  `Zeilen` , sum(`Anzahl`),  `Produkt_name` FROM  `mage_custom_order_single_item` where order_id in (12345, 2346, 5678, 14532)
 - print queues
   - x select
@@ -23,7 +23,7 @@
   - x print
 - report (send order parameters as report parameters)
 - authentication
-- SQL "functions" with forms:
+- x SQL "functions" with forms:
   - x text, boolean, date/time fields
   - x list forms
   - x create/save

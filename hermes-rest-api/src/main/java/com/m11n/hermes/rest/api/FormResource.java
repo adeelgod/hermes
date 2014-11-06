@@ -3,6 +3,7 @@ package com.m11n.hermes.rest.api;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.persistence.FormRepository;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -94,7 +95,14 @@ public class FormResource {
                             value = resultSet.getDate(j);
                             break;
                     }
-                    row.put(metaData.getColumnName(j), value);
+
+                    String name = metaData.getColumnLabel(j);
+
+                    if(StringUtils.isEmpty(name)) {
+                        name = metaData.getColumnName(j);
+                    }
+
+                    row.put(name, value);
                 }
                 return row;
             }
