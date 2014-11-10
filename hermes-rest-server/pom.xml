@@ -89,6 +89,12 @@
         </dependency>
         -->
 
+        <!-- Jasypt -->
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt-spring31</artifactId>
+        </dependency>
+
         <!-- UI -->
         <dependency>
             <groupId>${project.groupId}</groupId>
