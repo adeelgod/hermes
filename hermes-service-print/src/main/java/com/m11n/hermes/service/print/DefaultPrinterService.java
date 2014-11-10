@@ -4,7 +4,6 @@ import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.persistence.PrinterLogRepository;
 import org.apache.pdfbox.io.IOUtils;
-import org.h2.mvstore.ConcurrentArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,10 @@ import javax.print.event.PrintJobListener;
 import java.awt.print.PrinterJob;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
