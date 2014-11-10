@@ -40,7 +40,7 @@ public class DocumentLog extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "order_id", unique = true)
+    @Column(name = "order_id")
     private String orderId;
 
     @PropertyDefinition
