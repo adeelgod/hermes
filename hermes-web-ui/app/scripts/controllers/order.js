@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, PrinterLogSvc, ConfigurationSvc, FormSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, ConfigurationSvc, FormSvc) {
     $scope.printing = false;
 
     $scope.params = {};
@@ -30,7 +30,6 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
         });
     };
 
-    // deprecated
     $scope.print = function() {
         // TODO: implement this
         $alert({content: 'Print scheduled', placement: 'top', type: 'success', show: true, duration: 3});
@@ -49,32 +48,6 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
             $scope.printing = false;
         });
          */
-    };
-
-    $scope.pages = function() {
-        var p = [];
-
-        if($scope.orders) {
-            for(var i=1; i<=$scope.orders.totalPages; i++) {
-                p.push(i);
-            }
-        }
-
-        return p;
-    };
-
-    $scope.go = function(p) {
-        PrinterLogSvc.list({page: p-1, from: $scope.fromDate, until: $scope.untilDate}).success(function(data) {
-            $scope.orders = data;
-        });
-    };
-
-    $scope.isCurrentPage = function(p) {
-        if($scope.orders) {
-            return $scope.orders.number === p-1;
-        }
-
-        return false;
     };
 
     ConfigurationSvc.list().success(function(data) {
