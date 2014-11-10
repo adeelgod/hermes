@@ -48,6 +48,8 @@ block content
                         td Order ID
                         td Invoice ID
                         td Shipping ID
+                        td Customer name
+                        td Customer email
                 tbody
                     tr(ng-repeat='entry in orders')
                         td ---
@@ -63,6 +65,8 @@ block content
                             span.label(ng-class="{ 'label-success': entry.shippingId, 'label-danger': !entry.shippingId }")
                                 i.fa(ng-class="{ 'fa-check': entry.shippingId, 'fa-close': !entry.shippingId }")
                             | &nbsp;{{entry.shippingId}}
+                        td {{entry.lastname}}, {{entry.firstname}}
+                        td {{entry.email}}
 
                     //
                         tr(ng-repeat='entry in orders.content')
