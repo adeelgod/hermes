@@ -10,7 +10,7 @@ block content
                         | Order Search
                     hr
                     //
-                        p {{orderstmp | json}}
+                        p {{orders | json}}
                         p {{frm | json}}
                         p {{frm['fields'] | json}}
                         p {{params | json}}
@@ -26,10 +26,6 @@ block content
                         .btn-group
                             button.btn.btn-primary(type='button', ng-click='query()')
                                 i.fa.fa-search
-                            button.btn.btn-success(type='button', ng-click='select()')
-                                i.fa.fa-check
-                            button.btn.btn-danger(type='button', ng-click='unselect()')
-                                i.fa.fa-close
                             button.btn.btn-default(type='button', ng-click='print()', ng-disabled='printing')
                                 i.fa.fa-print
         .col-md-6
@@ -37,20 +33,27 @@ block content
                 ul.pagination
                     li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
                         a(href='', ng-click='go(page)') {{page}}
-    .row(ng-show='orderstmp')
+    .row(ng-show='orders')
         .col-md-12
             table.table.table-condensed
                 thead
                     tr
                         td Charge
                         td
+                            .btn-group
+                                button.btn.btn-success(type='button', ng-click='select(true)')
+                                    i.fa.fa-check
+                                button.btn.btn-danger(type='button', ng-click='select(false)')
+                                    i.fa.fa-close
                         td Order ID
                         td Invoice ID
                         td Shipping ID
                 tbody
-                    tr(ng-repeat='entry in orderstmp')
+                    tr(ng-repeat='entry in orders')
                         td ---
-                        td ---
+                        td
+                            button.btn.btn-default(type='button', ng-click='entry._selected=!entry._selected')
+                                i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td {{entry.orderId}}
                         td
                             span.label(ng-class="{ 'label-success': entry.invoiceId, 'label-danger': !entry.invoiceId }")
