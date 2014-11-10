@@ -87,7 +87,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Pr
     };
 
     ConfigurationSvc.list().success(function(data) {
-        $scope.configuration = data;
+        $scope.configuration = data.properties;
 
         // TODO: use configured form
         $scope.getForm('orders');

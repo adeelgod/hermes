@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -40,7 +41,10 @@ public class FormResource {
     @GET
     @Produces(APPLICATION_JSON)
     public Response list() {
-        return Response.ok(formRepository.findAll()).build();
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+
+        return Response.ok(formRepository.findAll()).cacheControl(cc).build();
     }
 
     @POST

@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -25,6 +26,9 @@ public class ReportResource {
     @GET
     @Produces(APPLICATION_JSON)
     public Response list() throws Exception {
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+
         File templateDir = new File(reportService.getTemplateDir());
 
         String[] templates = null;
@@ -38,6 +42,6 @@ public class ReportResource {
             });
         }
 
-        return Response.ok(templates).build();
+        return Response.ok(templates).cacheControl(cc).build();
     }
 }

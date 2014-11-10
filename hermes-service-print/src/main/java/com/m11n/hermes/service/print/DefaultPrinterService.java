@@ -4,6 +4,7 @@ import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.persistence.PrinterLogRepository;
 import org.apache.pdfbox.io.IOUtils;
+import org.h2.mvstore.ConcurrentArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.awt.print.PrinterJob;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class DefaultPrinterService implements PrinterService {
@@ -29,6 +31,8 @@ public class DefaultPrinterService implements PrinterService {
     private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class);
 
     private String printQueueStatus;
+
+    private List<Printer> printers = new CopyOnWriteArrayList<>();
 
     @Inject
     private PrinterLogRepository printerLogRepository;
@@ -233,48 +237,49 @@ public class DefaultPrinterService implements PrinterService {
      */
 
     public List<Printer> printers() {
-        List<Printer> printers = new ArrayList<>();
+        if(printers.isEmpty()) {
+            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 
-        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+            for (PrintService printer : printServices) {
+                Printer p = new Printer(printer.getName());
 
-        for (PrintService printer : printServices) {
-            Printer p = new Printer(printer.getName());
+                p.setStatus(status(printer.getName()));
 
-            p.setStatus(status(printer.getName()));
+                for(Class category : printer.getSupportedAttributeCategories()) {
+                    Object o = printer.getSupportedAttributeValues(category, null, null);
 
-            for(Class category : printer.getSupportedAttributeCategories()) {
-                Object o = printer.getSupportedAttributeValues(category, null, null);
+                    boolean match = attributeCategories.contains(category);
 
-                boolean match = attributeCategories.contains(category);
+                    //logger.debug("++++++++++++++++++++++++++++++++++++++++++++ CATEGORY: {} ({})", category.getName(), match);
 
-                //logger.debug("++++++++++++++++++++++++++++++++++++++++++++ CATEGORY: {} ({})", category.getName(), match);
+                    if (o != null && o.getClass().isArray() && match) {
+                        PrinterAttributeCategory attributeCategory = new PrinterAttributeCategory(category.getName());
+                        p.addAttributeCategory(attributeCategory);
 
-                if (o != null && o.getClass().isArray() && match) {
-                    PrinterAttributeCategory attributeCategory = new PrinterAttributeCategory(category.getName());
-                    p.addAttributeCategory(attributeCategory);
+                        for (Attribute attribute : (Attribute[]) o) {
+                            String value = null;
 
-                    for (Attribute attribute : (Attribute[]) o) {
-                        String value = null;
-
-                        /**
-                        if(attribute instanceof EnumSyntax) {
-                            //value = ((EnumSyntax)attribute).getValue() + "";
-                            value = attribute.toString();
-                        } else if(attribute instanceof SetOfIntegerSyntax) {
-                            //value = Arrays.toString(((SetOfIntegerSyntax) attribute).getMembers());
-                            value = attribute.toString();
+                            /**
+                             if(attribute instanceof EnumSyntax) {
+                             //value = ((EnumSyntax)attribute).getValue() + "";
+                             value = attribute.toString();
+                             } else if(attribute instanceof SetOfIntegerSyntax) {
+                             //value = Arrays.toString(((SetOfIntegerSyntax) attribute).getMembers());
+                             value = attribute.toString();
+                             }
+                             */
+                            if(attribute instanceof EnumSyntax) {
+                                value = attribute.toString();
+                            }
+                            attributeCategory.addAttribute(new PrinterAttribute(attribute.getName(), value, attribute.getCategory().getName()));
                         }
-                         */
-                        if(attribute instanceof EnumSyntax) {
-                            value = attribute.toString();
-                        }
-                        attributeCategory.addAttribute(new PrinterAttribute(attribute.getName(), value, attribute.getCategory().getName()));
                     }
                 }
-            }
 
-            printers.add(p);
+                printers.add(p);
+            }
         }
+        
         return printers;
     }
 

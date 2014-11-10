@@ -26,6 +26,16 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
         ConfigurationSvc.save($scope.configuration);
     };
 
+    $scope.refresh = function() {
+        ConfigurationSvc.list().success(function(data) {
+            //$scope.configuration = data;
+            $scope.configuration = data.properties;
+            $scope.printers = data.printers;
+            $scope.forms = data.forms;
+            $scope.reports = data.templates;
+        });
+    };
+
     var uploader = $scope.uploader = new FileUploader({
         url: 'api/configuration/templates'
     });
@@ -73,19 +83,5 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
         $log.info('onCompleteAll');
     };
 
-    ConfigurationSvc.list().success(function(data) {
-        $scope.configuration = data;
-    });
-
-    PrinterSvc.printers().success(function(data) {
-        $scope.printers = data;
-    });
-
-    FormSvc.list().success(function(data) {
-        $scope.forms = data;
-    });
-
-    ReportSvc.list().success(function(data) {
-        $scope.reports = data;
-    });
+    $scope.refresh();
 });

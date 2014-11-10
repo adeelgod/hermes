@@ -1,22 +1,22 @@
 package com.m11n.hermes.rest.api;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeBodyPart;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeMultipart;
+import com.m11n.hermes.core.service.PrinterService;
+import com.m11n.hermes.core.service.ReportService;
+import com.m11n.hermes.persistence.FormRepository;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.FilenameFilter;
+import java.util.*;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
@@ -26,12 +26,46 @@ import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
 public class ConfigurationResource {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
 
+    @Inject
+    private ReportService reportService;
+
+    @Inject
+    private FormRepository formRepository;
+
+    @Inject
+    private PrinterService printerService;
+
     @GET
     @Produces(APPLICATION_JSON)
     public Response list() throws Exception {
         Properties p = new Properties();
         p.load(new FileInputStream(getPropertyFile()));
-        return Response.ok(p).build();
+
+        Map<String, Object> configuration = new HashMap<>();
+
+        configuration.put("properties", p);
+        configuration.put("forms", formRepository.findAll());
+        configuration.put("printers", printerService.printers());
+
+        File templateDir = new File(reportService.getTemplateDir());
+
+        String[] templates = null;
+
+        if(templateDir.exists()) {
+            templates = templateDir.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(".jrxml");
+                }
+            });
+        }
+
+        configuration.put("templates", templates);
+
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+
+        return Response.ok(configuration).cacheControl(cc).build();
     }
 
     @POST

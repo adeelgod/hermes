@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Deprecated
 public class DocumentSplitProcessor {
     private static final Logger logger = LoggerFactory.getLogger(DocumentSplitProcessor.class);
 

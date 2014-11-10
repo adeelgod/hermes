@@ -86,9 +86,10 @@ public class Main {
             ResourceHandler resourceHandler = new ResourceHandler();
             resourceHandler.setDirectoriesListed(true);
             resourceHandler.setWelcomeFiles(new String[]{"index.html"});
-            resourceHandler.setBaseResource(Resource.newResource(Main.class.getResource("/hermes-web-ui")));
+            resourceHandler.setBaseResource(Resource.newClassPathResource("/hermes-web-ui", false, false));
 
-            handlers.setHandlers(new Handler[]{resourceHandler, context, defaultHandler});
+            //handlers.setHandlers(new Handler[]{resourceHandler, context, defaultHandler});
+            handlers.setHandlers(new Handler[]{resourceHandler, context});
 
             server.setHandler(handlers);
 

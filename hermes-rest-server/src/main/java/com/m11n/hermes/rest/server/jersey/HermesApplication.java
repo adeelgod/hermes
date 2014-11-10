@@ -33,7 +33,7 @@ public class HermesApplication extends ResourceConfig {
         //.register(RolesAllowedDynamicFeature.class)
         //.register(DeclarativeLinkingFeature.class)
         //.register(LoggingFilter.class)
-        //.register(HluExceptionMapper.class)
+        //.register(HermesExceptionMapper.class)
         ;
     }
 }
