@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-@Deprecated
 public class DocumentSplitProcessor {
     private static final Logger logger = LoggerFactory.getLogger(DocumentSplitProcessor.class);
 
@@ -29,11 +28,17 @@ public class DocumentSplitProcessor {
     @Value("${hermes.result.dir}")
     private String dir;
 
-    @Value("${hermes.invoice.field}")
-    private String invoiceField;
+    @Value("${hermes.invoice.order.field}")
+    private String invoiceOrderIdField;
 
-    @Value("${hermes.label.field}")
-    private String labelField;
+    @Value("${hermes.label.order.field}")
+    private String labelOrderIdField;
+
+    @Value("${hermes.invoice.id.field}")
+    private String invoiceIdField;
+
+    @Value("${hermes.label.id.field}")
+    private String labelIdField;
 
     @PostConstruct
     public void init() {
@@ -48,8 +53,7 @@ public class DocumentSplitProcessor {
         }
     }
 
-    // TODO: find out if this is really necessary
-    public synchronized void process(File f) {
+    public void process(File f) {
         String fileName = f.getName();
         String filePath = f.getAbsolutePath();
 
@@ -73,12 +77,12 @@ public class DocumentSplitProcessor {
                 PrinterLog printerLog = null;
 
                 if(prefix.equals("invoice")) {
-                    printerLog = getPrinterLog(pdfService.value(document, 1, invoiceField));
-                    printerLog.setInvoiceId(pdfService.value(document, 1, "Rechnungsnummer")); // TODO: make this configurable
+                    printerLog = getPrinterLog(pdfService.value(document, 1, invoiceOrderIdField));
+                    printerLog.setInvoiceId(pdfService.value(document, 1, invoiceIdField));
                     printerLog.setInvoice(Boolean.TRUE);
                 } else if(prefix.equals("label")) {
-                    printerLog = getPrinterLog(pdfService.value(document, 1, labelField));
-                    printerLog.setShippingId(pdfService.value(document, 1, "Sendungsnr.")); // TODO: make this configurable
+                    printerLog = getPrinterLog(pdfService.value(document, 1, labelOrderIdField));
+                    printerLog.setShippingId(pdfService.value(document, 1, labelIdField));
                     printerLog.setLabel(Boolean.TRUE);
                 }
 
@@ -99,8 +103,6 @@ public class DocumentSplitProcessor {
 
                 // TODO: decide if we should store the not detected files too
             }
-
-            // TODO: save transaction in database
         } catch(Throwable t) {
             logger.error("XXXXX: {} ({})", t.getMessage(), filePath);
             logger.error(t.toString(), t);
