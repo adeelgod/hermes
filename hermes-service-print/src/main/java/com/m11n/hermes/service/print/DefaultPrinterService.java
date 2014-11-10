@@ -2,7 +2,7 @@ package com.m11n.hermes.service.print;
 
 import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.PrinterService;
-import com.m11n.hermes.persistence.PrinterLogRepository;
+import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,6 @@ import java.awt.print.PrinterJob;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -37,7 +36,7 @@ public class DefaultPrinterService implements PrinterService {
     private List<Printer> printers = new CopyOnWriteArrayList<>();
 
     @Inject
-    private PrinterLogRepository printerLogRepository;
+    private DocumentLogRepository documentLogRepository;
 
     public PrinterStatus status(String printerName) {
         PrintService printer = printer(printerName);
@@ -76,34 +75,31 @@ public class DefaultPrinterService implements PrinterService {
 
         int i = 0;
 
-        for(PrinterLog printerLog : printerLogRepository.findBySelected(true)) {
+        /**
+        for(DocumentLog documentLog : documentLogRepository.findBySelected(true)) {
             i++;
 
             JobStatus status = null;
 
-            if((printerLog.getInvoicePrinted()==null || !printerLog.getInvoicePrinted()) && printerLog.getInvoice()) {
-                status = print(resultDir + "/" + printerLog.getOrderId() + "/invoice.pdf", printerInvoice);
+            if((documentLog.getInvoicePrinted()==null || !documentLog.getInvoicePrinted()) && documentLog.getInvoice()) {
+                status = print(resultDir + "/" + documentLog.getOrderId() + "/invoice.pdf", printerInvoice);
                 // TODO: check status
-                printerLog.setInvoicePrinted(true);
-                printerLog.setInvoicePrintedAt(new Date());
-                printerLog = printerLogRepository.save(printerLog);
+                documentLog.setInvoicePrinted(true);
+                documentLog.setInvoicePrintedAt(new Date());
+                documentLog = printerLogRepository.save(documentLog);
             }
-            if((printerLog.getLabelPrinted()==null || !printerLog.getLabelPrinted()) && printerLog.getLabel()) {
-                status = print(resultDir + "/" + printerLog.getOrderId() + "/label.pdf", printerLabel);
+            if((documentLog.getLabelPrinted()==null || !documentLog.getLabelPrinted()) && documentLog.getLabel()) {
+                status = print(resultDir + "/" + documentLog.getOrderId() + "/label.pdf", printerLabel);
                 // TODO: check status
-                printerLog.setLabelPrinted(true);
-                printerLog.setLabelPrintedAt(new Date());
-                printerLog = printerLogRepository.save(printerLog);
+                documentLog.setLabelPrinted(true);
+                documentLog.setLabelPrintedAt(new Date());
+                documentLog = printerLogRepository.save(documentLog);
             }
             // TODO: check status
-            printerLog.setSelected(false);
-            printerLog = printerLogRepository.save(printerLog);
-
-            if(i%chargeSize==0) {
-                // TODO: what's the best way to print the report?!?
-                //print(resultDir + "/" + printerLog.getOrderId() + "/label.pdf", printerLabel);
-            }
+            documentLog.setSelected(false);
+            documentLog = printerLogRepository.save(documentLog);
         }
+         */
     }
 
     public void setPrintQueueStatus(String printQueueStatus) {

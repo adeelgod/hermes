@@ -1,8 +1,9 @@
 package com.m11n.hermes.rest.server.processor;
 
-import com.m11n.hermes.core.model.PrinterLog;
+import com.m11n.hermes.core.model.DocumentLog;
+import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.service.PdfService;
-import com.m11n.hermes.persistence.PrinterLogRepository;
+import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class DocumentSplitProcessor {
     private PdfService pdfService;
 
     @Inject
-    private PrinterLogRepository printerLogRepository;
+    private DocumentLogRepository documentLogRepository;
 
     @Value("${hermes.result.dir}")
     private String dir;
@@ -74,20 +75,20 @@ public class DocumentSplitProcessor {
                     prefix = "label";
                 }
 
-                PrinterLog printerLog = null;
+                DocumentLog documentLog = null;
 
                 if(prefix.equals("invoice")) {
-                    printerLog = getPrinterLog(pdfService.value(document, 1, invoiceOrderIdField));
-                    printerLog.setInvoiceId(pdfService.value(document, 1, invoiceIdField));
-                    printerLog.setInvoice(Boolean.TRUE);
+                    documentLog = getDocumentLog(pdfService.value(document, 1, invoiceOrderIdField), DocumentType.INVOICE.name());
+                    documentLog.setDocumentId(pdfService.value(document, 1, invoiceIdField));
+                    documentLog.setType(DocumentType.INVOICE.name());
                 } else if(prefix.equals("label")) {
-                    printerLog = getPrinterLog(pdfService.value(document, 1, labelOrderIdField));
-                    printerLog.setShippingId(pdfService.value(document, 1, labelIdField));
-                    printerLog.setLabel(Boolean.TRUE);
+                    documentLog = getDocumentLog(pdfService.value(document, 1, labelOrderIdField), DocumentType.LABEL.name());
+                    documentLog.setDocumentId(pdfService.value(document, 1, labelIdField));
+                    documentLog.setType(DocumentType.LABEL.name());
                 }
 
-                if(printerLog!=null && printerLog.getOrderId()!=null) {
-                    String tmpDir = dir + "/" + printerLog.getOrderId();
+                if(documentLog !=null && documentLog.getOrderId()!=null) {
+                    String tmpDir = dir + "/" + documentLog.getOrderId();
                     File t = new File(tmpDir);
                     if(!t.exists()) {
                         t.mkdirs();
@@ -96,9 +97,9 @@ public class DocumentSplitProcessor {
                     //logger.debug("##################### SAVING: {} ({})", fileNameTmp, filePath);
                     document.save(fileNameTmp);
 
-                    printerLog.setProcessedAt(new Date());
-                    printerLogRepository.save(printerLog);
-                    logger.debug("##################### LOG ENTRIES: {}", printerLogRepository.count());
+                    documentLog.setProcessedAt(new Date());
+                    documentLogRepository.save(documentLog);
+                    logger.debug("##################### LOG ENTRIES: {}", documentLogRepository.count());
                 }
 
                 // TODO: decide if we should store the not detected files too
@@ -109,14 +110,14 @@ public class DocumentSplitProcessor {
         }
     }
 
-    private PrinterLog getPrinterLog(String orderId) {
-        PrinterLog printerLog = printerLogRepository.findByOrderId(orderId);
+    private DocumentLog getDocumentLog(String orderId, String type) {
+        DocumentLog documentLog = documentLogRepository.findByOrderIdAndType(orderId, type);
 
-        if(printerLog==null) {
-            printerLog = new PrinterLog();
-            printerLog.setOrderId(orderId);
+        if(documentLog ==null) {
+            documentLog = new DocumentLog();
+            documentLog.setOrderId(orderId);
         }
 
-        return printerLog;
+        return documentLog;
     }
 }
