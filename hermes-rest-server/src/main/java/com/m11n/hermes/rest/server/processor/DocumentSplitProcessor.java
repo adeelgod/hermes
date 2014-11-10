@@ -67,21 +67,13 @@ public class DocumentSplitProcessor {
 
                 PDDocument document = documents.get(0);
 
-                String prefix = "unknown";
-
-                if(fileName.toLowerCase().contains("invoice")) {
-                    prefix = "invoice";
-                } else if(fileName.toLowerCase().contains("label")) {
-                    prefix = "label";
-                }
-
                 DocumentLog documentLog = null;
 
-                if(prefix.equals("invoice")) {
+                if(fileName.toLowerCase().contains("invoice")) {
                     documentLog = getDocumentLog(pdfService.value(document, 1, invoiceOrderIdField), DocumentType.INVOICE.name());
                     documentLog.setDocumentId(pdfService.value(document, 1, invoiceIdField));
                     documentLog.setType(DocumentType.INVOICE.name());
-                } else if(prefix.equals("label")) {
+                } else if (fileName.toLowerCase().contains("label")) {
                     documentLog = getDocumentLog(pdfService.value(document, 1, labelOrderIdField), DocumentType.LABEL.name());
                     documentLog.setDocumentId(pdfService.value(document, 1, labelIdField));
                     documentLog.setType(DocumentType.LABEL.name());
@@ -93,8 +85,7 @@ public class DocumentSplitProcessor {
                     if(!t.exists()) {
                         t.mkdirs();
                     }
-                    String fileNameTmp = tmpDir + "/" + prefix + ".pdf";
-                    //logger.debug("##################### SAVING: {} ({})", fileNameTmp, filePath);
+                    String fileNameTmp = tmpDir + "/" + documentLog.getType().toLowerCase() + ".pdf";
                     document.save(fileNameTmp);
 
                     documentLog.setProcessedAt(new Date());
