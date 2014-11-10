@@ -21,7 +21,7 @@ public class JettyCorsConfig {
         logger.info("=================================== Adding CORS filter with context {}", mapping);
 
         FilterHolder filter = new FilterHolder((Class<? extends Filter>) Class.forName(CorsFilter.class.getName()));
-        filter.setAsyncSupported(true);
+        filter.setAsyncSupported(false);
         filter.setName(FILTER_NAME);
         filter.setDisplayName(FILTER_NAME);
 

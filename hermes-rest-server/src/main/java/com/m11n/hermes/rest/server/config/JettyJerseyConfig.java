@@ -29,7 +29,7 @@ public class JettyJerseyConfig {
         final ServletHolder servletHolder = new ServletHolder(SERVLET_NAME, (Class<? extends Servlet>) Class.forName(servletClass));
         servletHolder.setDisplayName(SERVLET_NAME);
         servletHolder.setInitOrder(1);
-        servletHolder.setAsyncSupported(true);
+        servletHolder.setAsyncSupported(false);
         servletHolder.setInitParameter(PARAM_APPLICATION, HermesApplication.class.getName());
         servletHolder.setInitParameter("cacheControl","max-age=0,public");
         context.addServlet(servletHolder, mapping);
