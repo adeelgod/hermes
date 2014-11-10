@@ -51,14 +51,17 @@ public class Main {
             connector.setHost(optHelper.getHost());
             connector.setPort(optHelper.getPort());
 
+            // NOTE: extremely important! Otherwise random zip closed exceptions!
+            Resource.setDefaultUseCaches(false);
+
             // TODO: make this configurable (basically "behind proxy" configuration)?
             HttpConfiguration configuration = new HttpConfiguration();
             configuration.setSendServerVersion(false);
             configuration.setSendXPoweredBy(false);
-            configuration.setOutputBufferSize(32768);
-            configuration.setRequestHeaderSize(8192);
-            configuration.setResponseHeaderSize(8192);
-            configuration.addCustomizer(new ForwardedRequestCustomizer());
+            configuration.setOutputBufferSize(65536);
+            configuration.setRequestHeaderSize(16384);
+            configuration.setResponseHeaderSize(16384);
+            //configuration.addCustomizer(new ForwardedRequestCustomizer());
 
             HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(configuration);
 
