@@ -36,7 +36,7 @@ public class DefaultPdfService implements PdfService {
         return value(doc, page, fieldName);
     }
 
-    public String value(PDDocument doc, int page, String fieldName) throws Exception {
+    public String value(PDDocument doc, int page, String fn) throws Exception {
         Writer writer = new StringWriter();
 
         PDFTextStripper stripper = new PDFTextStripper();
@@ -46,12 +46,19 @@ public class DefaultPdfService implements PdfService {
 
         writer.close();
 
+        //logger.debug(writer.toString());
+
         LineIterator it = IOUtils.lineIterator(IOUtils.toInputStream(writer.toString()), Charset.forName("UTF-8"));
+
+        String[] fieldNames = fn.split("\\|");
 
         while(it.hasNext()) {
             String l = it.next().trim();
-            if(l.startsWith(fieldName)) {
-                return l.substring(fieldName.length(), l.length()).replace(":", "").trim();
+
+            for(String n : fieldNames) {
+                if(l.startsWith(n)) {
+                    return l.substring(n.length(), l.length()).replace(":", "").trim();
+                }
             }
         }
 
