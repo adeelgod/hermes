@@ -54,12 +54,14 @@ public class DocumentSplitProcessor {
         }
     }
 
-    public void process(File f) {
+    public synchronized void process(File f) {
         String fileName = f.getName();
         String filePath = f.getAbsolutePath();
 
         try {
             PDDocument parent = PDDocument.load(filePath);
+
+            //logger.debug("!!!!!!!!!!!!!!!!!!!!!!!! PROCESSING: {} - {} ({})", fileName, parent.getNumberOfPages(), filePath);
 
             for(int i=1; i<=parent.getNumberOfPages(); i++) {
                 // NOTE: splitting one by one is the best approach without concurrency problems
@@ -77,20 +79,32 @@ public class DocumentSplitProcessor {
                     documentLog = getDocumentLog(pdfService.value(document, 1, labelOrderIdField), DocumentType.LABEL.name());
                     documentLog.setDocumentId(pdfService.value(document, 1, labelIdField));
                     documentLog.setType(DocumentType.LABEL.name());
+                } else {
+                    logger.error("!!!!!!!!!!!!!!!!!!!!!!!! FAILED: {} ({})", fileName, filePath);
                 }
 
+                //logger.debug("!!!!!!!!!!!!!!!!!!!!!!!! PROCESSING: {} - {}", fileName, documentLog);
+
                 if(documentLog !=null && documentLog.getOrderId()!=null) {
-                    String tmpDir = dir + "/" + documentLog.getOrderId();
-                    File t = new File(tmpDir);
+                    String resultDir = dir + "/" + documentLog.getOrderId();
+                    File t = new File(resultDir);
                     if(!t.exists()) {
                         t.mkdirs();
                     }
-                    String fileNameTmp = tmpDir + "/" + documentLog.getType().toLowerCase() + ".pdf";
-                    document.save(fileNameTmp);
+                    String fileNameResult = resultDir + "/" + documentLog.getType().toLowerCase() + ".pdf";
+                    document.save(fileNameResult);
 
                     documentLog.setProcessedAt(new Date());
                     documentLogRepository.save(documentLog);
-                    logger.debug("##################### LOG ENTRIES: {}", documentLogRepository.count());
+                    logger.debug("##################### LOG ENTRIES: {}", documentLog);
+                } else {
+                    logger.error("!!!!!!!!!!!!!!!!!!!!!!!! FAILED: {} - {}", fileName, documentLog);
+                    File t = new File(dir + "/error/");
+                    if(!t.exists()) {
+                        t.mkdirs();
+                    }
+                    //String type = documentLog==null ? "unknown" : documentLog.getType().toLowerCase();
+                    document.save(dir + "/error/" + fileName + "-" + i + ".pdf");
                 }
 
                 // TODO: decide if we should store the not detected files too
