@@ -4,7 +4,7 @@
 <</Type /Catalog /Version /1.4 /Pages 2 0 R /Names 5 0 R >>
 endobj
 2 0 obj 
-<</Type /Pages /Kids [6 0 R 10 0 R 14 0 R 18 0 R 22 0 R 26 0 R 30 0 R 34 0 R 38 0 R ] /Count 9 >>
+<</Type /Pages /Kids [6 0 R 10 0 R 14 0 R 18 0 R 22 0 R 26 0 R 30 0 R 34 0 R 38 0 R 42 0 R 46 0 R 50 0 R 54 0 R 58 0 R 62 0 R ] /Count 15 >>
 endobj
 3 0 obj 
 []
@@ -16,11 +16,11 @@ endobj
 <</Dests 4 0 R >>
 endobj
 6 0 obj 
-<</Type /Page /LastModified (D:20140922100130+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175409+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [7 0 R ] /Parent 2 0 R >>
 endobj
 7 0 obj 
-<</Length 2766 >>
+<</Length 3152 >>
 stream
 0 G
 0.5 w
@@ -48,19 +48,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Robert Sprung) Tj
+(Michaela Kummerow-Kramaschki) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Waldheimstraße, 21) Tj
+(Schlesierweg 7) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(16792 Zehdenick) Tj
+(57339 Erndtebrück) Tj
 ET
 0 g
 /F2 8 Tf
@@ -72,49 +72,43 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Kundenummer: 845) Tj
+(Bestellnummer: 300012235) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Bestellnummer: 300009816) Tj
+(Rechnungsnummer: 300009768) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 606 Td
-(Rechnungsnummer: 300007401) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 597.5 Td
 (Bei der Bezahlung bitte immer angeben) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Robert Sprung, Waldheimstraße, 21, 16792 Zehdenick) Tj
+(Auftraggeber: Michaela Kummerow-Kramaschki, Schlesierweg 7, 57339 Erndtebrück) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Robert Sprung, Waldheimstraße, 21, 16792 Zehdenick) Tj
+(Versandanschrift: Michaela Kummerow-Kramaschki, Schlesierweg 7, 57339 Erndtebrück) Tj
 ET
 0 g
 /F2 11 Tf
@@ -143,7 +137,7 @@ ET
 /F2 8 Tf
 BT
 97.75 442 Td
-(- Carb CHIA 1kg) Tj
+(-Carb Zucker \(ERYTHRITOL, Erythrit\)  für die Low Carb Küche 100...) Tj
 ET
 0 g
 /F2 8 Tf
@@ -154,83 +148,123 @@ ET
 0 g
 /F2 8 Tf
 BT
-418.906 442 Td
-(15,50 €) Tj
+422.906 442 Td
+(9,90 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-469.982 442 Td
+465.982 442 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 442 Td
+(9,90 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb Mandelmehl Classic für die Low Carb Küche 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
+(6,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 431 Td
 (7.0%) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 442 Td
-(15,50 €) Tj
+535 431 Td
+(12,00 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
-62 433 m
-561 433 l
+62 422 m
+561 422 l
  S
 0 g
 /F2 8 Tf
 BT
-62 423 Td
+62 412 Td
 (Warenbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 410 Td
+62 399 Td
 (Versandkosten) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 423 Td
-(15,50 €) Tj
+535 412 Td
+(21,90 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 410 Td
-(3,90 €) Tj
+539 399 Td
+(5,90 €) Tj
 ET
 0.5 w
-62 406 m
-561 406 l
+62 395 m
+561 395 l
  S
 0 g
 /F2 8 Tf
 BT
-62 396 Td
+62 385 Td
 (Rechnungsbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 396 Td
-(19,40 €) Tj
+535 385 Td
+(27,80 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 336 Td
+62 325 Td
 (Wir danken für Ihren Einkauf) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 327 Td
-(Der Rechungsbetrag ist bereits per Paypal beglichen) Tj
+62 316 Td
+(Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
 ET
 0 g
 /F2 5.5 Tf
 BT
 62 41 Td
-(1 1) Tj
+(3 3) Tj
 ET
 0 G
 0.5 w
@@ -318,11 +352,11 @@ endobj
 <</Type /Font /Encoding /WinAnsiEncoding /Subtype /Type1 /BaseFont /Times-Bold >>
 endobj
 10 0 obj 
-<</Type /Page /LastModified (D:20140922100130+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175409+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [11 0 R ] /Parent 2 0 R >>
 endobj
 11 0 obj 
-<</Length 2722 >>
+<</Length 2721 >>
 stream
 0 G
 0.5 w
@@ -350,19 +384,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Bärbel Jörz) Tj
+(Regina Lux) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Taunusweg 24) Tj
+(Nethetalstr. 24) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(53844 Troisdorf) Tj
+(33034 Brakel) Tj
 ET
 0 g
 /F2 8 Tf
@@ -374,25 +408,25 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Bestellnummer: 300009815) Tj
+(Bestellnummer: 300012234) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Rechnungsnummer: 300007400) Tj
+(Rechnungsnummer: 300009767) Tj
 ET
 0 g
 /F2 7.5 Tf
@@ -404,13 +438,13 @@ ET
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Bärbel Jörz, Taunusweg 24, 53844 Troisdorf) Tj
+(Auftraggeber: Regina Lux, Nethetalstr. 24, 33034 Brakel) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Bärbel Jörz, Taunusweg 24, 53844 Troisdorf) Tj
+(Versandanschrift: Regina Lux, Nethetalstr. 24, 33034 Brakel) Tj
 ET
 0 g
 /F2 11 Tf
@@ -445,7 +479,7 @@ ET
 /F2 8 Tf
 BT
 356.906 442 Td
-(1) Tj
+(2) Tj
 ET
 0 g
 /F2 8 Tf
@@ -462,8 +496,8 @@ ET
 0 g
 /F2 8 Tf
 BT
-539 442 Td
-(9,90 €) Tj
+535 442 Td
+(19,80 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
@@ -485,14 +519,14 @@ ET
 0 g
 /F2 8 Tf
 BT
-539 423 Td
-(9,90 €) Tj
+535 423 Td
+(19,80 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 539 410 Td
-(4,44 €) Tj
+(4,87 €) Tj
 ET
 0.5 w
 62 406 m
@@ -508,7 +542,7 @@ ET
 /F2 8 Tf
 BT
 535 396 Td
-(14,34 €) Tj
+(24,67 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -526,7 +560,7 @@ ET
 /F2 5.5 Tf
 BT
 62 41 Td
-(1 1) Tj
+(2 2) Tj
 ET
 0 G
 0.5 w
@@ -608,11 +642,11 @@ ET
 endstream
 endobj
 14 0 obj 
-<</Type /Page /LastModified (D:20140922100131+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175410+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [15 0 R ] /Parent 2 0 R >>
 endobj
 15 0 obj 
-<</Length 6137 >>
+<</Length 3874 >>
 stream
 0 G
 0.5 w
@@ -640,19 +674,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Gerald Bliss) Tj
+(Stella Hansen) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Margarten 18) Tj
+(Kirke Alle 31) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(77955 Ettenheim) Tj
+(4970 Rødby) Tj
 ET
 0 g
 /F2 8 Tf
@@ -664,49 +698,43 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Kundenummer: 1771) Tj
+(Bestellnummer: 300012233) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Bestellnummer: 300009814) Tj
+(Rechnungsnummer: 300009766) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 606 Td
-(Rechnungsnummer: 300007399) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 597.5 Td
 (Bei der Bezahlung bitte immer angeben) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Gerald Bliss, Margarten 18, 77955 Ettenheim) Tj
+(Auftraggeber: Stella Hansen, Kirke Alle 31, 4970 Rødby) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Gerald Bliss, Margarten 18, 77955 Ettenheim) Tj
+(Versandanschrift: Stella Hansen, Kirke Alle 31, 4970 Rødby) Tj
 ET
 0 g
 /F2 11 Tf
@@ -735,19 +763,19 @@ ET
 /F2 8 Tf
 BT
 97.75 442 Td
-(-Carb weißes MANDELMEHL \(entölt\) 750 g) Tj
+(-Carb MANDELMEHL CLASSIC \(entölt\) 750g) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 356.906 442 Td
-(1) Tj
+(4) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 422.906 442 Td
-(8,50 €) Tj
+(5,00 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -758,8 +786,8 @@ ET
 0 g
 /F2 8 Tf
 BT
-539 442 Td
-(8,50 €) Tj
+535 442 Td
+(20,00 €) Tj
 ET
 0.75 g
 0.75 G
@@ -775,19 +803,19 @@ ET
 /F2 8 Tf
 BT
 97.75 431 Td
-(-Carb braunes MANDELMEHL \(entölt\) 1 kg) Tj
+(-Carb SESAMMEHL \(entölt\) 750 g) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 356.906 431 Td
-(2) Tj
+(1) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 422.906 431 Td
-(9,50 €) Tj
+(5,00 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -798,8 +826,8 @@ ET
 0 g
 /F2 8 Tf
 BT
-535 431 Td
-(19,00 €) Tj
+539 431 Td
+(5,00 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -811,7 +839,7 @@ ET
 /F2 8 Tf
 BT
 97.75 420 Td
-(-Carb LEINSAMENMEHL \(entölt\) 1 kg) Tj
+(-Carb ZUCKER 1kg) Tj
 ET
 0 g
 /F2 8 Tf
@@ -823,19 +851,19 @@ ET
 /F2 8 Tf
 BT
 422.906 420 Td
-(7,50 €) Tj
+(9,90 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-469.982 420 Td
-(7.0%) Tj
+465.982 420 Td
+(19.0%) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 539 420 Td
-(7,50 €) Tj
+(9,90 €) Tj
 ET
 0.75 g
 0.75 G
@@ -851,19 +879,19 @@ ET
 /F2 8 Tf
 BT
 97.75 409 Td
-(-Carb Walnussmehl \(entölt\) 750 g) Tj
+(-Carb FLOHSAMENSCHALEN Mehl 750g) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 356.906 409 Td
-(1) Tj
+(2) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-422.906 409 Td
-(5,00 €) Tj
+418.906 409 Td
+(11,00 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -874,8 +902,8 @@ ET
 0 g
 /F2 8 Tf
 BT
-539 409 Td
-(5,00 €) Tj
+535 409 Td
+(22,00 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -887,7 +915,7 @@ ET
 /F2 8 Tf
 BT
 97.75 398 Td
-(-Carb KÜRBISKERNMEHL \(entölt\) 1 kg) Tj
+(-Carb Nudeln Fusilli 250g ) Tj
 ET
 0 g
 /F2 8 Tf
@@ -899,7 +927,7 @@ ET
 /F2 8 Tf
 BT
 422.906 398 Td
-(7,80 €) Tj
+(4,80 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -911,334 +939,70 @@ ET
 /F2 8 Tf
 BT
 539 398 Td
-(7,80 €) Tj
-ET
-0.75 g
-0.75 G
-62 394 499 -11 re
- f*
-0 g
-/F2 8 Tf
-BT
-62 387 Td
-(6) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 387 Td
-(- Carb CHIA Probierpack 250g) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 387 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 387 Td
-(5,50 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-469.982 387 Td
-(7.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 387 Td
-(5,50 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 376 Td
-(7) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 376 Td
-(-carb GUARKERN Mehl 150 g) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 376 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 376 Td
-(4,90 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-465.982 376 Td
-(19.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 376 Td
-(4,90 €) Tj
-ET
-0.75 g
-0.75 G
-62 372 499 -11 re
- f*
-0 g
-/F2 8 Tf
-BT
-62 365 Td
-(8) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 365 Td
-(-Carb Nudeln Fusilli 250g ) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 365 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 365 Td
 (4,80 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-469.982 365 Td
-(7.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 365 Td
-(4,80 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 354 Td
-(9) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 354 Td
-(-Carb Nudeln Penne 250g ) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 354 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 354 Td
-(4,80 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-469.982 354 Td
-(7.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 354 Td
-(4,80 €) Tj
-ET
-0.75 g
-0.75 G
-62 350 499 -11 re
- f*
-0 g
-/F2 8 Tf
-BT
-62 343 Td
-(10) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 343 Td
-(-Carb WEIZENKLEBER 750 g) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 343 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 343 Td
-(3,90 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-465.982 343 Td
-(19.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 343 Td
-(3,90 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 332 Td
-(11) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 332 Td
-(Broschüre: Low Carb für Anfänger) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 332 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 332 Td
-(2,00 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-469.982 332 Td
-(7.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 332 Td
-(2,00 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
-62 323 m
-561 323 l
+62 389 m
+561 389 l
  S
 0 g
 /F2 8 Tf
 BT
-62 313 Td
+62 379 Td
 (Warenbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 300 Td
+62 366 Td
 (Versandkosten) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 313 Td
-(73,70 €) Tj
+535 379 Td
+(61,70 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 300 Td
-(0,00 €) Tj
+535 366 Td
+(14,50 €) Tj
 ET
 0.5 w
-62 296 m
-561 296 l
+62 362 m
+561 362 l
  S
 0 g
 /F2 8 Tf
 BT
-62 286 Td
+62 352 Td
 (Rechnungsbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 286 Td
-(73,70 €) Tj
+535 352 Td
+(76,20 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 226 Td
-(Bitte überweisen Sie den vollen Rechnungsbetrag innerhalb von 10 Tagen nach Erhalt der Ware an:) Tj
+62 292 Td
+(Wir danken für Ihren Einkauf) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 217 Td
-(Hypovereinsbank) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 208 Td
-(BLZ 505 201 90) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 199 Td
-(Kto. 13 53 61 63) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 190 Td
-(Empfänger: l-carb-shop UG) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 181 Td
-(IBAN: DE93505201900013536163) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 172 Td
-(BIC/SWIFT-Code: HYVEDEMM467) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 163 Td
-(Als Verwendungszweck geben Sie bitte die Bestellnummer an) Tj
+62 283 Td
+(Der Rechungsbetrag ist bereits per Paypal beglichen) Tj
 ET
 0 g
 /F2 5.5 Tf
 BT
 62 41 Td
-(12 9) Tj
+(9 8) Tj
 ET
 0 G
 0.5 w
@@ -1320,11 +1084,11 @@ ET
 endstream
 endobj
 18 0 obj 
-<</Type /Page /LastModified (D:20140922100131+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175410+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [19 0 R ] /Parent 2 0 R >>
 endobj
 19 0 obj 
-<</Length 2737 >>
+<</Length 3940 >>
 stream
 0 G
 0.5 w
@@ -1352,19 +1116,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Silke Großebrockhoff) Tj
+(anita Schierenbeck-Brüning) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Roosenweg 2) Tj
+(Hoher Geestweg 6) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(47647 Kerken) Tj
+(28844 Weyhe) Tj
 ET
 0 g
 /F2 8 Tf
@@ -1376,25 +1140,25 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Bestellnummer: 300009813) Tj
+(Bestellnummer: 300012232) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Rechnungsnummer: 300007398) Tj
+(Rechnungsnummer: 300009765) Tj
 ET
 0 g
 /F2 7.5 Tf
@@ -1406,13 +1170,13 @@ ET
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Silke Großebrockhoff, Roosenweg 2, 47647 Kerken) Tj
+(Auftraggeber: anita Schierenbeck-Brüning, Hoher Geestweg 6, 28844 Weyhe) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Silke Großebrockhoff, Roosenweg 2, 47647 Kerken) Tj
+(Versandanschrift: anita Schierenbeck-Brüning, Hoher Geestweg 6, 28844 Weyhe) Tj
 ET
 0 g
 /F2 11 Tf
@@ -1441,7 +1205,7 @@ ET
 /F2 8 Tf
 BT
 97.75 442 Td
-(-Carb weißes MANDELMEHL \(entölt\) 750 g) Tj
+(-Carb KÜRBISKERNMEHL \(entölt\) 750 g) Tj
 ET
 0 g
 /F2 8 Tf
@@ -1453,7 +1217,7 @@ ET
 /F2 8 Tf
 BT
 422.906 442 Td
-(9,90 €) Tj
+(6,90 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -1465,70 +1229,222 @@ ET
 /F2 8 Tf
 BT
 539 442 Td
+(6,90 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb ZUCKER 1kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
 (9,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 431 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 431 Td
+(9,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 420 Td
+(3) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 420 Td
+(-Carb Walnussmehl entölt \(750 g\)) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 420 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 420 Td
+(6,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 420 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 420 Td
+(6,50 €) Tj
+ET
+0.75 g
+0.75 G
+62 416 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 409 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 409 Td
+(-Carb PuderZUCKER 1kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 409 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+418.906 409 Td
+(12,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 409 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 409 Td
+(12,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 398 Td
+(5) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 398 Td
+(-Carb MANDELMEHL CLASSIC \(entölt\) 750g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 398 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 398 Td
+(6,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 398 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 398 Td
+(6,50 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
-62 433 m
-561 433 l
+62 389 m
+561 389 l
  S
 0 g
 /F2 8 Tf
 BT
-62 423 Td
+62 379 Td
 (Warenbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 410 Td
+62 366 Td
 (Versandkosten) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 423 Td
-(9,90 €) Tj
+535 379 Td
+(42,30 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 410 Td
-(4,44 €) Tj
+539 366 Td
+(6,38 €) Tj
 ET
 0.5 w
-62 406 m
-561 406 l
+62 362 m
+561 362 l
  S
 0 g
 /F2 8 Tf
 BT
-62 396 Td
+62 352 Td
 (Rechnungsbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 396 Td
-(14,34 €) Tj
+535 352 Td
+(48,68 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 336 Td
+62 292 Td
 (Wir danken für Ihren Einkauf) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 327 Td
+62 283 Td
 (Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
 ET
 0 g
 /F2 5.5 Tf
 BT
 62 41 Td
-(1 1) Tj
+(5 5) Tj
 ET
 0 G
 0.5 w
@@ -1610,11 +1526,11 @@ ET
 endstream
 endobj
 22 0 obj 
-<</Type /Page /LastModified (D:20140922100132+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175411+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [23 0 R ] /Parent 2 0 R >>
 endobj
 23 0 obj 
-<</Length 3368 >>
+<</Length 2733 >>
 stream
 0 G
 0.5 w
@@ -1642,19 +1558,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Johannes Orgis) Tj
+(Sabine Scherz) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(beusselstrasse 38) Tj
+(Josef-Ries-Str. 10) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(10553 Berlin) Tj
+(99086 Erfurt) Tj
 ET
 0 g
 /F2 8 Tf
@@ -1666,49 +1582,43 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Kundenummer: 1772) Tj
+(Bestellnummer: 300012231) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Bestellnummer: 300009812) Tj
+(Rechnungsnummer: 300009764) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 606 Td
-(Rechnungsnummer: 300007397) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 597.5 Td
 (Bei der Bezahlung bitte immer angeben) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Johannes Orgis, beusselstrasse 38, 10553 Berlin) Tj
+(Auftraggeber: Sabine Scherz, Josef-Ries-Str. 10, 99086 Erfurt) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Johannes Orgis, beusselstrasse 38, 10553 Berlin) Tj
+(Versandanschrift: Sabine Scherz, Josef-Ries-Str. 10, 99086 Erfurt) Tj
 ET
 0 g
 /F2 11 Tf
@@ -1737,19 +1647,19 @@ ET
 /F2 8 Tf
 BT
 97.75 442 Td
-(-Carb LEINSAMENMEHL \(entölt\) 1 kg) Tj
+(-carb ZUCKER 100% mit Stevia 1 kg) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 356.906 442 Td
-(4) Tj
+(1) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-422.906 442 Td
-(7,50 €) Tj
+418.906 442 Td
+(13,00 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -1761,146 +1671,70 @@ ET
 /F2 8 Tf
 BT
 535 442 Td
-(30,00 €) Tj
-ET
-0.75 g
-0.75 G
-62 438 499 -11 re
- f*
-0 g
-/F2 8 Tf
-BT
-62 431 Td
-(2) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 431 Td
-(-Carb WEIZENKLEBER 750 g) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 431 Td
-(2) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 431 Td
-(3,90 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-465.982 431 Td
-(19.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 431 Td
-(7,80 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 420 Td
-(3) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 420 Td
-(-Carb KÜRBISKERNMEHL \(entölt\) 1 kg) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 420 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-422.906 420 Td
-(7,80 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-469.982 420 Td
-(7.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 420 Td
-(7,80 €) Tj
+(13,00 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
-62 411 m
-561 411 l
+62 433 m
+561 433 l
  S
 0 g
 /F2 8 Tf
 BT
-62 401 Td
+62 423 Td
 (Warenbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 388 Td
+62 410 Td
 (Versandkosten) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 401 Td
-(45,60 €) Tj
+535 423 Td
+(13,00 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 388 Td
-(4,90 €) Tj
+539 410 Td
+(4,54 €) Tj
 ET
 0.5 w
-62 384 m
-561 384 l
+62 406 m
+561 406 l
  S
 0 g
 /F2 8 Tf
 BT
-62 374 Td
+62 396 Td
 (Rechnungsbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 374 Td
-(50,50 €) Tj
+535 396 Td
+(17,54 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 314 Td
+62 336 Td
 (Wir danken für Ihren Einkauf) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 305 Td
-(Der Rechungsbetrag ist bereits per Paypal beglichen) Tj
+62 327 Td
+(Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
 ET
 0 g
 /F2 5.5 Tf
 BT
 62 41 Td
-(7 7) Tj
+(1 1) Tj
 ET
 0 G
 0.5 w
@@ -1982,11 +1816,11 @@ ET
 endstream
 endobj
 26 0 obj 
-<</Type /Page /LastModified (D:20140922100132+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175411+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [27 0 R ] /Parent 2 0 R >>
 endobj
 27 0 obj 
-<</Length 2810 >>
+<</Length 3388 >>
 stream
 0 G
 0.5 w
@@ -2014,25 +1848,25 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(25922667) Tj
+(c/o NeiKo GmbH & Co. KG) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Steffen Pöhler) Tj
+(Andrea Sadowski) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(Postfiliale 648, Allee 6) Tj
+(Westerholter Straße 555) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 606 Td
-(74072 Heilbronn) Tj
+(45699 Herten) Tj
 ET
 0 g
 /F2 8 Tf
@@ -2044,25 +1878,25 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Bestellnummer: 300009811) Tj
+(Bestellnummer: 300012229) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Rechnungsnummer: 300007396) Tj
+(Rechnungsnummer: 300009763) Tj
 ET
 0 g
 /F2 7.5 Tf
@@ -2074,13 +1908,13 @@ ET
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Steffen Pöhler, Postfiliale 648, Allee 6, 74072 Heilbronn) Tj
+(Auftraggeber: Andrea Sadowski, Westerholter Straße 555, 45699 Herten) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Steffen Pöhler, Postfiliale 648, Allee 6, 74072 Heilbronn) Tj
+(Versandanschrift: Andrea Sadowski, Westerholter Straße 555, 45699 Herten) Tj
 ET
 0 g
 /F2 11 Tf
@@ -2109,7 +1943,7 @@ ET
 /F2 8 Tf
 BT
 97.75 442 Td
-(-Carb weißes MANDELMEHL \(entölt\) 750 g) Tj
+(-Carb MANDELMEHL CLASSIC \(entölt\) 750g) Tj
 ET
 0 g
 /F2 8 Tf
@@ -2121,7 +1955,7 @@ ET
 /F2 8 Tf
 BT
 422.906 442 Td
-(9,90 €) Tj
+(6,50 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -2133,70 +1967,146 @@ ET
 /F2 8 Tf
 BT
 539 442 Td
+(6,50 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb ZUCKER 1kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
 (9,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 431 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 431 Td
+(9,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 420 Td
+(3) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 420 Td
+(-Carb PuderZUCKER 1kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 420 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+418.906 420 Td
+(12,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 420 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 420 Td
+(12,50 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
-62 433 m
-561 433 l
+62 411 m
+561 411 l
  S
 0 g
 /F2 8 Tf
 BT
-62 423 Td
+62 401 Td
 (Warenbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 410 Td
+62 388 Td
 (Versandkosten) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 423 Td
-(9,90 €) Tj
+535 401 Td
+(28,90 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-539 410 Td
-(4,44 €) Tj
+539 388 Td
+(5,52 €) Tj
 ET
 0.5 w
-62 406 m
-561 406 l
+62 384 m
+561 384 l
  S
 0 g
 /F2 8 Tf
 BT
-62 396 Td
+62 374 Td
 (Rechnungsbetrag) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-535 396 Td
-(14,34 €) Tj
+535 374 Td
+(34,42 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 336 Td
+62 314 Td
 (Wir danken für Ihren Einkauf) Tj
 ET
 0 g
 /F2 8 Tf
 BT
-62 327 Td
+62 305 Td
 (Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
 ET
 0 g
 /F2 5.5 Tf
 BT
 62 41 Td
-(1 1) Tj
+(3 3) Tj
 ET
 0 G
 0.5 w
@@ -2278,11 +2188,11 @@ ET
 endstream
 endobj
 30 0 obj 
-<</Type /Page /LastModified (D:20140922100133+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175412+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [31 0 R ] /Parent 2 0 R >>
 endobj
 31 0 obj 
-<</Length 2785 >>
+<</Length 3041 >>
 stream
 0 G
 0.5 w
@@ -2310,19 +2220,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Bernd Remme) Tj
+(Anne Siol) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Sahlbrinkstr. 2a) Tj
+(Auf dem Büschelchen 5) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(49201 Dissen am Teutoburger Wald) Tj
+(54516 Wittlich) Tj
 ET
 0 g
 /F2 8 Tf
@@ -2334,25 +2244,25 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Bestellnummer: 300009810) Tj
+(Bestellnummer: 300012228) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Rechnungsnummer: 300007395) Tj
+(Rechnungsnummer: 300009762) Tj
 ET
 0 g
 /F2 7.5 Tf
@@ -2364,13 +2274,349 @@ ET
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Bernd Remme, Sahlbrinkstr. 2a, 49201 Dissen am Teutoburger Wald) Tj
+(Auftraggeber: Anne Siol, Auf dem Büschelchen 5, 54516 Wittlich) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Bernd Remme, Sahlbrinkstr. 2a, 49201 Dissen am Teutoburger Wald) Tj
+(Versandanschrift: Anne Siol, Auf dem Büschelchen 5, 54516 Wittlich) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(-Carb weißes MANDELMEHL \(entölt\) 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 442 Td
+(9,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 442 Td
+(9,90 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb ZUCKER 1kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
+(9,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 431 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 431 Td
+(9,90 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 422 m
+561 422 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 412 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 399 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 412 Td
+(19,80 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 399 Td
+(4,98 €) Tj
+ET
+0.5 w
+62 395 m
+561 395 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 385 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 385 Td
+(24,78 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 325 Td
+(Wir danken für Ihren Einkauf) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 316 Td
+(Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(2 2) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+34 0 obj 
+<</Type /Page /LastModified (D:20141102175412+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [35 0 R ] /Parent 2 0 R >>
+endobj
+35 0 obj 
+<</Length 2825 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(c/o K38128 LogoiX) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Claudia Pistorius) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(Wasserburger Str. 50a) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(83395 Freilassing) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 597 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 31.10.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 01.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Bestellnummer: 300012227) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Rechnungsnummer: 300009761) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Claudia Pistorius, Wasserburger Str. 50a, 83395 Freilassing) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Claudia Pistorius, Wasserburger Str. 50a, 83395 Freilassing) Tj
 ET
 0 g
 /F2 11 Tf
@@ -2469,302 +2715,6 @@ ET
 BT
 535 396 Td
 (14,34 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 336 Td
-(Wir danken für Ihren Einkauf) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 327 Td
-(Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
-ET
-0 g
-/F2 5.5 Tf
-BT
-62 41 Td
-(1 1) Tj
-ET
-0 G
-0.5 w
-360 658 201 -64 re
- S
-0 g
-/F2 6.5 Tf
-BT
-62 19.5 Td
-(L-Carb-Shop UG) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-62 12 Td
-(Kirchgasse 36) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-62 4.5 Td
-(63065 Offenbach) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-160 19.5 Td
-(Tel.: +49 \(0\)163 – 83 72 575) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-160 12 Td
-(Email: info@l-carb-shop.de) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-160 4.5 Td
-(Web: www.l-carb-shop.de) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-273 19.5 Td
-(Geschäftsführer: Peter Keschner) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-273 12 Td
-(HG: HBR 46789) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-273 4.5 Td
-(US-ID: 044 238 10969) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-466.932 19.5 Td
-(Bankverbindung: Hypovereinsbank) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-466.932 12 Td
-(IBAN: DE93505201900013536163) Tj
-ET
-0 g
-/F2 6.5 Tf
-BT
-466.932 4.5 Td
-(SWIFT: HYVEDEMM467) Tj
-ET
-
-endstream
-endobj
-34 0 obj 
-<</Type /Page /LastModified (D:20140922100133+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
-/Contents [35 0 R ] /Parent 2 0 R >>
-endobj
-35 0 obj 
-<</Length 2812 >>
-stream
-0 G
-0.5 w
-360 658 201 -64 re
- S
-0 g
-/F1 4.5 Tf
-BT
-62 658 Td
-(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
-ET
-0 g
-/F2 8.5 Tf
-BT
-364 650 Td
-(Kauf auf Rechnung) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 642 Td
-(An) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 633 Td
-(Am Weserbogen) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 624 Td
-(Michael Winter) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 615 Td
-(9) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 606 Td
-(31840 Hessisch-Oldendorf, OT Rumbeck) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 597 Td
-(USt-IdNr.:) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 623 Td
-(Bestellnummer: 300009809) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 614.5 Td
-(Rechnungsnummer: 300007394) Tj
-ET
-0 g
-/F2 7.5 Tf
-BT
-364 606 Td
-(Bei der Bezahlung bitte immer angeben) Tj
-ET
-0 g
-/F2 10 Tf
-BT
-62 544 Td
-(Auftraggeber: Michael Winter, 9, 31840 Hessisch-Oldendorf, OT Rumbeck) Tj
-ET
-0 g
-/F2 10 Tf
-BT
-62 529 Td
-(Versandanschrift: Michael Winter, 9, 31840 Hessisch-Oldendorf, OT Rumbeck) Tj
-ET
-0 g
-/F2 11 Tf
-BT
-62 459 Td
-(Pos       Articel) Tj
-ET
-0 g
-/F2 11 Tf
-BT
-356.906 459 Td
-(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
-ET
-0.29 0.4940000000000000 0.733 RG
-0.6 w
-62 452 m
-561 452 l
- S
-0 g
-/F2 8 Tf
-BT
-62 442 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-97.75 442 Td
-(-Carb Zucker 100% Süßkraft + Stevia 1 kg) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-356.906 442 Td
-(1) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-418.906 442 Td
-(12,00 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-469.982 442 Td
-(7.0%) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-535 442 Td
-(12,00 €) Tj
-ET
-0.29 0.4940000000000000 0.733 RG
-0.6 w
-62 433 m
-561 433 l
- S
-0 g
-/F2 8 Tf
-BT
-62 423 Td
-(Warenbetrag) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 410 Td
-(Versandkosten) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-535 423 Td
-(12,00 €) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-539 410 Td
-(4,90 €) Tj
-ET
-0.5 w
-62 406 m
-561 406 l
- S
-0 g
-/F2 8 Tf
-BT
-62 396 Td
-(Rechnungsbetrag) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-535 396 Td
-(16,90 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -2864,11 +2814,11 @@ ET
 endstream
 endobj
 38 0 obj 
-<</Type /Page /LastModified (D:20140922100134+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+<</Type /Page /LastModified (D:20141102175413+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
 /Contents [39 0 R ] /Parent 2 0 R >>
 endobj
 39 0 obj 
-<</Length 2787 >>
+<</Length 2762 >>
 stream
 0 G
 0.5 w
@@ -2896,19 +2846,19 @@ ET
 /F2 8 Tf
 BT
 62 633 Td
-(Ellen Eckert) Tj
+(Wilbert Bittner) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 624 Td
-(Am Künstlerhaus 23) Tj
+(Hans- Sachs- Str.11) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 615 Td
-(76131 Karlsruhe) Tj
+(14471 Potsdam) Tj
 ET
 0 g
 /F2 8 Tf
@@ -2920,31 +2870,321 @@ ET
 /F2 7.5 Tf
 BT
 364 640 Td
-(Rechnungsdatum: 22.09.2014) Tj
+(Rechnungsdatum: 31.10.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 631.5 Td
-(Liefertermin: 23.09.2014) Tj
+(Liefertermin: 01.11.2014) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 623 Td
-(Kundenummer: 923) Tj
+(Bestellnummer: 300012226) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 614.5 Td
-(Bestellnummer: 300009805) Tj
+(Rechnungsnummer: 300009760) Tj
 ET
 0 g
 /F2 7.5 Tf
 BT
 364 606 Td
-(Rechnungsnummer: 300007391) Tj
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Wilbert Bittner, Hans- Sachs- Str.11, 14471 Potsdam) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Wilbert Bittner, Hans- Sachs- Str.11, 14471 Potsdam) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(-Carb Flohsamenschalenmehl fein gemahlen \(750 g\)) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+418.906 442 Td
+(14,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 442 Td
+(14,90 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 433 m
+561 433 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 423 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 410 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 423 Td
+(14,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 410 Td
+(4,44 €) Tj
+ET
+0.5 w
+62 406 m
+561 406 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 396 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 396 Td
+(19,34 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 336 Td
+(Wir danken für Ihren Einkauf) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 327 Td
+(Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(1 1) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+42 0 obj 
+<</Type /Page /LastModified (D:20141102175413+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [43 0 R ] /Parent 2 0 R >>
+endobj
+43 0 obj 
+<</Length 3974 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(Christiane Wutschke) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Hochkirchstr. 8/1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(10829 Berlin) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 31.10.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 01.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Kundenummer: 2029) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Bestellnummer: 300012225) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Rechnungsnummer: 300009758) Tj
 ET
 0 g
 /F2 7.5 Tf
@@ -2956,13 +3196,13 @@ ET
 /F2 10 Tf
 BT
 62 544 Td
-(Auftraggeber: Ellen Eckert, Am Künstlerhaus 23, 76131 Karlsruhe) Tj
+(Auftraggeber: Christiane Wutschke, Hochkirchstr. 8/1, 10829 Berlin) Tj
 ET
 0 g
 /F2 10 Tf
 BT
 62 529 Td
-(Versandanschrift: Ellen Eckert, Am Künstlerhaus 23, 76131 Karlsruhe) Tj
+(Versandanschrift: Christiane Wutschke, Hochkirchstr. 8/1, 10829 Berlin) Tj
 ET
 0 g
 /F2 11 Tf
@@ -2997,7 +3237,7 @@ ET
 /F2 8 Tf
 BT
 356.906 442 Td
-(2) Tj
+(1) Tj
 ET
 0 g
 /F2 8 Tf
@@ -3014,8 +3254,1850 @@ ET
 0 g
 /F2 8 Tf
 BT
+539 442 Td
+(5,00 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb Walnussmehl \(entölt\) 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 431 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 431 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 420 Td
+(3) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 420 Td
+(-Carb SESAMMEHL \(entölt\) 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 420 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 420 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 420 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 420 Td
+(5,00 €) Tj
+ET
+0.75 g
+0.75 G
+62 416 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 409 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 409 Td
+(-Carb LEINSAMENMEHL \(entölt\) 1 kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 409 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 409 Td
+(7,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 409 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 409 Td
+(7,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 398 Td
+(5) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 398 Td
+(- Carb CHIA 1kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 398 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+418.906 398 Td
+(15,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 398 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 398 Td
+(15,50 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 389 m
+561 389 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 379 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 366 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 379 Td
+(38,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 366 Td
+(4,90 €) Tj
+ET
+0.5 w
+62 362 m
+561 362 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 352 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 352 Td
+(42,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 292 Td
+(Wir danken für Ihren Einkauf) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 283 Td
+(Der Rechungsbetrag ist bereits per Paypal beglichen) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(5 5) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+46 0 obj 
+<</Type /Page /LastModified (D:20141102175414+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [47 0 R ] /Parent 2 0 R >>
+endobj
+47 0 obj 
+<</Length 3633 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(Jacqueline Müller) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Unterer Graben 35) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(85049 Ingolstadt) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 02.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 03.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Kundenummer: 2022) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Bestellnummer: 300012153) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Rechnungsnummer: 300009884) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 597.5 Td
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Jacqueline Müller, Unterer Graben 35, 85049 Ingolstadt) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Jacqueline Müller, Unterer Graben 35, 85049 Ingolstadt) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(-Carb weißes MANDELMEHL \(entölt\) 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 442 Td
+(8,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 442 Td
+(8,50 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-carb GUARKERN Mehl 150 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
+(4,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 431 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 431 Td
+(4,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 420 Td
+(3) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 420 Td
+(- Carb CHIA Probierpack 250g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 420 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 420 Td
+(5,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 420 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 420 Td
+(5,50 €) Tj
+ET
+0.75 g
+0.75 G
+62 416 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 409 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 409 Td
+(-Carb WEIZENKLEBER 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 409 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 409 Td
+(3,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 409 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 409 Td
+(3,90 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 400 m
+561 400 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 390 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 377 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 390 Td
+(22,80 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 377 Td
+(4,90 €) Tj
+ET
+0.5 w
+62 373 m
+561 373 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 363 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 363 Td
+(27,70 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 303 Td
+(Die Rechnung wurde per Überweisung bereits beglichen.) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(4 4) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+50 0 obj 
+<</Type /Page /LastModified (D:20141102175414+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [51 0 R ] /Parent 2 0 R >>
+endobj
+51 0 obj 
+<</Length 5090 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(Isabella Hirtl) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Hausfeld 5/2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(2452 Mannersdorf) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 02.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 03.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Kundenummer: 2019) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Bestellnummer: 300012130-1) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Rechnungsnummer: 300009881) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 597.5 Td
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Isabella Hirtl, Hausfeld 5/2, 2452 Mannersdorf) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Isabella Hirtl, Hausfeld 5/2, 2452 Mannersdorf) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(-carb ZUCKER 100% mit Stevia 1 kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+418.906 442 Td
+(12,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
 535 442 Td
-(10,00 €) Tj
+(12,00 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb LEINSAMENMEHL \(entölt\) 1 kg) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
+(7,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 431 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 431 Td
+(15,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 420 Td
+(3) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 420 Td
+(-Carb weißes MANDELMEHL \(entölt\) 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 420 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 420 Td
+(8,50 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 420 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 420 Td
+(17,00 €) Tj
+ET
+0.75 g
+0.75 G
+62 416 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 409 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 409 Td
+(-carb GUARKERN Mehl 150 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 409 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 409 Td
+(4,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+465.982 409 Td
+(19.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 409 Td
+(4,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 398 Td
+(5) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 398 Td
+(-Carb Nudeln Fusilli 250g ) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 398 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 398 Td
+(4,80 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 398 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 398 Td
+(9,60 €) Tj
+ET
+0.75 g
+0.75 G
+62 394 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 387 Td
+(6) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 387 Td
+(-Carb SESAMMEHL \(entölt\) 750 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 387 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 387 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 387 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 387 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 376 Td
+(7) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 376 Td
+(Butter Toffies, Ohne Zucker, 70 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 376 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 376 Td
+(2,20 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 376 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 376 Td
+(4,40 €) Tj
+ET
+0.75 g
+0.75 G
+62 372 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 365 Td
+(8) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 365 Td
+(Fruchtgummi Mischung, zuckerfrei 100g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 365 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 365 Td
+(2,20 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 365 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 365 Td
+(8,80 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 354 Td
+(9) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 354 Td
+(-carb SAHNEPULVER 500 g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 354 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 354 Td
+(9,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 354 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 354 Td
+(9,00 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 345 m
+561 345 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 335 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 322 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 335 Td
+(85,70 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 322 Td
+(14,50 €) Tj
+ET
+0.5 w
+62 318 m
+561 318 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 308 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 308 Td
+(94,30 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 248 Td
+(Die Rechnung wurde per Überweisung bereits beglichen.) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(16 8) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+54 0 obj 
+<</Type /Page /LastModified (D:20141102175415+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [55 0 R ] /Parent 2 0 R >>
+endobj
+55 0 obj 
+<</Length 3586 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(Martina Großmann) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Ringstr. 34) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(91233 Neunkirchen am Sand) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 02.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 03.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Bestellnummer: 300012016) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Rechnungsnummer: 300009882) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Martina Großmann, Ringstr. 34, 91233 Neunkirchen am Sand) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Martina Großmann, Ringstr. 34, 91233 Neunkirchen am Sand) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(Weiße Praline 42 g Riegel) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 442 Td
+(1,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 442 Td
+(1,90 €) Tj
+ET
+0.75 g
+0.75 G
+62 438 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 431 Td
+(2) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 431 Td
+(-Carb MANDELMEHL CLASSIC \(entölt\) 750g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 431 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 431 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 431 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 431 Td
+(5,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 420 Td
+(3) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 420 Td
+(Broschüre: Low Carb für Anfänger) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 420 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 420 Td
+(2,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 420 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 420 Td
+(2,00 €) Tj
+ET
+0.75 g
+0.75 G
+62 416 499 -11 re
+ f*
+0 g
+/F2 8 Tf
+BT
+62 409 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 409 Td
+(-Carb Nudeln Fusilli 250g ) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 409 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 409 Td
+(4,80 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 409 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 409 Td
+(4,80 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 400 m
+561 400 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 390 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 377 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 390 Td
+(13,70 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 377 Td
+(3,90 €) Tj
+ET
+0.5 w
+62 373 m
+561 373 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 363 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 363 Td
+(17,60 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 303 Td
+(Die Rechnung wurde per Überweisung bereits beglichen.) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(4 1) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+58 0 obj 
+<</Type /Page /LastModified (D:20141102175415+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [59 0 R ] /Parent 2 0 R >>
+endobj
+59 0 obj 
+<</Length 2796 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(Thomas Wolf-Laumer) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Alte Poststr. 8) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(97297 Waldbüttelbrunn) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 02.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 03.11.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Bestellnummer: 300011841) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Rechnungsnummer: 300009883) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Thomas Wolf-Laumer, Alte Poststr. 8, 97297 Waldbüttelbrunn) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Thomas Wolf-Laumer, Alte Poststr. 8, 97297 Waldbüttelbrunn) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(-Carb Weißes Entöltes Mandelmehl für die Low Carb Küche 750g ...) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(4) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 442 Td
+(8,90 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 442 Td
+(35,60 €) Tj
 ET
 0.29 0.4940000000000000 0.733 RG
 0.6 w
@@ -3038,7 +5120,297 @@ ET
 /F2 8 Tf
 BT
 535 423 Td
-(10,00 €) Tj
+(35,60 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 410 Td
+(6,40 €) Tj
+ET
+0.5 w
+62 406 m
+561 406 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 396 Td
+(Rechnungsbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+535 396 Td
+(42,00 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 336 Td
+(Wir danken für Ihren Einkauf) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 327 Td
+(Der Rechungsbetrag ist bereits per Bezahlung Marktplatz beglichen) Tj
+ET
+0 g
+/F2 5.5 Tf
+BT
+62 41 Td
+(4 4) Tj
+ET
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F2 6.5 Tf
+BT
+62 19.5 Td
+(L-Carb-Shop UG) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 12 Td
+(Kirchgasse 36) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+62 4.5 Td
+(63065 Offenbach) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 19.5 Td
+(Tel.: +49 \(0\)163 – 83 72 575) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 12 Td
+(Email: info@l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+160 4.5 Td
+(Web: www.l-carb-shop.de) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 19.5 Td
+(Geschäftsführer: Peter Keschner) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 12 Td
+(HG: HBR 46789) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+273 4.5 Td
+(US-ID: 044 238 10969) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 19.5 Td
+(Bankverbindung: Hypovereinsbank) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 12 Td
+(IBAN: DE93505201900013536163) Tj
+ET
+0 g
+/F2 6.5 Tf
+BT
+466.932 4.5 Td
+(SWIFT: HYVEDEMM467) Tj
+ET
+
+endstream
+endobj
+62 0 obj 
+<</Type /Page /LastModified (D:20141102175416+00'00') /Resources <</ProcSet [/Text /PDF ] /Font <</F1 8 0 R /F2 9 0 R >> >> /MediaBox [0 0 595 842 ] 
+/Contents [63 0 R ] /Parent 2 0 R >>
+endobj
+63 0 obj 
+<</Length 2673 >>
+stream
+0 G
+0.5 w
+360 658 201 -64 re
+ S
+0 g
+/F1 4.5 Tf
+BT
+62 658 Td
+(L-Carb-Shop UG, Kirchgasse 36, 63065 Offenbach) Tj
+ET
+0 g
+/F2 8.5 Tf
+BT
+364 650 Td
+(Kauf auf Rechnung) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 642 Td
+(An) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 633 Td
+(Daniela Bayer) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 624 Td
+(Hermülheimer Str. 116) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 615 Td
+(50354 Hürth) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 606 Td
+(USt-IdNr.:) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 640 Td
+(Rechnungsdatum: 29.10.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 631.5 Td
+(Liefertermin: 30.10.2014) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 623 Td
+(Bestellnummer: 300011626) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 614.5 Td
+(Rechnungsnummer: 300009606) Tj
+ET
+0 g
+/F2 7.5 Tf
+BT
+364 606 Td
+(Bei der Bezahlung bitte immer angeben) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 544 Td
+(Auftraggeber: Daniela Bayer, Hermülheimer Str. 116, 50354 Hürth) Tj
+ET
+0 g
+/F2 10 Tf
+BT
+62 529 Td
+(Versandanschrift: Daniela Bayer, Hermülheimer Str. 116, 50354 Hürth) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+62 459 Td
+(Pos       Articel) Tj
+ET
+0 g
+/F2 11 Tf
+BT
+356.906 459 Td
+(Anz.     Einzelpreis     MWst     Gesamtpreis) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 452 m
+561 452 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+97.75 442 Td
+(salziges Lakritze extra stark, zuckerfrei 100g) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+356.906 442 Td
+(1) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+422.906 442 Td
+(2,20 €) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+469.982 442 Td
+(7.0%) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 442 Td
+(2,20 €) Tj
+ET
+0.29 0.4940000000000000 0.733 RG
+0.6 w
+62 433 m
+561 433 l
+ S
+0 g
+/F2 8 Tf
+BT
+62 423 Td
+(Warenbetrag) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+62 410 Td
+(Versandkosten) Tj
+ET
+0 g
+/F2 8 Tf
+BT
+539 423 Td
+(2,20 €) Tj
 ET
 0 g
 /F2 8 Tf
@@ -3059,26 +5431,20 @@ ET
 0 g
 /F2 8 Tf
 BT
-535 396 Td
-(13,90 €) Tj
+539 396 Td
+(6,10 €) Tj
 ET
 0 g
 /F2 8 Tf
 BT
 62 336 Td
-(Wir danken für Ihren Einkauf) Tj
-ET
-0 g
-/F2 8 Tf
-BT
-62 327 Td
-(Der Rechungsbetrag ist bereits per Paypal beglichen) Tj
+(Die Rechnung wurde per Überweisung bereits beglichen.) Tj
 ET
 0 g
 /F2 5.5 Tf
 BT
 62 41 Td
-(2 2) Tj
+(1 0) Tj
 ET
 0 G
 0.5 w
@@ -3164,38 +5530,56 @@ xref
 0000000000 65535 f 
 0000000015 00000 n 
 0000000091 00000 n 
-0000000205 00000 n 
-0000000224 00000 n 
-0000000258 00000 n 
-0000000292 00000 n 
-0000000494 00000 n 
-0000003312 00000 n 
-0000003411 00000 n 
-0000003509 00000 n 
-0000003713 00000 n 
+0000000248 00000 n 
+0000000267 00000 n 
+0000000301 00000 n 
+0000000335 00000 n 
+0000000537 00000 n 
+0000003741 00000 n 
+0000003840 00000 n 
+0000003938 00000 n 
+0000004142 00000 n 
 14 2 
-0000006488 00000 n 
-0000006692 00000 n 
+0000006916 00000 n 
+0000007120 00000 n 
 18 2 
-0000012882 00000 n 
-0000013086 00000 n 
+0000011047 00000 n 
+0000011251 00000 n 
 22 2 
-0000015876 00000 n 
-0000016080 00000 n 
+0000015244 00000 n 
+0000015448 00000 n 
 26 2 
-0000019501 00000 n 
-0000019705 00000 n 
+0000018234 00000 n 
+0000018438 00000 n 
 30 2 
-0000022568 00000 n 
-0000022772 00000 n 
+0000021879 00000 n 
+0000022083 00000 n 
 34 2 
-0000025610 00000 n 
-0000025814 00000 n 
+0000025177 00000 n 
+0000025381 00000 n 
 38 2 
-0000028679 00000 n 
-0000028883 00000 n 
+0000028259 00000 n 
+0000028463 00000 n 
+42 2 
+0000031278 00000 n 
+0000031482 00000 n 
+46 2 
+0000035509 00000 n 
+0000035713 00000 n 
+50 2 
+0000039399 00000 n 
+0000039603 00000 n 
+54 2 
+0000044746 00000 n 
+0000044950 00000 n 
+58 2 
+0000048589 00000 n 
+0000048793 00000 n 
+62 2 
+0000051642 00000 n 
+0000051846 00000 n 
 trailer
-<</ID [<35343666653361376433636338363131> <36393234363032613530346435636636> ] /Size 42 /Root 1 0 R >>
+<</ID [<63393563626530366531393263326462> <64326534356561336266316262666332> ] /Size 66 /Root 1 0 R >>
 startxref
-31723
+54572
 %%EOF
