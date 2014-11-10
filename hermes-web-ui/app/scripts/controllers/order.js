@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, ConfigurationSvc, FormSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
     $scope.printing = false;
 
     $scope.params = {};
@@ -30,24 +30,59 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $alert, Co
         });
     };
 
-    $scope.print = function() {
-        // TODO: implement this
-        $alert({content: 'Print scheduled', placement: 'top', type: 'success', show: true, duration: 3});
-        angular.forEach($scope.orders, function(order) {
-            if(order._selected) {
-                $alert({content: 'Printing order: ' + order.orderId, placement: 'top', type: 'success', show: true, duration: 3});
+    $scope.doPrint = function(order, type) {
+        return PrinterSvc.print({orderId: order.orderId, type: type}).success(function(data) {
+            $alert({content: 'Printed order: ' + order.orderId + ' (' + type + ')', placement: 'top', type: 'success', show: true, duration: 15});
+            switch(type) {
+                case 'INVOICE':
+                    order._invoiceSuccess = true;
+                    break;
+                case 'LABEL':
+                    order._labelSuccess = true;
+                    break;
+            }
+        }).error(function(data) {
+            $alert({content: 'Printing order: ' + order.orderId + ' (' + type + ') failed!', placement: 'top', type: 'danger', show: true, duration: 15});
+            $log.error(data);
+            switch(type) {
+                case 'INVOICE':
+                    order._invoiceSuccess = false;
+                    break;
+                case 'LABEL':
+                    order._labelSuccess = false;
+                    break;
             }
         });
-        /**
-        $scope.printing = true;
-        PrinterLogSvc.print().success(function(data) {
-            $alert({content: 'Print scheduled', placement: 'top', type: 'success', show: true, duration: 3});
-            $scope.printing = false;
-        }).error(function(data) {
-            $alert({content: 'Print failed', placement: 'top', type: 'danger', show: true, duration: 3});
-            $scope.printing = false;
-        });
-         */
+    };
+
+    var iterator = 0;
+
+    var printNext = function() {
+        if($scope.orders[iterator]) {
+            if($scope.orders[iterator]._selected) {
+                $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (invoice)');
+                $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
+                    $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (label)');
+                    $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
+                        $log.info('Printing: end!');
+                        iterator++;
+                        printNext();
+                    });
+                });
+
+            } else {
+                iterator++;
+                printNext();
+            }
+        }
+    };
+
+    $scope.print = function() {
+        // TODO: check invoice ID and shipping ID exist
+        // TODO: print report
+        // TODO: check charge (see above)
+        iterator = 0;
+        printNext();
     };
 
     ConfigurationSvc.list().success(function(data) {

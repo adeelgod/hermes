@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
@@ -16,6 +17,7 @@ import java.util.Properties;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+@Singleton
 @Path("/printers")
 @Produces(APPLICATION_JSON)
 public class PrinterResource {
@@ -43,7 +45,7 @@ public class PrinterResource {
     @GET
     @Path("/print")
     @Produces(APPLICATION_JSON)
-    public Response print(@QueryParam("type") String type, @QueryParam("orderId") String orderId) throws Exception {
+    public synchronized Response print(@QueryParam("type") String type, @QueryParam("orderId") String orderId) throws Exception {
         Properties p = new Properties();
         p.load(new FileInputStream(getPropertyFile()));
 
@@ -61,12 +63,17 @@ public class PrinterResource {
             printer = p.getProperty("hermes.printer.report");
         }
 
+        logger.info("******************************************** PRINT: {}", this);
         logger.info("******************************************** PRINT: printer:{} type:{} order:{}", printer, type, orderId);
 
         if(documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
             PrinterService.JobStatus status = printerService.print(dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", printer);
 
             logger.info("******************************************** PRINT: {} ({})", dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", status);
+
+            Thread.sleep(1000);
+
+            logger.info("******************************************** PRINT: wakeup...");
 
             return Response.ok().build();
         } else if(documentType.equals(DocumentType.REPORT)) {
