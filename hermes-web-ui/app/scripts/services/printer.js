@@ -9,6 +9,13 @@ angular.module('hermes.ui')
                     method: 'GET',
                     url: 'api/printers'
                 });
+            },
+            print: function(params) {
+                return $http({
+                    method: 'GET',
+                    url: 'api/printers/print',
+                    params: params
+                });
             }
         };
     });
