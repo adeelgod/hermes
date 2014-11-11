@@ -2,18 +2,19 @@ package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.service.PrinterService;
+import com.m11n.hermes.core.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
-
 import java.io.FileInputStream;
+import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -25,6 +26,9 @@ public class PrinterResource {
 
     @Inject
     private PrinterService printerService;
+
+    @Inject
+    private ReportService reportService;
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -42,14 +46,17 @@ public class PrinterResource {
         return Response.ok(printerService.status(name)).build();
     }
 
-    @GET
+    @POST
     @Path("/print")
     @Produces(APPLICATION_JSON)
-    public synchronized Response print(@QueryParam("type") String type, @QueryParam("orderId") String orderId) throws Exception {
+    //public synchronized Response print(@QueryParam("type") String type, @QueryParam("orderId") String orderId) throws Exception {
+    public synchronized Response print(Map<String, Object> params) throws Exception {
         Properties p = new Properties();
         p.load(new FileInputStream(getPropertyFile()));
 
         String dir = p.getProperty("hermes.result.dir");
+
+        String type = params.get("type").toString();
 
         DocumentType documentType = DocumentType.valueOf(type);
 
@@ -64,20 +71,36 @@ public class PrinterResource {
         }
 
         logger.info("******************************************** PRINT: {}", this);
-        logger.info("******************************************** PRINT: printer:{} type:{} order:{}", printer, type, orderId);
 
         if(documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
+            String orderId = params.get("orderId").toString();
+
+            logger.info("******************************************** PRINT: printer:{} type:{} order:{}", printer, type, orderId);
+
             PrinterService.JobStatus status = printerService.print(dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", printer);
 
             logger.info("******************************************** PRINT: {} ({})", dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", status);
 
-            Thread.sleep(1000);
+            Thread.sleep(1000); // TODO: make this configurable
 
             logger.info("******************************************** PRINT: wakeup...");
 
             return Response.ok().build();
         } else if(documentType.equals(DocumentType.REPORT)) {
-            // TODO: implement this
+            logger.info("******************************************** PRINT: REPORT ORDER_IDS {} ({})", params.get("_order_ids"), params.get("_order_ids").getClass().getName());
+
+            String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
+            reportService.generate(params.get("_template").toString(), params, "pdf", reportOutput);
+
+            PrinterService.JobStatus status = printerService.print(reportOutput, printer);
+
+            logger.info("******************************************** PRINT: {} ({})", reportOutput, status);
+
+            Thread.sleep(1000); // TODO: make this configurable
+
+            logger.info("******************************************** PRINT: wakeup...");
+
+            return Response.ok().build();
         }
 
         return Response.serverError().build();

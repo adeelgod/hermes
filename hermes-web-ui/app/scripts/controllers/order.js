@@ -5,6 +5,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.params = {};
 
+    $scope.querying = false;
+
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
@@ -19,7 +21,9 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.query = function() {
         $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
+        $scope.querying = true;
         FormSvc.query($scope.params).success(function(data) {
+            $scope.querying = false;
             $scope.orders = data;
         });
     };
@@ -43,7 +47,6 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
             }
         }).error(function(data) {
             $alert({content: 'Printing order: ' + order.orderId + ' (' + type + ') failed!', placement: 'top', type: 'danger', show: true, duration: 15});
-            $log.error(data);
             switch(type) {
                 case 'INVOICE':
                     order._invoiceSuccess = false;
@@ -60,6 +63,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     var printNext = function() {
         if($scope.orders[iterator]) {
             if($scope.orders[iterator]._selected) {
+                // TODO: check invoice ID and shipping ID exist
                 $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (invoice)');
                 $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
                     $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (label)');
@@ -72,17 +76,35 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
             } else {
                 iterator++;
+                // TODO: check charge and print report
                 printNext();
             }
         }
     };
 
     $scope.print = function() {
-        // TODO: check invoice ID and shipping ID exist
-        // TODO: print report
-        // TODO: check charge (see above)
         iterator = 0;
         printNext();
+    };
+
+    $scope.printReport = function() {
+        var params = angular.copy($scope.params);
+        params._order_ids = [];
+        params.type = 'REPORT';
+        params._template = 'orders.jrxml'; // TODO: from configuration
+
+        for(var i=0; i<$scope.orders.length; i++) {
+            if($scope.orders[i]._selected) {
+                params._order_ids.push($scope.orders[i].orderId);
+            }
+        }
+
+        return PrinterSvc.print(params).success(function(data) {
+            $alert({content: 'Printed report: ' + params._template + ' (REPORT)', placement: 'top', type: 'success', show: true, duration: 15});
+        }).error(function(data) {
+            $alert({content: 'Printed report: ' + params._template + ' (REPORT)', placement: 'top', type: 'danger', show: true, duration: 15});
+            $log.error(data);
+        });
     };
 
     ConfigurationSvc.list().success(function(data) {

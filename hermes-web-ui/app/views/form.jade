@@ -4,10 +4,10 @@ block content
         .col-md-12
             form(role='form', name='fieldForm', novalidate='')
                 .form-group
+                    button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
+                    br
                     label(for='form') Form Name
                     input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
-                    br
-                    button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
                 .form-group
                     label(for='sql') SQL
                     textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
@@ -18,7 +18,7 @@ block content
                     i.fa.fa-close
             hr
     .row
-        .col-md-12
+        .col-md-6
             form(role='form', name='fieldForm', novalidate='')
                 .form-group
                     label(for='name') Field Name
@@ -35,9 +35,7 @@ block content
                     input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
             button.btn.btn-success(type='button', ng-click='add()')
                 i.fa.fa-plus
-    .row(ng-show='form.fields')
-        .col-md-12
-            hr
+        .col-md-6(ng-show='form.fields')
             table.table.table-condensed
                 thead
                     tr

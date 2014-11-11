@@ -28,11 +28,18 @@ block content
                                 i.fa.fa-search
                             button.btn.btn-default(type='button', ng-click='print()', ng-disabled='printing')
                                 i.fa.fa-print
+                            button.btn.btn-default(type='button', ng-click='printReport()')
+                                i.fa.fa-paw
         .col-md-6
             nav
                 ul.pagination
                     li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
                         a(href='', ng-click='go(page)') {{page}}
+    .row(ng-show='querying')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
     .row(ng-show='orders')
         .col-md-12
             table.table.table-condensed

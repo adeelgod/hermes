@@ -29,6 +29,13 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>${basedir}/src/main/templates</directory>
+            <outputDirectory>/${project.artifactId}/templates</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>${basedir}/src/main/script</directory>
             <outputDirectory>/${project.artifactId}</outputDirectory>
             <includes>

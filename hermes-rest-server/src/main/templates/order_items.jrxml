@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-11T18:01:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="orders" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="113f95f6-357c-4fe9-9532-908e016b3873">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="LCarb"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="from" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="until" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="_order_ids" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT co.Bestellung, co.Kunden_vorname, co.Kunden_name , coi.Produkt_name, co.Datum_Kauf, coi.Anzahl
+FROM mage_custom_order co, mage_custom_order_item coi
+WHERE co.status = "complete"
+AND co.Datum_Lieferung >= $P{from}
+AND co.Datum_Lieferung < $P{until}
+AND co.order_id = coi.order_id
+ORDER BY co.Bestellung]]>
+	</queryString>
+	<field name="Bestellung" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Kunden_vorname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Kunden_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Datum_Kauf" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Produkt_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Anzahl" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="2" width="180" height="33" uuid="985d7e52-ac96-4dc7-8c9b-56ff9a2d24a0"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Low Carb]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="180" y="12" width="110" height="22" uuid="6092914e-4063-4607-8a0e-ee36ad3568c0"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Order Items]]></text>
+			</staticText>
+			<textField pattern="dd.MM.yyyy HH:mm:ss">
+				<reportElement style="Column header" x="290" y="12" width="193" height="22" uuid="99104f14-9fe4-4532-a51d-66b1eb292da9"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="e5b37b83-7279-4b73-b164-ca4cb22cb064"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="5" y="19" width="75" height="15" uuid="594291af-6f5e-4f13-b92a-3b8c83490601"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Bestellung]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="84" y="19" width="110" height="15" uuid="5814b76e-6e4c-4b3f-b89b-47182b1e0136"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="508" y="19" width="47" height="15" uuid="8fb9805c-ce52-4dd4-917f-68dc9fa6d89c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Anzahl]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="405" y="19" width="78" height="15" uuid="96db3ed8-da7f-4ded-91fe-fd5a6dc4a7bb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Datum Kauf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="228" y="19" width="162" height="15" uuid="f9dc56ed-03cf-4723-80f5-4ae5c54d19aa"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Produkt]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="775a69a6-49cf-437d-9e3c-b4bd6cce7fcc"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="5" y="0" width="75" height="15" uuid="9c8d092f-e586-403a-9dc7-fea5657eb175"/>
+				<textFieldExpression><![CDATA[$F{Bestellung}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="84" y="0" width="110" height="15" uuid="8e578827-eb9e-4b09-b368-20cab6ad2cdb"/>
+				<textFieldExpression><![CDATA[$F{Kunden_vorname} + " " + $F{Kunden_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="508" y="0" width="47" height="15" uuid="9252a0e9-6290-4c23-8c57-bbdb326ccd8a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Anzahl}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd HH:mm:ss">
+				<reportElement style="Detail" x="405" y="0" width="78" height="15" uuid="f8aac8e4-e2f4-4e6b-b114-d9415b11de49"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{Datum_Kauf}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="228" y="0" width="162" height="15" uuid="3a71e2c4-8081-4907-a772-e0d5852bc931"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{Produkt_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="aefc3e1d-5308-46a2-8c26-710a20a36ce0"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="6c97d41f-e4dd-48f0-99fa-d0b3a11ed997"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="e53d1329-f541-42c7-b524-0fde0c205721"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy HH:mm:ss">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="13f185d3-4404-45af-a146-e30980a7fd88"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

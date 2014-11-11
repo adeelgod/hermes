@@ -12,9 +12,9 @@ angular.module('hermes.ui')
             },
             print: function(params) {
                 return $http({
-                    method: 'GET',
+                    method: 'POST',
                     url: 'api/printers/print',
-                    params: params
+                    data: params
                 });
             }
         };
