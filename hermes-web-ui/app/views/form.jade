@@ -2,57 +2,73 @@ extends /layouts/_page
 block content
     .row
         .col-md-12
-            form(role='form', name='fieldForm', novalidate='')
-                .form-group
-                    button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
-                    br
-                    label(for='form') Form Name
-                    input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
-                .form-group
-                    label(for='sql') SQL
-                    textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
-            .btn-group
-                button.btn.btn-primary(type='button', ng-click='save()')
-                    i.fa.fa-check
-                button.btn.btn-danger(type='button', ng-click='removeForm()')
-                    i.fa.fa-close
-            hr
+            .panel.panel-default
+                .panel-heading
+                    h3.panel-title Form: {{form.name}}
+                .panel-body
+                    form(role='form', name='fieldForm', novalidate='')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
+                            br
+                            label(for='form') Form Name
+                            input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
+                        .form-group
+                            label(for='sql') SQL
+                            textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
+                    .btn-group
+                        button.btn.btn-default(type='button', ng-click='reset()')
+                            i.fa.fa-asterisk
+                        button.btn.btn-primary(type='button', ng-click='save()')
+                            i.fa.fa-check
+                        button.btn.btn-danger(type='button', ng-click='removeForm()')
+                            i.fa.fa-close
     .row
         .col-md-6
-            form(role='form', name='fieldForm', novalidate='')
-                .form-group
-                    label(for='name') Field Name
-                    input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
-                .form-group
-                    label(for='type') Type
-                    //input.form-control(name='type', ng-model="field.type", placeholder='Type', type='text')
-                    button.btn.btn-default(type='button', ng-model='field.type', ng-options='type.code as type.code for type in types', bs-select='')
-                .form-group
-                    label(for='defaultValue') Default
-                    input.form-control(name='defaultValue', ng-model="field.defaultValue", placeholder='Default', type='text')
-                .form-group
-                    label(for='position') Position
-                    input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
-            button.btn.btn-success(type='button', ng-click='add()')
-                i.fa.fa-plus
-        .col-md-6(ng-show='form.fields')
-            table.table.table-condensed
-                thead
-                    tr
-                        td
-                        td Name
-                        td Type
-                        td Default
-                        td
-                tbody
-                    tr(ng-repeat="field in form.fields | orderBy: 'position'")
-                        td {{field.position}}
-                        td {{field.name}}
-                        td {{field.type}}
-                        td {{field.defaultValue}}
-                        td
-                            .btn-group
-                                button.btn.btn-success(type='button', ng-click='select(field)')
-                                    i.fa.fa-check
-                                button.btn.btn-danger(type='button', ng-click='removeField($index)')
-                                    i.fa.fa-close
+            .panel.panel-default(ng-show='form.fields')
+                .panel-heading
+                    h3.panel-title Fields
+                .panel-body
+                    table.table.table-condensed
+                        thead
+                            tr
+                                td
+                                td Name
+                                td Type
+                                td Default
+                                td
+                        tbody
+                            tr(ng-repeat="field in form.fields | orderBy: 'position'")
+                                td {{field.position}}
+                                td {{field.name}}
+                                td {{field.type}}
+                                td {{field.defaultValue}}
+                                td
+                                    .btn-group
+                                        button.btn.btn-success(type='button', ng-click='select(field)')
+                                            i.fa.fa-check
+                                        button.btn.btn-danger(type='button', ng-click='removeField($index)')
+                                            i.fa.fa-close
+        .col-md-6
+            .panel.panel-default(ng-show='form.fields')
+                .panel-heading
+                    h3.panel-title Field Details
+                    button.btn.btn-default(type='button', ng-click='resetField()')
+                        i.fa.fa-asterisk
+                .panel-body
+                    form(role='form', name='fieldForm', novalidate='')
+                        .form-group
+                            label(for='name') Field Name
+                            input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
+                        .form-group
+                            label(for='type') Type
+                            br
+                            button.btn.btn-default(type='button', ng-model='field.type', ng-options='type.code as type.code for type in types', bs-select='')
+                        .form-group
+                            label(for='defaultValue') Default
+                            input.form-control(name='defaultValue', ng-model="field.defaultValue", placeholder='Default', type='text')
+                        .form-group
+                            label(for='position') Position
+                            input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
+                .panel-footer(ng-hide='field.id')
+                    button.btn.btn-success(type='button', ng-click='add()')
+                        i.fa.fa-plus

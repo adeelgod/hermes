@@ -28,6 +28,15 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, For
         $scope.field = {};
     };
 
+    $scope.reset = function() {
+        $scope.form = {};
+        $scope.field = {};
+    };
+
+    $scope.resetField = function() {
+        $scope.field = {};
+    };
+
     $scope.save = function() {
         FormSvc.save($scope.form).success(function(data) {
             $scope.form = data;
