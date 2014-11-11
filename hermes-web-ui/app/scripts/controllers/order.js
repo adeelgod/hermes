@@ -91,7 +91,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         var params = angular.copy($scope.params);
         params._order_ids = [];
         params.type = 'REPORT';
-        params._template = 'orders.jrxml'; // TODO: from configuration
+        params._templates = 'orders.jrxml|order_items.jrxml'; // TODO: from configuration
 
         for(var i=0; i<$scope.orders.length; i++) {
             if($scope.orders[i]._selected) {

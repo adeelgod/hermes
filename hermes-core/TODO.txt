@@ -7,7 +7,7 @@
 - x log entries REST (HATEOAS)
 - x order sql statement completely configurable
   - x SELECT `order_id`, `Bestellung`, concat("Bestellung: ",`Bestellung`),`shipping_lable` FROM `mage_custom_order` WHERE `Status` = "complete" and `Datum_Lieferung` > "2014-11-02 12:04:12" and `Datum_Lieferung` < "2014-11-03 12:04:12";
-  - SELECT COUNT( * ) AS  `Zeilen` , sum(`Anzahl`),  `Produkt_name` FROM  `mage_custom_order_single_item` where order_id in (12345, 2346, 5678, 14532)
+  - x SELECT COUNT( * ) AS  `Zeilen` , sum(`Anzahl`),  `Produkt_name` FROM  `mage_custom_order_single_item` where order_id in (12345, 2346, 5678, 14532)
 - print queues
   - x select
   - x start
@@ -21,7 +21,7 @@
 - x report:
   - x upload
   - x print
-- report (send order parameters as report parameters)
+- x report (send order parameters as report parameters)
 - authentication
 - x SQL "functions" with forms:
   - x text, boolean, date/time fields
@@ -31,8 +31,8 @@
 - installer
 - x ssh tunnel
 - x mysql:
-  - db: Auswertung
-  - host: http://188.138.99.252/phpmyadmin
-  - username: print
-  - password: edgtds45
-  - tunnel: ssh print@188.138.99.252 -L 13306:127.0.0.1:3306 -N
+  - x db: Auswertung
+  - x host: http://188.138.99.252/phpmyadmin
+  - x username: print
+  - x password: edgtds45
+  - x tunnel: ssh print@188.138.99.252 -L 13306:127.0.0.1:3306 -N

@@ -3,6 +3,7 @@ package com.m11n.hermes.rest.api;
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Properties;
@@ -89,16 +91,24 @@ public class PrinterResource {
         } else if(documentType.equals(DocumentType.REPORT)) {
             logger.info("******************************************** PRINT: REPORT ORDER_IDS {} ({})", params.get("_order_ids"), params.get("_order_ids").getClass().getName());
 
-            String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
-            reportService.generate(params.get("_template").toString(), params, "pdf", reportOutput);
+            String[] templates = params.get("_templates").toString().split("\\|");
 
-            PrinterService.JobStatus status = printerService.print(reportOutput, printer);
+            for(String template : templates) {
+                String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
 
-            logger.info("******************************************** PRINT: {} ({})", reportOutput, status);
+                reportService.generate(template, params, "pdf", reportOutput);
 
-            Thread.sleep(1000); // TODO: make this configurable
+                PrinterService.JobStatus status = printerService.print(reportOutput, printer);
 
-            logger.info("******************************************** PRINT: wakeup...");
+                logger.info("******************************************** PRINT: {} ({})", reportOutput, status);
+
+                Thread.sleep(1000); // TODO: make this configurable
+
+                logger.info("******************************************** PRINT: wakeup...");
+
+                // cleanup
+                FileUtils.deleteQuietly(new File(reportOutput));
+            }
 
             return Response.ok().build();
         }
