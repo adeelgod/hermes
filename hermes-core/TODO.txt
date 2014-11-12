@@ -13,7 +13,7 @@
 - x archiv verzeichnis (manuell und automatisch)
 - x first report, then invoice/label
 - x fix manuel select
-- execute form based sql statements
+- x execute form based sql statements
 - check if invoice/label file exist
 - print queues
   - x select

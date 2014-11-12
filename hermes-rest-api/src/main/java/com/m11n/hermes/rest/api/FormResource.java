@@ -22,7 +22,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -65,52 +64,70 @@ public class FormResource {
         for(Map.Entry<String, Object> entry : parameters.entrySet()) {
             logger.info("#################### PARAM: {} = {} ({})", entry.getKey(), entry.getValue(), entry.getValue().getClass().getName());
         }
-        logger.info("#################### QUERY: {}", form.getSqlStatement());
 
-        List<Map<String, Object>> result = jdbcTemplate.query(form.getSqlStatement(), parameters, new RowMapper<Map<String, Object>>() {
-            @Override
-            public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
-                Map<String, Object> row = new HashMap<>();
-                ResultSetMetaData metaData = resultSet.getMetaData();
+        String[] statements = form.getSqlStatement().split(";");
 
-                for(int j=1; j<=metaData.getColumnCount(); j++) {
-                    Object value = null;
-                    switch(metaData.getColumnType(j)) {
-                        case Types.BOOLEAN:
-                            value = resultSet.getBoolean(j);
-                            break;
-                        case Types.CHAR:
-                        case Types.VARCHAR:
-                        case Types.LONGVARCHAR:
-                            value = resultSet.getString(j);
-                            break;
-                        case Types.SMALLINT:
-                        case Types.TINYINT:
-                        case Types.INTEGER:
-                            value = resultSet.getInt(j);
-                            break;
-                        case Types.DECIMAL:
-                            value = resultSet.getDouble(j);
-                            break;
-                        case Types.BIGINT:
-                            value = resultSet.getBigDecimal(j);
-                            break;
-                        case Types.DATE:
-                            value = resultSet.getDate(j);
-                            break;
+        //List<Map<String, Object>> result = null;
+        Object result = null;
+
+        for(String statement : statements) {
+            statement = statement.trim();
+
+            logger.info("#################### STATEMENT: {}", statement);
+
+            if(statement.toLowerCase().startsWith("select")) {
+                result = jdbcTemplate.query(form.getSqlStatement(), parameters, new RowMapper<Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
+                        Map<String, Object> row = new HashMap<>();
+                        ResultSetMetaData metaData = resultSet.getMetaData();
+
+                        for(int j=1; j<=metaData.getColumnCount(); j++) {
+                            Object value = null;
+                            switch(metaData.getColumnType(j)) {
+                                case Types.BOOLEAN:
+                                    value = resultSet.getBoolean(j);
+                                    break;
+                                case Types.CHAR:
+                                case Types.VARCHAR:
+                                case Types.LONGVARCHAR:
+                                    value = resultSet.getString(j);
+                                    break;
+                                case Types.SMALLINT:
+                                case Types.TINYINT:
+                                case Types.INTEGER:
+                                    value = resultSet.getInt(j);
+                                    break;
+                                case Types.DECIMAL:
+                                    value = resultSet.getDouble(j);
+                                    break;
+                                case Types.BIGINT:
+                                    value = resultSet.getBigDecimal(j);
+                                    break;
+                                case Types.DATE:
+                                    value = resultSet.getDate(j);
+                                    break;
+                            }
+
+                            String name = metaData.getColumnLabel(j);
+
+                            if(StringUtils.isEmpty(name)) {
+                                name = metaData.getColumnName(j);
+                            }
+
+                            row.put(name, value);
+                        }
+                        return row;
                     }
-
-                    String name = metaData.getColumnLabel(j);
-
-                    if(StringUtils.isEmpty(name)) {
-                        name = metaData.getColumnName(j);
-                    }
-
-                    row.put(name, value);
-                }
-                return row;
+                });
+            } else {
+                // TODO: implement this; maybe check insert/update
+                //int count = jdbcTemplate.update(statement, parameters);
+                //Map<String, Integer> r = new HashMap<>();
+                //r.put("modified", count);
+                //result = r;
             }
-        });
+        }
 
         return Response.ok(result).build();
     }

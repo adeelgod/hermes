@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, FormSvc) {
-    $scope.form = {};
+angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParams, $alert, FormSvc) {
+    //$scope.form = {};
     $scope.forms = [];
     $scope.field = {};
 
@@ -12,7 +12,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, For
     ];
 
     $scope.list = function() {
-        FormSvc.list().success(function(data) {
+        return FormSvc.list().success(function(data) {
             $scope.forms = data;
         });
     };
@@ -70,5 +70,55 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $alert, For
         $scope.field = field;
     };
 
+    $scope.list().then(function() {
+        angular.forEach($scope.forms, function(form) {
+            if(form.id===$stateParams.id) {
+                $scope.form = form;
+            }
+        });
+    });
+}).controller('FormListCtrl', function ($scope, $state, $alert, FormSvc) {
+    $scope.list = function() {
+        return FormSvc.list().success(function(data) {
+            $scope.forms = data;
+        });
+    };
+
     $scope.list();
+}).controller('FormExecuteCtrl', function ($scope, $stateParams, $alert, FormSvc) {
+    $scope.executing = false;
+
+    $scope.execute = function() {
+        // TODO: implement this
+        $scope.params['_form'] = $scope.form.name;
+        $scope.executing = true;
+        FormSvc.query($scope.params).success(function(data) {
+            $scope.executing = false;
+            $scope.result = data;
+        }).error(function(data) {
+            $scope.executing = false;
+            $alert({content: 'Execution failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
+    };
+
+    $scope.list = function() {
+        return FormSvc.list().success(function(data) {
+            $scope.forms = data;
+        });
+    };
+
+    $scope.list().then(function() {
+        angular.forEach($scope.forms, function(form) {
+            if(form.id===$stateParams.id) {
+                $scope.form = form;
+                $scope.params = {};
+                angular.forEach(form.fields, function(field) {
+                    if(field) {
+                        var val = field.type==='BOOLEAN' ? (field.defaultValue==='true') : field.defaultValue;
+                        $scope.params[field.name] = val;
+                    }
+                });
+            }
+        });
+    });
 });

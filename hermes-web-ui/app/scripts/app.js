@@ -46,11 +46,23 @@ angular.module('hermes.ui', [
             templateUrl: 'views/configuration.html',
             controller: 'ConfigurationCtrl'
         })
-        .state('form', {
+        .state('form_edit', {
             abstract: false,
-            url: '/form',
-            templateUrl: 'views/form.html',
+            url: '/form/edit/:id',
+            templateUrl: 'views/form/edit.html',
             controller: 'FormCtrl'
+        })
+        .state('form_list', {
+            abstract: false,
+            url: '/form/list',
+            templateUrl: 'views/form/list.html',
+            controller: 'FormListCtrl'
+        })
+        .state('form_execute', {
+            abstract: false,
+            url: '/form/execute/:id',
+            templateUrl: 'views/form/execute.html',
+            controller: 'FormExecuteCtrl'
         })
         .state('about', {
             abstract: false,
@@ -75,12 +87,6 @@ angular.module('hermes.ui', [
             url: '/signin',
             templateUrl: 'views/signin.html',
             controller: 'SignInCtrl'
-        })
-        .state('terms', {
-            abstract: false,
-            url: '/terms',
-            templateUrl: 'views/terms.html',
-            controller: 'TermsCtrl'
         });
 
     // Restangular

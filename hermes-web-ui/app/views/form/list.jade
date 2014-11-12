@@ -1,0 +1,21 @@
+extends /layouts/_page
+block content
+    .row
+        .col-md-12
+            h3 Forms
+            table.table.table-condensed(ng-show='forms')
+                thead
+                    tr
+                        td Name
+                        td Description
+                        td
+                tbody
+                    tr(ng-repeat="form in forms | orderBy: 'position'")
+                        td {{form.name}}
+                        td {{form.description}}
+                        td
+                            .btn-group
+                                button.btn.btn-primary(type='button', ui-sref='form_execute({id: form.id})')
+                                    i.fa.fa-play
+                                button.btn.btn-default(type='button', ui-sref='form_edit({id: form.id})')
+                                    i.fa.fa-pencil

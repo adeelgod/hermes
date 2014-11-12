@@ -39,12 +39,20 @@ public class DataInitializer {
         formRepository.save(form);
 
 
-        // orders
+        // update
         form = new Form();
         form.setName("update");
         form.setDescription("Give some description...");
         form.setPosition(2);
         form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
+        formRepository.save(form);
+
+        fields = new ArrayList<>();
+        fields.add(new FormField("dummy_boolean", FormField.Type.BOOLEAN.name(), 3, "false"));
+        fields.add(new FormField("dummy_text", FormField.Type.TEXT.name(), 4, "default dummy text"));
+
+        form.setFields(fields);
+
         formRepository.save(form);
     }
 }

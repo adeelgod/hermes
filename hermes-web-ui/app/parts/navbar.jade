@@ -7,10 +7,11 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                 span.icon-bar
                 span.icon-bar
         #hlunavbar.collapse.navbar-collapse
-            ul.nav.navbar-nav.navbar-left
-                li
-                    a(href='', ng-click='menuShow()')
-                        i.fa.fa-bars
+            //
+                ul.nav.navbar-nav.navbar-left
+                    li
+                        a(href='', ng-click='menuShow()')
+                            i.fa.fa-bars
             ul.nav.navbar-nav.navbar-right
                 li
                     a(href='', ng-click='exampleQueue()')
@@ -19,21 +20,18 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                     a(href='', ui-sref='printers')
                         i.fa.fa-2x.fa-print
                 li
-                    a(href='', ui-sref='form')
+                    a(href='', ui-sref='form_list')
                         i.fa.fa-2x.fa-list-alt
+                //
+                    li
+                        a(href='', data-animation='am-flip-x', data-html='true', bs-dropdown='dropdown')
+                            i.fa.fa-2x.fa-list-alt
                 li
                     a(href='', ui-sref='home')
                         i.fa.fa-2x.fa-search
                 li
                     a(href='', ui-sref='configuration')
                         i.fa.fa-2x.fa-cog
-                //
-                    li.hidden-xs
-                        form.navbar-form(role='search')
-                            .input-group
-                                input.form-control(type='text', placeholder='Search...', ng-model='query', ng-keypress='search($event)')
-                                .input-group-addon
-                                    .i.fa.fa-search
                 li
                     .btn-group
                         button.btn.navbar-btn.btn-primary(type='button', ui-sref='signin') Sign in

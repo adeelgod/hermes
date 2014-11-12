@@ -1,0 +1,32 @@
+extends /layouts/_page
+block content
+    .row
+        .col-md-12
+            form(role='form', name='executeForm', novalidate='')
+                .form-group
+                    h2
+                        i.fa.fa-play
+                        | &nbsp;
+                        | Execute: {{form.name}}
+                    hr
+                    .form-group(ng-repeat="field in form.fields | orderBy: 'position'")
+                        label(for='{{field.name}}') {{field.name}}
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='TEXT'", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        .row(ng-if="field.type=='DATETIME'")
+                            .col-md-8
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}} date', bs-datepicker='', type='text')
+                            .col-md-4
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
+                        br
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.type=='BOOLEAN'", bs-checkbox='')
+                            i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
+                    .form-group
+                        .btn-group
+                            button.btn.btn-primary(type='button', ng-click='execute()', ng-disabled='executing')
+                                i.fa.fa-play
+    .row(ng-show='executing')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;

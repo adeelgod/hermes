@@ -7,8 +7,3 @@ msgstr ""
 #: /home/spaddo/workspace/hermes/hermes-web-ui/.tmp/parts/footer.html
 msgid "About"
 msgstr ""
-
-#: /home/spaddo/workspace/hermes/hermes-web-ui/.tmp/index.html
-#: /home/spaddo/workspace/hermes/hermes-web-ui/.tmp/parts/footer.html
-msgid "Terms"
-msgstr ""

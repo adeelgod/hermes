@@ -2,11 +2,9 @@ footer.navbar.navbar-default.navbar-fixed-bottom.visible-lg.visible-md(role='foo
     .container
         ul.nav.navbar-nav.navbar-left
             li
-                a(ui-sref='terms', translate) Terms
-            li
                 a(ui-sref='about', translate) About
-
-        ul.nav.navbar-nav.navbar-right
-            li
-                a(href='', data-placement='top', data-animation='am-flip-x', bs-popover='popover', trigger='click', title='Languages', html='true', template='parts/language.html')
-                    i.fa.fa-2x.fa-language.fa-spin
+        //
+            ul.nav.navbar-nav.navbar-right
+                li
+                    a(href='', data-placement='top', data-animation='am-flip-x', bs-popover='popover', trigger='click', title='Languages', html='true', template='parts/language.html')
+                        i.fa.fa-2x.fa-language.fa-spin

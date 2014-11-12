@@ -10,8 +10,14 @@ block content
                         .form-group
                             button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
                             br
-                            label(for='form') Form Name
+                            label(for='form') Name
                             input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
+                        .form-group
+                            label(for='formDescription') Description
+                            input.form-control(name='form', ng-model="form.description", placeholder='Description', type='text')
+                        .form-group
+                            label(for='formPosition') Position
+                            input.form-control(name='formPosition', ng-model="form.position", placeholder='Position', type='text')
                         .form-group
                             label(for='sql') SQL
                             textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
