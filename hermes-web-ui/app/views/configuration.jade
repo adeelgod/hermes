@@ -78,16 +78,16 @@ block content
                             label(for='ordersForm') Orders Form
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name as form.name for form in forms', bs-select='')
                         .form-group
-                            label(for='invoiceOrderField') Invoice Order ID Field
+                            label(for='invoiceOrderField') Invoice Order ID Field(s)
                             input.form-control(name='invoiceOrderField', ng-model="configuration['hermes.invoice.order.field']", placeholder='Invoice Order ID Field', type='text')
                         .form-group
-                            label(for='invoiceIdField') Invoice ID Field
+                            label(for='invoiceIdField') Invoice ID Field(s)
                             input.form-control(name='invoiceIdField', ng-model="configuration['hermes.invoice.id.field']", placeholder='Invoice ID Field', type='text')
                         .form-group
-                            label(for='labelOrderField') Label Order ID Field
+                            label(for='labelOrderField') Label Order ID Field(s)
                             input.form-control(name='labelOrderField', ng-model="configuration['hermes.label.order.field']", placeholder='Label Order ID Field', type='text')
                         .form-group
-                            label(for='labelIdField') Label Shipping ID Field
+                            label(for='labelIdField') Label Shipping ID Field(s)
                             input.form-control(name='labelIdField', ng-model="configuration['hermes.label.id.field']", placeholder='Label Shipping ID Field', type='text')
                 .tab-pane(role='tabpanel', id='report', ng-class="{'active': tab=='reporting'}")
                     form(role='form', name='reportForm', novalidate='')
