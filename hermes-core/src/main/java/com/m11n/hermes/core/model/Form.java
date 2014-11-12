@@ -45,7 +45,7 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "sql_statement", length = 4096)
+    @Column(name = "sql_statement", length = 16384)
     private String sqlStatement;
 
     @PropertyDefinition
