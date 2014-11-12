@@ -12,8 +12,6 @@ public interface PrinterService {
 
     PrinterStatus status(String printerName);
 
-    void printSelected() throws Exception;
-
     void setPrintQueueStatus(String printQueueStatus);
 
     String getPrintQueueStatus();
