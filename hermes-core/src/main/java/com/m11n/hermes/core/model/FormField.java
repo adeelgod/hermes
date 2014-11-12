@@ -60,7 +60,7 @@ public class FormField extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "position")
+    @Column(name = "pos")
     private Integer position;
 
     @PropertyDefinition

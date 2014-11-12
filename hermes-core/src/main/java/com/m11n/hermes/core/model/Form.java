@@ -25,7 +25,7 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 
 @BeanDefinition
 @JsonIgnoreProperties({"meta", "metaBean"})
-@XmlRootElement(name = "form_field")
+@XmlRootElement(name = "form")
 @Entity
 @Table(name = "hermes_form")
 public class Form extends DirectBean
@@ -45,8 +45,18 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "description")
+    private String description;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "sql_statement", length = 16384)
     private String sqlStatement;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "pos")
+    private Integer position;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -125,6 +135,31 @@ public class Form extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the description.
+     * @return the value of the property
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the description.
+     * @param description  the new value of the property
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Gets the the {@code description} property.
+     * @return the property, not null
+     */
+    public final Property<String> description() {
+        return metaBean().description().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the sqlStatement.
      * @return the value of the property
      */
@@ -146,6 +181,31 @@ public class Form extends DirectBean
      */
     public final Property<String> sqlStatement() {
         return metaBean().sqlStatement().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the position.
+     * @return the value of the property
+     */
+    public Integer getPosition() {
+        return position;
+    }
+
+    /**
+     * Sets the position.
+     * @param position  the new value of the property
+     */
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    /**
+     * Gets the the {@code position} property.
+     * @return the property, not null
+     */
+    public final Property<Integer> position() {
+        return metaBean().position().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -188,7 +248,9 @@ public class Form extends DirectBean
             Form other = (Form) obj;
             return JodaBeanUtils.equal(getId(), other.getId()) &&
                     JodaBeanUtils.equal(getName(), other.getName()) &&
+                    JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
                     JodaBeanUtils.equal(getSqlStatement(), other.getSqlStatement()) &&
+                    JodaBeanUtils.equal(getPosition(), other.getPosition()) &&
                     JodaBeanUtils.equal(getFields(), other.getFields());
         }
         return false;
@@ -199,14 +261,16 @@ public class Form extends DirectBean
         int hash = getClass().hashCode();
         hash += hash * 31 + JodaBeanUtils.hashCode(getId());
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getDescription());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSqlStatement());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
         hash += hash * 31 + JodaBeanUtils.hashCode(getFields());
         return hash;
     }
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(160);
+        StringBuilder buf = new StringBuilder(224);
         buf.append("Form{");
         int len = buf.length();
         toString(buf);
@@ -220,7 +284,9 @@ public class Form extends DirectBean
     protected void toString(StringBuilder buf) {
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
+        buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
         buf.append("sqlStatement").append('=').append(JodaBeanUtils.toString(getSqlStatement())).append(',').append(' ');
+        buf.append("position").append('=').append(JodaBeanUtils.toString(getPosition())).append(',').append(' ');
         buf.append("fields").append('=').append(JodaBeanUtils.toString(getFields())).append(',').append(' ');
     }
 
@@ -245,10 +311,20 @@ public class Form extends DirectBean
         private final MetaProperty<String> name = DirectMetaProperty.ofReadWrite(
                 this, "name", Form.class, String.class);
         /**
+         * The meta-property for the {@code description} property.
+         */
+        private final MetaProperty<String> description = DirectMetaProperty.ofReadWrite(
+                this, "description", Form.class, String.class);
+        /**
          * The meta-property for the {@code sqlStatement} property.
          */
         private final MetaProperty<String> sqlStatement = DirectMetaProperty.ofReadWrite(
                 this, "sqlStatement", Form.class, String.class);
+        /**
+         * The meta-property for the {@code position} property.
+         */
+        private final MetaProperty<Integer> position = DirectMetaProperty.ofReadWrite(
+                this, "position", Form.class, Integer.class);
         /**
          * The meta-property for the {@code fields} property.
          */
@@ -262,7 +338,9 @@ public class Form extends DirectBean
                 this, null,
                 "id",
                 "name",
+                "description",
                 "sqlStatement",
+                "position",
                 "fields");
 
         /**
@@ -278,8 +356,12 @@ public class Form extends DirectBean
                     return id;
                 case 3373707:  // name
                     return name;
+                case -1724546052:  // description
+                    return description;
                 case 937767745:  // sqlStatement
                     return sqlStatement;
+                case 747804969:  // position
+                    return position;
                 case -1274708295:  // fields
                     return fields;
             }
@@ -319,11 +401,27 @@ public class Form extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code description} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> description() {
+            return description;
+        }
+
+        /**
          * The meta-property for the {@code sqlStatement} property.
          * @return the meta-property, not null
          */
         public final MetaProperty<String> sqlStatement() {
             return sqlStatement;
+        }
+
+        /**
+         * The meta-property for the {@code position} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Integer> position() {
+            return position;
         }
 
         /**
@@ -342,8 +440,12 @@ public class Form extends DirectBean
                     return ((Form) bean).getId();
                 case 3373707:  // name
                     return ((Form) bean).getName();
+                case -1724546052:  // description
+                    return ((Form) bean).getDescription();
                 case 937767745:  // sqlStatement
                     return ((Form) bean).getSqlStatement();
+                case 747804969:  // position
+                    return ((Form) bean).getPosition();
                 case -1274708295:  // fields
                     return ((Form) bean).getFields();
             }
@@ -360,8 +462,14 @@ public class Form extends DirectBean
                 case 3373707:  // name
                     ((Form) bean).setName((String) newValue);
                     return;
+                case -1724546052:  // description
+                    ((Form) bean).setDescription((String) newValue);
+                    return;
                 case 937767745:  // sqlStatement
                     ((Form) bean).setSqlStatement((String) newValue);
+                    return;
+                case 747804969:  // position
+                    ((Form) bean).setPosition((Integer) newValue);
                     return;
                 case -1274708295:  // fields
                     ((Form) bean).setFields((List<FormField>) newValue);

@@ -22,6 +22,7 @@ public class DataInitializer {
         // orders
         Form form = new Form();
         form.setName("orders");
+        form.setDescription("This is the main search form.");
         //form.setSqlStatement("SELECT order_id as \"invoiceId\", Bestellung as \"orderId\", shipping_lable as \"shippingId\", Kunden_vorname as \"firstname\", Kunden_name as \"lastname\", Kunden_email as \"email\" FROM mage_custom_order WHERE Status = \"complete\" and Datum_Lieferung > :from and Datum_Lieferung < :until");
         form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("orders.sql")));
         form = formRepository.save(form);
@@ -40,8 +41,8 @@ public class DataInitializer {
         // orders
         form = new Form();
         form.setName("update");
+        form.setDescription("Give some description...");
         form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
         formRepository.save(form);
-
     }
 }
