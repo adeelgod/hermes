@@ -31,6 +31,9 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         FormSvc.query($scope.params).success(function(data) {
             $scope.querying = false;
             $scope.orders = data;
+        }).error(function(data) {
+            $scope.querying = false;
+            $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
         });
     };
 
@@ -42,7 +45,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.doPrint = function(order, type) {
         return PrinterSvc.print({orderId: order.orderId, type: type}).success(function(data) {
-            $alert({content: 'Printed order: ' + order.orderId + ' (' + type + ')', placement: 'top', type: 'success', show: true, duration: 15});
+            $alert({content: 'Printed order: ' + order.orderId + ' (' + type + ')', placement: 'top', type: 'success', show: true, duration: 5});
             switch(type) {
                 case 'INVOICE':
                     order._invoiceSuccess = true;
@@ -52,7 +55,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                     break;
             }
         }).error(function(data) {
-            $alert({content: 'Printing order: ' + order.orderId + ' (' + type + ') failed!', placement: 'top', type: 'danger', show: true, duration: 15});
+            $alert({content: 'Printing order: ' + order.orderId + ' (' + type + ') failed!', placement: 'top', type: 'danger', show: true, duration: 5});
             switch(type) {
                 case 'INVOICE':
                     order._invoiceSuccess = false;
