@@ -51,69 +51,74 @@ public class PrinterResource {
     @POST
     @Path("/print")
     @Produces(APPLICATION_JSON)
-    //public synchronized Response print(@QueryParam("type") String type, @QueryParam("orderId") String orderId) throws Exception {
-    public synchronized Response print(Map<String, Object> params) throws Exception {
-        Properties p = new Properties();
-        p.load(new FileInputStream(getPropertyFile()));
+    public synchronized Response print(Map<String, Object> params) {
+        try {
+            Properties p = new Properties();
+            p.load(new FileInputStream(getPropertyFile()));
 
-        String dir = p.getProperty("hermes.result.dir");
+            String dir = p.getProperty("hermes.result.dir");
 
-        String type = params.get("type").toString();
+            String type = params.get("type").toString();
 
-        DocumentType documentType = DocumentType.valueOf(type);
+            DocumentType documentType = DocumentType.valueOf(type);
 
-        String printer = null;
+            String printer = null;
 
-        if(documentType.equals(DocumentType.INVOICE)) {
-            printer = p.getProperty("hermes.printer.invoice");
-        } else if(documentType.equals(DocumentType.LABEL)) {
-            printer = p.getProperty("hermes.printer.label");
-        } else if(documentType.equals(DocumentType.REPORT)) {
-            printer = p.getProperty("hermes.printer.report");
-        }
+            if(documentType.equals(DocumentType.INVOICE)) {
+                printer = p.getProperty("hermes.printer.invoice");
+            } else if(documentType.equals(DocumentType.LABEL)) {
+                printer = p.getProperty("hermes.printer.label");
+            } else if(documentType.equals(DocumentType.REPORT)) {
+                printer = p.getProperty("hermes.printer.report");
+            }
 
-        logger.info("******************************************** PRINT: {}", this);
+            logger.info("******************************************** PRINT: {}", this);
 
-        if(documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
-            String orderId = params.get("orderId").toString();
+            if(documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
+                String orderId = params.get("orderId").toString();
 
-            logger.info("******************************************** PRINT: printer:{} type:{} order:{}", printer, type, orderId);
+                logger.info("******************************************** PRINT: printer:{} type:{} order:{}", printer, type, orderId);
 
-            PrinterService.JobStatus status = printerService.print(dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", printer);
+                PrinterService.JobStatus status = printerService.print(dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", printer);
 
-            logger.info("******************************************** PRINT: {} ({})", dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", status);
-
-            Thread.sleep(1000); // TODO: make this configurable
-
-            logger.info("******************************************** PRINT: wakeup...");
-
-            return Response.ok().build();
-        } else if(documentType.equals(DocumentType.REPORT)) {
-            logger.info("******************************************** PRINT: REPORT ORDER_IDS {} ({})", params.get("_order_ids"), params.get("_order_ids").getClass().getName());
-
-            String[] templates = params.get("_templates").toString().split("\\|");
-
-            for(String template : templates) {
-                String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
-
-                reportService.generate(template, params, "pdf", reportOutput);
-
-                PrinterService.JobStatus status = printerService.print(reportOutput, printer);
-
-                logger.info("******************************************** PRINT: {} ({})", reportOutput, status);
+                logger.info("******************************************** PRINT: {} ({})", dir + "/" + orderId + "/" + type.toLowerCase() + ".pdf", status);
 
                 Thread.sleep(1000); // TODO: make this configurable
 
                 logger.info("******************************************** PRINT: wakeup...");
 
-                // cleanup
-                FileUtils.deleteQuietly(new File(reportOutput));
-            }
+                return Response.ok().build();
+            } else if(documentType.equals(DocumentType.REPORT)) {
+                logger.info("******************************************** PRINT: REPORT ORDER_IDS {} ({})", params.get("_order_ids"), params.get("_order_ids").getClass().getName());
 
-            return Response.ok().build();
+                String[] templates = params.get("_templates").toString().split("\\|");
+
+                for(String template : templates) {
+                    String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
+
+                    reportService.generate(template, params, "pdf", reportOutput);
+
+                    PrinterService.JobStatus status = printerService.print(reportOutput, printer);
+
+                    logger.info("******************************************** PRINT: {} ({})", reportOutput, status);
+
+                    Thread.sleep(1000); // TODO: make this configurable
+
+                    logger.info("******************************************** PRINT: wakeup...");
+
+                    // cleanup
+                    FileUtils.deleteQuietly(new File(reportOutput));
+                }
+
+                return Response.ok().build();
+            }
+        } catch(Exception e) {
+            logger.error(e.toString(), e);
         }
 
-        return Response.serverError().build();
+        //return Response.serverError().build();
+        // TODO: return some status to check!
+        return Response.ok().build();
     }
 
     private String getPropertyFile() {

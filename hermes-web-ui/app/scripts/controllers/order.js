@@ -99,25 +99,30 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                 iterator++;
                 printNext();
             }
+        } else {
+            $scope.printing = false;
+        }
+
+        if(iterator>=$scope.orders.length) {
+            $scope.printing = false;
         }
     };
 
     $scope.print = function() {
         iterator = 0;
+        $scope.printing = true;
         printNext();
     };
 
     $scope.printReport = function() {
         var params = angular.copy($scope.params);
-        //params._order_ids = [];
         params.type = 'REPORT';
-        //params._templates = 'orders.jrxml|order_items.jrxml';
         params._templates = $scope.configuration['hermes.reporting.template.report'];
 
         return PrinterSvc.print(params).success(function(data) {
-            $alert({content: 'Printed report: ' + params._template + ' (REPORT)', placement: 'top', type: 'success', show: true, duration: 15});
+            $alert({content: 'Printed report: ' + params._templates + ' (REPORT)', placement: 'top', type: 'success', show: true, duration: 15});
         }).error(function(data) {
-            $alert({content: 'Printed report: ' + params._template + ' (REPORT)', placement: 'top', type: 'danger', show: true, duration: 15});
+            $alert({content: 'Printed report: ' + params._templates + ' (REPORT)', placement: 'top', type: 'danger', show: true, duration: 15});
             $log.error(data);
         });
     };
@@ -125,7 +130,6 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     ConfigurationSvc.list().success(function(data) {
         $scope.configuration = data.properties;
 
-        //$scope.getForm('orders');
         $scope.getForm($scope.configuration['hermes.orders.form'])
     });
 });

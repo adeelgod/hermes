@@ -23,14 +23,18 @@ block content
                         button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.type=='BOOLEAN'", bs-checkbox='')
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
-                        .btn-group
-                            button.btn.btn-primary(type='button', ng-click='query()')
-                                i.fa.fa-search
-                            button.btn.btn-default(type='button', ng-click='print()', ng-disabled='printing')
-                                i.fa.fa-print
-                            //
-                                button.btn.btn-default(type='button', ng-click='printReport()')
-                                    i.fa.fa-paw
+                        .row
+                            .col-md-4
+                                .btn-group
+                                    button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='printing')
+                                        i.fa.fa-search
+                                    button.btn.btn-default(type='button', ng-click='print()', ng-disabled='printing')
+                                        i.fa.fa-print
+                                    //
+                                        button.btn.btn-default(type='button', ng-click='printReport()')
+                                            i.fa.fa-paw
+                            .col-md-8
+                                i.fa.fa-2x.fa-spinner.fa-spin(ng-show='printing')
         .col-md-6
             nav
                 ul.pagination
@@ -50,9 +54,9 @@ block content
                             h4 Charge
                         td
                             .btn-group
-                                button.btn.btn-success(type='button', ng-click='select(true)')
+                                button.btn.btn-success(type='button', ng-click='select(true)', ng-disabled='printing')
                                     i.fa.fa-check
-                                button.btn.btn-danger(type='button', ng-click='select(false)')
+                                button.btn.btn-danger(type='button', ng-click='select(false)', ng-disabled='printing')
                                     i.fa.fa-close
                         td
                             h4 Order ID
@@ -69,7 +73,7 @@ block content
                         td
                             h4 {{charge($index)}}
                         td
-                            button.btn.btn-default(type='button', ng-click='entry._selected=!entry._selected')
+                            button.btn.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='printing')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td {{entry.orderId}}
                         td
