@@ -20,7 +20,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     };
 
     $scope.charge = function(index) {
-        return Math.ceil( (index+1)/5); // TODO: use configuration
+        var chargeSize = $scope.configuration['hermes.charge.size']
+        return Math.ceil( (index+1)/chargeSize);
     };
 
     $scope.query = function() {
@@ -77,8 +78,9 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                 $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
                     $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (label)');
                     $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
-                        // TODO: use configuration
-                        if( (count+1)%5===0) {
+                        var chargeSize = $scope.configuration['hermes.charge.size']
+
+                        if( (count+1)%chargeSize===0) {
                             $scope.printReport().then(function() {
                                 $log.info('Printing: charge!');
                                 $scope.params._order_ids = [];
@@ -109,15 +111,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         var params = angular.copy($scope.params);
         //params._order_ids = [];
         params.type = 'REPORT';
-        params._templates = 'orders.jrxml|order_items.jrxml'; // TODO: from configuration
-
-        /**
-        for(var i=0; i<$scope.orders.length; i++) {
-            if($scope.orders[i]._selected) {
-                params._order_ids.push($scope.orders[i].orderId);
-            }
-        }
-         */
+        //params._templates = 'orders.jrxml|order_items.jrxml';
+        params._templates = $scope.configuration['hermes.reporting.template.report'];
 
         return PrinterSvc.print(params).success(function(data) {
             $alert({content: 'Printed report: ' + params._template + ' (REPORT)', placement: 'top', type: 'success', show: true, duration: 15});
@@ -130,7 +125,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     ConfigurationSvc.list().success(function(data) {
         $scope.configuration = data.properties;
 
-        // TODO: use configured form
-        $scope.getForm('orders');
+        //$scope.getForm('orders');
+        $scope.getForm($scope.configuration['hermes.orders.form'])
     });
 });
