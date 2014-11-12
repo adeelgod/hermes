@@ -11,6 +11,7 @@
 - x stream PDF
 - x datetime selector
 - x archiv verzeichnis (manuell und automatisch)
+- first report, then invoice/label
 - execute form based sql statements
 - check if invoice/label file exist
 - print queues
