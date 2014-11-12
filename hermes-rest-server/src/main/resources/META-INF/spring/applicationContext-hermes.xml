@@ -5,6 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!--
     <bean id="placeholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="true" />
         <property name="ignoreResourceNotFound" value="true" />
@@ -14,6 +15,19 @@
                 <value>file:./hermes.properties</value>
             </list>
         </property>
+    </bean>
+    -->
+
+    <bean id="properties" class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>file:./src/test/resources/hermes.properties</value>
+                <value>file:./hermes.properties</value>
+            </list>
+        </property>
+        <property name="order" value="-1"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
     <context:component-scan base-package="com.m11n.hermes">

@@ -69,6 +69,9 @@ block content
                         .form-group
                             label(for='examplesDir') Examples Directory
                             input.form-control(name='examplesDir', ng-model="configuration['hermes.examples.dir']", placeholder='Examples Directory', type='text')
+                        .form-group
+                            label(for='archiveDir') Archive Directory
+                            input.form-control(name='archiveDir', ng-model="configuration['hermes.archive.dir']", placeholder='Archive Directory', type='text')
                 .tab-pane(role='tabpanel', id='parse', ng-class="{'active': tab=='parse'}")
                     form(role='form', name='parseForm', novalidate='')
                         .form-group
