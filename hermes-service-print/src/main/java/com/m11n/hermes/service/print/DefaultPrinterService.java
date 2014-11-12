@@ -1,6 +1,9 @@
 package com.m11n.hermes.service.print;
 
-import com.m11n.hermes.core.model.*;
+import com.m11n.hermes.core.model.Printer;
+import com.m11n.hermes.core.model.PrinterAttribute;
+import com.m11n.hermes.core.model.PrinterAttributeCategory;
+import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.io.IOUtils;
@@ -64,44 +67,6 @@ public class DefaultPrinterService implements PrinterService {
         return null;
     }
 
-    public void printSelected() throws Exception {
-        // TODO: implement this
-        logger.info("####################### PRINTING SELECTED...");
-
-        int chargeSize = 20; // TODO: retrieve from configuration
-        String resultDir = "./result"; // TODO: retrieve from configuration
-        String printerInvoice = "PDF"; // TODO: retrieve from configuration
-        String printerLabel = "PDF"; // TODO: retrieve from configuration
-
-        int i = 0;
-
-        /**
-        for(DocumentLog documentLog : documentLogRepository.findBySelected(true)) {
-            i++;
-
-            JobStatus status = null;
-
-            if((documentLog.getInvoicePrinted()==null || !documentLog.getInvoicePrinted()) && documentLog.getInvoice()) {
-                status = print(resultDir + "/" + documentLog.getOrderId() + "/invoice.pdf", printerInvoice);
-                // TODO: check status
-                documentLog.setInvoicePrinted(true);
-                documentLog.setInvoicePrintedAt(new Date());
-                documentLog = printerLogRepository.save(documentLog);
-            }
-            if((documentLog.getLabelPrinted()==null || !documentLog.getLabelPrinted()) && documentLog.getLabel()) {
-                status = print(resultDir + "/" + documentLog.getOrderId() + "/label.pdf", printerLabel);
-                // TODO: check status
-                documentLog.setLabelPrinted(true);
-                documentLog.setLabelPrintedAt(new Date());
-                documentLog = printerLogRepository.save(documentLog);
-            }
-            // TODO: check status
-            documentLog.setSelected(false);
-            documentLog = printerLogRepository.save(documentLog);
-        }
-         */
-    }
-
     public void setPrintQueueStatus(String printQueueStatus) {
         this.printQueueStatus = printQueueStatus;
     }
@@ -126,7 +91,7 @@ public class DefaultPrinterService implements PrinterService {
 
         InputStream fis = new FileInputStream(file);
 
-        DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+        DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF;
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
@@ -143,7 +108,6 @@ public class DefaultPrinterService implements PrinterService {
         PrinterJob.getPrinterJob().defaultPage();
 
         DocPrintJob job = printer(printer).createPrintJob();
-        //job.addPrintJobListener(new HermesJobListener());
         HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
         PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
@@ -165,8 +129,7 @@ public class DefaultPrinterService implements PrinterService {
 
         InputStream fis = new FileInputStream(file);
 
-        DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-        //DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF;
+        DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF;
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
