@@ -45,21 +45,28 @@ block content
             table.table.table-condensed
                 thead
                     tr
-                        td Charge
+                        td
+                            h4 Charge
                         td
                             .btn-group
                                 button.btn.btn-success(type='button', ng-click='select(true)')
                                     i.fa.fa-check
                                 button.btn.btn-danger(type='button', ng-click='select(false)')
                                     i.fa.fa-close
-                        td Order ID
-                        td Invoice ID
-                        td Shipping ID
-                        td Customer name
-                        td Customer email
+                        td
+                            h4 Order ID
+                        td
+                            h4 Invoice ID
+                        td
+                            h4 Shipping ID
+                        td
+                            h4 Customer name
+                        td
+                            h4 Customer email
                 tbody
                     tr(ng-repeat='entry in orders')
-                        td ---
+                        td
+                            h4 {{charge($index)}}
                         td
                             button.btn.btn-default(type='button', ng-click='entry._selected=!entry._selected')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")

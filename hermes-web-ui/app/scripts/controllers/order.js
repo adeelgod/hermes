@@ -19,6 +19,10 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         });
     };
 
+    $scope.charge = function(index) {
+        return Math.ceil( (index+1)/10); // TODO: use configuration
+    };
+
     $scope.query = function() {
         $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
         $scope.querying = true;
