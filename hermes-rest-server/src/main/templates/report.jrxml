@@ -11,13 +11,13 @@
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<parameter name="from" class="java.util.Date">
-		<defaultValueExpression><![CDATA[new java.util.Date(TODAY( ).getTime()-(1000*60*60*24))]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="until" class="java.util.Date">
-		<defaultValueExpression><![CDATA[TODAY( )]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="_order_ids" class="java.util.Collection" isForPrompting="false">
-		<defaultValueExpression><![CDATA[java.util.Arrays.asList("300012300", "300012301")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT coi.Produkt_name, sum(coi.Anzahl) as Anzahl
