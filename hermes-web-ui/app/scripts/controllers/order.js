@@ -64,40 +64,42 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         });
     };
 
-    var iterator = 0;
+    var iterator = -1;
     var count = 0;
 
-    var printNext = function() {
+    var printNext = function(skipIteration) {
+        if(!skipIteration) {
+            iterator++;
+        }
         if($scope.orders[iterator]) {
             if($scope.orders[iterator]._selected) {
-                count++;
-                // TODO: check invoice ID and shipping ID exist
-                $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (invoice)');
 
-                $scope.params._order_ids.push($scope.orders[iterator].orderId);
+                //$scope.params._order_ids.push($scope.orders[iterator].orderId);
 
-                $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
-                    $log.info('Printing: ' + $scope.orders[iterator].orderId + ' (label)');
-                    $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
-                        var chargeSize = $scope.configuration['hermes.charge.size']
+                var chargeSize = $scope.configuration['hermes.charge.size'];
 
-                        if( (count+1)%chargeSize===0) {
-                            $scope.printReport().then(function() {
-                                $log.info('Printing: charge!');
-                                $scope.params._order_ids = [];
-                                iterator++;
-                                printNext();
-                            });
-                        } else {
-                            $log.info('Printing: ---');
-                            iterator++;
-                            printNext();
-                        }
+                // first print charge report
+                if( count%(chargeSize+1)===0) {
+                    $scope.printReport().then(function() {
+                        $log.info('Printing: charge!');
+                        //iterator++;
+                        count++;
+                        printNext(true);
                     });
-                });
-
+                } else {
+                    // TODO: check invoice ID and shipping ID exist
+                    $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
+                        $log.info('Printed: ' + $scope.orders[iterator].orderId + ' (invoice)');
+                        $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
+                            $log.info('Printed: ' + $scope.orders[iterator].orderId + ' (label)');
+                            //iterator++;
+                            count++;
+                            printNext();
+                        });
+                    });
+                }
             } else {
-                iterator++;
+                //iterator++;
                 printNext();
             }
         } else {
@@ -110,7 +112,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     };
 
     $scope.print = function() {
-        iterator = 0;
+        iterator = -1;
+        count = 0;
         $scope.printing = true;
         printNext();
     };
@@ -118,12 +121,23 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     $scope.printReport = function() {
         var params = angular.copy($scope.params);
         params.type = 'REPORT';
+        params._order_ids = [];
         params._templates = $scope.configuration['hermes.reporting.template.report'];
 
+        var chargeSize = $scope.configuration['hermes.charge.size'];
+        var start = chargeSize*count;
+        var end = chargeSize*count+chargeSize;
+        $log.info('######## start: ' + start + ' end: ' + end);
+        for(var i=start; i<end; i++) {
+            if($scope.orders[i]._selected) {
+                params._order_ids.push($scope.orders[i].orderId);
+            }
+        }
+
         return PrinterSvc.print(params).success(function(data) {
-            $alert({content: 'Printed report: ' + params._templates + ' (REPORT)', placement: 'top', type: 'success', show: true, duration: 15});
+            $alert({content: 'Printed report: ' + params._templates + ' (REPORT)', placement: 'top', type: 'success', show: true, duration: 5});
         }).error(function(data) {
-            $alert({content: 'Printed report: ' + params._templates + ' (REPORT)', placement: 'top', type: 'danger', show: true, duration: 15});
+            $alert({content: 'Printed report: ' + params._templates + ' (REPORT)', placement: 'top', type: 'danger', show: true, duration: 5});
             $log.error(data);
         });
     };
