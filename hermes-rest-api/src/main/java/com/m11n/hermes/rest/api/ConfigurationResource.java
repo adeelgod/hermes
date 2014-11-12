@@ -3,8 +3,10 @@ package com.m11n.hermes.rest.api;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
 import com.m11n.hermes.persistence.FormRepository;
+import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.jasypt.encryption.StringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,9 @@ public class ConfigurationResource {
 
     @Inject
     private PrinterService printerService;
+
+    @Inject
+    private StringEncryptor encryptor;
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -74,12 +79,27 @@ public class ConfigurationResource {
         Properties p = new Properties();
 
         for(Map.Entry<String, String> entry : properties.entrySet()) {
-            p.setProperty(entry.getKey(), entry.getValue());
+            if(entry.getKey().contains("password")) {
+                p.setProperty(entry.getKey(), encrypt(entry.getValue()));
+            } else {
+                p.setProperty(entry.getKey(), entry.getValue());
+            }
         }
 
-        p.store(new FileOutputStream("hermes.properties"), "Test");
+        p.store(new FileOutputStream("hermes.properties"), "Hermes");
 
         return Response.ok().build();
+    }
+
+    private String encrypt(String value) {
+        if(value.startsWith("ENC(") || StringUtils.isEmpty(value)) {
+            //logger.info("+++++++++++++++++++++++ SKIP ENCRYPTION: {} -> {}", name, value);
+            return value;
+        } else {
+            String val = "ENC(" + encryptor.encrypt(value) + ")";
+            //logger.info("+++++++++++++++++++++++ ENCRYPTION: {} -> {} -> {}", name, value, val);
+            return val;
+        }
     }
 
     @POST

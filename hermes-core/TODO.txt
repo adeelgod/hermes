@@ -16,7 +16,7 @@
 - x execute form based sql statements
 - login
 - enable update/insert queries (test!)
-- enable encrypted passwords
+- x enable encrypted passwords
 - ? doc
 - check if invoice/label file exist
 - print queues

@@ -42,6 +42,12 @@
             <artifactId>hermes-service-report</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- Jasypt -->
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt-spring31</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
