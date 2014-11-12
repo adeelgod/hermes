@@ -8,6 +8,8 @@
 - x order sql statement completely configurable
   - x SELECT `order_id`, `Bestellung`, concat("Bestellung: ",`Bestellung`),`shipping_lable` FROM `mage_custom_order` WHERE `Status` = "complete" and `Datum_Lieferung` > "2014-11-02 12:04:12" and `Datum_Lieferung` < "2014-11-03 12:04:12";
   - x SELECT COUNT( * ) AS  `Zeilen` , sum(`Anzahl`),  `Produkt_name` FROM  `mage_custom_order_single_item` where order_id in (12345, 2346, 5678, 14532)
+- x stream PDF
+- archiv verzeichnis (manuell und automatisch)
 - print queues
   - x select
   - x start
