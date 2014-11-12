@@ -9,12 +9,6 @@ block content
                         | &nbsp;
                         | Order Search
                     hr
-                    //
-                        p {{orders | json}}
-                        p {{frm | json}}
-                        p {{frm['fields'] | json}}
-                        p {{params | json}}
-                        hr
                     .form-group(ng-repeat="field in frm.fields | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}
                         input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='TEXT'", placeholder='{{field.name}}', type='text')
@@ -35,9 +29,6 @@ block content
                                         i.fa.fa-search
                                     button.btn.btn-default(type='button', ng-click='print()', ng-disabled='printing')
                                         i.fa.fa-print
-                                    //
-                                        button.btn.btn-default(type='button', ng-click='printReport()')
-                                            i.fa.fa-paw
                             .col-md-8
                                 i.fa.fa-2x.fa-spinner.fa-spin(ng-show='printing')
         .col-md-6
@@ -62,7 +53,7 @@ block content
                                 button.btn.btn-success(type='button', ng-click='select(true)', ng-disabled='printing')
                                     i.fa.fa-check
                                 button.btn.btn-danger(type='button', ng-click='select(false)', ng-disabled='printing')
-                                    i.fa.fa-close
+                                    i.fa.fa-minus
                         td
                             h4 Order ID
                         td
@@ -91,19 +82,3 @@ block content
                             | &nbsp;{{entry.shippingId}}
                         td {{entry.lastname}}, {{entry.firstname}}
                         td {{entry.email}}
-
-                    //
-                        tr(ng-repeat='entry in orders.content')
-                            td
-                                span(ng-show="$index%configuration['hermes.charge.size']==0") {{ $index/configuration['hermes.charge.size']+1+orders.number }}
-                            td
-                                i.fa(ng-class="{ 'fa-check': entry.selected, 'fa-minus': !entry.selected }")
-                            td {{entry.orderId}}
-                            td
-                                span.label(ng-class="{ 'label-success': entry.invoice, 'label-danger': !entry.invoice }")
-                                    i.fa(ng-class="{ 'fa-check': entry.invoice, 'fa-close': !entry.invoice }")
-                                | &nbsp;{{entry.invoiceId}}
-                            td
-                                span.label(ng-class="{ 'label-success': entry.label, 'label-danger': !entry.label }")
-                                    i.fa(ng-class="{ 'fa-check': entry.label, 'fa-close': !entry.label }")
-                                | &nbsp;{{entry.shippingId}}
