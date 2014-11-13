@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.FileInputStream;
 
 @FixMethodOrder
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,12 +34,11 @@ public class DocumentSplitProcessorTest
 
     @Test
     public void testSplitInvoice() throws Exception {
-        producer.sendBody("vm:split", new File("./inbox/invoice2014-09-22_12-01-34.pdf"));
+        producer.sendBody("vm:split", new File("src/main/examples/invoice.pdf"));
     }
 
     @Test
     public void testSplitLabels() throws Exception {
-        //producer.sendBody("vm:split", new File("./inbox/intraship_labels_2014-09-22_12-08-14.pdf"));
-        producer.sendBody("vm:split", new File("./inbox/labels.pdf"));
+        producer.sendBody("vm:split", new File("src/main/examples/labels.pdf"));
     }
 }
