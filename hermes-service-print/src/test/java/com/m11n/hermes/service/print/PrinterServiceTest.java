@@ -1,6 +1,7 @@
 package com.m11n.hermes.service.print;
 
 import com.m11n.hermes.core.service.PrinterService;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -23,6 +24,9 @@ public class PrinterServiceTest
 
     @Inject
     private PrinterService printerService;
+
+    //private String printerName = "Officejet_4630";
+    private String printerName = "PDF";
 
     @Before
     public void setUp() {
@@ -53,14 +57,20 @@ public class PrinterServiceTest
     }
 
     @Test
-    public void testPrint() throws Exception {
+    public void testPrintInvoice() throws Exception {
+        print("../hermes-service-pdf/src/test/resources/invoice-1.pdf");
+    }
+
+    @Test
+    public void testPrintLabel() throws Exception {
+        PDDocument pdf = PDDocument.load("../hermes-service-pdf/src/test/resources/labels.pdf");
+
+        print("../hermes-service-pdf/src/test/resources/labels.pdf");
+        print("../hermes-service-pdf/src/test/resources/intraship-labels.pdf");
+    }
+
+    private void print(String file) {
         try {
-            //String printerName = "Officejet_4630";
-            String printerName = "PDF";
-
-            String file = "src/test/resources/invoice-1.pdf";
-
-            //printerService.print(file, "1-1", printerName, "landscape", null, 2);
             printerService.print(file, printerName);
         } catch (Throwable t) {
             // ignore for CI server
