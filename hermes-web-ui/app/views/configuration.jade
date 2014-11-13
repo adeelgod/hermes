@@ -120,6 +120,12 @@ block content
                         .form-group
                             label(for='printMethod') Printing Method
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.method']", ng-options='method.name as method.name for method in printMethods', bs-select='')
+                        .form-group(ng-show="configuration['hermes.printer.method']=='ACROBAT'")
+                            label(for='printMethodAcrobat') Acrobat Command
+                            input.form-control(name='printMethodAcrobat', ng-model="configuration['hermes.printer.method.acrobat']", placeholder='Acrobat Command', type='text')
+                        .form-group(ng-show="configuration['hermes.printer.method']=='GHOSTSCRIPT'")
+                            label(for='printMethodGhostscript') Ghostscript Command
+                            input.form-control(name='printMethodGhostscript', ng-model="configuration['hermes.printer.method.ghostscript']", placeholder='Ghostscript Command', type='text')
                         .form-group
                             label(for='invoicePrinter') Invoice Printer
                             br

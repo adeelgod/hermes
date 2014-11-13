@@ -9,10 +9,17 @@ import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPageable;
+import org.ghost4j.Ghostscript;
+import org.ghost4j.GhostscriptException;
+import org.ghost4j.GhostscriptRevision;
+import org.ghost4j.display.ImageWriterDisplayCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import sun.print.PageableDoc;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.print.*;
 import javax.print.attribute.*;
@@ -43,6 +50,19 @@ public class DefaultPrinterService implements PrinterService {
 
     @Inject
     private DocumentLogRepository documentLogRepository;
+
+    @PostConstruct
+    public void init() {
+        try {
+            GhostscriptRevision revision = Ghostscript.getRevision();
+            logger.info("############## GHOSTSCRIPT: {}", revision.getProduct());
+            logger.info("############## GHOSTSCRIPT: {}", revision.getNumber());
+            logger.info("############## GHOSTSCRIPT: {}", revision.getRevisionDate());
+            logger.info("############## GHOSTSCRIPT: {}", revision.getCopyright());
+        } catch(Throwable t) {
+            logger.warn(t.toString(), t);
+        }
+    }
 
     public PrinterStatus status(String printerName) {
         PrintService printer = printer(printerName);
@@ -93,6 +113,9 @@ public class DefaultPrinterService implements PrinterService {
             case JAVA:
                 status = printJava(file, printer);
                 break;
+            case PAGEABLE:
+                status = printPageable(file, printer);
+                break;
             case PDFBOX:
                 status = printPdfbox(file, printer);
                 break;
@@ -138,6 +161,33 @@ public class DefaultPrinterService implements PrinterService {
         return status;
     }
 
+    private JobStatus printPageable(String file, String printer) throws Exception {
+        PrintService service = printer(printer);
+
+        DocPrintJob job = service.createPrintJob();
+        HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
+
+        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+
+        attributes.add(new Copies(1));
+        attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
+
+        //DocFlavor flavor = new DocFlavor.INPUT_STREAM("application/x-java-jvm-local-objectref");
+
+        PDDocument pdf = PDDocument.load(file);
+
+        PrinterJob j = PrinterJob.getPrinterJob();
+        j.setCopies(1);
+        j.setJobName(UUID.randomUUID().toString() + ".pdf");
+        j.setPrintService(service);
+
+        Doc doc = new PageableDoc(new PDPageable(pdf, j));
+        job.print(doc, attributes);
+        JobStatus status = watcher.waitForDone();
+
+        return status;
+    }
+
     private JobStatus printPdfbox(String file, String printer) throws Exception {
         PrintService service = printer(printer);
 
@@ -161,12 +211,49 @@ public class DefaultPrinterService implements PrinterService {
     }
 
     private JobStatus printAcrobat(String file, String printer) throws Exception {
-        // TODO: implement this
+        // TODO: test this
+
+        try{
+            Properties p = PropertiesUtil.getProperties();
+            Runtime.getRuntime().exec(p.getProperty("hermes.printer.method.acrobat") + " " + file);
+            return JobStatus.COMPLETED;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         return JobStatus.UNKNOWN;
     }
 
     private JobStatus printGhostscript(String file, String printer) throws Exception {
-        // TODO: implement this
+        // TODO: test this
+
+        // NOTE: see here for details http://pnm2ppa.sourceforge.net/PPA_networking/PPA_networking-4.html
+
+        Properties p = PropertiesUtil.getProperties();
+        String[] args = (p.getProperty("hermes.printer.method.ghostscript") + " -sOutputFile=\"%printer%" + printer + "\"").trim().split(" ");
+
+        for(String arg : args) {
+            logger.info("##################### GHOSTSCRIPT ARG: {}", arg);
+        }
+
+        try {
+            Ghostscript gs = Ghostscript.getInstance();
+
+            //create display callback (capture display output pages as images)
+            ImageWriterDisplayCallback displayCallback = new ImageWriterDisplayCallback();
+
+            //set display callback
+            //gs.setDisplayCallback(displayCallback);
+
+            gs.initialize(args);
+            gs.runFile(file);
+            gs.exit();
+
+            return JobStatus.COMPLETED;
+        } catch (GhostscriptException e) {
+            logger.error(e.toString(), e);
+        }
+
         return JobStatus.UNKNOWN;
     }
 

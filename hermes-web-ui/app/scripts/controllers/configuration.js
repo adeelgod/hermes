@@ -11,6 +11,7 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
     $scope.printMethods = [
         {'name': 'JAVA'},
         {'name': 'PDFBOX'},
+        {'name': 'PAGEABLE'},
         {'name': 'GHOSTSCRIPT'},
         {'name': 'ACROBAT'}
     ];
