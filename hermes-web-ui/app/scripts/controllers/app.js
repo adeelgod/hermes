@@ -4,7 +4,6 @@ angular.module('hermes.ui').controller('AppCtrl', function ($scope, SecuritySvc)
     $scope.authenticated = false;
 
     $scope.$on('hermes.authenticated', function (event, data) {
-        console.log(data); // 'Data to send'
         $scope.authenticated = data;
     });
 
