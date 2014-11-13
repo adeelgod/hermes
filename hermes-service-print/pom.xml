@@ -24,17 +24,6 @@
         <dependency>
             <groupId>org.ghost4j</groupId>
             <artifactId>ghost4j</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.java.dev.jna</groupId>
-                    <artifactId>jna</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.4.0</version>
         </dependency>
     </dependencies>
 
