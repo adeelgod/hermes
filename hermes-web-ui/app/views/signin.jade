@@ -29,4 +29,7 @@ block content
                                 | No
                         label
                             | Remember me
-                        a.btn.btn-link.pull-right(ui-sref='reset') Forgot password?
+                        //a.btn.btn-link.pull-right(ui-sref='reset') Forgot password?
+                    .form-group
+                        button.btn.btn-primary(ng-click='signin()')
+                            i.fa.fa-check

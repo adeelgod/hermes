@@ -14,7 +14,7 @@
 - x first report, then invoice/label
 - x fix manuel select
 - x execute form based sql statements
-- login
+- x login
 - enable update/insert queries (test!)
 - x enable encrypted passwords
 - ? doc

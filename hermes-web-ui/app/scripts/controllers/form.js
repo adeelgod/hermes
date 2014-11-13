@@ -77,7 +77,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
             }
         });
     });
-}).controller('FormListCtrl', function ($scope, $state, $alert, FormSvc) {
+}).controller('FormListCtrl', function ($scope, $alert, FormSvc) {
     $scope.list = function() {
         return FormSvc.list().success(function(data) {
             $scope.forms = data;

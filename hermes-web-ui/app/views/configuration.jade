@@ -1,6 +1,6 @@
 extends /layouts/_page
 block content
-    .row
+    .row(ng-show='authenticated')
         .col-md-12
             h2
                 i.fa.fa-cog
@@ -131,6 +131,9 @@ block content
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.report']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
                 .tab-pane(role='tabpanel', id='ssh', ng-class="{'active': tab=='ssh'}")
                     form(role='form', name='sshForm', novalidate='')
+                        .form-group
+                            label(for='adminPassword') Admin Password
+                            input.form-control(name='adminPassword', ng-model="configuration['hermes.admin.password']", placeholder='Admin Password', type='password')
                         .form-group
                             label(for='sshPort') SSH Port
                             input.form-control(name='sshPort', ng-model="configuration['hermes.ssh.port']", placeholder='SSH Port', type='text')
