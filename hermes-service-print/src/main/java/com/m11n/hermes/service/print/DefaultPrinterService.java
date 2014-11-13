@@ -7,6 +7,7 @@ import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.io.IOUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -80,9 +81,10 @@ public class DefaultPrinterService implements PrinterService {
     }
 
     public JobStatus print(String file, String printer) throws Exception {
-        PrinterJob.getPrinterJob().defaultPage();
+        PrintService service = printer(printer);
 
-        DocPrintJob job = printer(printer).createPrintJob();
+        /**
+        DocPrintJob job = service.createPrintJob();
         HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
         PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
@@ -98,18 +100,27 @@ public class DefaultPrinterService implements PrinterService {
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
+         */
 
-        JobStatus status = watcher.waitForDone();
+        PrinterJob j = PrinterJob.getPrinterJob();
+        j.setCopies(1);
+        j.setJobName(UUID.randomUUID().toString() + ".pdf");
+        j.setPrintService(service);
+
+        PDDocument pdf = PDDocument.load(file);
+        pdf.silentPrint(j);
+
+        //JobStatus status = watcher.waitForDone();
+        JobStatus status = JobStatus.COMPLETED;  // TODO: improve this
         logger.debug("###################################### JOB DONE 1: {} ({})", file, status);
 
-        IOUtils.closeQuietly(fis);
+        //IOUtils.closeQuietly(fis);
+        //pdf.close();
 
         return status;
     }
 
     public void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception {
-        PrinterJob.getPrinterJob().defaultPage();
-
         DocPrintJob job = printer(printer).createPrintJob();
         HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 

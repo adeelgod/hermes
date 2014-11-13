@@ -18,6 +18,7 @@ public interface PrinterService {
 
     JobStatus print(String file, String printer) throws Exception;
 
+    @Deprecated
     void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception;
 
     List<Printer> printers();
