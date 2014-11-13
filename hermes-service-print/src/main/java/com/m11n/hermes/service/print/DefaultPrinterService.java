@@ -5,12 +5,12 @@ import com.m11n.hermes.core.model.PrinterAttribute;
 import com.m11n.hermes.core.model.PrinterAttributeCategory;
 import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PrinterService;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -39,9 +40,6 @@ public class DefaultPrinterService implements PrinterService {
     private String printQueueStatus;
 
     private List<Printer> printers = new CopyOnWriteArrayList<>();
-
-    @Value("${hermes.printer.method}")
-    private String method;
 
     @Inject
     private DocumentLogRepository documentLogRepository;
@@ -85,7 +83,9 @@ public class DefaultPrinterService implements PrinterService {
     }
 
     public JobStatus print(String file, String printer) throws Exception {
-        PrintMethod m = PrintMethod.valueOf(method);
+        Properties p = PropertiesUtil.getProperties();
+
+        PrintMethod m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
 
         JobStatus status;
 

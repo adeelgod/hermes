@@ -2,6 +2,7 @@ package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.FormRepository;
 import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -15,10 +16,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
@@ -43,8 +46,7 @@ public class ConfigurationResource {
     @GET
     @Produces(APPLICATION_JSON)
     public Response list() throws Exception {
-        Properties p = new Properties();
-        p.load(new FileInputStream(getPropertyFile()));
+        Properties p = PropertiesUtil.getProperties();
 
         Map<String, Object> configuration = new HashMap<>();
 
@@ -119,17 +121,5 @@ public class ConfigurationResource {
         }
 
         return Response.ok().build();
-    }
-
-    private String getPropertyFile() {
-        String file = System.getProperty("hermes.config");
-
-        if(file==null) {
-            file = "hermes.properties";
-        } else {
-            file = file.replace("file:", "");
-        }
-
-        return file;
     }
 }

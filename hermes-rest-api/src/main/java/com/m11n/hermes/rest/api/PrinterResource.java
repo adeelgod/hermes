@@ -3,6 +3,7 @@ package com.m11n.hermes.rest.api;
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +54,7 @@ public class PrinterResource {
     @Produces(APPLICATION_JSON)
     public synchronized Response print(Map<String, Object> params) {
         try {
-            Properties p = new Properties();
-            p.load(new FileInputStream(getPropertyFile()));
+            Properties p = PropertiesUtil.getProperties();
 
             String dir = p.getProperty("hermes.result.dir");
 
@@ -119,17 +119,5 @@ public class PrinterResource {
         //return Response.serverError().build();
         // TODO: return some status to check!
         return Response.ok().build();
-    }
-
-    private String getPropertyFile() {
-        String file = System.getProperty("hermes.config");
-
-        if(file==null) {
-            file = "hermes.properties";
-        } else {
-            file = file.replace("file:", "");
-        }
-
-        return file;
     }
 }
