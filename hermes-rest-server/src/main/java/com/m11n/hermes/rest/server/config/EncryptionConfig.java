@@ -1,6 +1,5 @@
 package com.m11n.hermes.rest.server.config;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.slf4j.Logger;
@@ -16,9 +15,12 @@ public class EncryptionConfig {
     public StringEncryptor encryptor() {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         //encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
-        encryptor.setAlgorithm("PBEWITHSHA256AND128BITAES-CBC-BC");
-        encryptor.setProvider(new BouncyCastleProvider());
+        //encryptor.setAlgorithm("PBEWITHSHA256AND128BITAES-CBC-BC");
+        encryptor.setAlgorithm("PBEWithMD5AndDES");
+        //encryptor.setProvider(new BouncyCastleProvider());
         encryptor.setPassword("hermes");
+
+        //logger.info("PASSWORD: '{}'", encryptor.encrypt("edgtds45"));
 
         return encryptor;
     }

@@ -17,6 +17,7 @@
 - x login
 - enable update/insert queries (test!)
 - switch mysql
+- send issues via email
 - x enable encrypted passwords
 - ? doc
 - ? scheduling
