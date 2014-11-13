@@ -8,6 +8,13 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
         {'name': 'MySQL', 'driver': 'com.mysql.jdbc.Driver', 'dialect': 'org.hibernate.dialect.MySQLDialect', 'url': 'jdbc:mysql://127.0.0.1:13306/Auswertung', 'username': 'print', 'password': ''}
     ];
 
+    $scope.printMethods = [
+        {'name': 'JAVA'},
+        {'name': 'PDFBOX'},
+        {'name': 'GHOSTSCRIPT'},
+        {'name': 'ACROBAT'}
+    ];
+
     $scope.tab = 'database';
 
     $scope.updateDatabase = function() {

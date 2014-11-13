@@ -10,6 +10,10 @@ public interface PrinterService {
         CANCELLED, COMPLETED, FAILED, NO_MORE_EVENTS, UNKNOWN
     }
 
+    enum PrintMethod {
+        JAVA, PDFBOX, GHOSTSCRIPT, ACROBAT
+    }
+
     PrinterStatus status(String printerName);
 
     void setPrintQueueStatus(String printQueueStatus);

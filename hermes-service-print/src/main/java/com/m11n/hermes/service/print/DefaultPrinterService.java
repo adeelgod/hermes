@@ -10,6 +10,7 @@ import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -38,6 +39,9 @@ public class DefaultPrinterService implements PrinterService {
     private String printQueueStatus;
 
     private List<Printer> printers = new CopyOnWriteArrayList<>();
+
+    @Value("${hermes.printer.method}")
+    private String method;
 
     @Inject
     private DocumentLogRepository documentLogRepository;
@@ -81,9 +85,36 @@ public class DefaultPrinterService implements PrinterService {
     }
 
     public JobStatus print(String file, String printer) throws Exception {
+        PrintMethod m = PrintMethod.valueOf(method);
+
+        JobStatus status;
+
+        switch(m) {
+            case JAVA:
+                status = printJava(file, printer);
+                break;
+            case PDFBOX:
+                status = printPdfbox(file, printer);
+                break;
+            case GHOSTSCRIPT:
+                status = printGhostscript(file, printer);
+                break;
+            case ACROBAT:
+                status = printAcrobat(file, printer);
+                break;
+            default:
+                status = printJava(file, printer);
+                break;
+        }
+
+        logger.debug("###################################### JOB DONE 1: {} ({}) - {}", file, status, m);
+
+        return status;
+    }
+
+    private JobStatus printJava(String file, String printer) throws Exception {
         PrintService service = printer(printer);
 
-        /**
         DocPrintJob job = service.createPrintJob();
         HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
@@ -100,7 +131,15 @@ public class DefaultPrinterService implements PrinterService {
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
-         */
+        JobStatus status = watcher.waitForDone();
+
+        IOUtils.closeQuietly(fis);
+
+        return status;
+    }
+
+    private JobStatus printPdfbox(String file, String printer) throws Exception {
+        PrintService service = printer(printer);
 
         PrinterJob j = PrinterJob.getPrinterJob();
         j.setCopies(1);
@@ -110,14 +149,25 @@ public class DefaultPrinterService implements PrinterService {
         PDDocument pdf = PDDocument.load(file);
         pdf.silentPrint(j);
 
-        //JobStatus status = watcher.waitForDone();
-        JobStatus status = JobStatus.COMPLETED;  // TODO: improve this
-        logger.debug("###################################### JOB DONE 1: {} ({})", file, status);
+        // version 2.0.0-SNAPSHOT
+        //PDFPrinter p = new PDFPrinter(pdf, j);
+        //p.silentPrint();
 
-        //IOUtils.closeQuietly(fis);
+        logger.debug("###################################### JOB CANCELLED 1: {}", j.isCancelled());
+
         //pdf.close();
 
-        return status;
+        return JobStatus.COMPLETED;  // TODO: improve this
+    }
+
+    private JobStatus printAcrobat(String file, String printer) throws Exception {
+        // TODO: implement this
+        return JobStatus.UNKNOWN;
+    }
+
+    private JobStatus printGhostscript(String file, String printer) throws Exception {
+        // TODO: implement this
+        return JobStatus.UNKNOWN;
     }
 
     public void print(String file, String pageRange, String printer, String orientation, String mediaId, int copies) throws Exception {

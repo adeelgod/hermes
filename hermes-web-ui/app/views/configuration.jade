@@ -118,6 +118,9 @@ block content
                 .tab-pane(role='tabpanel', id='print', ng-class="{'active': tab=='print'}")
                     form(role='form', name='printForm', novalidate='')
                         .form-group
+                            label(for='printMethod') Printing Method
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.method']", ng-options='method.name as method.name for method in printMethods', bs-select='')
+                        .form-group
                             label(for='invoicePrinter') Invoice Printer
                             br
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.invoice']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
