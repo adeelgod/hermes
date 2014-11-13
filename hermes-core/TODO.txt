@@ -33,7 +33,7 @@
   - x upload
   - x print
 - x report (send order parameters as report parameters)
-- authentication
+- x authentication
 - x SQL "functions" with forms:
   - x text, boolean, date/time fields
   - x list forms
