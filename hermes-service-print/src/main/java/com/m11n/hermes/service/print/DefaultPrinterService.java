@@ -60,6 +60,10 @@ public class DefaultPrinterService implements PrinterService {
 
         for (PrintService printer : printServices) {
             if(printer.getName().equals(name)) {
+                DocFlavor[] flavors = printer.getSupportedDocFlavors();
+                for(DocFlavor flavor : flavors) {
+                    logger.debug("+++++++++++ DOCFLAVOR {}: {}", name, flavor);
+                }
                 return printer;
             }
         }
@@ -79,25 +83,24 @@ public class DefaultPrinterService implements PrinterService {
         PrinterJob.getPrinterJob().defaultPage();
 
         DocPrintJob job = printer(printer).createPrintJob();
-        //job.addPrintJobListener(new HermesJobListener());
         HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
         PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 
-        attributes.add(OrientationRequested.PORTRAIT);
         attributes.add(new Copies(1));
-        attributes.add(Chromaticity.MONOCHROME);
+        //attributes.add(OrientationRequested.PORTRAIT);
+        //attributes.add(Chromaticity.MONOCHROME);
         attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
 
         InputStream fis = new FileInputStream(file);
 
-        DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF;
+        DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
 
         JobStatus status = watcher.waitForDone();
-        logger.debug("###################################### JOB DONE: {} ({})", file, status);
+        logger.debug("###################################### JOB DONE 1: {} ({})", file, status);
 
         IOUtils.closeQuietly(fis);
 
@@ -123,19 +126,17 @@ public class DefaultPrinterService implements PrinterService {
         }
         attributes.add(new Copies(copies));
         attributes.add(new PageRanges(pageRange));
-        //attributes.add(Chromaticity.MONOCHROME);
-        //attributes.add(PrintQuality.DRAFT);
         attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
 
         InputStream fis = new FileInputStream(file);
 
-        DocFlavor flavor = DocFlavor.INPUT_STREAM.PDF;
+        DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 
         Doc doc = new SimpleDoc(fis, flavor, null);
         job.print(doc, attributes);
 
         JobStatus status = watcher.waitForDone();
-        logger.debug("###################################### JOB DONE: {} ({})", file, status);
+        logger.debug("###################################### JOB DONE 2: {} ({})", file, status);
 
         IOUtils.closeQuietly(fis);
     }

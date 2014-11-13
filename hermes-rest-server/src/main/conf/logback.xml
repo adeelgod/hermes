@@ -15,6 +15,8 @@
         </encoder>
     </appender>
 
+    <logger name="com.m11n.hermes" level="DEBUG" />
+
     <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
