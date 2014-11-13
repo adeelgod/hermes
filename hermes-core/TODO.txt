@@ -16,6 +16,7 @@
 - x execute form based sql statements
 - x login
 - enable update/insert queries (test!)
+- switch mysql
 - x enable encrypted passwords
 - ? doc
 - check if invoice/label file exist
