@@ -19,6 +19,7 @@
 - switch mysql
 - x enable encrypted passwords
 - ? doc
+- ? scheduling
 - check if invoice/label file exist
 - print queues
   - x select
