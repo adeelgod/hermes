@@ -47,7 +47,7 @@ public class DefaultPrinterService implements PrinterService {
     private static final Logger logger = LoggerFactory.getLogger(DefaultPrinterService.class);
 
     static {
-        Defs.setProperty("java.awt.headless", "true");
+        //Defs.setProperty("java.awt.headless", "true");
         Defs.setProperty("org.icepdf.core.scaleImages", "false");
         Defs.setProperty("org.icepdf.core.print.disableAlpha", "true");
 
@@ -225,6 +225,7 @@ public class DefaultPrinterService implements PrinterService {
 
 
         // quoppa
+        // NOTE: more infos here http://www.qoppa.com/pdfprint/guide/
         //PDFPrint pdfPrint = new PDFPrint(fileName, null);
         //pdfPrint.print(printer, new PrintSettings());
         PrinterJob j = PrinterJob.getPrinterJob();
@@ -235,6 +236,7 @@ public class DefaultPrinterService implements PrinterService {
 
 
         // icepdf
+        // NOTE: more infos here http://www.icesoft.org/wiki/display/PDF/Print+Services+Example
         //Document pdf = new Document();
         //pdf.setFile(file);
         //SwingController sc = new SwingController();
