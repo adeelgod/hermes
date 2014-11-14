@@ -35,6 +35,7 @@ public class PrinterServiceTest
 
     @Before
     public void setUp() {
+        System.setProperty("hermes.config", "src/test/resources/hermes.properties");
     }
 
     @Test
@@ -63,15 +64,17 @@ public class PrinterServiceTest
 
     @Test
     public void testPrintInvoice() throws Exception {
-        print("../../../hermes-service-pdf/src/test/resources/invoice-1.pdf");
+        print("../hermes-service-pdf/src/test/resources/invoice-1.pdf");
     }
 
     @Test
     public void testPrintLabel() throws Exception {
-        PDDocument pdf = PDDocument.load("../../../hermes-service-pdf/src/test/resources/labels.pdf");
+        //PDDocument pdf = PDDocument.load("../hermes-service-pdf/src/test/resources/labels.pdf");
 
-        print("../../../hermes-service-pdf/src/test/resources/labels.pdf");
-        print("../../../hermes-service-pdf/src/test/resources/intraship-labels.pdf");
+        print("../hermes-service-pdf/src/test/resources/labels.pdf");
+        print("../hermes-service-pdf/src/test/resources/intraship-labels.pdf");
+        print("../hermes-service-pdf/src/test/resources/label-00340433836188598456.pdf");
+        print("../hermes-service-pdf/src/test/resources/label-00340433836598925903.pdf");
     }
 
     @Test
@@ -91,6 +94,7 @@ public class PrinterServiceTest
             printerService.print(file, printerName);
         } catch (Throwable t) {
             // ignore for CI server
+            logger.error(t.toString(), t);
         }
     }
 }
