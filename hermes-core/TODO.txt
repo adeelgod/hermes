@@ -15,6 +15,7 @@
 - x fix manuel select
 - x execute form based sql statements
 - x login
+- check job status codes
 - enable update/insert queries (test!)
 - switch mysql
 - send issues via email
