@@ -13,13 +13,11 @@ import com.qoppa.pdfPrint.PDFPrint;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.faceless.pdf2.PDF;
-import org.faceless.pdf2.PDFParser;
-import org.faceless.pdf2.PDFReader;
 import org.ghost4j.Ghostscript;
 import org.ghost4j.GhostscriptException;
 import org.ghost4j.GhostscriptRevision;
 import org.ghost4j.display.ImageWriterDisplayCallback;
+import org.icepdf.core.util.Defs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,6 +45,24 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DefaultPrinterService implements PrinterService {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultPrinterService.class);
+
+    static {
+        Defs.setProperty("java.awt.headless", "true");
+        Defs.setProperty("org.icepdf.core.scaleImages", "false");
+        Defs.setProperty("org.icepdf.core.print.disableAlpha", "true");
+
+        // set the graphic rendering hints for speed, we loose quite a bit of quality
+        // when converting to TIFF, so no point painting with the extra quality
+        Defs.setProperty("org.icepdf.core.print.alphaInterpolation", "VALUE_ALPHA_INTERPOLATION_SPEED");
+        Defs.setProperty("org.icepdf.core.print.antiAliasing", "VALUE_ANTIALIAS_ON");
+        Defs.setProperty("org.icepdf.core.print.textAntiAliasing", "VALUE_TEXT_ANTIALIAS_OFF");
+        Defs.setProperty("org.icepdf.core.print.colorRender", "VALUE_COLOR_RENDER_SPEED");
+        Defs.setProperty("org.icepdf.core.print.dither", "VALUE_DITHER_DEFAULT");
+        Defs.setProperty("org.icepdf.core.print.fractionalmetrics", "VALUE_FRACTIONALMETRICS_OFF");
+        Defs.setProperty("org.icepdf.core.print.interpolation", "VALUE_INTERPOLATION_NEAREST_NEIGHBOR");
+        Defs.setProperty("org.icepdf.core.print.render", "VALUE_RENDER_SPEED");
+        Defs.setProperty("org.icepdf.core.print.stroke", "VALUE_STROKE_PURE");
+    }
 
     //private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class, Copies.class, PageRanges.class, JobSheets.class, Chromaticity.class);
     private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class);
@@ -219,7 +235,19 @@ public class DefaultPrinterService implements PrinterService {
 
 
         // icepdf
-        // TODO: TBD
+        //Document pdf = new Document();
+        //pdf.setFile(file);
+        //SwingController sc = new SwingController();
+        //DocumentViewController vc = new DocumentViewControllerImpl(sc);
+        //vc.setDocument(pdf);
+        //PrintHelper printHelper = new PrintHelper(vc.getViewContainer(), pdf.getPageTree(), 0);
+        //printHelper.setupPrintService(service, 0, pdf.getNumberOfPages(), 1, true);
+        //printHelper.print();
+
+
+
+        // jzebra (probably too low level)
+        // NOTE: more infos here https://code.google.com/p/jzebra/wiki/TutorialRawUbuntu
 
 
         Doc doc = new SimpleDoc(pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
