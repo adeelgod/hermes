@@ -81,9 +81,9 @@ public class PrinterServiceTest
         List<PDPage> pages = pdfDoc.getDocumentCatalog().getAllPages();
         PDPage page = pages.get(0);
         BufferedImage image = page.convertToImage();
-        ImageIO.write(image, "png", new File("/tmp/freak/test.png"));
-        ImageIO.write(image, "jpg", new File("/tmp/freak/test.jpg"));
-        ImageIO.write(image, "gif", new File("/tmp/freak/test.gif"));
+        ImageIO.write(image, "png", new File("/tmp/printer-test.png"));
+        ImageIO.write(image, "jpg", new File("/tmp/printer-test.jpg"));
+        ImageIO.write(image, "gif", new File("/tmp/printer-test.gif"));
     }
 
     private void print(String file) {
