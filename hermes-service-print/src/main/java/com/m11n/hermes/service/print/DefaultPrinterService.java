@@ -9,6 +9,7 @@ import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
+import com.qoppa.pdfPrint.PDFPrint;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -177,28 +178,49 @@ public class DefaultPrinterService implements PrinterService {
         attributes.add(new Copies(1));
         attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
 
-        Pageable pageable = null;
+        Pageable pageable;
 
         // pdfbox
         // needs a job...
         //pageabel = new PDPageable(PDDocument.load(file), j);
 
+
         // swinglabs
+        // NOTE: more infos here http://dendro.cornell.edu/svn/corina/trunk/src/edu/cornell/dendro/corina/util/pdf/PrintablePDF.java
+
         //ByteBuffer buf = ByteBuffer.wrap(org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file)));
         //pageable = new SwinglabsPageable(new PDFFile(buf));
 
+
         // smartj
+        // NOTE: more infos here https://www.activetree.com/online/services/pdf/pdf_viewer.jsp
+
         //int pageScaling = AtPdfStreamPrinter.PAGE_SCALING_FIT_TO_PRINTABLE_AREA;
         //PageFormat defaultPageFormat = MediaUtil.getSelectedPageFormat(MediaSizeName.ISO_A2);
         //AtPdfStreamPrinter p = new AtPdfStreamPrinter();
         //pageable = p.getPageable(file, defaultPageFormat, service, pageScaling);
         //testPng(file);
 
+
         // bof
-        pageable = new PDFParser(new PDF(new PDFReader(new File(file))));
+        // NOTE: more infos here http://bfo.com/blog/2012/02/15/using_java_to_print_pdf_documents.html
+
+        //pageable = new PDFParser(new PDF(new PDFReader(new File(file))));
+
+
+        // quoppa
+        //PDFPrint pdfPrint = new PDFPrint(fileName, null);
+        //pdfPrint.print(printer, new PrintSettings());
+        PrinterJob j = PrinterJob.getPrinterJob();
+        j.setPrintService(service);
+        pageable = new PDFPrint(file, null).getPageable(j);
+        j.setPageable(pageable);
+        //j.print(attributes);
+
 
         // icepdf
         // TODO: TBD
+
 
         Doc doc = new SimpleDoc(pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
         job.print(doc, attributes);
