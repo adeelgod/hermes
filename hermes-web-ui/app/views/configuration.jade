@@ -126,6 +126,9 @@ block content
                         .form-group(ng-show="configuration['hermes.printer.method']=='GHOSTSCRIPT'")
                             label(for='printMethodGhostscript') Ghostscript Command
                             input.form-control(name='printMethodGhostscript', ng-model="configuration['hermes.printer.method.ghostscript']", placeholder='Ghostscript Command', type='text')
+                        .form-group(ng-show="configuration['hermes.printer.method']=='IMAGE'")
+                            label(for='printMethodImageFormat') Image Format
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.method.image.format']", ng-options='format.name as format.name for format in imageFormats', bs-select='')
                         .form-group
                             label(for='invoicePrinter') Invoice Printer
                             br

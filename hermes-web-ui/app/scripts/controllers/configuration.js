@@ -10,10 +10,17 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
 
     $scope.printMethods = [
         {'name': 'JAVA'},
+        {'name': 'IMAGE'},
         {'name': 'PDFBOX'},
         {'name': 'PAGEABLE'},
         {'name': 'GHOSTSCRIPT'},
         {'name': 'ACROBAT'}
+    ];
+
+    $scope.imageFormats = [
+        {'name': 'PNG'},
+        {'name': 'JPG'},
+        {'name': 'GIF'}
     ];
 
     $scope.tab = 'database';

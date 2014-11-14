@@ -1,5 +1,7 @@
 package com.m11n.hermes.service.print;
 
+import com.activetree.common.conversion.DocConverter;
+import com.activetree.pdfprint.SilentPdfConverter;
 import com.m11n.hermes.core.model.Printer;
 import com.m11n.hermes.core.model.PrinterAttribute;
 import com.m11n.hermes.core.model.PrinterAttributeCategory;
@@ -9,7 +11,10 @@ import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPageable;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.faceless.pdf2.PDF;
+import org.faceless.pdf2.PDFParser;
+import org.faceless.pdf2.PDFReader;
 import org.ghost4j.Ghostscript;
 import org.ghost4j.GhostscriptException;
 import org.ghost4j.GhostscriptRevision;
@@ -17,9 +22,9 @@ import org.ghost4j.display.ImageWriterDisplayCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import sun.print.PageableDoc;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.print.*;
 import javax.print.attribute.*;
@@ -27,9 +32,10 @@ import javax.print.attribute.standard.*;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
+import java.awt.image.BufferedImage;
+import java.awt.print.Pageable;
 import java.awt.print.PrinterJob;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -107,11 +113,14 @@ public class DefaultPrinterService implements PrinterService {
 
         PrintMethod m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
 
-        JobStatus status;
+        JobStatus status = JobStatus.UNKNOWN;
 
         switch(m) {
             case JAVA:
                 status = printJava(file, printer);
+                break;
+            case IMAGE:
+                status = printImage(file, printer);
                 break;
             case PAGEABLE:
                 status = printPageable(file, printer);
@@ -124,9 +133,6 @@ public class DefaultPrinterService implements PrinterService {
                 break;
             case ACROBAT:
                 status = printAcrobat(file, printer);
-                break;
-            default:
-                status = printJava(file, printer);
                 break;
         }
 
@@ -168,24 +174,87 @@ public class DefaultPrinterService implements PrinterService {
         HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
 
         PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-
         attributes.add(new Copies(1));
         attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
 
-        //DocFlavor flavor = new DocFlavor.INPUT_STREAM("application/x-java-jvm-local-objectref");
+        Pageable pageable = null;
 
-        PDDocument pdf = PDDocument.load(file);
+        // pdfbox
+        // needs a job...
+        //pageabel = new PDPageable(PDDocument.load(file), j);
 
-        PrinterJob j = PrinterJob.getPrinterJob();
-        j.setCopies(1);
-        j.setJobName(UUID.randomUUID().toString() + ".pdf");
-        j.setPrintService(service);
+        // swinglabs
+        //ByteBuffer buf = ByteBuffer.wrap(org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file)));
+        //pageable = new SwinglabsPageable(new PDFFile(buf));
 
-        Doc doc = new PageableDoc(new PDPageable(pdf, j));
+        // smartj
+        //int pageScaling = AtPdfStreamPrinter.PAGE_SCALING_FIT_TO_PRINTABLE_AREA;
+        //PageFormat defaultPageFormat = MediaUtil.getSelectedPageFormat(MediaSizeName.ISO_A2);
+        //AtPdfStreamPrinter p = new AtPdfStreamPrinter();
+        //pageable = p.getPageable(file, defaultPageFormat, service, pageScaling);
+        //testPng(file);
+
+        // bof
+        pageable = new PDFParser(new PDF(new PDFReader(new File(file))));
+
+        // icepdf
+        // TODO: TBD
+
+        Doc doc = new SimpleDoc(pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
         job.print(doc, attributes);
         JobStatus status = watcher.waitForDone();
 
+        //PrinterJob pj = PrinterJob.getPrinterJob();
+        //pj.setPrintService(service);
+        //pj.setPageable(pageable);
+        //pj.print(attributes);
+        //JobStatus status = JobStatus.COMPLETED;
+
         return status;
+    }
+
+    /**
+    private Pageable getPagesToPrint(Pageable pages) {
+        DocPageable pagesToPrint = new DocPageable();
+        for (int i=0; pages != null && i < pages.getNumberOfPages(); i++) {
+            Printable aPage = pages.getPrintable(i);
+            PageFormat aPageFormat = pages.getPageFormat(i);
+            //Check if you want to print this page
+            //Assumune: printing all pages
+            pagesToPrint.append(aPage, aPageFormat);
+        }
+        return pagesToPrint;
+    }
+     */
+
+    private void testPng(String file) throws Exception {
+        DocConverter converter = new SilentPdfConverter();
+
+        converter.setAttribute(DocConverter.DOC_TYPE, DocConverter.PNG);
+        converter.setAttribute(DocConverter.DOC_LIST, "[" + file + "]");
+        converter.setAttribute(DocConverter.OUTPUT_DIRECTORY, "/tmp/freak");
+        converter.setAttribute(DocConverter.NAME_PREFIX, file.substring(file.lastIndexOf("/")+1));
+        //converter.setAttribute(DocConverter.OUTPUT_STREAM, "/tmp/freak/" + file.substring(file.lastIndexOf("/")+1));
+        //converter.setAttribute(DocConverter.RESIZE_FACTOR, 1.0);
+        converter.setAttribute(DocConverter.PAPER_WIDTH, 826);
+        converter.setAttribute(DocConverter.PAPER_HEIGHT, 1169);
+        //converter.setAttribute(DocConverter.AUTO_MATCH_OUTPUT_TO_PAGE_SIZE, Boolean.TRUE);
+        converter.setAttribute(DocConverter.DEBUG, Boolean.TRUE);
+
+        converter.start();
+
+        PrintService service = printer("PDF");
+
+        DocPrintJob job = service.createPrintJob();
+        HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
+
+        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+        attributes.add(new Copies(1));
+        attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
+
+        Doc doc = new SimpleDoc(new FileInputStream("/tmp/freak/page_1_1.png"), DocFlavor.INPUT_STREAM.PNG, null);
+        job.print(doc, attributes);
+        watcher.waitForDone();
     }
 
     private JobStatus printPdfbox(String file, String printer) throws Exception {
@@ -208,6 +277,48 @@ public class DefaultPrinterService implements PrinterService {
         //pdf.close();
 
         return JobStatus.COMPLETED;  // TODO: improve this
+    }
+
+    private JobStatus printImage(String file, String printer) throws Exception {
+        if(new File(file).exists()) {
+            Properties p = PropertiesUtil.getProperties();
+            String format = p.getProperty("hermes.printer.method.image.format").toLowerCase();
+
+            DocFlavor.INPUT_STREAM type = DocFlavor.INPUT_STREAM.AUTOSENSE;
+
+            if(format.equals("png")) {
+                type = DocFlavor.INPUT_STREAM.PNG;
+            } else if(format.equals("jpg")) {
+                type = DocFlavor.INPUT_STREAM.JPEG;
+            } else if(format.equals("gif")) {
+                type = DocFlavor.INPUT_STREAM.GIF;
+            }
+
+            PrintService service = printer(printer);
+
+            DocPrintJob job = service.createPrintJob();
+            HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            PDDocument pdfDoc = PDDocument.load(file);
+            List<PDPage> pages = pdfDoc.getDocumentCatalog().getAllPages();
+
+            for(PDPage page : pages) {
+                BufferedImage image = page.convertToImage();
+                ImageIO.write(image, format, bos);
+
+                PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+                attributes.add(new Copies(1));
+                attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
+
+                Doc doc = new SimpleDoc(new ByteArrayInputStream(bos.toByteArray()), type, null);
+                job.print(doc, attributes);
+                watcher.waitForDone();
+            }
+        }
+
+        return JobStatus.COMPLETED;
     }
 
     private JobStatus printAcrobat(String file, String printer) throws Exception {
