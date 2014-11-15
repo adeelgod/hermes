@@ -3,6 +3,8 @@ package com.m11n.hermes.rest.api;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.persistence.FormRepository;
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -56,6 +58,8 @@ public class FormResource {
     @Produces(APPLICATION_JSON)
     public Response query(Map<String, Object> parameters) {
         Form form = formRepository.findByName(parameters.get("_form").toString());
+
+        final boolean checkFiles = parameters.get("_checkFiles")==null ? false : (Boolean)parameters.get("_checkFiles");
 
         for(FormField field : form.getFields()) {
             if(field.getType().equals(FormField.Type.DATE.name())) {
@@ -123,7 +127,7 @@ public class FormResource {
                             row.put(name, value);
                         }
 
-                        if(row.containsKey("orderId")) {
+                        if(row.containsKey("orderId") && checkFiles) {
                             row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
                             row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
                         }

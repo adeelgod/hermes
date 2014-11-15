@@ -26,6 +26,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.query = function() {
         $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
+        $scope.params['_checkFiles'] = true;
         $scope.querying = true;
         $scope.orders = null;
         FormSvc.query($scope.params).success(function(data) {
