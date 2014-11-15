@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -32,6 +33,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/forms")
 @Produces(APPLICATION_JSON)
+@Controller
 public class FormResource {
     private static final Logger logger = LoggerFactory.getLogger(FormResource.class);
 
