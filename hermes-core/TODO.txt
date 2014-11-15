@@ -25,7 +25,7 @@
 - x enable encrypted passwords
 - ? doc
 - ? scheduling
-- check if invoice/label file exist
+- x check if invoice/label file exist
 - print queues
   - x select
   - x start

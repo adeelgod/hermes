@@ -73,12 +73,12 @@ block content
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td {{entry.orderId}}
                         td
-                            span.label(ng-class="{ 'label-success': entry.invoiceId, 'label-danger': !entry.invoiceId }")
-                                i.fa(ng-class="{ 'fa-check': entry.invoiceId, 'fa-close': !entry.invoiceId }")
+                            span.label(ng-class="{ 'label-success': entry._invoiceExists, 'label-danger': !entry._invoiceExists }")
+                                i.fa(ng-class="{ 'fa-check': entry._invoiceExists, 'fa-minus': !entry._invoiceExists }")
                             | &nbsp;{{entry.invoiceId}}
                         td
-                            span.label(ng-class="{ 'label-success': entry.shippingId, 'label-danger': !entry.shippingId }")
-                                i.fa(ng-class="{ 'fa-check': entry.shippingId, 'fa-close': !entry.shippingId }")
+                            span.label(ng-class="{ 'label-success': entry._labelExists, 'label-danger': !entry._labelExists }")
+                                i.fa(ng-class="{ 'fa-check': entry._labelExists, 'fa-minus': !entry._labelExists }")
                             | &nbsp;{{entry.shippingId}}
                         td {{entry.lastname}}, {{entry.firstname}}
                         td {{entry.email}}

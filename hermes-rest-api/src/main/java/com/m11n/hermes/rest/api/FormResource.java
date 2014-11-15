@@ -10,6 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -36,6 +38,9 @@ public class FormResource {
 
     @Inject
     private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Value("${hermes.result.dir}")
+    private String resultDir;
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -117,6 +122,12 @@ public class FormResource {
 
                             row.put(name, value);
                         }
+
+                        if(row.containsKey("orderId")) {
+                            row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
+                            row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
+                        }
+
                         return row;
                     }
                 });
