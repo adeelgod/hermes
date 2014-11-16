@@ -84,7 +84,6 @@ public class FormResource {
 
         String[] statements = form.getSqlStatement().split(";");
 
-        //List<Map<String, Object>> result = null;
         Object result = null;
 
         for(String statement : statements) {
@@ -112,12 +111,24 @@ public class FormResource {
 
                             if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
                                 String orderId = row.get("orderId").toString();
+                                String shippingId = row.get("shippingId").toString();
 
-                                String path = intrashipDocumentRepository.findFilePath(orderId);
-                                try {
-                                    sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
-                                } catch (Exception e) {
-                                    logger.error(e.toString(), e);
+                                String path = intrashipDocumentRepository.findFilePath(shippingId);
+
+                                if(path!=null) {
+                                    try {
+                                        File f = new File(resultDir + "/" + row.get("orderId"));
+                                        if(!f.exists()) {
+                                            f.mkdirs();
+                                        }
+                                        logger.info("#################### COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
+                                        sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
+                                        row.put("_labelExists", true);
+                                    } catch (Exception e) {
+                                        logger.error(e.toString(), e);
+                                    }
+                                } else {
+                                    logger.info("#################### NOT FOUND: {} -> {}", orderId, shippingId);
                                 }
                             }
                         }
