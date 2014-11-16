@@ -2,10 +2,11 @@ package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
+import com.m11n.hermes.core.service.SshService;
+import com.m11n.hermes.persistence.AuswertungRepository;
+import com.m11n.hermes.persistence.BaseRowMapper;
 import com.m11n.hermes.persistence.FormRepository;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
+import com.m11n.hermes.persistence.IntrashipDocumentRepository;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -13,8 +14,6 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
@@ -25,7 +24,7 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Types;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,10 +37,16 @@ public class FormResource {
     private static final Logger logger = LoggerFactory.getLogger(FormResource.class);
 
     @Inject
+    private SshService sshService;
+
+    @Inject
     private FormRepository formRepository;
 
     @Inject
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private IntrashipDocumentRepository intrashipDocumentRepository;
+
+    @Inject
+    private AuswertungRepository auswertungRepository;
 
     @Value("${hermes.result.dir}")
     private String resultDir;
@@ -62,6 +67,7 @@ public class FormResource {
         Form form = formRepository.findByName(parameters.get("_form").toString());
 
         final boolean checkFiles = parameters.get("_checkFiles")==null ? false : (Boolean)parameters.get("_checkFiles");
+        final boolean downloadFiles = parameters.get("_downloadFiles")==null ? false : (Boolean)parameters.get("_downloadFiles");
 
         for(FormField field : form.getFields()) {
             if(field.getType().equals(FormField.Type.DATE.name())) {
@@ -87,44 +93,15 @@ public class FormResource {
             logger.info("#################### STATEMENT: {}", statement);
 
             if(statement.toLowerCase().startsWith("select")) {
-                result = jdbcTemplate.query(form.getSqlStatement(), parameters, new RowMapper<Map<String, Object>>() {
+                result = auswertungRepository.query(form.getSqlStatement(), parameters, new BaseRowMapper() {
                     @Override
                     public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
                         Map<String, Object> row = new HashMap<>();
                         ResultSetMetaData metaData = resultSet.getMetaData();
 
                         for(int j=1; j<=metaData.getColumnCount(); j++) {
-                            Object value = null;
-                            switch(metaData.getColumnType(j)) {
-                                case Types.BOOLEAN:
-                                    value = resultSet.getBoolean(j);
-                                    break;
-                                case Types.CHAR:
-                                case Types.VARCHAR:
-                                case Types.LONGVARCHAR:
-                                    value = resultSet.getString(j);
-                                    break;
-                                case Types.SMALLINT:
-                                case Types.TINYINT:
-                                case Types.INTEGER:
-                                    value = resultSet.getInt(j);
-                                    break;
-                                case Types.DECIMAL:
-                                    value = resultSet.getDouble(j);
-                                    break;
-                                case Types.BIGINT:
-                                    value = resultSet.getBigDecimal(j);
-                                    break;
-                                case Types.DATE:
-                                    value = resultSet.getDate(j);
-                                    break;
-                            }
-
-                            String name = metaData.getColumnLabel(j);
-
-                            if(StringUtils.isEmpty(name)) {
-                                name = metaData.getColumnName(j);
-                            }
+                            String name = getLabel(metaData, j);
+                            Object value = getValue(resultSet, j);
 
                             row.put(name, value);
                         }
@@ -132,17 +109,17 @@ public class FormResource {
                         if(row.containsKey("orderId") && checkFiles) {
                             row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
                             row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
+
+                            if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
+                                String path = intrashipDocumentRepository.findDocumentUrl(row.get("orderId").toString());
+                            }
                         }
 
                         return row;
                     }
                 });
             } else {
-                // TODO: implement this; maybe check insert/update
-                //int count = jdbcTemplate.update(statement, parameters);
-                //Map<String, Integer> r = new HashMap<>();
-                //r.put("modified", count);
-                //result = r;
+                result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
             }
         }
 

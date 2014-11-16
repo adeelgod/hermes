@@ -54,9 +54,13 @@ implements ReportService
     private String virtualizerType;
     
     @Inject
-    @Named("dataSourceShop") // TODO: remove this later when data sources unified
-    private DataSource dataSource;
-    
+    @Named("dataSourceAuswertung")
+    private DataSource dataSourceAuswertung;
+
+    @Inject
+    @Named("dataSourceLCarb")
+    private DataSource dataSourceLCarb;
+
     @PostConstruct
     public void init() 
     {
@@ -102,7 +106,8 @@ implements ReportService
 
             try 
             {
-                connection = dataSource.getConnection();
+                // TODO: decide depending on parameter
+                connection = dataSourceAuswertung.getConnection();
                 
                 if(template.endsWith("jrxml"))
                 {

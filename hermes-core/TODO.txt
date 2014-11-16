@@ -15,6 +15,7 @@
 - x fix manuel select
 - x execute form based sql statements
 - x login
+- x copy single paged labels
 - separate pageable; expose all posibilities
 - per document print method selection (invoice, label, report)
 - check spec again

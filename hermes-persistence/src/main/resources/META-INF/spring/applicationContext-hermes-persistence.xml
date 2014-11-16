@@ -18,26 +18,38 @@
         <property name="jdbcUrl" value="${hermes.db.url}" />
     </bean>
 
-    <bean id="dataSourceShop" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
-        <property name="username" value="${hermes.shop.db.username}" />
-        <property name="password" value="${hermes.shop.db.password}" />
-        <!--
-        <property name="driverClass" value="com.mysql.fabric.jdbc.FabricMySQLDriver" />
-        -->
-        <property name="driverClass" value="${hermes.shop.db.driver}" />
-        <property name="jdbcUrl" value="${hermes.shop.db.url}" />
+    <bean id="dataSourceAuswertung" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.auswertung.db.username}" />
+        <property name="password" value="${hermes.auswertung.db.password}" />
+        <property name="driverClass" value="${hermes.auswertung.db.driver}" />
+        <property name="jdbcUrl" value="${hermes.auswertung.db.url}" />
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg ref="dataSourceShop" />
+    <bean id="dataSourceLCarb" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.lcarb.db.username}" />
+        <property name="password" value="${hermes.lcarb.db.password}" />
+        <property name="driverClass" value="${hermes.lcarb.db.driver}" />
+        <property name="jdbcUrl" value="${hermes.lcarb.db.url}" />
+    </bean>
+
+    <bean id="jdbcTemplateAuswertung" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceAuswertung" />
+    </bean>
+
+    <bean id="jdbcTemplateLCarb" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceLCarb" />
     </bean>
 
     <!-- Transaction -->
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="transactionManagerShop" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSourceShop" />
+    <bean id="transactionManagerAuswertung" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceAuswertung" />
+    </bean>
+
+    <bean id="transactionManagerLCarb" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceLCarb" />
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
