@@ -11,8 +11,8 @@ import java.util.Collections;
 public class IntrashipDocumentRepository extends AbstractLCarbRepository {
     private static final Logger logger = LoggerFactory.getLogger(IntrashipDocumentRepository.class);
 
-    public String findFilePath(String orderId) {
-        String sql = "SELECT file_path FROM mage_intraship_document WHERE file_path LIKE \"%" + orderId+ ".pdf\"";
+    public String findFilePath(String shippingId) {
+        String sql = "SELECT file_path FROM mage_intraship_document WHERE file_path LIKE \"%" + shippingId + ".pdf\"";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Collections.<String, Object>emptyMap());
         if(result.next()) {
             return result.getString(1);
