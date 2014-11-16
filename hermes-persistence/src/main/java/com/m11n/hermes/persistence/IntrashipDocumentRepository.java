@@ -13,7 +13,6 @@ public class IntrashipDocumentRepository extends AbstractLCarbRepository {
 
     public String findFilePath(String orderId) {
         String sql = "SELECT file_path FROM mage_intraship_document WHERE file_path LIKE \"%" + orderId+ ".pdf\"";
-        logger.info("****************************************** {}", sql);
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Collections.<String, Object>emptyMap());
         if(result.next()) {
             return result.getString(1);
