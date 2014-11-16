@@ -111,7 +111,14 @@ public class FormResource {
                             row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
 
                             if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                                String path = intrashipDocumentRepository.findFilePath(row.get("orderId").toString());
+                                String orderId = row.get("orderId").toString();
+
+                                String path = intrashipDocumentRepository.findFilePath(orderId);
+                                try {
+                                    sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
+                                } catch (Exception e) {
+                                    logger.error(e.toString(), e);
+                                }
                             }
                         }
 
