@@ -111,7 +111,7 @@ public class FormResource {
                             row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
 
                             if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                                String path = intrashipDocumentRepository.findDocumentUrl(row.get("orderId").toString());
+                                String path = intrashipDocumentRepository.findFilePath(row.get("orderId").toString());
                             }
                         }
 
