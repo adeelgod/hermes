@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
-    $scope.printing = false;
-
     $scope.params = {_order_ids: []};
 
-    $scope.querying = false;
+    $scope.busy = false;
 
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
@@ -27,13 +25,14 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     $scope.query = function() {
         $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
         $scope.params['_checkFiles'] = true;
-        $scope.querying = true;
+        $scope.params['_downloadFiles'] = true;
+        $scope.busy = true;
         $scope.orders = null;
         FormSvc.query($scope.params).success(function(data) {
-            $scope.querying = false;
+            $scope.busy = false;
             $scope.orders = data;
         }).error(function(data) {
-            $scope.querying = false;
+            $scope.busy = false;
             $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
         });
     };
@@ -107,18 +106,18 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                 printNext();
             }
         } else {
-            $scope.printing = false;
+            $scope.busy = false;
         }
 
         if(iterator>=$scope.orders.length) {
-            $scope.printing = false;
+            $scope.busy = false;
         }
     };
 
     $scope.print = function() {
         iterator = -1;
         count = 0;
-        $scope.printing = true;
+        $scope.busy = true;
         printNext();
     };
 
