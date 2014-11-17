@@ -48,23 +48,23 @@ block content
                     tr
                         td
                             h4 Charge
-                        td
-                            i.fa.fa-sort-numeric-asc
-                        td
+                        td.text-center
+                            i.fa.fa-sort
+                        td.text-center
                             .btn-group
                                 button.btn.btn-sm.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
                                     i.fa.fa-check
                                 button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
-                        td
+                        td.text-center
                             h4 ID
-                        td
+                        td.text-center
                             h4 Order
-                        td
+                        td.text-center
                             h4 Invoice
-                        td
+                        td.text-center
                             h4 Shipping
-                        td
+                        td.text-center
                             h4 Customer
                 tbody
                     tr(ng-repeat='entry in orders')
