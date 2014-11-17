@@ -43,6 +43,28 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         });
     };
 
+    var move = function (ar, old_index, new_index) {
+        if (new_index >= ar.length) {
+            var k = new_index - ar.length;
+            while ((k--) + 1) {
+                ar.push(undefined);
+            }
+        }
+        ar.splice(new_index, 0, ar.splice(old_index, 1)[0]);
+    };
+
+    $scope.moveUp = function(index) {
+        if(index>0) {
+            move($scope.orders, index, index-1);
+        }
+    };
+
+    $scope.moveDown = function(index) {
+        if(index<$scope.orders.length) {
+            move($scope.orders, index, index+1);
+        }
+    };
+
     $scope.doPrint = function(order, type) {
         return PrinterSvc.print({orderId: order.orderId, type: type}).success(function(data) {
             $alert({content: 'Printed order: ' + order.orderId + ' (' + type + ')', placement: 'top', type: 'success', show: true, duration: 5});

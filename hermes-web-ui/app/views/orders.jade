@@ -49,10 +49,11 @@ block content
                         td
                             h4 Charge
                         td
+                        td
                             .btn-group
-                                button.btn.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
+                                button.btn.btn-sm.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
                                     i.fa.fa-check
-                                button.btn.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
+                                button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
                         td
                             h4 Order ID
@@ -69,7 +70,13 @@ block content
                         td
                             h4 {{charge($index)}}
                         td
-                            button.btn.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
+                            .btn-group
+                                button.btn.btn-sm.btn-default(type='button', ng-click='moveUp($index)', ng-disabled='busy')
+                                    i.fa.fa-caret-up
+                                button.btn.btn-sm.btn-default(type='button', ng-click='moveDown($index)', ng-disabled='busy')
+                                    i.fa.fa-caret-down
+                        td.text-center
+                            button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td {{entry.orderId}}
                         td

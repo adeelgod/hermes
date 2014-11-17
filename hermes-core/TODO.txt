@@ -18,6 +18,7 @@
 - x copy single paged labels
 - x move all sql related stuff to persistence layer; add main database
 - x execute on startup queries
+- x move order positions
 - schedule queries
 - separate pageable; expose all posibilities
 - per document print method selection (invoice, label, report)
