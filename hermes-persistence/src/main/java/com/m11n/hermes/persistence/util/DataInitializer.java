@@ -44,6 +44,7 @@ public class DataInitializer {
         form.setName("update");
         form.setDescription("Give some description...");
         form.setPosition(2);
+        form.setExecuteOnStartup(true);
         form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
         formRepository.save(form);
 

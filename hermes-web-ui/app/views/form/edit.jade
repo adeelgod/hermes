@@ -19,6 +19,10 @@ block content
                             label(for='formPosition') Position
                             input.form-control(name='formPosition', ng-model="form.position", placeholder='Position', type='text')
                         .form-group
+                            label(for='formExecuteOnStartup') Execute on Startup
+                            button.btn.btn-default(type='button', ng-model='form.executeOnStartup', bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': form.executeOnStartup, 'fa-circle-o': !form.executeOnStartup}")
+                        .form-group
                             label(for='sql') SQL
                             textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
                     .btn-group
