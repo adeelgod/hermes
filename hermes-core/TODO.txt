@@ -21,16 +21,15 @@
 - x move order positions
 - x separate pageable; expose all possibilities
 - x check spec again
+- x enable encrypted passwords
+- x check if invoice/label file exist
 - enable update/insert queries (test!)
 - switch mysql
-- schedule queries
-- per document print method selection (invoice, label, report)
-- check job status codes
 - send issues via email
-- x enable encrypted passwords
+- check job status codes
+- ? per document print method selection (invoice, label, report)
+- ? schedule queries
 - ? doc
-- ? scheduling
-- x check if invoice/label file exist
 - print queues
   - x select
   - x start
