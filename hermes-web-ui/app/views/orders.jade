@@ -57,6 +57,8 @@ block content
                                 button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
                         td
+                            h4 UN ID
+                        td
                             h4 Order ID
                         td
                             h4 Invoice ID
@@ -79,6 +81,7 @@ block content
                         td.text-center
                             button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
+                        td {{entry.unId}}
                         td {{entry.orderId}}
                         td
                             span.label(ng-class="{ 'label-success': entry._invoiceExists, 'label-danger': !entry._invoiceExists }")
