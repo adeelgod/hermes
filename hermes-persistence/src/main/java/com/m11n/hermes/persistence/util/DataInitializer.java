@@ -32,8 +32,8 @@ public class DataInitializer {
             List<FormField> fields = new ArrayList<>();
             fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1));
             fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2));
-            fields.add(new FormField("dummy_boolean", FormField.Type.BOOLEAN.name(), 3, "false"));
-            fields.add(new FormField("dummy_text", FormField.Type.TEXT.name(), 4, "default dummy text"));
+            //fields.add(new FormField("dummy_boolean", FormField.Type.BOOLEAN.name(), 3, "false"));
+            //fields.add(new FormField("dummy_text", FormField.Type.TEXT.name(), 4, "default dummy text"));
 
             form.setFields(fields);
 
