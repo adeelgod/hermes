@@ -22,7 +22,7 @@
 - schedule queries
 - separate pageable; expose all posibilities
 - per document print method selection (invoice, label, report)
-- check spec again
+- x check spec again
 - check job status codes
 - enable update/insert queries (test!)
 - switch mysql
