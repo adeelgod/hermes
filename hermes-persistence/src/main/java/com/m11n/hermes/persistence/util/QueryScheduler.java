@@ -13,6 +13,7 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@DependsOn("dataInitializer")
 public class QueryScheduler {
     private static final Logger logger = LoggerFactory.getLogger(QueryScheduler.class);
 
@@ -45,6 +47,7 @@ public class QueryScheduler {
     @PostConstruct
     public void init() {
         for(Form form : formRepository.findByExecuteOnStartup(true)) {
+            logger.info("+++++++++++++++++++ EXECUTING QUERY: {}", form.getName());
             query(form, false, false, Collections.<String, Object>emptyMap());
         }
     }
