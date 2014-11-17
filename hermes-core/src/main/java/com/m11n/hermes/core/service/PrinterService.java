@@ -11,7 +11,7 @@ public interface PrinterService {
     }
 
     enum PrintMethod {
-        JAVA, IMAGE, PDFBOX, PAGEABLE, GHOSTSCRIPT, ACROBAT
+        JAVA, IMAGE, PDFBOX, GHOSTSCRIPT, ACROBAT, SWINGLABS, SMARTJ, ICEPDF, BOF, QUOPPA, PDFBOXPAGEABLE, JZEBRA
     }
 
     PrinterStatus status(String printerName);

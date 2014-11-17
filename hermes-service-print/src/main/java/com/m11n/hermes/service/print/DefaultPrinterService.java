@@ -1,7 +1,9 @@
 package com.m11n.hermes.service.print;
 
 import com.activetree.common.conversion.DocConverter;
+import com.activetree.common.utils.MediaUtil;
 import com.activetree.pdfprint.SilentPdfConverter;
+import com.activetree.pdfprint.common.AtPdfStreamPrinter;
 import com.m11n.hermes.core.model.Printer;
 import com.m11n.hermes.core.model.PrinterAttribute;
 import com.m11n.hermes.core.model.PrinterAttributeCategory;
@@ -9,10 +11,16 @@ import com.m11n.hermes.core.model.PrinterStatus;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
+import com.m11n.hermes.service.print.pageable.SwinglabsPageable;
 import com.qoppa.pdfPrint.PDFPrint;
+import com.sun.pdfview.PDFFile;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageable;
+import org.faceless.pdf2.PDF;
+import org.faceless.pdf2.PDFParser;
+import org.faceless.pdf2.PDFReader;
 import org.ghost4j.Ghostscript;
 import org.ghost4j.GhostscriptException;
 import org.ghost4j.GhostscriptRevision;
@@ -32,9 +40,11 @@ import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
 import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.PrinterJob;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -139,8 +149,14 @@ public class DefaultPrinterService implements PrinterService {
             case IMAGE:
                 status = printImage(file, printer);
                 break;
-            case PAGEABLE:
-                status = printPageable(file, printer);
+            case SWINGLABS:
+            case BOF:
+            case ICEPDF:
+            case JZEBRA:
+            case PDFBOXPAGEABLE:
+            case SMARTJ:
+            case QUOPPA:
+                status = printPageable(file, printer, m);
                 break;
             case PDFBOX:
                 status = printPdfbox(file, printer);
@@ -184,7 +200,7 @@ public class DefaultPrinterService implements PrinterService {
         return status;
     }
 
-    private JobStatus printPageable(String file, String printer) throws Exception {
+    private JobStatus printPageable(String file, String printer, PrintMethod method) throws Exception {
         PrintService service = printer(printer);
 
         DocPrintJob job = service.createPrintJob();
@@ -194,67 +210,61 @@ public class DefaultPrinterService implements PrinterService {
         attributes.add(new Copies(1));
         attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
 
-        Pageable pageable;
+        Pageable pageable = null;
 
-        // pdfbox
-        // needs a job...
-        //pageabel = new PDPageable(PDDocument.load(file), j);
-
-
-        // swinglabs
-        // NOTE: more infos here http://dendro.cornell.edu/svn/corina/trunk/src/edu/cornell/dendro/corina/util/pdf/PrintablePDF.java
-
-        //ByteBuffer buf = ByteBuffer.wrap(org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file)));
-        //pageable = new SwinglabsPageable(new PDFFile(buf));
-
-
-        // smartj
-        // NOTE: more infos here https://www.activetree.com/online/services/pdf/pdf_viewer.jsp
-
-        //int pageScaling = AtPdfStreamPrinter.PAGE_SCALING_FIT_TO_PRINTABLE_AREA;
-        //PageFormat defaultPageFormat = MediaUtil.getSelectedPageFormat(MediaSizeName.ISO_A2);
-        //AtPdfStreamPrinter p = new AtPdfStreamPrinter();
-        //pageable = p.getPageable(file, defaultPageFormat, service, pageScaling);
-        //testPng(file);
-
-
-        // bof
-        // NOTE: more infos here http://bfo.com/blog/2012/02/15/using_java_to_print_pdf_documents.html
-
-        //pageable = new PDFParser(new PDF(new PDFReader(new File(file))));
-
-
-        // quoppa
-        // NOTE: more infos here http://www.qoppa.com/pdfprint/guide/
-        //PDFPrint pdfPrint = new PDFPrint(fileName, null);
-        //pdfPrint.print(printer, new PrintSettings());
         PrinterJob j = PrinterJob.getPrinterJob();
         j.setPrintService(service);
-        pageable = new PDFPrint(file, null).getPageable(j);
-        j.setPageable(pageable);
-        //j.print(attributes);
 
+        switch(method) {
+            case PDFBOXPAGEABLE:
+                pageable = new PDPageable(PDDocument.load(file), j);
+                j.setPageable(pageable);
+                break;
+            case SWINGLABS:
+                // NOTE: more infos here http://dendro.cornell.edu/svn/corina/trunk/src/edu/cornell/dendro/corina/util/pdf/PrintablePDF.java
+                ByteBuffer buf = ByteBuffer.wrap(org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file)));
+                pageable = new SwinglabsPageable(new PDFFile(buf));
+                break;
+            case SMARTJ:
+                // NOTE: more infos here https://www.activetree.com/online/services/pdf/pdf_viewer.jsp
+                int pageScaling = AtPdfStreamPrinter.PAGE_SCALING_FIT_TO_PRINTABLE_AREA;
+                PageFormat defaultPageFormat = MediaUtil.getSelectedPageFormat(MediaSizeName.ISO_A2);
+                AtPdfStreamPrinter p = new AtPdfStreamPrinter();
+                pageable = p.getPageable(file, defaultPageFormat, service, pageScaling);
+                break;
+            case ICEPDF:
+                // TODO: implement this
+                // NOTE: more infos here http://www.icesoft.org/wiki/display/PDF/Print+Services+Example
+                //Document pdf = new Document();
+                //pdf.setFile(file);
+                //SwingController sc = new SwingController();
+                //DocumentViewController vc = new DocumentViewControllerImpl(sc);
+                //vc.setDocument(pdf);
+                //PrintHelper printHelper = new PrintHelper(vc.getViewContainer(), pdf.getPageTree(), 0);
+                //printHelper.setupPrintService(service, 0, pdf.getNumberOfPages(), 1, true);
+                //printHelper.print();
+                break;
+            case BOF:
+                // NOTE: more infos here http://bfo.com/blog/2012/02/15/using_java_to_print_pdf_documents.html
+                pageable = new PDFParser(new PDF(new PDFReader(new File(file))));
+                break;
+            case QUOPPA:
+                // NOTE: more infos here http://www.qoppa.com/pdfprint/guide/
+                pageable = new PDFPrint(file, null).getPageable(j);
+                j.setPageable(pageable);
+                break;
+            case JZEBRA:
+                // NOTE: more infos here https://code.google.com/p/jzebra/wiki/TutorialRawUbuntu (probably too low level)
+                break;
+        }
 
-        // icepdf
-        // NOTE: more infos here http://www.icesoft.org/wiki/display/PDF/Print+Services+Example
-        //Document pdf = new Document();
-        //pdf.setFile(file);
-        //SwingController sc = new SwingController();
-        //DocumentViewController vc = new DocumentViewControllerImpl(sc);
-        //vc.setDocument(pdf);
-        //PrintHelper printHelper = new PrintHelper(vc.getViewContainer(), pdf.getPageTree(), 0);
-        //printHelper.setupPrintService(service, 0, pdf.getNumberOfPages(), 1, true);
-        //printHelper.print();
+        JobStatus status = JobStatus.FAILED;
 
-
-
-        // jzebra (probably too low level)
-        // NOTE: more infos here https://code.google.com/p/jzebra/wiki/TutorialRawUbuntu
-
-
-        Doc doc = new SimpleDoc(pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
-        job.print(doc, attributes);
-        JobStatus status = watcher.waitForDone();
+        if(pageable!=null) {
+            Doc doc = new SimpleDoc(pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
+            job.print(doc, attributes);
+            status = watcher.waitForDone();
+        }
 
         //PrinterJob pj = PrinterJob.getPrinterJob();
         //pj.setPrintService(service);

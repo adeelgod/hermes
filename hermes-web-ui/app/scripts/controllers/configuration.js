@@ -12,7 +12,13 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
         {'name': 'JAVA'},
         {'name': 'IMAGE'},
         {'name': 'PDFBOX'},
-        {'name': 'PAGEABLE'},
+        {'name': 'QUOPPA'},
+        {'name': 'BOF'},
+        {'name': 'SWINGLABS'},
+        {'name': 'PDFBOXPAGEABLE'},
+        {'name': 'SMARTJ'},
+        //{'name': 'ICEPDF'},
+        //{'name': 'JZEBRA'},
         {'name': 'GHOSTSCRIPT'},
         {'name': 'ACROBAT'}
     ];
