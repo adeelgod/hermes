@@ -60,7 +60,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     };
 
     $scope.moveDown = function(index) {
-        if(index<$scope.orders.length) {
+        if(index<$scope.orders.length-1) {
             move($scope.orders, index, index+1);
         }
     };
