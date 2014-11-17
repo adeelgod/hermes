@@ -23,8 +23,8 @@
 - x check spec again
 - x enable encrypted passwords
 - x check if invoice/label file exist
+- x switch mysql
 - enable update/insert queries (test!)
-- switch mysql
 - send issues via email
 - check job status codes
 - ? per document print method selection (invoice, label, report)

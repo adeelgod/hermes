@@ -11,7 +11,7 @@
 
     <jpa:repositories base-package="com.m11n.hermes.persistence"/>
 
-    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource">
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
         <property name="username" value="${hermes.db.username}" />
         <property name="password" value="${hermes.db.password}" />
         <property name="driverClass" value="${hermes.db.driver}" />
@@ -73,7 +73,7 @@
                 <entry key="hibernate.ejb.naming_strategy" value="${hibernate.ejb.naming_strategy}" />
                 <entry key="hibernate.format_sql" value="${hibernate.format_sql}" />
                 <entry key="hibernate.show_sql" value="${hibernate.show_sql}" />
-                <entry key="hibernate.hbm2ddl.auto" value="update" />
+                <entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}" />
             </map>
         </property>
     </bean>

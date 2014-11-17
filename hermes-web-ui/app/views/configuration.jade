@@ -58,6 +58,9 @@ block content
                         .form-group
                             label(for='') Hibernate Naming Strategy
                             input.form-control(name='hibernate', ng-model="configuration['hibernate.ejb.naming_strategy']", placeholder='Naming Strategy', type='text', disabled='')
+                        .form-group
+                            label(for='') Hibernate DDL Auto
+                            input.form-control(name='hibernateDdl', ng-model="configuration['hibernate.hbm2ddl.auto']", placeholder='DDL Auto', type='text', disabled='')
                 .tab-pane(role='tabpanel', id='directory', ng-class="{'active': tab=='directory'}")
                     form(role='form', name='directoryForm', novalidate='')
                         .form-group
