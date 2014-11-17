@@ -43,28 +43,28 @@ block content
                     span.sr-only &nbsp;
     .row(ng-show='orders')
         .col-md-12
-            table.table.table-condensed
+            table.table.table-striped.table-condensed
                 thead
                     tr
                         td
                             h4 Charge
                         td.text-center
-                            i.fa.fa-sort
+                            //i.fa.fa-sort
                         td.text-center
                             .btn-group
                                 button.btn.btn-sm.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
                                     i.fa.fa-check
                                 button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
-                        td.text-center
+                        td.text-left
                             h4 ID
-                        td.text-center
-                            h4 Order
-                        td.text-center
-                            h4 Invoice
-                        td.text-center
-                            h4 Shipping
-                        td.text-center
+                        td.text-left
+                            h4 Order ID
+                        td.text-left
+                            h4 Invoice Ident
+                        td.text-left
+                            h4 Shipping Ident
+                        td.text-left
                             h4 Customer
                 tbody
                     tr(ng-repeat='entry in orders')
@@ -81,12 +81,14 @@ block content
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td {{entry.unId}}
                         td {{entry.orderId}}
-                        td
-                            span.label(ng-class="{ 'label-success': entry._invoiceExists, 'label-danger': !entry._invoiceExists }")
-                                i.fa(ng-class="{ 'fa-check': entry._invoiceExists, 'fa-minus': !entry._invoiceExists }")
+                        td(ng-class="{ 'success': entry._invoiceExists, 'danger': !entry._invoiceExists }")
+                            //
+                                span.label(ng-class="{ 'label-success': entry._invoiceExists, 'label-danger': !entry._invoiceExists }")
+                                    i.fa(ng-class="{ 'fa-check': entry._invoiceExists, 'fa-minus': !entry._invoiceExists }")
                             | &nbsp;{{entry.invoiceId}}
-                        td
-                            span.label(ng-class="{ 'label-success': entry._labelExists, 'label-danger': !entry._labelExists }")
-                                i.fa(ng-class="{ 'fa-check': entry._labelExists, 'fa-minus': !entry._labelExists }")
+                        td(ng-class="{ 'success': entry._labelExists, 'danger': !entry._labelExists }")
+                            //
+                                span.label(ng-class="{ 'label-success': entry._labelExists, 'label-danger': !entry._labelExists }")
+                                    i.fa(ng-class="{ 'fa-check': entry._labelExists, 'fa-minus': !entry._labelExists }")
                             | &nbsp;{{entry.shippingId}}
                         td {{entry.lastname}}, {{entry.firstname}}
