@@ -68,6 +68,7 @@
             </activation>
             <modules>
                 <module>hermes-core</module>
+                <module>hermes-test</module>
                 <module>hermes-persistence</module>
                 <module>hermes-service</module>
                 <module>hermes-web</module>
@@ -82,6 +83,7 @@
             </activation>
             <modules>
                 <module>hermes-core</module>
+                <module>hermes-test</module>
                 <module>hermes-persistence</module>
                 <module>hermes-service</module>
                 <module>hermes-rest</module>

@@ -50,6 +50,16 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "schedule")
+    private String schedule;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "execute_on_startup")
+    private Boolean executeOnStartup;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "sql_statement", length = 16384)
     private String sqlStatement;
 
@@ -160,6 +170,56 @@ public class Form extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the schedule.
+     * @return the value of the property
+     */
+    public String getSchedule() {
+        return schedule;
+    }
+
+    /**
+     * Sets the schedule.
+     * @param schedule  the new value of the property
+     */
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    /**
+     * Gets the the {@code schedule} property.
+     * @return the property, not null
+     */
+    public final Property<String> schedule() {
+        return metaBean().schedule().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the executeOnStartup.
+     * @return the value of the property
+     */
+    public Boolean getExecuteOnStartup() {
+        return executeOnStartup;
+    }
+
+    /**
+     * Sets the executeOnStartup.
+     * @param executeOnStartup  the new value of the property
+     */
+    public void setExecuteOnStartup(Boolean executeOnStartup) {
+        this.executeOnStartup = executeOnStartup;
+    }
+
+    /**
+     * Gets the the {@code executeOnStartup} property.
+     * @return the property, not null
+     */
+    public final Property<Boolean> executeOnStartup() {
+        return metaBean().executeOnStartup().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the sqlStatement.
      * @return the value of the property
      */
@@ -249,6 +309,8 @@ public class Form extends DirectBean
             return JodaBeanUtils.equal(getId(), other.getId()) &&
                     JodaBeanUtils.equal(getName(), other.getName()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
+                    JodaBeanUtils.equal(getSchedule(), other.getSchedule()) &&
+                    JodaBeanUtils.equal(getExecuteOnStartup(), other.getExecuteOnStartup()) &&
                     JodaBeanUtils.equal(getSqlStatement(), other.getSqlStatement()) &&
                     JodaBeanUtils.equal(getPosition(), other.getPosition()) &&
                     JodaBeanUtils.equal(getFields(), other.getFields());
@@ -262,6 +324,8 @@ public class Form extends DirectBean
         hash += hash * 31 + JodaBeanUtils.hashCode(getId());
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
         hash += hash * 31 + JodaBeanUtils.hashCode(getDescription());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getSchedule());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getExecuteOnStartup());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSqlStatement());
         hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
         hash += hash * 31 + JodaBeanUtils.hashCode(getFields());
@@ -270,7 +334,7 @@ public class Form extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(224);
+        StringBuilder buf = new StringBuilder(288);
         buf.append("Form{");
         int len = buf.length();
         toString(buf);
@@ -285,6 +349,8 @@ public class Form extends DirectBean
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
+        buf.append("schedule").append('=').append(JodaBeanUtils.toString(getSchedule())).append(',').append(' ');
+        buf.append("executeOnStartup").append('=').append(JodaBeanUtils.toString(getExecuteOnStartup())).append(',').append(' ');
         buf.append("sqlStatement").append('=').append(JodaBeanUtils.toString(getSqlStatement())).append(',').append(' ');
         buf.append("position").append('=').append(JodaBeanUtils.toString(getPosition())).append(',').append(' ');
         buf.append("fields").append('=').append(JodaBeanUtils.toString(getFields())).append(',').append(' ');
@@ -316,6 +382,16 @@ public class Form extends DirectBean
         private final MetaProperty<String> description = DirectMetaProperty.ofReadWrite(
                 this, "description", Form.class, String.class);
         /**
+         * The meta-property for the {@code schedule} property.
+         */
+        private final MetaProperty<String> schedule = DirectMetaProperty.ofReadWrite(
+                this, "schedule", Form.class, String.class);
+        /**
+         * The meta-property for the {@code executeOnStartup} property.
+         */
+        private final MetaProperty<Boolean> executeOnStartup = DirectMetaProperty.ofReadWrite(
+                this, "executeOnStartup", Form.class, Boolean.class);
+        /**
          * The meta-property for the {@code sqlStatement} property.
          */
         private final MetaProperty<String> sqlStatement = DirectMetaProperty.ofReadWrite(
@@ -339,6 +415,8 @@ public class Form extends DirectBean
                 "id",
                 "name",
                 "description",
+                "schedule",
+                "executeOnStartup",
                 "sqlStatement",
                 "position",
                 "fields");
@@ -358,6 +436,10 @@ public class Form extends DirectBean
                     return name;
                 case -1724546052:  // description
                     return description;
+                case -697920873:  // schedule
+                    return schedule;
+                case 694222761:  // executeOnStartup
+                    return executeOnStartup;
                 case 937767745:  // sqlStatement
                     return sqlStatement;
                 case 747804969:  // position
@@ -409,6 +491,22 @@ public class Form extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code schedule} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> schedule() {
+            return schedule;
+        }
+
+        /**
+         * The meta-property for the {@code executeOnStartup} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Boolean> executeOnStartup() {
+            return executeOnStartup;
+        }
+
+        /**
          * The meta-property for the {@code sqlStatement} property.
          * @return the meta-property, not null
          */
@@ -442,6 +540,10 @@ public class Form extends DirectBean
                     return ((Form) bean).getName();
                 case -1724546052:  // description
                     return ((Form) bean).getDescription();
+                case -697920873:  // schedule
+                    return ((Form) bean).getSchedule();
+                case 694222761:  // executeOnStartup
+                    return ((Form) bean).getExecuteOnStartup();
                 case 937767745:  // sqlStatement
                     return ((Form) bean).getSqlStatement();
                 case 747804969:  // position
@@ -464,6 +566,12 @@ public class Form extends DirectBean
                     return;
                 case -1724546052:  // description
                     ((Form) bean).setDescription((String) newValue);
+                    return;
+                case -697920873:  // schedule
+                    ((Form) bean).setSchedule((String) newValue);
+                    return;
+                case 694222761:  // executeOnStartup
+                    ((Form) bean).setExecuteOnStartup((Boolean) newValue);
                     return;
                 case 937767745:  // sqlStatement
                     ((Form) bean).setSqlStatement((String) newValue);
