@@ -34,7 +34,7 @@
         <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>
-                <value>file:./src/test/resources/hermes.properties</value>
+                <value>file:../hermes-test/src/main/resources/hermes.properties</value>
                 <value>file:./hermes.properties</value>
             </list>
         </property>
