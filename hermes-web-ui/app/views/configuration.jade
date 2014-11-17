@@ -46,15 +46,13 @@ block content
                             label(for='') Hibernate Dialect
                             input.form-control(name='hibernateDialect', ng-model="configuration['hibernate.dialect']", placeholder='Dialect', type='text', disabled='')
                         .form-group
-                            label(for='') Hibernate Show SQL
-                            //input.form-control(name='hibernate', ng-model="configuration['hibernate.show_sql']", placeholder='Show SQL', type='text')
                             button.btn.btn-default(type='button', ng-model="configuration['hibernate.show_sql']", bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': configuration['hibernate.show_sql'], 'fa-circle-o': !configuration['hibernate.show_sql']}")
+                            label(for='') Hibernate Show SQL
                         .form-group
-                            label(for='') Hibernate Format SQL
-                            //input.form-control(name='hibernate', ng-model="configuration['hibernate.format_sql']", placeholder='Format SQL', type='text')
                             button.btn.btn-default(type='button', ng-model="configuration['hibernate.format_sql']", bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': configuration['hibernate.format_sql'], 'fa-circle-o': !configuration['hibernate.format_sql']}")
+                            label(for='') Hibernate Format SQL
                         .form-group
                             label(for='') Hibernate Naming Strategy
                             input.form-control(name='hibernate', ng-model="configuration['hibernate.ejb.naming_strategy']", placeholder='Naming Strategy', type='text', disabled='')
