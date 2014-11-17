@@ -49,7 +49,7 @@ block content
                         td
                             h4 Charge
                         td
-                            h4 Order
+                            i.fa.fa-sort-numeric-asc
                         td
                             .btn-group
                                 button.btn.btn-sm.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
@@ -57,17 +57,15 @@ block content
                                 button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
                         td
-                            h4 UN ID
+                            h4 ID
                         td
-                            h4 Order ID
+                            h4 Order
                         td
-                            h4 Invoice ID
+                            h4 Invoice
                         td
-                            h4 Shipping ID
+                            h4 Shipping
                         td
-                            h4 Customer name
-                        td
-                            h4 Customer email
+                            h4 Customer
                 tbody
                     tr(ng-repeat='entry in orders')
                         td
@@ -92,4 +90,3 @@ block content
                                 i.fa(ng-class="{ 'fa-check': entry._labelExists, 'fa-minus': !entry._labelExists }")
                             | &nbsp;{{entry.shippingId}}
                         td {{entry.lastname}}, {{entry.firstname}}
-                        td {{entry.email}}
