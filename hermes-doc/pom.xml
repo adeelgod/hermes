@@ -55,9 +55,6 @@
                                 <copy todir="${project.build.directory}/generated-docs/asciidoc/images">
                                     <fileset dir="src/main/resources/images"/>
                                 </copy>
-                                <copy todir="${project.build.directory}/generated-docs/html5/images">
-                                    <fileset dir="src/main/resources/images"/>
-                                </copy>
                             </tasks>
                         </configuration>
                         <goals>
