@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParams, $alert, FormSvc) {
-    //$scope.form = {};
     $scope.forms = [];
     $scope.field = {};
+
+    $scope.databases = [
+        {'name': 'auswertung'},
+        {'name': 'lcarb'}
+    ];
 
     $scope.types = [
         {'name': 'Date', 'code': 'DATE'},

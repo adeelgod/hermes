@@ -11,25 +11,25 @@
 
     <jpa:repositories base-package="com.m11n.hermes.persistence"/>
 
-    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
-        <property name="username" value="${hermes.db.username}" />
-        <property name="password" value="${hermes.db.password}" />
-        <property name="driverClass" value="${hermes.db.driver}" />
-        <property name="jdbcUrl" value="${hermes.db.url}" />
+    <bean id="dataSourceJpa" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.db.auswertung.username}" />
+        <property name="password" value="${hermes.db.auswertung.password}" />
+        <property name="driverClass" value="${hermes.db.auswertung.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.auswertung.url}" />
     </bean>
 
     <bean id="dataSourceAuswertung" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
-        <property name="username" value="${hermes.auswertung.db.username}" />
-        <property name="password" value="${hermes.auswertung.db.password}" />
-        <property name="driverClass" value="${hermes.auswertung.db.driver}" />
-        <property name="jdbcUrl" value="${hermes.auswertung.db.url}" />
+        <property name="username" value="${hermes.db.auswertung.username}" />
+        <property name="password" value="${hermes.db.auswertung.password}" />
+        <property name="driverClass" value="${hermes.db.auswertung.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.auswertung.url}" />
     </bean>
 
     <bean id="dataSourceLCarb" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
-        <property name="username" value="${hermes.lcarb.db.username}" />
-        <property name="password" value="${hermes.lcarb.db.password}" />
-        <property name="driverClass" value="${hermes.lcarb.db.driver}" />
-        <property name="jdbcUrl" value="${hermes.lcarb.db.url}" />
+        <property name="username" value="${hermes.db.lcarb.username}" />
+        <property name="password" value="${hermes.db.lcarb.password}" />
+        <property name="driverClass" value="${hermes.db.lcarb.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.lcarb.url}" />
     </bean>
 
     <bean id="jdbcTemplateAuswertung" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
@@ -53,7 +53,7 @@
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSourceJpa" />
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
     
@@ -65,7 +65,7 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jpaVendorAdapter" ref="vendorAdapter" />
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSourceJpa" />
         <property name="packagesToScan" value="com.m11n.hermes" />
         <property name="jpaPropertyMap">
             <map>

@@ -7,11 +7,16 @@ block content
                     h3.panel-title Form: {{form.name}}
                 .panel-body
                     form(role='form', name='fieldForm', novalidate='')
+                        //
+                            .form-group
+                                button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
+                                br
+                                label(for='form') Name
+                                input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
                         .form-group
-                            button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
+                            label(for='db') Database
                             br
-                            label(for='form') Name
-                            input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
+                            button.btn.btn-default(type='button', ng-model='form.db', ng-options='database.name as database.name for database in databases', bs-select='')
                         .form-group
                             label(for='formDescription') Description
                             input.form-control(name='form', ng-model="form.description", placeholder='Description', type='text')

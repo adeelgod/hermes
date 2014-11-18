@@ -40,6 +40,11 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "db")
+    private String db;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "name")
     private String name;
 
@@ -116,6 +121,31 @@ public class Form extends DirectBean
      */
     public final Property<String> id() {
         return metaBean().id().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the db.
+     * @return the value of the property
+     */
+    public String getDb() {
+        return db;
+    }
+
+    /**
+     * Sets the db.
+     * @param db  the new value of the property
+     */
+    public void setDb(String db) {
+        this.db = db;
+    }
+
+    /**
+     * Gets the the {@code db} property.
+     * @return the property, not null
+     */
+    public final Property<String> db() {
+        return metaBean().db().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -307,6 +337,7 @@ public class Form extends DirectBean
         if (obj != null && obj.getClass() == this.getClass()) {
             Form other = (Form) obj;
             return JodaBeanUtils.equal(getId(), other.getId()) &&
+                    JodaBeanUtils.equal(getDb(), other.getDb()) &&
                     JodaBeanUtils.equal(getName(), other.getName()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
                     JodaBeanUtils.equal(getSchedule(), other.getSchedule()) &&
@@ -322,6 +353,7 @@ public class Form extends DirectBean
     public int hashCode() {
         int hash = getClass().hashCode();
         hash += hash * 31 + JodaBeanUtils.hashCode(getId());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getDb());
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
         hash += hash * 31 + JodaBeanUtils.hashCode(getDescription());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSchedule());
@@ -334,7 +366,7 @@ public class Form extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(288);
+        StringBuilder buf = new StringBuilder(320);
         buf.append("Form{");
         int len = buf.length();
         toString(buf);
@@ -347,6 +379,7 @@ public class Form extends DirectBean
 
     protected void toString(StringBuilder buf) {
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
+        buf.append("db").append('=').append(JodaBeanUtils.toString(getDb())).append(',').append(' ');
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
         buf.append("schedule").append('=').append(JodaBeanUtils.toString(getSchedule())).append(',').append(' ');
@@ -371,6 +404,11 @@ public class Form extends DirectBean
          */
         private final MetaProperty<String> id = DirectMetaProperty.ofReadWrite(
                 this, "id", Form.class, String.class);
+        /**
+         * The meta-property for the {@code db} property.
+         */
+        private final MetaProperty<String> db = DirectMetaProperty.ofReadWrite(
+                this, "db", Form.class, String.class);
         /**
          * The meta-property for the {@code name} property.
          */
@@ -413,6 +451,7 @@ public class Form extends DirectBean
         private final Map<String, MetaProperty<?>> metaPropertyMap$ = new DirectMetaPropertyMap(
                 this, null,
                 "id",
+                "db",
                 "name",
                 "description",
                 "schedule",
@@ -432,6 +471,8 @@ public class Form extends DirectBean
             switch (propertyName.hashCode()) {
                 case 3355:  // id
                     return id;
+                case 3198:  // db
+                    return db;
                 case 3373707:  // name
                     return name;
                 case -1724546052:  // description
@@ -472,6 +513,14 @@ public class Form extends DirectBean
          */
         public final MetaProperty<String> id() {
             return id;
+        }
+
+        /**
+         * The meta-property for the {@code db} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> db() {
+            return db;
         }
 
         /**
@@ -536,6 +585,8 @@ public class Form extends DirectBean
             switch (propertyName.hashCode()) {
                 case 3355:  // id
                     return ((Form) bean).getId();
+                case 3198:  // db
+                    return ((Form) bean).getDb();
                 case 3373707:  // name
                     return ((Form) bean).getName();
                 case -1724546052:  // description
@@ -560,6 +611,9 @@ public class Form extends DirectBean
             switch (propertyName.hashCode()) {
                 case 3355:  // id
                     ((Form) bean).setId((String) newValue);
+                    return;
+                case 3198:  // db
+                    ((Form) bean).setDb((String) newValue);
                     return;
                 case 3373707:  // name
                     ((Form) bean).setName((String) newValue);

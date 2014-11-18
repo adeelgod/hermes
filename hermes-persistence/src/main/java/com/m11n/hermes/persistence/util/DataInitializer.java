@@ -4,6 +4,7 @@ import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.persistence.FormRepository;
 import org.apache.commons.io.IOUtils;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@DependsOn("sshTunnel")
 public class DataInitializer {
 
     @Inject
@@ -23,6 +25,7 @@ public class DataInitializer {
         Form form = formRepository.findByName("orders");
         if(form==null) {
             form = new Form();
+            form.setDb("auswertung");
             form.setName("orders");
             form.setDescription("This is the main search form.");
             form.setPosition(1);
@@ -45,6 +48,7 @@ public class DataInitializer {
         form = formRepository.findByName("update");
         if(form==null) {
             form = new Form();
+            form.setDb("auswertung");
             form.setName("update");
             form.setDescription("Give some description...");
             form.setPosition(2);

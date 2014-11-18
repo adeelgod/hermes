@@ -4,8 +4,8 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
     $scope.database = {};
 
     $scope.databases = [
-        {'name': 'H2 (embedded)', 'driver': 'org.h2.Driver', 'dialect': 'org.hibernate.dialect.H2Dialect', 'url': 'jdbc:h2:mem:Auswertung', 'username': 'sa', 'password': ''},
-        {'name': 'MySQL', 'driver': 'com.mysql.jdbc.Driver', 'dialect': 'org.hibernate.dialect.MySQLDialect', 'url': 'jdbc:mysql://127.0.0.1:13306/Auswertung', 'username': 'print', 'password': ''}
+        {'name': 'H2 (embedded)', 'driver': 'org.h2.Driver', 'dialect': 'org.hibernate.dialect.H2Dialect', 'url': 'jdbc:h2:mem:', 'username': 'sa', 'password': ''},
+        {'name': 'MySQL', 'driver': 'com.mysql.jdbc.Driver', 'dialect': 'org.hibernate.dialect.MySQLDialect', 'url': 'jdbc:mysql://127.0.0.1:13306/', 'username': 'print', 'password': ''}
     ];
 
     $scope.printMethods = [
@@ -32,11 +32,15 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
     $scope.tab = 'database';
 
     $scope.updateDatabase = function() {
-        $scope.configuration['hermes.db.driver'] = $scope.database.driver;
         $scope.configuration['hibernate.dialect'] = $scope.database.dialect;
-        $scope.configuration['hermes.db.url'] = $scope.database.url;
-        $scope.configuration['hermes.db.username'] = $scope.database.username;
-        $scope.configuration['hermes.db.password'] = $scope.database.password;
+        $scope.configuration['hermes.db.auswertung.driver'] = $scope.database.driver;
+        $scope.configuration['hermes.db.auswertung.url'] = $scope.database.url + 'Auswertung';
+        $scope.configuration['hermes.db.auswertung.username'] = $scope.database.username;
+        $scope.configuration['hermes.db.auswertung.password'] = $scope.database.password;
+        $scope.configuration['hermes.db.lcarb.driver'] = $scope.database.driver;
+        $scope.configuration['hermes.db.lcarb.url'] = $scope.database.url + 'l_carb_shop_de';
+        $scope.configuration['hermes.db.lcarb.username'] = $scope.database.username;
+        $scope.configuration['hermes.db.lcarb.password'] = $scope.database.password;
     };
 
     $scope.$watch('database', function() {

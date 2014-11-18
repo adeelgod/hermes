@@ -2,10 +2,7 @@ package com.m11n.hermes.persistence.util;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
-import com.m11n.hermes.persistence.AuswertungRepository;
-import com.m11n.hermes.persistence.BaseRowMapper;
-import com.m11n.hermes.persistence.FormRepository;
-import com.m11n.hermes.persistence.IntrashipDocumentRepository;
+import com.m11n.hermes.persistence.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -40,6 +37,9 @@ public class QueryScheduler {
 
     @Inject
     private AuswertungRepository auswertungRepository;
+
+    @Inject
+    private LCarbRepository lCarbRepository;
 
     @Value("${hermes.result.dir}")
     private String resultDir;
@@ -113,7 +113,14 @@ public class QueryScheduler {
             logger.info("#################### STATEMENT: {}", statement);
 
             if(statement.toLowerCase().startsWith("select")) {
-                result = auswertungRepository.query(form.getSqlStatement(), parameters, mapper);
+                if("auswertung".equalsIgnoreCase(form.getDb())) {
+                    result = auswertungRepository.query(form.getSqlStatement(), parameters, mapper);
+                } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+                    result = lCarbRepository.query(form.getSqlStatement(), parameters, mapper);
+                } else {
+                    logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+                    result = auswertungRepository.query(form.getSqlStatement(), parameters, mapper);
+                }
             } else {
                 result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
             }

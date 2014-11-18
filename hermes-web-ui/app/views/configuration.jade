@@ -26,17 +26,34 @@ block content
                             label(for='db') Database Type
                             button.btn.btn-default(type='button', ng-model="database", ng-change='updateDatebase()', ng-options='db.name for db in databases', bs-select='')
                         .form-group
-                            label(for='dbDriver') Database Driver
-                            input.form-control(name='dbDriver', ng-model="configuration['hermes.db.driver']", placeholder='Database Driver', type='text', disabled='')
+                            h3 Auswertung DB
                         .form-group
-                            label(for='dbUrl') Database URL
-                            input.form-control(name='dbUrl', ng-model="configuration['hermes.db.url']", placeholder='Database URL', type='text')
+                            label(for='dbAuswertungDriver') Database Driver
+                            input.form-control(name='dbAuswertungDriver', ng-model="configuration['hermes.db.auswertung.driver']", placeholder='Database Driver', type='text', disabled='')
                         .form-group
-                            label(for='dbUsername') Database Username
-                            input.form-control(name='dbUsername', ng-model="configuration['hermes.db.username']", placeholder='Username', type='text')
+                            label(for='dbAuswertungUrl') Database URL
+                            input.form-control(name='dbAuswertungUrl', ng-model="configuration['hermes.db.auswertung.url']", placeholder='Database URL', type='text')
                         .form-group
-                            label(for='dbPassword') Database Password
-                            input.form-control(name='dbPassword', ng-model="configuration['hermes.db.password']", placeholder='Password', type='password')
+                            label(for='dbAuswertungUsername') Database Username
+                            input.form-control(name='dbAuswertungUsername', ng-model="configuration['hermes.db.auswertung.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='dbAuswertungPassword') Database Password
+                            input.form-control(name='dbAuswertungPassword', ng-model="configuration['hermes.db.auswertung.password']", placeholder='Password', type='password')
+                        hr
+                        .form-group
+                            h3 LCarb DB
+                        .form-group
+                            label(for='dbLCarbDriver') Database Driver
+                            input.form-control(name='dbLCarbDriver', ng-model="configuration['hermes.db.lcarb.driver']", placeholder='Database Driver', type='text', disabled='')
+                        .form-group
+                            label(for='dbLCarbUrl') Database URL
+                            input.form-control(name='dbLCarbUrl', ng-model="configuration['hermes.db.lcarb.url']", placeholder='Database URL', type='text')
+                        .form-group
+                            label(for='dbLCarbUsername') Database Username
+                            input.form-control(name='dbLCarbUsername', ng-model="configuration['hermes.db.lcarb.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='dbLCarbPassword') Database Password
+                            input.form-control(name='dbLCarbPassword', ng-model="configuration['hermes.db.lcarb.password']", placeholder='Password', type='password')
                         hr
                         .form-group
                             label(for='chargeSize') Charge Size

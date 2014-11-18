@@ -17,6 +17,7 @@
 
     <!--
     <logger name="org.springframework" level="DEBUG" />
+    <logger name="org.springframework.beans.factory" level="DEBUG" />
     <logger name="org.apache.shiro" level="DEBUG" />
     <logger name="org.glassfish" level="DEBUG" />
     <logger name="org.eclipse.jetty" level="ERROR" />
