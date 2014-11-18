@@ -1,0 +1,17 @@
+= ${project.description}
+:experimental:
+:data-uri:
+:icons: font
+:author: Aleksandar Vidakovic
+:email: cheetah@monkeysintown.com
+:date: ${hermes.build.timestamp}
+:revision: ${project.version}
+:homepage: ${project.organization.url}
+:desc: ${project.description}
+:keywords: Hermes, Magento, developer, doc
+
+include::preface.adoc[]
+
+include::intro.adoc[]
+
+include::copyright.adoc[]
