@@ -51,7 +51,6 @@
                         <configuration>
                             <tasks>
                                 <mkdir dir="${project.build.directory}/generated-docs/asciidoc" />
-                                <mkdir dir="${project.build.directory}/generated-docs/html5" />
                                 <copy todir="${project.build.directory}/generated-docs/asciidoc/images">
                                     <fileset dir="src/main/resources/images"/>
                                 </copy>
