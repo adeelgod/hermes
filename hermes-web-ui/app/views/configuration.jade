@@ -58,10 +58,6 @@ block content
                             input.form-control(name='dbLCarbPassword', ng-model="configuration['hermes.db.lcarb.password']", placeholder='Password', type='password')
                         hr
                         .form-group
-                            label(for='chargeSize') Charge Size
-                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", placeholder='Charge Size', type='text')
-                        hr
-                        .form-group
                             label(for='') Hibernate Dialect
                             input.form-control(name='hibernateDialect', ng-model="configuration['hibernate.dialect']", placeholder='Dialect', type='text', disabled='')
                         .form-group
@@ -93,10 +89,13 @@ block content
                             label(for='archiveDir') Archive Directory
                             input.form-control(name='archiveDir', ng-model="configuration['hermes.archive.dir']", placeholder='Archive Directory', type='text')
                 .tab-pane(role='tabpanel', id='form', ng-class="{'active': tab=='form'}")
-                    form(role='form', name='parseForm', novalidate='')
+                    form(role='form', name='formForm', novalidate='')
                         .form-group
                             label(for='ordersForm') Orders Form
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name as form.name for form in forms', bs-select='')
+                        .form-group
+                            label(for='chargeSize') Charge Size
+                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", placeholder='Charge Size', type='text')
                 .tab-pane(role='tabpanel', id='parse', ng-class="{'active': tab=='parse'}")
                     form(role='form', name='parseForm', novalidate='')
                         .form-group
