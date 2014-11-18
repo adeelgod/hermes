@@ -11,6 +11,8 @@ block content
                     a(href='', ng-click="tab='database'", role='tab') Database
                 li(role='presentation', ng-class="{'active': tab=='directory'}")
                     a(href='', ng-click="tab='directory'", role='tab') Directories
+                li(role='presentation', ng-class="{'active': tab=='form'}")
+                    a(href='', ng-click="tab='form'", role='tab') Form
                 li(role='presentation', ng-class="{'active': tab=='parse'}")
                     a(href='', ng-click="tab='parse'", role='tab') Parse
                 li(role='presentation', ng-class="{'active': tab=='reporting'}")
@@ -90,11 +92,13 @@ block content
                         .form-group
                             label(for='archiveDir') Archive Directory
                             input.form-control(name='archiveDir', ng-model="configuration['hermes.archive.dir']", placeholder='Archive Directory', type='text')
-                .tab-pane(role='tabpanel', id='parse', ng-class="{'active': tab=='parse'}")
+                .tab-pane(role='tabpanel', id='form', ng-class="{'active': tab=='form'}")
                     form(role='form', name='parseForm', novalidate='')
                         .form-group
                             label(for='ordersForm') Orders Form
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name as form.name for form in forms', bs-select='')
+                .tab-pane(role='tabpanel', id='parse', ng-class="{'active': tab=='parse'}")
+                    form(role='form', name='parseForm', novalidate='')
                         .form-group
                             label(for='invoiceOrderField') Invoice Order ID Field(s)
                             input.form-control(name='invoiceOrderField', ng-model="configuration['hermes.invoice.order.field']", placeholder='Invoice Order ID Field', type='text')
