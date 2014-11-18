@@ -19,17 +19,17 @@ block content
                             .input-group-addon
                                 i.fa(ng-class='{"fa-exclamation": loginForm.password.$invalid && !loginForm.password.$pristine, "fa-check": loginForm.password.$valid && !loginForm.password.$pristine}')
                         p.help-block(ng-show='loginForm.password.$invalid && !loginForm.password.$pristine', class='am-fade') You need to provide a password
-                    .form-group
-                        .btn-group(bs-radio-group='', ng-model='login.rememberMe')
-                            label.btn.btn-default
-                                input.btn.btn-default(type='radio', value='true')
-                                | Yes
-                            label.btn.btn-default
-                                input.btn.btn-default(type='radio', value='false')
-                                | No
-                        label
-                            | Remember me
-                        //a.btn.btn-link.pull-right(ui-sref='reset') Forgot password?
+                    //
+                        .form-group
+                            .btn-group(bs-radio-group='', ng-model='login.rememberMe')
+                                label.btn.btn-default
+                                    input.btn.btn-default(type='radio', value='true')
+                                    | Yes
+                                label.btn.btn-default
+                                    input.btn.btn-default(type='radio', value='false')
+                                    | No
+                            label
+                                | Remember me
                     .form-group
                         button.btn.btn-primary(ng-click='signin()')
                             i.fa.fa-check
