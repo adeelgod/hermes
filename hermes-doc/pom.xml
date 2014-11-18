@@ -16,7 +16,7 @@
     <description>Hermes</description>
 
     <properties>
-        <m11n.asciidoc.index>index.adoc</m11n.asciidoc.index>
+        <m11n.asciidoc.index>index.ad</m11n.asciidoc.index>
     </properties>
 
     <organization>

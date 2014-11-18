@@ -10,8 +10,8 @@
 :desc: ${project.description}
 :keywords: Hermes, Magento, developer, doc
 
-include::preface.adoc[]
+include::preface.ad[]
 
-include::intro.adoc[]
+include::intro.ad[]
 
-include::copyright.adoc[]
+include::copyright.ad[]
