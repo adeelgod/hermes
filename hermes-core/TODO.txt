@@ -29,7 +29,7 @@
 - check job status codes
 - ? per document print method selection (invoice, label, report)
 - ? schedule queries
-- ? doc
+- x doc
 - print queues
   - x select
   - x start
