@@ -1,0 +1,14 @@
+[[ui]]
+== User Interface
+
+include::ui-navbar.ad[]
+
+include::ui-orders.ad[]
+
+include::ui-login.ad[]
+
+include::ui-configuration.ad[]
+
+include::ui-forms.ad[]
+
+include::ui-printers.ad[]

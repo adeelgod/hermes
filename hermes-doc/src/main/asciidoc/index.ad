@@ -14,4 +14,6 @@ include::preface.ad[]
 
 include::intro.ad[]
 
+include::ui.ad[]
+
 include::copyright.ad[]

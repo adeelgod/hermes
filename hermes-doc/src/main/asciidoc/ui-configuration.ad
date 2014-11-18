@@ -1,0 +1,34 @@
+[[ui-configuration]]
+== Configuration
+
+=== Database
+
+image::doc/ui-configuration-db-auswertung.png[width="90%", scaledwidth="90%", align="center"]
+
+image::doc/ui-configuration-db-lcarb.png[width="90%", scaledwidth="90%", align="center"]
+
+image::doc/ui-configuration-db-hibernate.png[width="90%", scaledwidth="90%", align="center"]
+
+=== Directories
+
+image::doc/ui-configuration-directories.png[width="90%", scaledwidth="90%", align="center"]
+
+=== Form
+
+image::doc/ui-configuration-form.png[width="90%", scaledwidth="90%", align="center"]
+
+=== Parse
+
+image::doc/ui-configuration-parse.png[width="90%", scaledwidth="90%", align="center"]
+
+=== Reporting
+
+image::doc/ui-configuration-reporting.png[width="90%", scaledwidth="90%", align="center"]
+
+=== Printers
+
+image::doc/ui-configuration-printers.png[width="90%", scaledwidth="90%", align="center"]
+
+=== SSH
+
+image::doc/ui-configuration-ssh.png[width="90%", scaledwidth="90%", align="center"]
