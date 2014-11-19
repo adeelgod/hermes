@@ -5,30 +5,316 @@
 
 image::doc/ui-configuration-db-auswertung.png[width="90%", scaledwidth="90%", align="center"]
 
+[cols="2,3,2,2", options="header"]
+.Configuration Database "Auswertung"
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.db.auswertung.driver
+|TBD
+|TBD
+|${hermes.db.auswertung.driver}
+
+|hermes.db.auswertung.url
+|TBD
+|TBD
+|${hermes.db.auswertung.url}
+
+|hermes.db.auswertung.username
+|TBD
+|
+|${hermes.db.auswertung.username}
+
+|hermes.db.auswertung.password
+|TBD
+|
+|${hermes.db.auswertung.password}
+|===
+
 image::doc/ui-configuration-db-lcarb.png[width="90%", scaledwidth="90%", align="center"]
 
+[cols="2,3,2,2", options="header"]
+.Configuration Database "LCarb"
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.db.lcarb.driver
+|TBD
+|TBD
+|${hermes.db.lcarb.driver}
+
+|hermes.db.lcarb.url
+|TBD
+|TBD
+|${hermes.db.lcarb.url}
+
+|hermes.db.lcarb.username
+|TBD
+|
+|${hermes.db.lcarb.username}
+
+|hermes.db.lcarb.password
+|TBD
+|
+|${hermes.db.lcarb.password}
+|===
+
 image::doc/ui-configuration-db-hibernate.png[width="90%", scaledwidth="90%", align="center"]
+
+[cols="2,3,2,2", options="header"]
+.Configuration Database "Hibernate ORM"
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hibernate.dialect
+|TBD
+|TBD
+|${hibernate.dialect}
+
+|hibernate.format_sql
+|TBD
+|"true" or "false"
+|${hibernate.format_sql}
+
+|hibernate.show_sql
+|TBD
+|"true" or "false"
+|${hibernate.show_sql}
+
+|hibernate.ejb.naming_strategy
+|TBD
+|
+|${hibernate.ejb.naming_strategy}
+
+|hibernate.hbm2ddl.auto
+|TBD
+|"create", "create-drop", "update"
+|${hibernate.hbm2ddl.auto}
+|===
 
 === Directories
 
 image::doc/ui-configuration-directories.png[width="90%", scaledwidth="90%", align="center"]
 
+[cols="2,3,2,2", options="header"]
+.Configuration Directories
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.archive.dir
+|TBD
+|TBD
+|${hermes.archive.dir}
+
+|hermes.inbox.dir
+|TBD
+|TBD
+|${hermes.inbox.dir}
+
+|hermes.result.dir
+|TBD
+|TBD
+|${hermes.result.dir}
+
+|hermes.examples.dir
+|TBD
+|TBD
+|${hermes.examples.dir}
+|===
+
 === Form
 
 image::doc/ui-configuration-form.png[width="90%", scaledwidth="90%", align="center"]
+
+[cols="2,3,2,2", options="header"]
+.Configuration Form
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.orders.form
+|TBD
+|TBD
+|${hermes.orders.form}
+
+|hermes.charge.size
+|TBD
+|TBD
+|${hermes.charge.size}
+|===
 
 === Parse
 
 image::doc/ui-configuration-parse.png[width="90%", scaledwidth="90%", align="center"]
 
+[cols="2,3,2,2", options="header"]
+.Configuration Parse
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.invoice.order.field
+|TBD
+|TBD
+|${hermes.invoice.order.field}
+
+|hermes.invoice.id.field
+|TBD
+|TBD
+|${hermes.invoice.id.field}
+
+|hermes.label.order.field
+|TBD
+|TBD
+|${hermes.label.order.field}
+
+|hermes.label.id.field
+|TBD
+|TBD
+|${hermes.label.id.field}
+|===
+
 === Reporting
 
 image::doc/ui-configuration-reporting.png[width="90%", scaledwidth="90%", align="center"]
+
+[cols="2,3,2,2", options="header"]
+.Configuration Reporting
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.reporting.template.report
+|TBD
+|TBD
+|${hermes.reporting.template.report}
+
+|hermes.reporting.template.dir
+|TBD
+|TBD
+|${hermes.reporting.template.dir}
+
+|hermes.reporting.virtualizer.dir
+|TBD
+|TBD
+|${hermes.reporting.virtualizer.dir}
+
+|hermes.reporting.virtualizer.type
+|TBD
+|TBD
+|${hermes.reporting.virtualizer.type}
+|===
 
 === Printers
 
 image::doc/ui-configuration-printers.png[width="90%", scaledwidth="90%", align="center"]
 
+[cols="2,3,2,2", options="header"]
+.Configuration Printers
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.printer.invoice
+|TBD
+|TBD
+|${hermes.printer.invoice}
+
+|hermes.printer.label
+|TBD
+|TBD
+|${hermes.printer.label}
+
+|hermes.printer.report
+|TBD
+|TBD
+|${hermes.printer.report}
+
+|hermes.printer.method
+|TBD
+|"JAVA", "IMAGE", "PDFBOX", "QUOPPA", "BOF", "SWINGLABS", "PDFBOXPAGEABLE", "SMARTJ", "GHOSTSCRIPT", "ACROBAT"
+|${hermes.printer.method}
+
+|hermes.printer.method.acrobat
+|TBD
+|TBD
+|${hermes.printer.method.acrobat}
+
+|hermes.printer.method.ghostscript
+|TBD
+|TBD
+|${hermes.printer.method.ghostscript}
+
+|hermes.printer.method.image.format
+|TBD
+|"PNG", "JPG", "GIF"
+|${hermes.printer.method.image.format}
+|===
+
 === SSH
 
 image::doc/ui-configuration-ssh.png[width="90%", scaledwidth="90%", align="center"]
+
+[cols="2,3,2,2", options="header"]
+.Configuration SSH
+|===
+|Property
+|Description
+|Values
+|Default
+
+|hermes.ssh.port
+|TBD
+|
+|${hermes.ssh.port}
+
+|hermes.ssh.username
+|TBD
+|
+|${hermes.ssh.username}
+
+|hermes.ssh.password
+|TBD
+|
+|${hermes.ssh.password}
+
+|hermes.ssh.local.port
+|TBD
+|
+|${hermes.ssh.local.port}
+
+|hermes.ssh.remote.host
+|TBD
+|
+|${hermes.ssh.remote.host}
+
+|hermes.ssh.remote.port
+|TBD
+|
+|${hermes.ssh.remote.port}
+
+|hermes.ssh.remote.binding
+|TBD
+|
+|${hermes.ssh.remote.binding}
+|===
