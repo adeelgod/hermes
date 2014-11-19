@@ -24,6 +24,7 @@
 - x enable encrypted passwords
 - x check if invoice/label file exist
 - x switch mysql
+- x executable
 - enable update/insert queries (test!)
 - send issues via email
 - check job status codes
