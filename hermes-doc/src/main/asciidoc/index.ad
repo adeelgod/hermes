@@ -16,4 +16,6 @@ include::intro.ad[]
 
 include::ui.ad[]
 
+include::jasperreports.ad[]
+
 include::copyright.ad[]
