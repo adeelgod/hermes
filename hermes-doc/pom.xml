@@ -5,11 +5,12 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 
     <artifactId>hermes-doc</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Hermes :: Doc</name>
     <description>Hermes</description>
