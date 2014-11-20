@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes-service</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../hermes-service</relativePath>
     </parent>
 
@@ -21,7 +21,9 @@
                 <artifactId>axistools-maven-plugin</artifactId>
                 <configuration>
                     <packageSpace>com.m11n.hermes.service.magento</packageSpace>
+                    <!--
                     <testPackageSpace>com.m11n.hermes.service.magento</testPackageSpace>
+                    -->
                 </configuration>
                 <executions>
                     <execution>
