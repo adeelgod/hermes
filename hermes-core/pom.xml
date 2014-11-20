@@ -92,7 +92,7 @@
 
     </dependencies>
 
-    <build>
+    <version xmlns="">1.0.1-SNAPSHOT</version><build>
         <plugins>
             <plugin>
                 <groupId>org.joda</groupId>
