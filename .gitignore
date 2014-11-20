@@ -1,6 +1,20 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Maven template
+.idea/
 target/
+hermes-rest-server/archive/
+hermes-rest-server/examples/
+hermes-rest-server/inbox/
+hermes-rest-server/result/
+hermes-rest-server/templates/
+hermes-rest-server/.splitcache
+hermes-web-ui/.tmp/
+hermes-web-ui/app/bower_components/
+hermes-web-ui/dist/
+hermes-web-ui/node_modules/
+*.log
+*.iml
+atlassian-ide-plugin.xml
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
