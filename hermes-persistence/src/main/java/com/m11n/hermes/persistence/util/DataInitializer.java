@@ -71,7 +71,7 @@ public class DataInitializer {
         form = formRepository.findByName("shipping");
         if(form==null) {
             form = new Form();
-            form.setDb("auswertung");
+            form.setDb("lcarb");
             form.setName("shipping");
             form.setDescription("Enter description...");
             form.setPosition(3);
