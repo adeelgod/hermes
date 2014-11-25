@@ -59,12 +59,26 @@ public class DataInitializer {
             form = new Form();
             form.setDb("auswertung");
             form.setName("update");
-            form.setDescription("Give some description...");
+            form.setDescription("Enter description...");
             form.setPosition(2);
             form.setExecuteOnStartup(true);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
             formRepository.save(form);
         }
+
+
+        // shipping
+        form = formRepository.findByName("shipping");
+        if(form==null) {
+            form = new Form();
+            form.setDb("auswertung");
+            form.setName("shipping");
+            form.setDescription("Enter description...");
+            form.setPosition(3);
+            form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("shipping.sql")));
+            formRepository.save(form);
+        }
+
 
         // label status
         for(String file : labelStatusFiles) {
