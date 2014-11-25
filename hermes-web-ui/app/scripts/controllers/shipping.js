@@ -2,7 +2,9 @@
 
 angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc) {
     $scope.busy = false;
+    $scope.params = {};
     $scope.checks = {};
+    $scope.configuration = {};
 
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
@@ -23,6 +25,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         FormSvc.query($scope.params).success(function(data) {
             $scope.busy = false;
             $scope.shippings = data;
+            $scope.check();
         }).error(function(data) {
             $scope.busy = false;
             $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
@@ -42,15 +45,15 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             }
 
             // TODO: make this configurable?!?
-            $scope.checks[shipping.id].company = (shipping.company.length <= 30);
-            $scope.checks[shipping.id].firstname = (shipping.firstname.length <= 30);
-            $scope.checks[shipping.id].lastname = (shipping.lastname.length <= 30);
-            $scope.checks[shipping.id].street1 = (shipping.street1.length <= 30);
+            $scope.checks[shipping.id].company = (!shipping.company || shipping.company.length <= 30);
+            $scope.checks[shipping.id].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
+            $scope.checks[shipping.id].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
+            $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.length <= 30);
             // TODO: Strasse enthält keine numerische information (Regex)
-            $scope.checks[shipping.id].street2 = (shipping.street2.length <= 30);
-            $scope.checks[shipping.id].city = (shipping.city.length <= 30);
-            $scope.checks[shipping.id].zip = (shipping.zip.length === 5 && shipping.country==='DE');
-            $scope.checks[shipping.id].dhlAccount = (shipping.dhlAccount.length >= 5); // TODO: check for "5pack%"
+            $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length <= 30);
+            $scope.checks[shipping.id].city = (!shipping.city || shipping.city.length <= 30);
+            $scope.checks[shipping.id].zip = (shipping.zip && shipping.zip.length === 5 && shipping.country==='DE'); // TODO: fix this
+            $scope.checks[shipping.id].dhlAccount = (shipping.dhlAccount && shipping.dhlAccount.length >= 5); // TODO: check for "5pack%"
 
             shipping._selected = ($scope.checks[shipping.id].company &&
                 $scope.checks[shipping.id].firstname &&
