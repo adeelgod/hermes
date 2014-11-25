@@ -8,6 +8,7 @@ angular.module('hermes.ui', [
     'ngTouch',
     'ngSanitize',
     'gettext',
+    'ngAudio',
     'mgcrea.ngStrap',
     'ui.router',
     'xeditable',
