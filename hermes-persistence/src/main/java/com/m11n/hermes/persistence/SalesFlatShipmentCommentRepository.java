@@ -11,9 +11,8 @@ import java.util.Collections;
 public class SalesFlatShipmentCommentRepository extends AbstractLCarbRepository {
     private static final Logger logger = LoggerFactory.getLogger(SalesFlatShipmentCommentRepository.class);
 
-    // TODO: fix shipping ID! 2 different databases
-    public String findRawStatus(String orderId) {
-        String sql = "Select comment from mage_sales_flat_shipment_comment where parent_id = (select shipping_id from Auswertung.mage_custom_order where Bestellung = " + orderId + ")  order by created_at limit 0,3";
+    public String findRawStatus(String shippingId, int pos) {
+        String sql = "Select comment from mage_sales_flat_shipment_comment where parent_id = " + shippingId + "  order by created_at limit " + pos + "," + (pos+1);
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Collections.<String, Object>emptyMap());
         if(result.next()) {
             return result.getString(1);
