@@ -2,9 +2,14 @@ package com.m11n.hermes.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.GenericGenerator;
 import org.joda.beans.*;
 import org.joda.beans.impl.direct.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
 import org.joda.beans.Bean;
@@ -23,14 +28,26 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 @BeanDefinition
 @JsonIgnoreProperties({"meta", "metaBean"})
 @XmlRootElement(name = "label_status")
+@Entity
+@Table(name = "hermes_label_status")
 public class LabelStatus extends DirectBean
 {
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @javax.persistence.Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "uuid", unique = true)
+    private String id;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "status")
     private String status;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "text", unique = true)
     private String text;
 
     public LabelStatus() {
@@ -59,6 +76,31 @@ public class LabelStatus extends DirectBean
     @Override
     public LabelStatus.Meta metaBean() {
         return LabelStatus.Meta.INSTANCE;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the id.
+     * @return the value of the property
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param id  the new value of the property
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the the {@code id} property.
+     * @return the property, not null
+     */
+    public final Property<String> id() {
+        return metaBean().id().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -124,7 +166,8 @@ public class LabelStatus extends DirectBean
         }
         if (obj != null && obj.getClass() == this.getClass()) {
             LabelStatus other = (LabelStatus) obj;
-            return JodaBeanUtils.equal(getStatus(), other.getStatus()) &&
+            return JodaBeanUtils.equal(getId(), other.getId()) &&
+                    JodaBeanUtils.equal(getStatus(), other.getStatus()) &&
                     JodaBeanUtils.equal(getText(), other.getText());
         }
         return false;
@@ -133,6 +176,7 @@ public class LabelStatus extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
+        hash += hash * 31 + JodaBeanUtils.hashCode(getId());
         hash += hash * 31 + JodaBeanUtils.hashCode(getStatus());
         hash += hash * 31 + JodaBeanUtils.hashCode(getText());
         return hash;
@@ -140,7 +184,7 @@ public class LabelStatus extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(96);
+        StringBuilder buf = new StringBuilder(128);
         buf.append("LabelStatus{");
         int len = buf.length();
         toString(buf);
@@ -152,6 +196,7 @@ public class LabelStatus extends DirectBean
     }
 
     protected void toString(StringBuilder buf) {
+        buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
         buf.append("text").append('=').append(JodaBeanUtils.toString(getText())).append(',').append(' ');
     }
@@ -167,6 +212,11 @@ public class LabelStatus extends DirectBean
         static final Meta INSTANCE = new Meta();
 
         /**
+         * The meta-property for the {@code id} property.
+         */
+        private final MetaProperty<String> id = DirectMetaProperty.ofReadWrite(
+                this, "id", LabelStatus.class, String.class);
+        /**
          * The meta-property for the {@code status} property.
          */
         private final MetaProperty<String> status = DirectMetaProperty.ofReadWrite(
@@ -181,6 +231,7 @@ public class LabelStatus extends DirectBean
          */
         private final Map<String, MetaProperty<?>> metaPropertyMap$ = new DirectMetaPropertyMap(
                 this, null,
+                "id",
                 "status",
                 "text");
 
@@ -193,6 +244,8 @@ public class LabelStatus extends DirectBean
         @Override
         protected MetaProperty<?> metaPropertyGet(String propertyName) {
             switch (propertyName.hashCode()) {
+                case 3355:  // id
+                    return id;
                 case -892481550:  // status
                     return status;
                 case 3556653:  // text
@@ -218,6 +271,14 @@ public class LabelStatus extends DirectBean
 
         //-----------------------------------------------------------------------
         /**
+         * The meta-property for the {@code id} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> id() {
+            return id;
+        }
+
+        /**
          * The meta-property for the {@code status} property.
          * @return the meta-property, not null
          */
@@ -237,6 +298,8 @@ public class LabelStatus extends DirectBean
         @Override
         protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
             switch (propertyName.hashCode()) {
+                case 3355:  // id
+                    return ((LabelStatus) bean).getId();
                 case -892481550:  // status
                     return ((LabelStatus) bean).getStatus();
                 case 3556653:  // text
@@ -248,6 +311,9 @@ public class LabelStatus extends DirectBean
         @Override
         protected void propertySet(Bean bean, String propertyName, Object newValue, boolean quiet) {
             switch (propertyName.hashCode()) {
+                case 3355:  // id
+                    ((LabelStatus) bean).setId((String) newValue);
+                    return;
                 case -892481550:  // status
                     ((LabelStatus) bean).setStatus((String) newValue);
                     return;
