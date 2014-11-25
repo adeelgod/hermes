@@ -11,12 +11,10 @@ angular.module('hermes.ui', [
     'mgcrea.ngStrap',
     'ui.router',
     'xeditable',
-    'ngProgressLite',
     'angularFileUpload',
-    'restangular', // TODO: decide which one to use
     'angularMoment'
 ])
-.config(function ($locationProvider, $stateProvider, $urlRouterProvider, RestangularProvider, $modalProvider, $asideProvider, $sceDelegateProvider, ngProgressLiteProvider) {
+.config(function ($locationProvider, $stateProvider, $urlRouterProvider, $modalProvider, $asideProvider, $sceDelegateProvider) {
     //$interpolateProvider.startSymbol('{[').endSymbol(']}');
 
     // TODO: remove this in production; just to avoid CORS problems
@@ -95,10 +93,6 @@ angular.module('hermes.ui', [
             controller: 'SignInCtrl'
         });
 
-    // Restangular
-    RestangularProvider.setBaseUrl('http://localhost:8080/');
-    RestangularProvider.setDefaultHttpFields({cache: true});
-
     angular.extend($modalProvider.defaults, {
         html: true,
         animation: 'am-flip-x'
@@ -111,8 +105,6 @@ angular.module('hermes.ui', [
         animation: 'am-fade-and-slide-left',
         placement: 'top'
     });
-
-    ngProgressLiteProvider.settings.speed = 1500;
 
     //growlProvider.globalTimeToLive(5000);
     //$httpProvider.interceptors.push(hluHttpInterceptor);
