@@ -1,1 +1,1 @@
-SELECT Bestellung as "orderId", weight, Firma as "company", Kunden_vorname as "firstname", Kunden_name as "lastname", str1 as "street1", str2 as "street2", PLZ as "ZIP", Ort as "city", Land as "country", DHL_Account as "dhlAccount" FROM mage_custom_order WHERE Status = "processing"
+SELECT Bestellung as "orderId", weight, Firma as "company", Kunden_vorname as "firstname", Kunden_name as "lastname", str1 as "street1", str2 as "street2", PLZ as "zip", Ort as "city", Land as "country", DHL_Account as "dhlAccount" FROM mage_custom_order WHERE Status = "processing"
