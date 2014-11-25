@@ -40,6 +40,12 @@ angular.module('hermes.ui', [
             templateUrl: 'views/orders.html',
             controller: 'OrderCtrl'
         })
+        .state('shipping', {
+            abstract: false,
+            url: '/shipping',
+            templateUrl: 'views/shipping.html',
+            controller: 'ShippingCtrl'
+        })
         .state('configuration', {
             abstract: false,
             url: '/configuration',
