@@ -1,5 +1,5 @@
 - persistence repository to check intraship status
-- REST service to check intraship status
+- REST service to check intraship status (via SQL queries for each order ID)
 - REST service invoke Magento label service
 - REST service custom "lieferschein" function by Indians
 
