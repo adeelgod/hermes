@@ -44,7 +44,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     $scope.save = function() {
         FormSvc.save($scope.form).success(function(data) {
             $scope.form = data;
-            $alert({content: 'Form saved: ' + form.name, placement: 'top', type: 'success', show: true, duration: 3});
+            $alert({content: 'Form saved: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
             $scope.list();
         });
     };

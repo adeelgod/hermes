@@ -18,7 +18,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     };
 
     $scope.charge = function(index) {
-        var chargeSize = $scope.configuration['hermes.charge.size']
+        var chargeSize = $scope.configuration['hermes.charge.size'];
         return Math.ceil( (index+1)/chargeSize);
     };
 
@@ -170,6 +170,6 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     ConfigurationSvc.list().success(function(data) {
         $scope.configuration = data.properties;
 
-        $scope.getForm($scope.configuration['hermes.orders.form'])
+        $scope.getForm($scope.configuration['hermes.orders.form']);
     });
 });

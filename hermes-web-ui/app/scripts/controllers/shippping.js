@@ -42,15 +42,15 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             }
 
             // TODO: make this configurable?!?
-            $scope.checks[shipping.id].company = !(shipping.company.length > 30);
-            $scope.checks[shipping.id].firstname = !(shipping.firstname.length > 30);
-            $scope.checks[shipping.id].lastname = !(shipping.lastname.length > 30);
-            $scope.checks[shipping.id].street1 = !(shipping.street1.length > 30);
+            $scope.checks[shipping.id].company = (shipping.company.length <= 30);
+            $scope.checks[shipping.id].firstname = (shipping.firstname.length <= 30);
+            $scope.checks[shipping.id].lastname = (shipping.lastname.length <= 30);
+            $scope.checks[shipping.id].street1 = (shipping.street1.length <= 30);
             // TODO: Strasse enthält keine numerische information (Regex)
-            $scope.checks[shipping.id].street2 = !(shipping.street2.length > 30);
-            $scope.checks[shipping.id].city = !(shipping.city.length > 30);
-            $scope.checks[shipping.id].zip = !(shipping.zip.length !== 5 && shipping.country==='DE');
-            $scope.checks[shipping.id].dhlAccount = !(shipping.dhlAccount.length < 5); // TODO: check for "5pack%"
+            $scope.checks[shipping.id].street2 = (shipping.street2.length <= 30);
+            $scope.checks[shipping.id].city = (shipping.city.length <= 30);
+            $scope.checks[shipping.id].zip = (shipping.zip.length === 5 && shipping.country==='DE');
+            $scope.checks[shipping.id].dhlAccount = (shipping.dhlAccount.length >= 5); // TODO: check for "5pack%"
 
             shipping._selected = ($scope.checks[shipping.id].company &&
                 $scope.checks[shipping.id].firstname &&
@@ -66,6 +66,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     ConfigurationSvc.list().success(function(data) {
         $scope.configuration = data.properties;
 
-        $scope.getForm($scope.configuration['hermes.shipping.form'])
+        $scope.getForm($scope.configuration['hermes.shipping.form']);
     });
 });
