@@ -2,6 +2,7 @@
 
 angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc) {
     $scope.busy = false;
+    $scope.checks = {};
 
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
@@ -35,7 +36,31 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     };
 
     $scope.check = function() {
+        angular.forEach($scope.shippings, function(shipping) {
+            if(!$scope.checks[shipping.id]) {
+                $scope.checks[shipping.id] = {};
+            }
 
+            // TODO: make this configurable?!?
+            $scope.checks[shipping.id].company = !(shipping.company.length > 30);
+            $scope.checks[shipping.id].firstname = !(shipping.firstname.length > 30);
+            $scope.checks[shipping.id].lastname = !(shipping.lastname.length > 30);
+            $scope.checks[shipping.id].street1 = !(shipping.street1.length > 30);
+            // TODO: Strasse enthält keine numerische information (Regex)
+            $scope.checks[shipping.id].street2 = !(shipping.street2.length > 30);
+            $scope.checks[shipping.id].city = !(shipping.city.length > 30);
+            $scope.checks[shipping.id].zip = !(shipping.zip.length !== 5 && shipping.country==='DE');
+            $scope.checks[shipping.id].dhlAccount = !(shipping.dhlAccount.length < 5); // TODO: check for "5pack%"
+
+            shipping._selected = ($scope.checks[shipping.id].company &&
+                $scope.checks[shipping.id].firstname &&
+                $scope.checks[shipping.id].lastname &&
+                $scope.checks[shipping.id].street1 &&
+                $scope.checks[shipping.id].street1 &&
+                $scope.checks[shipping.id].city &&
+                $scope.checks[shipping.id].zip &&
+                $scope.checks[shipping.id].dhlAccount);
+        });
     };
 
     ConfigurationSvc.list().success(function(data) {

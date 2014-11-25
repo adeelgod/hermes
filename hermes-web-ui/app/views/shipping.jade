@@ -27,8 +27,8 @@ block content
                                 .btn-group
                                     button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                         i.fa.fa-search
-                                    button.btn.btn-default(type='button', ng-click='print()', ng-disabled='busy')
-                                        i.fa.fa-print
+                                    button.btn.btn-default(type='button', ng-click='check()', ng-disabled='busy')
+                                        i.fa.fa-check
     .row(ng-show='busy')
         .col-md-12
             .progress
@@ -65,6 +65,8 @@ block content
                             h4 City
                         td.text-left
                             h4 Country
+                        td.text-left
+                            h4 DHL #
                 tbody
                     tr(ng-repeat='entry in shippings')
                         td.text-center
@@ -74,19 +76,21 @@ block content
                             | {{entry.orderId}}
                         td
                             | {{entry.Weight}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.id].company, 'danger': !checks[entry.id].company }")
                             | {{entry.Company}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.id].firstname, 'danger': !checks[entry.id].firstname }")
                             | {{entry.firstname}}
                         td(ng-class="{ 'success': checks[entry.id].lastname, 'danger': !checks[entry.id].lastname }")
                             | {{entry.lastname}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.id].street1, 'danger': !checks[entry.id].street1 }")
                             | {{entry.street1}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.id].street2, 'danger': !checks[entry.id].street2 }")
                             | {{entry.street2}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.id].zip, 'danger': !checks[entry.id].zip }")
                             | {{entry.zip}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.id].city, 'danger': !checks[entry.id].city }")
                             | {{entry.city}}
                         td
                             | {{entry.country}}
+                        td(ng-class="{ 'success': checks[entry.id].dhlAccount, 'danger': !checks[entry.id].dhlAccount }")
+                            | {{entry.dhlAccount}}
