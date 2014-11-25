@@ -1,3 +1,26 @@
+- persistence repository to check intraship status
+- REST service to check intraship status
+- REST service invoke Magento label service
+- REST service custom "lieferschein" function by Indians
+
+[6:21:04 PM] Daniel Schaaf:
+
+SELECT `Bestellung`,`weight`,`Firma`,`Kunden_vorname`,`Kunden_name`,`str1`,`str2`,`PLZ`,`Ort`,`Land`,`DHL_Account` FROM `mage_custom_order` WHERE `Status` = "processing";
+erstellt die Liste wenn dann alles fertig ist
+Select `Bestellung`,`weight`,`Firma`,`Kunden_vorname`,`Kunden_name`,`str1`,`str2`,`PLZ`,`Ort`,`Land`,`DHL_Account` FROM `mage_custom_order` WHERE Datum_Lieferung like "2014-10-12%";
+damit können wir mit bestellungen aus der Vergangenheit testen
+SELECT * FROM  `mage_custom_order`  WHERE str1 RLIKE  '^[0-9]+$' or Length(Firma) > 30 or Length(`Kunden_vorname`) > 30 or   Length(`Kunden_name`)> 30   or   Length(`str1`)> 30  or   Length(`str2`)> 30  or   Length(`Ort`)> 30  or   Length(`Telefon`)< 1 or  ( Length(`PLZ`) !=5 and `Land` = "DE") or (str1 like "%packstat%" and length(`DHL_Account`) < 5) OR weight > 28
+das holt Dir alle raus, die sicher nicht funtionieren werden
+und damit kannst Du dann für eine Bestellung aus der Vergangenheit die Intraship response simmulieren
+Select comment from l_carb_shop_de.mage_sales_flat_shipment_comment where parent_id = (select shipping_id from Auswertung.mage_custom_order where Bestellung = [betellnummer])  order by created_at limit 0,3
+für den 2. und dritten versuch nummst Du dann limit 1,3 bzw limit 2,3
+das sollte ganz realistische Ergebnisse bringen
+damit kannst Du dann das FehlerHandling testen
+
+
+
+==================================================================================================================================
+
 - x route invoices and labels to separate queues
 - x split separate pages and move to temp folder
 - x extract order id
