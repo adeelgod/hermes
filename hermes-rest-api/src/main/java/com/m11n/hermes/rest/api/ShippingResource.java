@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/forms")
+@Path("/shipping")
 @Produces(APPLICATION_JSON)
 @Controller
 public class ShippingResource {
@@ -40,7 +40,23 @@ public class ShippingResource {
 
     @GET
     @Produces(APPLICATION_JSON)
-    public Response list() {
+    public Response shipping() {
+        // TODO: implement this
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/label")
+    @Produces(APPLICATION_JSON)
+    public Response label() {
+        // TODO: implement this
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/status")
+    @Produces(APPLICATION_JSON)
+    public Response status() {
         // TODO: implement this
         return Response.ok().build();
     }
