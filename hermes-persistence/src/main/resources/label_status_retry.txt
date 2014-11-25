@@ -1,0 +1,4 @@
+DHL Intraship::create::[%]::Unable to save PDF
+DHL Intraship::create::[%]::Could not connect to host
+DHL Intraship::create::[%]::Not Found
+DHL Intraship::create::[%]::Login failed

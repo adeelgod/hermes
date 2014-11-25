@@ -2,13 +2,17 @@ package com.m11n.hermes.persistence.util;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
+import com.m11n.hermes.core.model.LabelStatus;
 import com.m11n.hermes.persistence.FormRepository;
+import com.m11n.hermes.persistence.LabelStatusRepository;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,11 @@ public class DataInitializer {
 
     @Inject
     private FormRepository formRepository;
+
+    @Inject
+    private LabelStatusRepository labelStatusRepository;
+
+    private String[] labelStatusFiles = {"label_status_success.txt", "label_status_error.txt", "label_status_retry.txt", "label_status_ignore.txt"};
 
     @PostConstruct
     public void init() throws Exception {
@@ -55,6 +64,23 @@ public class DataInitializer {
             form.setExecuteOnStartup(true);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
             formRepository.save(form);
+        }
+
+        // label status
+        for(String file : labelStatusFiles) {
+            String status = file.substring("label_status_".length());
+            status = status.substring(0, status.length()-4);
+
+            LineIterator it = IOUtils.lineIterator(DataInitializer.class.getClassLoader().getResourceAsStream(file), Charset.forName("UTF-8"));
+
+            while(it.hasNext()) {
+                String text = it.next().trim();
+                List<LabelStatus> labelStatuses = labelStatusRepository.findByText(text);
+
+                if(labelStatuses.isEmpty()) {
+                    labelStatusRepository.save(new LabelStatus(status, text));
+                }
+            }
         }
     }
 }
