@@ -10,5 +10,5 @@ import java.util.List;
 public interface LabelStatusRepository extends PagingAndSortingRepository<LabelStatus, String> {
     List<LabelStatus> findByStatus(String status);
 
-    List<LabelStatus> findByText(String text);
+    LabelStatus findByText(String text);
 }
