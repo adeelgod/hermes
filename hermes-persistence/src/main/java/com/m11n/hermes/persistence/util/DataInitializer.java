@@ -76,6 +76,15 @@ public class DataInitializer {
             form.setDescription("Enter description...");
             form.setPosition(3);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("shipping.sql")));
+            form = formRepository.save(form);
+
+            List<FormField> fields = new ArrayList<>();
+            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1));
+            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2));
+            fields.add(new FormField("status", FormField.Type.TEXT.name(), 3, "processing"));
+
+            form.setFields(fields);
+
             formRepository.save(form);
         }
 
