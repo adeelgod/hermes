@@ -17,6 +17,9 @@ für den 2. und dritten versuch nummst Du dann limit 1,3 bzw limit 2,3
 das sollte ganz realistische Ergebnisse bringen
 damit kannst Du dann das FehlerHandling testen
 
+get invalid shipments (27.10.2014 has some:
+Select parent_id, created_at, comment from l_carb_shop_de.mage_sales_flat_shipment_comment where comment like "%Invalid%" and created_at >= "2014-10-11"
+
 
 
 ==================================================================================================================================

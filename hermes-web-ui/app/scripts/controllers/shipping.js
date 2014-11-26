@@ -81,6 +81,12 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         });
     };
 
+    $scope.statusAll = function() {
+        angular.forEach($scope.shippings, function(shipping) {
+            $scope.status(shipping);
+        });
+    };
+
     $scope.showStatus = function(shipping, pos) {
         return ($scope.statuses[shipping.orderId] && $scope.statuses[shipping.orderId].length >= pos);
     };

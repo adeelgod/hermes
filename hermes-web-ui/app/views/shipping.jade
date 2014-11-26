@@ -78,6 +78,8 @@ block content
                         td
                             h4 Status
                         td
+                            button.btn.btn-sm.btn-warning(type='button', ng-click='statusAll()', ng-show='debugging')
+                                i.fa.fa-bullseye
                 tbody
                     tr(ng-repeat='entry in shippings')
                         td.text-center
