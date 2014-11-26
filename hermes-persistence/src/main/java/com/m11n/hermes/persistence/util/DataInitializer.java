@@ -91,7 +91,7 @@ public class DataInitializer {
                 String text = it.next().trim();
                 LabelStatus labelStatuse = labelStatusRepository.findByText(text);
 
-                if(labelStatuse!=null) {
+                if(labelStatuse==null) {
                     labelStatusRepository.save(new LabelStatus(status, text));
                 }
             }
