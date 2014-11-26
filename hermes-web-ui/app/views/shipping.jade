@@ -8,6 +8,8 @@ block content
                         i.fa.fa-calendar
                         | &nbsp;
                         | Shipping Search
+                    button.btn(type='button', ng-click='debug()', ng-class="{'btn-danger': debugging, 'btn-default': !debugging}")
+                        i.fa.fa-bug
                     hr
                     .form-group(ng-repeat="field in frm.fields | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}
@@ -73,6 +75,9 @@ block content
                             h4 Country
                         td.text-left
                             h4 DHL #
+                        td
+                            h4 Status
+                        td
                 tbody
                     tr(ng-repeat='entry in shippings')
                         td.text-center
@@ -100,3 +105,12 @@ block content
                             | {{entry.country}}
                         td(ng-class="{ 'success': checks[entry.id].dhlAccount, 'danger': !checks[entry.id].dhlAccount }")
                             | {{entry.dhlAccount}}
+                        td
+                            span.label(class='label-{{statusClass(entry, 0)}}', ng-show='showStatus(entry, 0)') 1
+                            | &nbsp;
+                            span.label(class='label-{{statusClass(entry, 1)}}', ng-show='showStatus(entry, 1)') 2
+                            | &nbsp;
+                            span.label(class='label-{{statusClass(entry, 2)}}', ng-show='showStatus(entry, 2)') 3
+                        td
+                            button.btn.btn-sm.btn-warning(type='button', ng-click='status(entry)', ng-show='debugging')
+                                i.fa.fa-bullseye

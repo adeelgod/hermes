@@ -1,10 +1,19 @@
 'use strict';
 
-angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc) {
+angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, ShippingSvc) {
+    $scope.debugging = false;
     $scope.busy = false;
     $scope.params = {};
     $scope.checks = {};
+    $scope.statuses = {};
     $scope.configuration = {};
+
+    $scope.debug = function() {
+        $scope.debugging = !$scope.debugging;
+        if($scope.debugging) {
+            $scope.params.status = '%';
+        }
+    };
 
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
@@ -52,7 +61,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.match(/\d+/g));
             $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length <= 30);
             $scope.checks[shipping.id].city = (!shipping.city || shipping.city.length <= 30);
-            $scope.checks[shipping.id].zip = (shipping.zip && shipping.zip.length === 5 && shipping.country==='DE');
+            $scope.checks[shipping.id].zip = (shipping['zip'] && shipping['zip'].length === 5 && shipping.country==='DE');
             $scope.checks[shipping.id].dhlAccount = (shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5); // TODO: check for "5pack%"
 
             shipping._selected = ($scope.checks[shipping.id].company &&
@@ -64,6 +73,32 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                 $scope.checks[shipping.id].zip &&
                 $scope.checks[shipping.id].dhlAccount);
         });
+    };
+
+    $scope.status = function(shipping) {
+        ShippingSvc.status({orderId: shipping.orderId}).success(function(data) {
+            $scope.statuses[shipping.orderId] = data;
+        });
+    };
+
+    $scope.showStatus = function(shipping, pos) {
+        return ($scope.statuses[shipping.orderId] && $scope.statuses[shipping.orderId].length >= pos);
+    };
+
+    $scope.hasStatus = function(shipping, pos) {
+        return ($scope.statuses[shipping.orderId] && $scope.statuses[shipping.orderId][pos]);
+    };
+
+    $scope.statusClass = function(shipping, pos) {
+        if($scope.hasStatus(shipping, pos)) {
+            var status = $scope.statuses[shipping.orderId][pos].status;
+
+            status = status==='error' ? 'danger' : status;
+
+            return status;
+        }
+
+        return 'default';
     };
 
     ConfigurationSvc.list().success(function(data) {

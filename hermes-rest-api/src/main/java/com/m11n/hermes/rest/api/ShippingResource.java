@@ -18,6 +18,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/shipping")
@@ -66,12 +69,16 @@ public class ShippingResource {
     @GET
     @Path("/status")
     @Produces(APPLICATION_JSON)
-    public Response status(@QueryParam("orderId") String orderId, @QueryParam("pos") int pos) {
+    public Response status(@QueryParam("orderId") String orderId) {
         // TODO: check this
         String shippingId = auswertungRepository.findShippingIdByOrderId(orderId);
-        String rawStatus = salesFlatShipmentCommentRepository.findRawStatus(shippingId, pos);
-        LabelStatus status = labelStatusRepository.findByText(rawStatus);
+        List<String> rawStatuses = salesFlatShipmentCommentRepository.findRawStatus(shippingId);
+        List<LabelStatus> statuses = new ArrayList<>();
 
-        return Response.ok(status).build();
+        for(String rawStatus : rawStatuses) {
+            statuses.add(labelStatusRepository.findByText(rawStatus));
+        }
+
+        return Response.ok(statuses).build();
     }
 }
