@@ -89,9 +89,9 @@ public class DataInitializer {
 
             while(it.hasNext()) {
                 String text = it.next().trim();
-                List<LabelStatus> labelStatuses = labelStatusRepository.findByText(text);
+                LabelStatus labelStatuse = labelStatusRepository.findByText(text);
 
-                if(labelStatuses.isEmpty()) {
+                if(labelStatuse!=null) {
                     labelStatusRepository.save(new LabelStatus(status, text));
                 }
             }
