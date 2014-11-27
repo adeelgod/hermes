@@ -65,7 +65,7 @@
 
     <bean id="pmu" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
         <property name="defaultDataSource" ref="dataSourceJpa" />
-        <property name="persistenceXmlLocation" value="META-INF/persistence.xml" />
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
