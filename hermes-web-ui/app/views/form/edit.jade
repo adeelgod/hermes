@@ -18,6 +18,9 @@ block content
                             br
                             button.btn.btn-default(type='button', ng-model='form.db', ng-options='database.name as database.name for database in databases', bs-select='')
                         .form-group
+                            label(for='formName') Name (must be unique)
+                            input.form-control(name='form', ng-model="form.name", placeholder='Name', type='text')
+                        .form-group
                             label(for='formDescription') Description
                             input.form-control(name='form', ng-model="form.description", placeholder='Description', type='text')
                         .form-group
