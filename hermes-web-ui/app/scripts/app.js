@@ -11,6 +11,7 @@ angular.module('hermes.ui', [
     'ngAudio',
     'mgcrea.ngStrap',
     'ui.router',
+    'ui.codemirror',
     'xeditable',
     'angularFileUpload',
     'angularMoment'

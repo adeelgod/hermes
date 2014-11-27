@@ -43,7 +43,7 @@ block content
                             label(for='formExecuteOnStartup') Execute on Startup
                         .form-group
                             label(for='sql') SQL
-                            textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
+                            textarea.form-control(ui-codemirror="{lineNumbers: true, theme: 'twilight', mode: 'sql'}", name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
                     .btn-group
                         button.btn.btn-primary(type='button', ng-click='save()')
                             i.fa.fa-check

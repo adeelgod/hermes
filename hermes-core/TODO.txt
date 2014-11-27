@@ -26,7 +26,9 @@ Select parent_id, created_at, comment from l_carb_shop_de.mage_sales_flat_shipme
 - x new form on list
 - x column widths
 - x lookup values
-- sql functions replacement
+- x sql functions replacement (actually not necessary, because these constant values can be integrated in the query)
+- x sql editor
+- default values are not set
 
 ==================================================================================================================================
 
