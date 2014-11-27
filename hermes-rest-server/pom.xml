@@ -140,6 +140,42 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
+                <configuration>
+                    <headerType>console</headerType>
+                    <jar>${project.build.directory}/${artifactId}-${version}-shaded.jar</jar>
+                    <outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
+                    <downloadUrl>http://java.com/download</downloadUrl>
+                    <cmdLine>-Dlogback.configurationFile=logback.xml -Dhermes.config=hermes.properties --port "8080" --jersey "/api/*" --cors "/api/*"</cmdLine>
+                    <classPath>
+                        <mainClass>${m11n.project.main}</mainClass>
+                        <addDependencies>false</addDependencies>
+                        <preCp>anything</preCp>
+                    </classPath>
+                    <icon>src/main/resources/icon/application.ico</icon>
+                    <singleInstance>
+                        <mutexName>${project.artifactId}</mutexName>
+                        <windowTitle>${project.name}</windowTitle>
+                    </singleInstance>
+                    <jre>
+                        <minVersion>1.8.0</minVersion>
+                        <jdkPreference>preferJdk</jdkPreference>
+                        <runtimeBits>64</runtimeBits>
+                        <initialHeapSize>512</initialHeapSize>
+                        <maxHeapSize>1024</maxHeapSize>
+                    </jre>
+                    <versionInfo>
+                        <fileVersion>1.0.1.0</fileVersion>
+                        <txtFileVersion>${project.version}</txtFileVersion>
+                        <fileDescription>${project.name}</fileDescription>
+                        <copyright>2014 Monkeys in Town Lda.</copyright>
+                        <productVersion>1.0.1.0</productVersion>
+                        <txtProductVersion>${project.version}</txtProductVersion>
+                        <productName>${project.name}</productName>
+                        <companyName>Monkeys in Town Lda.</companyName>
+                        <internalName>${project.name}</internalName>
+                        <originalFilename>${project.artifactId}.exe</originalFilename>
+                    </versionInfo>
+                </configuration>
             </plugin>
 
             <plugin>

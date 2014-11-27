@@ -12,6 +12,11 @@
             <outputDirectory>/${project.artifactId}</outputDirectory>
             <destName>${project.artifactId}.jar</destName>
         </file>
+        <file>
+            <source>${project.build.directory}/${project.artifactId}.exe</source>
+            <outputDirectory>/${project.artifactId}</outputDirectory>
+            <destName>${project.artifactId}.exe</destName>
+        </file>
     </files>
     <fileSets>
         <!--
