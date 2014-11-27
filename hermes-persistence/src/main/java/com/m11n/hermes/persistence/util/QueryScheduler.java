@@ -44,6 +44,8 @@ public class QueryScheduler {
     @Value("${hermes.result.dir}")
     private String resultDir;
 
+    // private Pattern functions = Pattern.compile("(\\s*|^)(ADDDATE|ADDTIME|CURDATE|CURRENT_DATE|CURRENT_TIME|CURRENT_TIMESTAMP|CURTIME|DATE_ADD|DATE_FORMAT|DATE_SUB|DATE|DATEDIFF|DAY|DAYNAME|DAYOFMONTH|DAYOFWEEK|DAYOFYEAR|EXTRACT|FROM_DAYS|FROM_UNIXTIME|GET_FORMAT|HOUR|LAST_DAY|LOCALTIME|LOCALTIMESTAMP|MAKEDATE|MAKETIME|MICROSECOND|MINUTE|MONTH|MONTHNAME|NOW|PERIOD_ADD|PERIOD_DIFF|QUARTER|SEC_TO_TIME|SECOND|STR_TO_DATE|SUBDATE|SUBTIME|SYSDATE|TIME_FORMAT|TIME_TO_SEC|TIME|TIMEDIFF|TIMESTAMP|TIMESTAMPADD|TIMESTAMPDIFF|TO_DAYS|UNIX_TIMESTAMP|UTC_DATE|UTC_TIME|UTC_TIMESTAMP|WEEK|WEEKDAY|WEEKOFYEAR|YEAR|YEARWEEK)(.*|$)", Pattern.CASE_INSENSITIVE);
+
     @PostConstruct
     public void init() {
         for(Form form : formRepository.findByExecuteOnStartup(true)) {
@@ -110,16 +112,27 @@ public class QueryScheduler {
         for(String statement : statements) {
             statement = statement.trim();
 
+            /**
+            for(Map.Entry<String, Object> parameter : parameters.entrySet()){
+                String value = parameter.getValue().toString();
+                Matcher m = functions.matcher(value);
+
+                if(m.matches()) {
+                    statement.replaceAll(":" + parameter.getKey(), value);
+                }
+            }
+             */
+
             logger.info("#################### STATEMENT: {}", statement);
 
             if(statement.toLowerCase().startsWith("select")) {
                 if("auswertung".equalsIgnoreCase(form.getDb())) {
-                    result = auswertungRepository.query(form.getSqlStatement(), parameters, mapper);
+                    result = auswertungRepository.query(statement, parameters, mapper);
                 } else if("lcarb".equalsIgnoreCase(form.getDb())) {
-                    result = lCarbRepository.query(form.getSqlStatement(), parameters, mapper);
+                    result = lCarbRepository.query(statement, parameters, mapper);
                 } else {
                     logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
-                    result = auswertungRepository.query(form.getSqlStatement(), parameters, mapper);
+                    result = auswertungRepository.query(statement, parameters, mapper);
                 }
             } else {
                 result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
