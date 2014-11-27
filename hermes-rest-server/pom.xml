@@ -172,6 +172,8 @@
                                 <opts>
                                     <opt>-Dlogback.configurationFile=logback.xml</opt>
                                     <opt>-Dhermes.config=hermes.properties</opt>
+                                    <opt>-Xmx1024m</opt>
+                                    <opt>-Xms512m</opt>
                                 </opts>
                             </jre>
                             <versionInfo>
