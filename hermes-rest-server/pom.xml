@@ -158,7 +158,7 @@
                     </singleInstance>
                     <jre>
                         <minVersion>1.8.0</minVersion>
-                        <jdkPreference>preferJdk</jdkPreference>
+                        <jdkPreference>jreOnly</jdkPreference>
                         <runtimeBits>32</runtimeBits>
                         <initialHeapSize>512</initialHeapSize>
                         <maxHeapSize>1024</maxHeapSize>
