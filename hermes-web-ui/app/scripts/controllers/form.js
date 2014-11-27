@@ -3,6 +3,8 @@
 angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParams, $alert, FormSvc) {
     $scope.forms = [];
     $scope.field = {};
+    $scope.lookup = '';
+    $scope.width = null;
 
     $scope.databases = [
         {'name': 'auswertung'},
@@ -19,6 +21,36 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
         return FormSvc.list().success(function(data) {
             $scope.forms = data;
         });
+    };
+
+    $scope.addLookup = function() {
+        if(!$scope.field.lookup) {
+            $scope.field.lookup = [];
+        }
+
+        $scope.field.lookup.push(angular.copy($scope.lookup));
+        $scope.lookup = '';
+    };
+
+    $scope.removeLookup = function(index) {
+        if($scope.field.lookup) {
+            $scope.field.lookup.splice(index, 1);
+        }
+    };
+
+    $scope.addWidth = function() {
+        if(!$scope.form.widths) {
+            $scope.form.widths = [];
+        }
+
+        $scope.form.widths.push(angular.copy($scope.width));
+        $scope.width = null;
+    };
+
+    $scope.removeWidth = function(index) {
+        if($scope.form.widths) {
+            $scope.form.widths.splice(index, 1);
+        }
     };
 
     $scope.add = function() {

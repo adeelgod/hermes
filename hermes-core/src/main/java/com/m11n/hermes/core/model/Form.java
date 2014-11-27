@@ -8,8 +8,11 @@ import org.joda.beans.impl.direct.*;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.joda.beans.Bean;
 import org.joda.beans.BeanBuilder;
 import org.joda.beans.BeanDefinition;
@@ -60,6 +63,11 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "menu")
+    private String menu;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "execute_on_startup")
     private Boolean executeOnStartup;
 
@@ -72,6 +80,23 @@ public class Form extends DirectBean
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "pos")
     private Integer position;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "printable")
+    private Boolean printable;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "access_public")
+    private Boolean accessPublic;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="hermes_form_width", joinColumns=@JoinColumn(name="form_id"))
+    @Column(name = "width")
+    private Set<Integer> widths = new HashSet<>();
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -225,6 +250,31 @@ public class Form extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the menu.
+     * @return the value of the property
+     */
+    public String getMenu() {
+        return menu;
+    }
+
+    /**
+     * Sets the menu.
+     * @param menu  the new value of the property
+     */
+    public void setMenu(String menu) {
+        this.menu = menu;
+    }
+
+    /**
+     * Gets the the {@code menu} property.
+     * @return the property, not null
+     */
+    public final Property<String> menu() {
+        return metaBean().menu().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the executeOnStartup.
      * @return the value of the property
      */
@@ -300,6 +350,56 @@ public class Form extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the printable.
+     * @return the value of the property
+     */
+    public Boolean getPrintable() {
+        return printable;
+    }
+
+    /**
+     * Sets the printable.
+     * @param printable  the new value of the property
+     */
+    public void setPrintable(Boolean printable) {
+        this.printable = printable;
+    }
+
+    /**
+     * Gets the the {@code printable} property.
+     * @return the property, not null
+     */
+    public final Property<Boolean> printable() {
+        return metaBean().printable().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the widths.
+     * @return the value of the property
+     */
+    public Set<Integer> getWidths() {
+        return widths;
+    }
+
+    /**
+     * Sets the widths.
+     * @param widths  the new value of the property
+     */
+    public void setWidths(Set<Integer> widths) {
+        this.widths = widths;
+    }
+
+    /**
+     * Gets the the {@code widths} property.
+     * @return the property, not null
+     */
+    public final Property<Set<Integer>> widths() {
+        return metaBean().widths().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the fields.
      * @return the value of the property
      */
@@ -341,9 +441,12 @@ public class Form extends DirectBean
                     JodaBeanUtils.equal(getName(), other.getName()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
                     JodaBeanUtils.equal(getSchedule(), other.getSchedule()) &&
+                    JodaBeanUtils.equal(getMenu(), other.getMenu()) &&
                     JodaBeanUtils.equal(getExecuteOnStartup(), other.getExecuteOnStartup()) &&
                     JodaBeanUtils.equal(getSqlStatement(), other.getSqlStatement()) &&
                     JodaBeanUtils.equal(getPosition(), other.getPosition()) &&
+                    JodaBeanUtils.equal(getPrintable(), other.getPrintable()) &&
+                    JodaBeanUtils.equal(getWidths(), other.getWidths()) &&
                     JodaBeanUtils.equal(getFields(), other.getFields());
         }
         return false;
@@ -357,16 +460,19 @@ public class Form extends DirectBean
         hash += hash * 31 + JodaBeanUtils.hashCode(getName());
         hash += hash * 31 + JodaBeanUtils.hashCode(getDescription());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSchedule());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getMenu());
         hash += hash * 31 + JodaBeanUtils.hashCode(getExecuteOnStartup());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSqlStatement());
         hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getPrintable());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getWidths());
         hash += hash * 31 + JodaBeanUtils.hashCode(getFields());
         return hash;
     }
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(320);
+        StringBuilder buf = new StringBuilder(416);
         buf.append("Form{");
         int len = buf.length();
         toString(buf);
@@ -383,9 +489,12 @@ public class Form extends DirectBean
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
         buf.append("schedule").append('=').append(JodaBeanUtils.toString(getSchedule())).append(',').append(' ');
+        buf.append("menu").append('=').append(JodaBeanUtils.toString(getMenu())).append(',').append(' ');
         buf.append("executeOnStartup").append('=').append(JodaBeanUtils.toString(getExecuteOnStartup())).append(',').append(' ');
         buf.append("sqlStatement").append('=').append(JodaBeanUtils.toString(getSqlStatement())).append(',').append(' ');
         buf.append("position").append('=').append(JodaBeanUtils.toString(getPosition())).append(',').append(' ');
+        buf.append("printable").append('=').append(JodaBeanUtils.toString(getPrintable())).append(',').append(' ');
+        buf.append("widths").append('=').append(JodaBeanUtils.toString(getWidths())).append(',').append(' ');
         buf.append("fields").append('=').append(JodaBeanUtils.toString(getFields())).append(',').append(' ');
     }
 
@@ -425,6 +534,11 @@ public class Form extends DirectBean
         private final MetaProperty<String> schedule = DirectMetaProperty.ofReadWrite(
                 this, "schedule", Form.class, String.class);
         /**
+         * The meta-property for the {@code menu} property.
+         */
+        private final MetaProperty<String> menu = DirectMetaProperty.ofReadWrite(
+                this, "menu", Form.class, String.class);
+        /**
          * The meta-property for the {@code executeOnStartup} property.
          */
         private final MetaProperty<Boolean> executeOnStartup = DirectMetaProperty.ofReadWrite(
@@ -439,6 +553,17 @@ public class Form extends DirectBean
          */
         private final MetaProperty<Integer> position = DirectMetaProperty.ofReadWrite(
                 this, "position", Form.class, Integer.class);
+        /**
+         * The meta-property for the {@code printable} property.
+         */
+        private final MetaProperty<Boolean> printable = DirectMetaProperty.ofReadWrite(
+                this, "printable", Form.class, Boolean.class);
+        /**
+         * The meta-property for the {@code widths} property.
+         */
+        @SuppressWarnings({"unchecked", "rawtypes" })
+        private final MetaProperty<Set<Integer>> widths = DirectMetaProperty.ofReadWrite(
+                this, "widths", Form.class, (Class) Set.class);
         /**
          * The meta-property for the {@code fields} property.
          */
@@ -455,9 +580,12 @@ public class Form extends DirectBean
                 "name",
                 "description",
                 "schedule",
+                "menu",
                 "executeOnStartup",
                 "sqlStatement",
                 "position",
+                "printable",
+                "widths",
                 "fields");
 
         /**
@@ -479,12 +607,18 @@ public class Form extends DirectBean
                     return description;
                 case -697920873:  // schedule
                     return schedule;
+                case 3347807:  // menu
+                    return menu;
                 case 694222761:  // executeOnStartup
                     return executeOnStartup;
                 case 937767745:  // sqlStatement
                     return sqlStatement;
                 case 747804969:  // position
                     return position;
+                case -1796593273:  // printable
+                    return printable;
+                case -788034707:  // widths
+                    return widths;
                 case -1274708295:  // fields
                     return fields;
             }
@@ -548,6 +682,14 @@ public class Form extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code menu} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> menu() {
+            return menu;
+        }
+
+        /**
          * The meta-property for the {@code executeOnStartup} property.
          * @return the meta-property, not null
          */
@@ -572,6 +714,22 @@ public class Form extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code printable} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Boolean> printable() {
+            return printable;
+        }
+
+        /**
+         * The meta-property for the {@code widths} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Set<Integer>> widths() {
+            return widths;
+        }
+
+        /**
          * The meta-property for the {@code fields} property.
          * @return the meta-property, not null
          */
@@ -593,12 +751,18 @@ public class Form extends DirectBean
                     return ((Form) bean).getDescription();
                 case -697920873:  // schedule
                     return ((Form) bean).getSchedule();
+                case 3347807:  // menu
+                    return ((Form) bean).getMenu();
                 case 694222761:  // executeOnStartup
                     return ((Form) bean).getExecuteOnStartup();
                 case 937767745:  // sqlStatement
                     return ((Form) bean).getSqlStatement();
                 case 747804969:  // position
                     return ((Form) bean).getPosition();
+                case -1796593273:  // printable
+                    return ((Form) bean).getPrintable();
+                case -788034707:  // widths
+                    return ((Form) bean).getWidths();
                 case -1274708295:  // fields
                     return ((Form) bean).getFields();
             }
@@ -624,6 +788,9 @@ public class Form extends DirectBean
                 case -697920873:  // schedule
                     ((Form) bean).setSchedule((String) newValue);
                     return;
+                case 3347807:  // menu
+                    ((Form) bean).setMenu((String) newValue);
+                    return;
                 case 694222761:  // executeOnStartup
                     ((Form) bean).setExecuteOnStartup((Boolean) newValue);
                     return;
@@ -632,6 +799,12 @@ public class Form extends DirectBean
                     return;
                 case 747804969:  // position
                     ((Form) bean).setPosition((Integer) newValue);
+                    return;
+                case -1796593273:  // printable
+                    ((Form) bean).setPrintable((Boolean) newValue);
+                    return;
+                case -788034707:  // widths
+                    ((Form) bean).setWidths((Set<Integer>) newValue);
                     return;
                 case -1274708295:  // fields
                     ((Form) bean).setFields((List<FormField>) newValue);

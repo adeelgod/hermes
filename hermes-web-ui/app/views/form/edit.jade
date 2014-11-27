@@ -7,18 +7,12 @@ block content
                     h3.panel-title Form: {{form.name}}
                 .panel-body
                     form(role='form', name='fieldForm', novalidate='')
-                        //
-                            .form-group
-                                button.btn.btn-default(type='button', ng-model='form', ng-options='form.name for form in forms', bs-select='')
-                                br
-                                label(for='form') Name
-                                input.form-control(name='form', ng-model="form.name", placeholder='Form Name', type='text')
                         .form-group
                             label(for='db') Database
                             br
                             button.btn.btn-default(type='button', ng-model='form.db', ng-options='database.name as database.name for database in databases', bs-select='')
                         .form-group
-                            label(for='formName') Name (must be unique)
+                            label(for='formName') Name (must be unique!)
                             input.form-control(name='form', ng-model="form.name", placeholder='Name', type='text')
                         .form-group
                             label(for='formDescription') Description
@@ -27,6 +21,23 @@ block content
                             label(for='formPosition') Position
                             input.form-control(name='formPosition', ng-model="form.position", placeholder='Position', type='text')
                         .form-group
+                            button.btn.btn-default(type='button', ng-model='form.printable', bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': form.printable, 'fa-circle-o': !form.printable}")
+                            label(for='formPrintable') Printable
+                        .form-group(ng-show='form.printable')
+                            .input-group
+                                input.form-control(name='formWidths', ng-model='width', placeholder='Width', type='number')
+                                span.input-group-btn
+                                    button.btn.btn-primary(type='button', ng-click='addWidth()')
+                                        i.fa.fa-plus
+                            ul.list-group
+                                li.list-group-item(ng-repeat='widthValue in form.widths')
+                                    button.btn.btn-sm.btn-danger(type='button', ng-click='removeWidth($index)')
+                                        i.fa.fa-minus
+                                    | &nbsp;
+                                    | {{widthValue}}
+
+                        .form-group
                             button.btn.btn-default(type='button', ng-model='form.executeOnStartup', bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': form.executeOnStartup, 'fa-circle-o': !form.executeOnStartup}")
                             label(for='formExecuteOnStartup') Execute on Startup
@@ -34,8 +45,6 @@ block content
                             label(for='sql') SQL
                             textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
                     .btn-group
-                        button.btn.btn-default(type='button', ng-click='reset()')
-                            i.fa.fa-asterisk
                         button.btn.btn-primary(type='button', ng-click='save()')
                             i.fa.fa-check
                         button.btn.btn-danger(type='button', ng-click='removeForm()')
@@ -76,14 +85,27 @@ block content
                     form(role='form', name='fieldForm', novalidate='')
                         .form-group
                             label(for='name') Field Name
-                            input.form-control(name='name', ng-model="field.name", placeholder='Name', type='text')
+                            input.form-control(name='name', ng-model='field.name', placeholder='Name', type='text')
                         .form-group
                             label(for='type') Type
                             br
                             button.btn.btn-default(type='button', ng-model='field.type', ng-options='type.code as type.code for type in types', bs-select='')
                         .form-group
                             label(for='defaultValue') Default
-                            input.form-control(name='defaultValue', ng-model="field.defaultValue", placeholder='Default', type='text')
+                            input.form-control(name='defaultValue', ng-mode'field.defaultValue', placeholder='Default', type='text')
+                        .form-group(ng-show="field.type=='TEXT'")
+                            .input-group
+                                //label.sr-only(for='lookup') Lookup
+                                input.form-control(name='lookup', ng-model='lookup', placeholder='Lookup', type='text')
+                                span.input-group-btn
+                                    button.btn.btn-primary(type='button', ng-click='addLookup()')
+                                        i.fa.fa-plus
+                            ul.list-group
+                                li.list-group-item(ng-repeat='lookupValue in field.lookup')
+                                    button.btn.btn-sm.btn-danger(type='button', ng-click='removeLookup($index)')
+                                        i.fa.fa-minus
+                                    | &nbsp;
+                                    | {{lookupValue}}
                         .form-group
                             label(for='position') Position
                             input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')

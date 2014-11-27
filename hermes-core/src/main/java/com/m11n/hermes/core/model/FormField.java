@@ -8,9 +8,8 @@ import org.joda.beans.impl.direct.*;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.joda.beans.Bean;
 import org.joda.beans.BeanBuilder;
 import org.joda.beans.BeanDefinition;
@@ -23,6 +22,7 @@ import org.joda.beans.impl.direct.DirectBeanBuilder;
 import org.joda.beans.impl.direct.DirectMetaBean;
 import org.joda.beans.impl.direct.DirectMetaProperty;
 import org.joda.beans.impl.direct.DirectMetaPropertyMap;
+import java.util.Map;
 
 @BeanDefinition
 @JsonIgnoreProperties({"meta", "metaBean"})
@@ -70,7 +70,10 @@ public class FormField extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    private String lookup;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="hermes_form_field_lookup", joinColumns=@JoinColumn(name="form_field_id"))
+    @Column(name = "value")
+    private Set<String> lookup = new HashSet<>();
 
     public FormField() {
 
@@ -263,7 +266,7 @@ public class FormField extends DirectBean
      * Gets the lookup.
      * @return the value of the property
      */
-    public String getLookup() {
+    public Set<String> getLookup() {
         return lookup;
     }
 
@@ -271,7 +274,7 @@ public class FormField extends DirectBean
      * Sets the lookup.
      * @param lookup  the new value of the property
      */
-    public void setLookup(String lookup) {
+    public void setLookup(Set<String> lookup) {
         this.lookup = lookup;
     }
 
@@ -279,7 +282,7 @@ public class FormField extends DirectBean
      * Gets the the {@code lookup} property.
      * @return the property, not null
      */
-    public final Property<String> lookup() {
+    public final Property<Set<String>> lookup() {
         return metaBean().lookup().createProperty(this);
     }
 
@@ -386,8 +389,9 @@ public class FormField extends DirectBean
         /**
          * The meta-property for the {@code lookup} property.
          */
-        private final MetaProperty<String> lookup = DirectMetaProperty.ofReadWrite(
-                this, "lookup", FormField.class, String.class);
+        @SuppressWarnings({"unchecked", "rawtypes" })
+        private final MetaProperty<Set<String>> lookup = DirectMetaProperty.ofReadWrite(
+                this, "lookup", FormField.class, (Class) Set.class);
         /**
          * The meta-properties.
          */
@@ -496,7 +500,7 @@ public class FormField extends DirectBean
          * The meta-property for the {@code lookup} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<String> lookup() {
+        public final MetaProperty<Set<String>> lookup() {
             return lookup;
         }
 
@@ -522,6 +526,7 @@ public class FormField extends DirectBean
             return super.propertyGet(bean, propertyName, quiet);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void propertySet(Bean bean, String propertyName, Object newValue, boolean quiet) {
             switch (propertyName.hashCode()) {
@@ -544,7 +549,7 @@ public class FormField extends DirectBean
                     ((FormField) bean).setType((String) newValue);
                     return;
                 case -1097094790:  // lookup
-                    ((FormField) bean).setLookup((String) newValue);
+                    ((FormField) bean).setLookup((Set<String>) newValue);
                     return;
             }
             super.propertySet(bean, propertyName, newValue, quiet);
