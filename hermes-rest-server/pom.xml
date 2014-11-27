@@ -152,7 +152,6 @@
                             <jar>${project.build.directory}/${artifactId}-${version}-shaded.jar</jar>
                             <outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
                             <downloadUrl>http://java.com/download</downloadUrl>
-                            <cmdLine>-Dlogback.configurationFile=logback.xml -Dhermes.config=hermes.properties --port "8080" --jersey "/api/*" --cors "/api/*"</cmdLine>
                             <classPath>
                                 <mainClass>${m11n.project.main}</mainClass>
                                 <addDependencies>false</addDependencies>
@@ -169,6 +168,11 @@
                                 <runtimeBits>64/32</runtimeBits>
                                 <initialHeapSize>512</initialHeapSize>
                                 <maxHeapSize>1024</maxHeapSize>
+                                <opt>-Dlogback.configurationFile=logback.xml</opt>
+                                <opt>-Dhermes.config=hermes.properties</opt>
+                                <opt>--port "8080"</opt>
+                                <opt>--jersey "/api/*"</opt>
+                                <opt>--cors "/api/*"</opt>
                             </jre>
                             <versionInfo>
                                 <fileVersion>1.0.1.0</fileVersion>
