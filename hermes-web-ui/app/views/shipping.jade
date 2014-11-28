@@ -38,11 +38,15 @@ block content
                     .form-group
                         .row
                             .col-md-12
-                                .btn-group
+                                .btn-group.btn-group-lg
                                     button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                         i.fa.fa-search
+                                        | &nbsp;
+                                        | Run
                                     button.btn.btn-default(type='button', ng-click='check()', ng-disabled='busy')
                                         i.fa.fa-check
+                                        | &nbsp;
+                                        | Check
     .row(ng-show='busy')
         .col-md-12
             .progress

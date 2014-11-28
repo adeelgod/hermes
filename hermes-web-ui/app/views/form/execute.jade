@@ -30,8 +30,10 @@ block content
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
                         .btn-group
-                            button.btn.btn-primary(type='button', ng-click='execute()', ng-disabled='executing')
+                            button.btn.btn-lg.btn-primary(type='button', ng-click='execute()', ng-disabled='executing')
                                 i.fa.fa-play
+                                | &nbsp;
+                                | Run
     .row(ng-show='executing')
         .col-md-12
             .progress

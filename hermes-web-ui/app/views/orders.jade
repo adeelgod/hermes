@@ -30,11 +30,15 @@ block content
                     .form-group
                         .row
                             .col-md-12
-                                .btn-group
+                                .btn-group.btn-group-lg
                                     button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                         i.fa.fa-search
+                                        | &nbsp;
+                                        | Run
                                     button.btn.btn-default(type='button', ng-click='print()', ng-disabled='busy')
                                         i.fa.fa-print
+                                        | &nbsp;
+                                        | Print
         .col-md-6
             //
                 nav

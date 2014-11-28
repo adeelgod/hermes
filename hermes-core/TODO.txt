@@ -20,7 +20,6 @@ damit kannst Du dann das FehlerHandling testen
 get invalid shipments (27.10.2014 has some:
 Select parent_id, created_at, comment from l_carb_shop_de.mage_sales_flat_shipment_comment where comment like "%Invalid%" and created_at >= "2014-10-11"
 
-- print preview pdf dynamicreports
 - x parameters with width
 - x missing name field for forms
 - x new form on list
@@ -28,7 +27,11 @@ Select parent_id, created_at, comment from l_carb_shop_de.mage_sales_flat_shipme
 - x lookup values
 - x sql functions replacement (actually not necessary, because these constant values can be integrated in the query)
 - x sql editor
-- default values are not set
+- x default values are not set
+- x menus
+- x major UI cleanup
+- print preview pdf dynamicreports
+- delete forms in list not working
 
 ==================================================================================================================================
 
