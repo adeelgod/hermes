@@ -83,6 +83,11 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "font_size")
+    private Integer fontSize;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "printable")
     private Boolean printable;
 
@@ -93,6 +98,7 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Deprecated
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="hermes_form_width", joinColumns=@JoinColumn(name="form_id"))
     @Column(name = "width")
@@ -403,6 +409,7 @@ public class Form extends DirectBean
      * Gets the widths.
      * @return the value of the property
      */
+    @Deprecated
     public Set<Integer> getWidths() {
         return widths;
     }
@@ -411,6 +418,7 @@ public class Form extends DirectBean
      * Sets the widths.
      * @param widths  the new value of the property
      */
+    @Deprecated
     public void setWidths(Set<Integer> widths) {
         this.widths = widths;
     }
@@ -419,6 +427,7 @@ public class Form extends DirectBean
      * Gets the the {@code widths} property.
      * @return the property, not null
      */
+    @Deprecated
     public final Property<Set<Integer>> widths() {
         return metaBean().widths().createProperty(this);
     }
@@ -769,6 +778,7 @@ public class Form extends DirectBean
          * The meta-property for the {@code widths} property.
          * @return the meta-property, not null
          */
+        @Deprecated
         public final MetaProperty<Set<Integer>> widths() {
             return widths;
         }
