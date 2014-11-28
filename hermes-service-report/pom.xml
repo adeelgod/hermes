@@ -31,6 +31,21 @@
             <artifactId>ecj</artifactId>
             <version>4.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.dynamicreports</groupId>
+            <artifactId>dynamicreports-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.dynamicreports</groupId>
+            <artifactId>dynamicreports-adhoc</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
