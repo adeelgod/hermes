@@ -31,11 +31,11 @@ block content
                     .form-group
                         //
                             .btn-group
-                                button.btn.btn-lg.btn-primary(type='button', ng-click='execute()', ng-disabled='executing')
-                                    i.fa.fa-play
-                                    | &nbsp;
-                                    | Run
-                        button.btn.btn-lg.btn-primary(type='button', ng-click='report()', ng-disabled='executing')
+                        button.btn.btn-lg.btn-primary(type='button', ng-click='execute()', ng-disabled='executing', ng-hide='form.printable')
+                            i.fa.fa-play
+                            | &nbsp;
+                            | Run
+                        button.btn.btn-lg.btn-primary(type='button', ng-click='report()', ng-disabled='executing', ng-show='form.printable')
                             i.fa.fa-print
                             | &nbsp;
                             | Report
