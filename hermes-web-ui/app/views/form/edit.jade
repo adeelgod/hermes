@@ -53,9 +53,11 @@ block content
                             label(for='sql') SQL
                             //textarea.form-control(ui-codemirror='cmOptions', name='sql', ng-model="form.sqlStatement", ng-change="modeChanged()", placeholder='SQL', type='text')
                             textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
-                    .btn-group
-                        button.btn.btn-primary(type='button', ng-click='save()')
-                            i.fa.fa-check
+                    button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
+                        i.fa.fa-floppy-o
+                        | &nbsp;
+                        | Save
+                    //
                         button.btn.btn-danger(type='button', ng-click='removeForm()')
                             i.fa.fa-close
     .row(ng-hide='loading')
@@ -81,9 +83,9 @@ block content
                                 td
                                     .btn-group
                                         button.btn.btn-success(type='button', ng-click='select(field)')
-                                            i.fa.fa-check
+                                            i.fa.fa-pencil
                                         button.btn.btn-danger(type='button', ng-click='removeField($index)')
-                                            i.fa.fa-close
+                                            i.fa.fa-trash
         .col-md-6
             .panel.panel-default(ng-show='form.fields')
                 .panel-heading
