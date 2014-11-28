@@ -33,18 +33,19 @@ block content
                             button.btn.btn-default(type='button', ng-model='form.printable', bs-checkbox='')
                                 i.fa(ng-class="{'fa-print': form.printable, 'fa-minus': !form.printable}")
                             label(for='formPrintable') Printable
-                        .form-group(ng-show='form.printable')
-                            .input-group
-                                span.input-group-btn
-                                    button.btn.btn-primary(type='button', ng-click='addWidth()')
-                                        i.fa.fa-plus
-                                input.form-control(name='formWidths', ng-model='width', placeholder='Width (in mm)', type='number')
-                            ul.list-inline
-                                li(ng-repeat='widthValue in form.widths')
-                                    button.btn.btn-sm.btn-danger(type='button', ng-click='removeWidth($index)')
-                                        i.fa.fa-minus
-                                        | &nbsp;
-                                        | {{widthValue}}
+                        //
+                            .form-group(ng-show='form.printable')
+                                .input-group
+                                    span.input-group-btn
+                                        button.btn.btn-primary(type='button', ng-click='addWidth()')
+                                            i.fa.fa-plus
+                                    input.form-control(name='formWidths', ng-model='width', placeholder='Width (in mm)', type='number')
+                                ul.list-inline
+                                    li(ng-repeat='widthValue in form.widths')
+                                        button.btn.btn-sm.btn-danger(type='button', ng-click='removeWidth($index)')
+                                            i.fa.fa-minus
+                                            | &nbsp;
+                                            | {{widthValue}}
                         .form-group
                             button.btn.btn-default(type='button', ng-model='form.executeOnStartup', bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': form.executeOnStartup, 'fa-circle-o': !form.executeOnStartup}")
@@ -72,6 +73,8 @@ block content
                                 td
                                 td Name
                                 td Type
+                                td Parameter
+                                td Column
                                 td Default
                                 td
                         tbody
@@ -79,6 +82,8 @@ block content
                                 td {{field.position}}
                                 td {{field.name}}
                                 td {{field.fieldType}}
+                                td {{field.parameter}}
+                                td {{field.column}}
                                 td {{field.defValue}}
                                 td
                                     .btn-group
@@ -93,12 +98,26 @@ block content
                 .panel-body
                     form(role='form', name='fieldForm', novalidate='')
                         .form-group
-                            label(for='name') Field Name
+                            label(for='name') Name
                             input.form-control(name='name', ng-model='field.name', placeholder='Name', type='text')
+                        .form-group
+                            label(for='name') Description
+                            input.form-control(name='name', ng-model='field.description', placeholder='Name', type='text')
                         .form-group
                             label(for='type') Type
                             br
                             button.btn.btn-default(type='button', ng-model='field.fieldType', ng-options='t.code as t.code for t in types', bs-select='')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='field.parameter', bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': field.parameter, 'fa-circle-o': !field.parameter}")
+                            label(for='parameter') Is Parameter
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='field.column', bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': field.column, 'fa-circle-o': !field.column}")
+                            label(for='parameter') Is Column
+                        .form-group(ng-show='field.column')
+                            label(for='name') Width
+                            input.form-control(name='name', ng-model='field.width', placeholder='Name', type='number')
                         .form-group
                             label(for='fieldDefValue') Default
                             input.form-control(name='fieldDefValue', ng-model='field.defValue', placeholder='Default', type='text')
