@@ -34,7 +34,7 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, ExampleSv
         return FormSvc.list().success(function(data) {
             angular.forEach(data, function(form) {
                 if(form.accessPublic) {
-                    $scope.forms.push({text: form.name + ' - ' + form.description, href: '#!/form/execute/' + form.id});
+                    $scope.forms.push({text: form.description, href: '#!/form/execute/' + form.id});
                 }
             });
             $scope.loading = false;

@@ -10,10 +10,8 @@ block content
             form(role='form', name='executeForm', novalidate='')
                 .form-group
                     h2
-                        i.fa.fa-play
-                        | &nbsp;
-                        | {{form.name}}
-                    h3 {{form.description}}
+                        | Report: &nbsp;
+                        | {{form.description}}
                     hr
                     .form-group(ng-repeat="field in form.fields | filter:{parameter:true} | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}
