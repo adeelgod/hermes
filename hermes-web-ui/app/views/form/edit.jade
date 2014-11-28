@@ -111,11 +111,11 @@ block content
                             button.btn.btn-default(type='button', ng-model='field.parameter', bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': field.parameter, 'fa-circle-o': !field.parameter}")
                             label(for='parameter') Is Parameter
-                        .form-group
+                        .form-group(ng-show='form.printable')
                             button.btn.btn-default(type='button', ng-model='field.column', bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': field.column, 'fa-circle-o': !field.column}")
                             label(for='parameter') Is Column
-                        .form-group(ng-show='field.column')
+                        .form-group(ng-show='field.column && form.printable')
                             label(for='name') Width
                             input.form-control(name='name', ng-model='field.width', placeholder='Name', type='number')
                         .form-group
