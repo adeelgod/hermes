@@ -12,6 +12,7 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/reports")
 @Produces(APPLICATION_JSON)
+@Controller
 public class ReportResource {
     private static final Logger logger = LoggerFactory.getLogger(ReportResource.class);
 
