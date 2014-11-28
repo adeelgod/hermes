@@ -12,7 +12,8 @@ block content
                     h2
                         i.fa.fa-play
                         | &nbsp;
-                        | Execute: {{form.name}}
+                        | {{form.name}}
+                    h3 {{form.description}}
                     hr
                     .form-group(ng-repeat="field in form.fields | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}

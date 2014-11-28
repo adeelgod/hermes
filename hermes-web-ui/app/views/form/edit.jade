@@ -58,7 +58,7 @@ block content
                             i.fa.fa-check
                         button.btn.btn-danger(type='button', ng-click='removeForm()')
                             i.fa.fa-close
-    .row
+    .row(ng-hide='loading')
         .col-md-6
             .panel.panel-default(ng-show='form.fields')
                 .panel-heading

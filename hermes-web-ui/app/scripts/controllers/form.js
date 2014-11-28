@@ -91,17 +91,20 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     };
 
     $scope.save = function() {
+        $scope.loading = true;
         FormSvc.save($scope.form).success(function(data) {
             $scope.form = data;
-            $alert({content: 'Form saved: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
-            $scope.list();
+            $scope.list().then(function() {
+                $alert({content: 'Form saved: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
+            });;
         });
     };
 
-    $scope.removeForm = function() {
-        FormSvc.removeField({id: $scope.form.id}).success(function(data) {
-            $alert({content: 'Form deleted: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
-            $scope.list();
+    $scope.removeForm = function(id) {
+        FormSvc.remove({id: (id ? id : $scope.form.id)}).success(function(data) {
+            $scope.list().then(function() {
+                $alert({content: 'Form deleted: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
+            });;
         });
     };
 
@@ -132,10 +135,19 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     });
 }).controller('FormListCtrl', function ($scope, $alert, FormSvc) {
     $scope.loading = true;
+
     $scope.list = function() {
         return FormSvc.list().success(function(data) {
             $scope.forms = data;
             $scope.loading = false;
+        });
+    };
+
+    $scope.removeForm = function(id) {
+        FormSvc.remove({id: id}).success(function(data) {
+            $scope.list().then(function() {
+                $alert({content: 'Form deleted: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
+            });;
         });
     };
 
