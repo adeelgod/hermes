@@ -26,13 +26,13 @@ block content
                             label(for='formPosition') Position
                             input.form-control(name='formPosition', ng-model="form.position", placeholder='Position', type='text')
                         .form-group
-                            button.btn.btn-default(type='button', ng-model='form.printable', bs-checkbox='')
-                                i.fa(ng-class="{'fa-print': form.printable, 'fa-minus': !form.printable}")
-                            label(for='formPrintable') Printable
-                        .form-group
                             button.btn.btn-default(type='button', ng-model='form.accessPublic', bs-checkbox='')
                                 i.fa(ng-class="{'fa-unlock': form.accessPublic, 'fa-lock': !form.accessPublic}")
                             label(for='formPrintable') Public
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='form.printable', bs-checkbox='')
+                                i.fa(ng-class="{'fa-print': form.printable, 'fa-minus': !form.printable}")
+                            label(for='formPrintable') Printable
                         .form-group(ng-show='form.printable')
                             .input-group
                                 span.input-group-btn
