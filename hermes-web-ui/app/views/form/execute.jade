@@ -34,6 +34,10 @@ block content
                                 i.fa.fa-play
                                 | &nbsp;
                                 | Run
+                            button.btn.btn-lg.btn-default(type='button', ng-click='report()', ng-disabled='executing')
+                                i.fa.fa-print
+                                | &nbsp;
+                                | Report
     .row(ng-show='executing')
         .col-md-12
             .progress

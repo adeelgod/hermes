@@ -152,12 +152,11 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     };
 
     $scope.list();
-}).controller('FormExecuteCtrl', function ($scope, $stateParams, $alert, FormSvc) {
+}).controller('FormExecuteCtrl', function ($scope, $log, $stateParams, $alert, FormSvc, ReportSvc) {
     $scope.executing = false;
     $scope.loading = true;
 
     $scope.execute = function() {
-        // TODO: implement this
         $scope.params['_form'] = $scope.form.name;
         $scope.executing = true;
         FormSvc.query($scope.params).success(function(data) {
@@ -166,6 +165,25 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
         }).error(function(data) {
             $scope.executing = false;
             $alert({content: 'Execution failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
+    };
+
+    $scope.report = function() {
+        $scope.params['_form'] = $scope.form.name;
+        $scope.executing = true;
+        // NOTE: see details here http://blog-it.hypoport.de/2014/08/19/how-to-open-async-calls-in-a-new-tab-instead-of-new-window-within-an-angularjs-app/
+        //var tabWindowId = window.open('about:blank', '_blank');
+        ReportSvc.report($scope.params).success(function(data) {
+            $scope.executing = false;
+            //$log.info('Read  with ' + data.byteLength + ' bytes in a variable of type ' + typeof(data));
+            //var file = new Blob([data], { type: 'application/pdf' });
+            //var fileURL = URL.createObjectURL(file);
+            $log.info('PDF: ' + data.id);
+            window.open('api/reports/pdf/' + data.id, '_blank');
+        }).error(function(data) {
+            $scope.executing = false;
+            $alert({content: 'Execution failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
+            tabWindowId.close();
         });
     };
 
