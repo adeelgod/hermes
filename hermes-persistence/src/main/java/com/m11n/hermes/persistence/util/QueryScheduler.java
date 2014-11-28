@@ -97,7 +97,7 @@ public class QueryScheduler {
         };
 
         for(FormField field : form.getFields()) {
-            if(field.getType().equals(FormField.Type.DATE.name())) {
+            if(field.getFieldType().equals(FormField.Type.DATE.name())) {
                 String value = parameters.get(field.getName()).toString();
                 DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
                 DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");

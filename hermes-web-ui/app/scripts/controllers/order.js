@@ -12,7 +12,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
             $scope.frm = data;
             angular.forEach($scope.frm.fields, function(field) {
                 if(field) {
-                    var val = field.type==='BOOLEAN' ? (field.defaultValue==='true') : field.defaultValue;
+                    var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                     $scope.params[field.name] = val;
                 }
             });

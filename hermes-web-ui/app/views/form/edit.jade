@@ -27,28 +27,32 @@ block content
                             input.form-control(name='formPosition', ng-model="form.position", placeholder='Position', type='text')
                         .form-group
                             button.btn.btn-default(type='button', ng-model='form.printable', bs-checkbox='')
-                                i.fa(ng-class="{'fa-circle': form.printable, 'fa-circle-o': !form.printable}")
+                                i.fa(ng-class="{'fa-print': form.printable, 'fa-minus': !form.printable}")
                             label(for='formPrintable') Printable
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='form.accessPublic', bs-checkbox='')
+                                i.fa(ng-class="{'fa-unlock': form.accessPublic, 'fa-lock': !form.accessPublic}")
+                            label(for='formPrintable') Public
                         .form-group(ng-show='form.printable')
                             .input-group
                                 span.input-group-btn
                                     button.btn.btn-primary(type='button', ng-click='addWidth()')
                                         i.fa.fa-plus
-                                input.form-control(name='formWidths', ng-model='width', placeholder='Width', type='number')
-                            ul.list-group
-                                li.list-group-item(ng-repeat='widthValue in form.widths')
+                                input.form-control(name='formWidths', ng-model='width', placeholder='Width (in mm)', type='number')
+                            ul.list-inline
+                                li(ng-repeat='widthValue in form.widths')
                                     button.btn.btn-sm.btn-danger(type='button', ng-click='removeWidth($index)')
                                         i.fa.fa-minus
-                                    | &nbsp;
-                                    | {{widthValue}}
-
+                                        | &nbsp;
+                                        | {{widthValue}}
                         .form-group
                             button.btn.btn-default(type='button', ng-model='form.executeOnStartup', bs-checkbox='')
                                 i.fa(ng-class="{'fa-circle': form.executeOnStartup, 'fa-circle-o': !form.executeOnStartup}")
                             label(for='formExecuteOnStartup') Execute on Startup
                         .form-group
                             label(for='sql') SQL
-                            textarea.form-control(ui-codemirror='cmOptions', name='sql', ng-model="form.sqlStatement", ng-change="modeChanged()", placeholder='SQL', type='text')
+                            //textarea.form-control(ui-codemirror='cmOptions', name='sql', ng-model="form.sqlStatement", ng-change="modeChanged()", placeholder='SQL', type='text')
+                            textarea.form-control(name='sql', ng-model="form.sqlStatement", placeholder='SQL', type='text')
                     .btn-group
                         button.btn.btn-primary(type='button', ng-click='save()')
                             i.fa.fa-check
@@ -72,8 +76,8 @@ block content
                             tr(ng-repeat="field in form.fields | orderBy: 'position'")
                                 td {{field.position}}
                                 td {{field.name}}
-                                td {{field.type}}
-                                td {{field.defaultValue}}
+                                td {{field.fieldType}}
+                                td {{field.defValue}}
                                 td
                                     .btn-group
                                         button.btn.btn-success(type='button', ng-click='select(field)')
@@ -92,11 +96,11 @@ block content
                         .form-group
                             label(for='type') Type
                             br
-                            button.btn.btn-default(type='button', ng-model='field.type', ng-options='type.code as type.code for type in types', bs-select='')
+                            button.btn.btn-default(type='button', ng-model='field.fieldType', ng-options='t.code as t.code for t in types', bs-select='')
                         .form-group
-                            label(for='defaultValue') Default
-                            input.form-control(name='defaultValue', ng-mode'field.defaultValue', placeholder='Default', type='text')
-                        .form-group(ng-show="field.type=='TEXT'")
+                            label(for='fieldDefValue') Default
+                            input.form-control(name='fieldDefValue', ng-model='field.defValue', placeholder='Default', type='text')
+                        .form-group(ng-show="field.fieldType=='TEXT'")
                             .input-group
                                 span.input-group-btn
                                     button.btn.btn-primary(type='button', ng-click='addLookup()')

@@ -15,6 +15,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
 
     $scope.types = [
         {'name': 'Date', 'code': 'DATE'},
+        {'name': 'Datetime', 'code': 'DATETIME'},
         {'name': 'Text', 'code': 'TEXT'},
         {'name': 'Boolean', 'code': 'BOOLEAN'}
     ];
@@ -171,7 +172,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
                 $scope.params = {};
                 angular.forEach(form.fields, function(field) {
                     if(field) {
-                        var val = field.type==='BOOLEAN' ? (field.defaultValue==='true') : field.defaultValue;
+                        var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                         $scope.params[field.name] = val;
                     }
                 });

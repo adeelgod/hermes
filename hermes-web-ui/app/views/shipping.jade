@@ -1,6 +1,11 @@
 extends /layouts/_page
 block content
-    .row
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-hide='loading')
         .col-md-6
             form(role='form', name='shippingForm', novalidate='')
                 .form-group
@@ -8,35 +13,36 @@ block content
                         i.fa.fa-calendar
                         | &nbsp;
                         | Shipping Search
-                    button.btn(type='button', ng-click='debug()', ng-class="{'btn-danger': debugging, 'btn-default': !debugging}")
-                        i.fa.fa-bug
+                        | &nbsp;
+                        button.btn(type='button', ng-click='debug()', ng-class="{'btn-danger': debugging, 'btn-default': !debugging}")
+                            i.fa.fa-bug
+                        .btn-group(ng-show='debugging')
+                            button.btn.btn-success(type='button', ng-audio='audio/success.mp3')
+                                i.fa.fa-play
+                            button.btn.btn-danger(type='button', ng-audio='audio/error.mp3')
+                                i.fa.fa-play
                     hr
                     .form-group(ng-repeat="field in frm.fields | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}
-                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='TEXT'", placeholder='{{field.name}}', type='text')
-                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.type=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
-                        .row(ng-if="field.type=='DATETIME'")
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && (!field.lookup || field.lookup.length == 0)", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        .row(ng-if="field.fieldType=='DATETIME'")
                             .col-md-8
                                 input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}} date', bs-datepicker='', type='text')
                             .col-md-4
                                 input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
                         br
-                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.type=='BOOLEAN'", bs-checkbox='')
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && field.lookup.length > 0", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
                         .row
-                            .col-md-6
+                            .col-md-12
                                 .btn-group
                                     button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                         i.fa.fa-search
                                     button.btn.btn-default(type='button', ng-click='check()', ng-disabled='busy')
                                         i.fa.fa-check
-                            .col-md-6
-                                .btn-group
-                                    button.btn.btn-success(type='button', ng-audio='audio/success.mp3')
-                                        i.fa.fa-play
-                                    button.btn.btn-danger(type='button', ng-audio='audio/error.mp3')
-                                        i.fa.fa-play
     .row(ng-show='busy')
         .col-md-12
             .progress

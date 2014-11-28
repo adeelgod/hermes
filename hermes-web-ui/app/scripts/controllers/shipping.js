@@ -7,6 +7,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.checks = {};
     $scope.statuses = {};
     $scope.configuration = {};
+    $scope.loading = true;
 
     $scope.debug = function() {
         $scope.debugging = !$scope.debugging;
@@ -16,14 +17,16 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     };
 
     $scope.getForm = function(name) {
+        $scope.loading = true;
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
             angular.forEach($scope.frm.fields, function(field) {
                 if(field) {
-                    var val = field.type==='BOOLEAN' ? (field.defaultValue==='true') : field.defaultValue;
+                    var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                     $scope.params[field.name] = val;
                 }
             });
+            $scope.loading = false;
         });
     };
 
