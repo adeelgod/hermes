@@ -10,36 +10,38 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
             ul.nav.navbar-nav.navbar-left
                 li
                     a(href='help.html', target='_blank')
-                        i.fa.fa-2x.fa-life-ring
+                        i.fa.fa-2x.fa-question
+                li.nav-divider
+                li
+                    a(href='', ui-sref='home', bs-tooltip="{title: 'Search orders...'")
+                        i.fa.fa-2x.fa-search
+                li
+                    a(href='', ui-sref='shipping', bs-tooltip="{title: 'Search shippings...'")
+                        i.fa.fa-2x.fa-send
+                li.nav-divider
                 li(ng-show='loading')
                     a(href='')
-                        i.fa.fa-2x.fa-spinner.fa-spin
+                        i.fa.fa-2x.fa-refresh.fa-spin
                 li(ng-hide='loading')
-                    a(href='', data-animation='am-flip-x', bs-dropdown='forms')
+                    a(href='', data-animation='am-flip-x', bs-dropdown='forms', bs-tooltip="{title: 'Print reports...'")
                         i.fa.fa-2x.fa-play
             ul.nav.navbar-nav.navbar-right
-                li
+                li(ng-show='authenticated')
                     a(href='', ng-click='exampleQueue()')
                         i.fa.fa-2x.fa-random
-                li
-                    a(href='', ui-sref='printers')
+                li(ng-show='authenticated')
+                    a(href='', ui-sref='printers', bs-tooltip="{title: 'Show printers...'")
                         i.fa.fa-2x.fa-print
-                li
-                    a(href='', ui-sref='form_list')
+                li(ng-show='authenticated')
+                    a(href='', ui-sref='form_list', bs-tooltip="{title: 'Edit forms and queries...'")
                         i.fa.fa-2x.fa-list-alt
                 //
                     li
                         a(href='', data-animation='am-flip-x', data-html='true', bs-dropdown='dropdown')
                             i.fa.fa-2x.fa-list-alt
                 li
-                    a(href='', ui-sref='home')
-                        i.fa.fa-2x.fa-search
-                li
-                    a(href='', ui-sref='shipping')
-                        i.fa.fa-2x.fa-send
-                li
-                    a(href='', ui-sref='configuration', ng-show='authenticated')
+                    a(href='', ui-sref='configuration', ng-show='authenticated', bs-tooltip="{title: 'Change configuration...'")
                         i.fa.fa-2x.fa-cog
                 li
-                    button.btn.navbar-btn.btn-primary(type='button', ui-sref='signin', ng-hide='authenticated') Sign in
-                    button.btn.navbar-btn.btn-danger(type='button', ng-click='logout()', ng-show='authenticated') Logout
+                    button.btn.navbar-btn.btn-primary(type='button', ui-sref='signin', ng-hide='authenticated', bs-tooltip="{title: 'Login...'") Sign in
+                    button.btn.navbar-btn.btn-danger(type='button', ng-click='logout()', ng-show='authenticated', bs-tooltip="{title: 'Logout...'") Logout
