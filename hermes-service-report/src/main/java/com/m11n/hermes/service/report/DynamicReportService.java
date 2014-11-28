@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
@@ -45,13 +44,10 @@ public class DynamicReportService {
                 if(field.getColumn()) {
                     builder = builder.addColumn(col.column(field.getDescription(), field.getName(), getDataType(field.getFieldType())));
                 } else if(field.getParameter()) {
-                    logger.debug("################### DYNAMIC REPORT SQL REPLACE: {}", field.getName());
                     sql = sql.replaceAll(":" + field.getName(), "\\$P\\{" + field.getName() + "\\}");
                     builder = builder.addParameter(field.getName(), parameters.get(field.getName()).getClass());
                 }
             }
-
-            logger.debug("################### DYNAMIC REPORT SQL: {}", sql);
 
             builder = builder.title(DynamicReportTemplate.createTitleComponent(form.getDescription()))
                     .pageFooter(DynamicReportTemplate.footerComponent)
@@ -64,7 +60,6 @@ public class DynamicReportService {
                 builder = builder.setConnection(dataSourceAuswertung.getConnection());
             }
 
-            builder.toJrXml(new FileOutputStream("target/dynamic.jrxml"));
             builder.toPdf(os);
             os.flush();
             os.close();
