@@ -98,14 +98,6 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Deprecated
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="hermes_form_width", joinColumns=@JoinColumn(name="form_id"))
-    @Column(name = "width")
-    private Set<Integer> widths = new HashSet<>();
-
-    @PropertyDefinition
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="form_id", referencedColumnName="uuid")
     private List<FormField> fields;
@@ -356,6 +348,31 @@ public class Form extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the fontSize.
+     * @return the value of the property
+     */
+    public Integer getFontSize() {
+        return fontSize;
+    }
+
+    /**
+     * Sets the fontSize.
+     * @param fontSize  the new value of the property
+     */
+    public void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    /**
+     * Gets the the {@code fontSize} property.
+     * @return the property, not null
+     */
+    public final Property<Integer> fontSize() {
+        return metaBean().fontSize().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the printable.
      * @return the value of the property
      */
@@ -406,34 +423,6 @@ public class Form extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the widths.
-     * @return the value of the property
-     */
-    @Deprecated
-    public Set<Integer> getWidths() {
-        return widths;
-    }
-
-    /**
-     * Sets the widths.
-     * @param widths  the new value of the property
-     */
-    @Deprecated
-    public void setWidths(Set<Integer> widths) {
-        this.widths = widths;
-    }
-
-    /**
-     * Gets the the {@code widths} property.
-     * @return the property, not null
-     */
-    @Deprecated
-    public final Property<Set<Integer>> widths() {
-        return metaBean().widths().createProperty(this);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Gets the fields.
      * @return the value of the property
      */
@@ -479,9 +468,9 @@ public class Form extends DirectBean
                     JodaBeanUtils.equal(getExecuteOnStartup(), other.getExecuteOnStartup()) &&
                     JodaBeanUtils.equal(getSqlStatement(), other.getSqlStatement()) &&
                     JodaBeanUtils.equal(getPosition(), other.getPosition()) &&
+                    JodaBeanUtils.equal(getFontSize(), other.getFontSize()) &&
                     JodaBeanUtils.equal(getPrintable(), other.getPrintable()) &&
                     JodaBeanUtils.equal(getAccessPublic(), other.getAccessPublic()) &&
-                    JodaBeanUtils.equal(getWidths(), other.getWidths()) &&
                     JodaBeanUtils.equal(getFields(), other.getFields());
         }
         return false;
@@ -499,9 +488,9 @@ public class Form extends DirectBean
         hash += hash * 31 + JodaBeanUtils.hashCode(getExecuteOnStartup());
         hash += hash * 31 + JodaBeanUtils.hashCode(getSqlStatement());
         hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
+        hash += hash * 31 + JodaBeanUtils.hashCode(getFontSize());
         hash += hash * 31 + JodaBeanUtils.hashCode(getPrintable());
         hash += hash * 31 + JodaBeanUtils.hashCode(getAccessPublic());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getWidths());
         hash += hash * 31 + JodaBeanUtils.hashCode(getFields());
         return hash;
     }
@@ -529,9 +518,9 @@ public class Form extends DirectBean
         buf.append("executeOnStartup").append('=').append(JodaBeanUtils.toString(getExecuteOnStartup())).append(',').append(' ');
         buf.append("sqlStatement").append('=').append(JodaBeanUtils.toString(getSqlStatement())).append(',').append(' ');
         buf.append("position").append('=').append(JodaBeanUtils.toString(getPosition())).append(',').append(' ');
+        buf.append("fontSize").append('=').append(JodaBeanUtils.toString(getFontSize())).append(',').append(' ');
         buf.append("printable").append('=').append(JodaBeanUtils.toString(getPrintable())).append(',').append(' ');
         buf.append("accessPublic").append('=').append(JodaBeanUtils.toString(getAccessPublic())).append(',').append(' ');
-        buf.append("widths").append('=').append(JodaBeanUtils.toString(getWidths())).append(',').append(' ');
         buf.append("fields").append('=').append(JodaBeanUtils.toString(getFields())).append(',').append(' ');
     }
 
@@ -591,6 +580,11 @@ public class Form extends DirectBean
         private final MetaProperty<Integer> position = DirectMetaProperty.ofReadWrite(
                 this, "position", Form.class, Integer.class);
         /**
+         * The meta-property for the {@code fontSize} property.
+         */
+        private final MetaProperty<Integer> fontSize = DirectMetaProperty.ofReadWrite(
+                this, "fontSize", Form.class, Integer.class);
+        /**
          * The meta-property for the {@code printable} property.
          */
         private final MetaProperty<Boolean> printable = DirectMetaProperty.ofReadWrite(
@@ -600,12 +594,6 @@ public class Form extends DirectBean
          */
         private final MetaProperty<Boolean> accessPublic = DirectMetaProperty.ofReadWrite(
                 this, "accessPublic", Form.class, Boolean.class);
-        /**
-         * The meta-property for the {@code widths} property.
-         */
-        @SuppressWarnings({"unchecked", "rawtypes" })
-        private final MetaProperty<Set<Integer>> widths = DirectMetaProperty.ofReadWrite(
-                this, "widths", Form.class, (Class) Set.class);
         /**
          * The meta-property for the {@code fields} property.
          */
@@ -626,9 +614,9 @@ public class Form extends DirectBean
                 "executeOnStartup",
                 "sqlStatement",
                 "position",
+                "fontSize",
                 "printable",
                 "accessPublic",
-                "widths",
                 "fields");
 
         /**
@@ -658,12 +646,12 @@ public class Form extends DirectBean
                     return sqlStatement;
                 case 747804969:  // position
                     return position;
+                case 365601008:  // fontSize
+                    return fontSize;
                 case -1796593273:  // printable
                     return printable;
                 case 1927133421:  // accessPublic
                     return accessPublic;
-                case -788034707:  // widths
-                    return widths;
                 case -1274708295:  // fields
                     return fields;
             }
@@ -759,6 +747,14 @@ public class Form extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code fontSize} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Integer> fontSize() {
+            return fontSize;
+        }
+
+        /**
          * The meta-property for the {@code printable} property.
          * @return the meta-property, not null
          */
@@ -772,15 +768,6 @@ public class Form extends DirectBean
          */
         public final MetaProperty<Boolean> accessPublic() {
             return accessPublic;
-        }
-
-        /**
-         * The meta-property for the {@code widths} property.
-         * @return the meta-property, not null
-         */
-        @Deprecated
-        public final MetaProperty<Set<Integer>> widths() {
-            return widths;
         }
 
         /**
@@ -813,12 +800,12 @@ public class Form extends DirectBean
                     return ((Form) bean).getSqlStatement();
                 case 747804969:  // position
                     return ((Form) bean).getPosition();
+                case 365601008:  // fontSize
+                    return ((Form) bean).getFontSize();
                 case -1796593273:  // printable
                     return ((Form) bean).getPrintable();
                 case 1927133421:  // accessPublic
                     return ((Form) bean).getAccessPublic();
-                case -788034707:  // widths
-                    return ((Form) bean).getWidths();
                 case -1274708295:  // fields
                     return ((Form) bean).getFields();
             }
@@ -856,14 +843,14 @@ public class Form extends DirectBean
                 case 747804969:  // position
                     ((Form) bean).setPosition((Integer) newValue);
                     return;
+                case 365601008:  // fontSize
+                    ((Form) bean).setFontSize((Integer) newValue);
+                    return;
                 case -1796593273:  // printable
                     ((Form) bean).setPrintable((Boolean) newValue);
                     return;
                 case 1927133421:  // accessPublic
                     ((Form) bean).setAccessPublic((Boolean) newValue);
-                    return;
-                case -788034707:  // widths
-                    ((Form) bean).setWidths((Set<Integer>) newValue);
                     return;
                 case -1274708295:  // fields
                     ((Form) bean).setFields((List<FormField>) newValue);

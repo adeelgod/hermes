@@ -99,14 +99,6 @@ public class FormField extends DirectBean
 
     }
 
-    public FormField(String name, String fieldType, Integer position) {
-        this(name, fieldType, position, null, null, null, null);
-    }
-
-    public FormField(String name, String fieldType, Integer position, String defValue) {
-        this(name, fieldType, position, defValue, null, null, null);
-    }
-
     public FormField(String name, String fieldType, Integer position, String defValue, String description, Boolean parameter, Boolean column) {
         this.name = name;
         this.fieldType = fieldType;

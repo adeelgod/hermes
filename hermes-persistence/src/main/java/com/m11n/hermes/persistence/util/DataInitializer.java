@@ -14,6 +14,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -39,13 +41,20 @@ public class DataInitializer {
             form.setDescription("This is the main search form.");
             form.setPosition(1);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("orders.sql")));
+            form.setPrintable(true);
+            form.setAccessPublic(true);
             form = formRepository.save(form);
 
             List<FormField> fields = new ArrayList<>();
-            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1));
-            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2));
-            //fields.add(new FormField("dummy_boolean", FormField.Type.BOOLEAN.name(), 3, "false"));
-            //fields.add(new FormField("dummy_text", FormField.Type.TEXT.name(), 4, "default dummy text"));
+            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1, "", "From", true, false));
+            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2, "", "Until", true, false));
+            fields.add(new FormField("unId", FormField.Type.TEXT.name(), 4, "", "ID", false, true));
+            fields.add(new FormField("invoiceId", FormField.Type.TEXT.name(), 5, "", "Invoice", false, true));
+            fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 6, "", "Order", false, true));
+            fields.add(new FormField("shippingId", FormField.Type.TEXT.name(), 7, "", "Shipping", false, true));
+            fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 8, "", "Firstname", false, true));
+            fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 9, "", "Lastname", false, true));
+            fields.add(new FormField("email", FormField.Type.TEXT.name(), 10, "", "Email", false, true));
 
             form.setFields(fields);
 
@@ -63,6 +72,7 @@ public class DataInitializer {
             form.setPosition(2);
             form.setExecuteOnStartup(true);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
+            form.setAccessPublic(true);
             formRepository.save(form);
         }
 
@@ -76,12 +86,31 @@ public class DataInitializer {
             form.setDescription("Enter description...");
             form.setPosition(3);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("shipping.sql")));
+            form.setPrintable(true);
+            form.setAccessPublic(true);
             form = formRepository.save(form);
 
             List<FormField> fields = new ArrayList<>();
-            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1));
-            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2));
-            fields.add(new FormField("status", FormField.Type.TEXT.name(), 3, "processing"));
+            // parameters
+            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1, "", "From", true, false));
+            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2, "", "Until", true, false));
+
+            FormField statusField = new FormField("status", FormField.Type.TEXT.name(), 3, "", "Status", true, false);
+            statusField.setLookup(new HashSet<>(Arrays.asList("processing", "%")));
+            fields.add(statusField);
+
+            // columns
+            fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 1, "", "Order", false, true));
+            fields.add(new FormField("weight", FormField.Type.TEXT.name(), 2, "", "Weight", false, true));
+            fields.add(new FormField("company", FormField.Type.TEXT.name(), 3, "", "Company", false, true));
+            fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 4, "", "Firstname", false, true));
+            fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 5, "", "Lastname", false, true));
+            fields.add(new FormField("street1", FormField.Type.TEXT.name(), 6, "", "Street", false, true));
+            fields.add(new FormField("street2", FormField.Type.TEXT.name(), 7, "", "", false, true));
+            fields.add(new FormField("zip", FormField.Type.TEXT.name(), 8, "", "ZIP", false, true));
+            fields.add(new FormField("city", FormField.Type.TEXT.name(), 9, "", "City", false, true));
+            fields.add(new FormField("country", FormField.Type.TEXT.name(), 10, "", "Country", false, true));
+            fields.add(new FormField("dhlAccount", FormField.Type.TEXT.name(), 11, "", "DHL #", false, true));
 
             form.setFields(fields);
 
