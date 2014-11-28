@@ -6,6 +6,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     $scope.lookup = '';
     $scope.width = null;
     $scope.loading = true;
+    $scope.mode = 'text/x-mysql';
 
     $scope.databases = [
         {'name': 'auswertung'},
@@ -17,6 +18,18 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
         {'name': 'Text', 'code': 'TEXT'},
         {'name': 'Boolean', 'code': 'BOOLEAN'}
     ];
+
+    $scope.cmOptions = {
+        lineNumbers: true,
+        indentWithTabs: false,
+        theme: 'twilight',
+        onLoad : function(_cm){
+            // HACK to have the codemirror instance in the scope...
+            $scope.modeChanged = function() {
+                _cm.setOption("mode", $scope.mode.toLowerCase());
+            };
+        }
+    };
 
     $scope.list = function() {
         $scope.loading = true;
