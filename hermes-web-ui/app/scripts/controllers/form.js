@@ -183,7 +183,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
                 $scope.form = form;
                 $scope.params = {};
                 angular.forEach(form.fields, function(field) {
-                    if(field) {
+                    if(field && field.parameter) {
                         var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                         $scope.params[field.name] = val;
                     }

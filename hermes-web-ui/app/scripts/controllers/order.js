@@ -11,7 +11,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
             angular.forEach($scope.frm.fields, function(field) {
-                if(field) {
+                if(field && field.parameter) {
                     var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                     $scope.params[field.name] = val;
                 }
