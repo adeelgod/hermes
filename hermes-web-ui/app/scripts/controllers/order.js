@@ -5,6 +5,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.busy = false;
 
+    $scope.loading = true;
+
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
@@ -14,6 +16,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                     $scope.params[field.name] = val;
                 }
             });
+            $scope.loading = false;
         });
     };
 
@@ -168,6 +171,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     };
 
     ConfigurationSvc.list().success(function(data) {
+        $scope.loading = true;
+
         $scope.configuration = data.properties;
 
         $scope.getForm($scope.configuration['hermes.orders.form']);

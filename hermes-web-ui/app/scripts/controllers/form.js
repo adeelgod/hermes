@@ -5,6 +5,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     $scope.field = {};
     $scope.lookup = '';
     $scope.width = null;
+    $scope.loading = true;
 
     $scope.databases = [
         {'name': 'auswertung'},
@@ -18,8 +19,10 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     ];
 
     $scope.list = function() {
+        $scope.loading = true;
         return FormSvc.list().success(function(data) {
             $scope.forms = data;
+            $scope.loading = false;
         });
     };
 
@@ -114,15 +117,18 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
         });
     });
 }).controller('FormListCtrl', function ($scope, $alert, FormSvc) {
+    $scope.loading = true;
     $scope.list = function() {
         return FormSvc.list().success(function(data) {
             $scope.forms = data;
+            $scope.loading = false;
         });
     };
 
     $scope.list();
 }).controller('FormExecuteCtrl', function ($scope, $stateParams, $alert, FormSvc) {
     $scope.executing = false;
+    $scope.loading = true;
 
     $scope.execute = function() {
         // TODO: implement this
@@ -138,8 +144,10 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
     };
 
     $scope.list = function() {
+        $scope.loading = true;
         return FormSvc.list().success(function(data) {
             $scope.forms = data;
+            $scope.loading = false;
         });
     };
 
