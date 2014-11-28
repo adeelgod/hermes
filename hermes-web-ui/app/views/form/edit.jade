@@ -79,8 +79,6 @@ block content
             .panel.panel-default(ng-show='form.fields')
                 .panel-heading
                     h3.panel-title Field Details
-                    button.btn.btn-default(type='button', ng-click='resetField()')
-                        i.fa.fa-asterisk
                 .panel-body
                     form(role='form', name='fieldForm', novalidate='')
                         .form-group
@@ -110,5 +108,8 @@ block content
                             label(for='position') Position
                             input.form-control(name='position', ng-model="field.position", placeholder='Position', type='text')
                 .panel-footer(ng-hide='field.id')
-                    button.btn.btn-success(type='button', ng-click='add()')
-                        i.fa.fa-plus
+                    .btn-group
+                        button.btn.btn-success(type='button', ng-click='add()')
+                            i.fa.fa-plus
+                        button.btn.btn-default(type='button', ng-click='resetField()')
+                            i.fa.fa-asterisk
