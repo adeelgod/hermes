@@ -20,6 +20,7 @@ block content
                         td Printable
                         td Public
                         td
+                        td
                 tbody
                     tr(ng-repeat="form in forms | orderBy: 'position'")
                         td {{form.name}}
@@ -34,5 +35,6 @@ block content
                                     i.fa.fa-play
                                 button.btn.btn-default(type='button', ui-sref='form_edit({id: form.id})')
                                     i.fa.fa-pencil
+                        td
                             button.btn.btn-sm.btn-danger(type='button', ng-click='removeForm(form.id)')
-                                i.fa.fa-remove
+                                i.fa.fa-trash
