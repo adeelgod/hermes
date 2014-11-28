@@ -29,19 +29,18 @@ block content
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
                         .row
-                            .col-md-4
+                            .col-md-12
                                 .btn-group
                                     button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                         i.fa.fa-search
                                     button.btn.btn-default(type='button', ng-click='print()', ng-disabled='busy')
                                         i.fa.fa-print
-                            .col-md-8
-                                i.fa.fa-2x.fa-spinner.fa-spin(ng-show='busy')
         .col-md-6
-            nav
-                ul.pagination
-                    li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
-                        a(href='', ng-click='go(page)') {{page}}
+            //
+                nav
+                    ul.pagination
+                        li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
+                            a(href='', ng-click='go(page)') {{page}}
     .row(ng-show='busy')
         .col-md-12
             .progress
