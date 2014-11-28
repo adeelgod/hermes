@@ -29,15 +29,16 @@ block content
                         button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group
-                        .btn-group
-                            button.btn.btn-lg.btn-primary(type='button', ng-click='execute()', ng-disabled='executing')
-                                i.fa.fa-play
-                                | &nbsp;
-                                | Run
-                            button.btn.btn-lg.btn-default(type='button', ng-click='report()', ng-disabled='executing')
-                                i.fa.fa-print
-                                | &nbsp;
-                                | Report
+                        //
+                            .btn-group
+                                button.btn.btn-lg.btn-primary(type='button', ng-click='execute()', ng-disabled='executing')
+                                    i.fa.fa-play
+                                    | &nbsp;
+                                    | Run
+                        button.btn.btn-lg.btn-primary(type='button', ng-click='report()', ng-disabled='executing')
+                            i.fa.fa-print
+                            | &nbsp;
+                            | Report
     .row(ng-show='executing')
         .col-md-12
             .progress
