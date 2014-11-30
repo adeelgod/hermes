@@ -97,9 +97,10 @@ public class DynamicReportTemplate {
      */
     public static ComponentBuilder<?, ?> createTitleComponent(String label) {
         return cmp.horizontalList()
-                .add(
-                        dynamicReportsComponent,
-                        cmp.text(label).setStyle(bold18CenteredStyle).setHorizontalAlignment(HorizontalAlignment.RIGHT))
+                .add(dynamicReportsComponent, cmp.verticalList(
+                    cmp.text(label).setStyle(bold18CenteredStyle).setHorizontalAlignment(HorizontalAlignment.RIGHT),
+                    cmp.currentDate().setPattern("dd.MM.yyyy HH:mm:ss").setStyle(bold18CenteredStyle).setHorizontalAlignment(HorizontalAlignment.RIGHT)
+                ))
                 .newRow()
                 .add(cmp.line())
                 .newRow()
