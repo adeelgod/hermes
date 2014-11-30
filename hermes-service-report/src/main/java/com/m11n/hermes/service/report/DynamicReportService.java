@@ -3,6 +3,7 @@ package com.m11n.hermes.service.report;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.column.ColumnBuilder;
 import net.sf.dynamicreports.report.builder.datatype.DataTypes;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.definition.datatype.DRIDataType;
@@ -42,7 +43,10 @@ public class DynamicReportService {
 
             for(FormField field : form.getFields()) {
                 if(field.getColumn()) {
-                    builder = builder.addColumn(col.column(field.getDescription(), field.getName(), getDataType(field.getFieldType())));
+                    ColumnBuilder<?, ?> column = field.getWidth()!=null && field.getWidth() > 0 ?
+                            col.column(field.getDescription(), field.getName(), getDataType(field.getFieldType())).setMinWidth(field.getWidth()) :
+                            col.column(field.getDescription(), field.getName(), getDataType(field.getFieldType()));
+                    builder = builder.addColumn(column);
                 } else if(field.getParameter()) {
                     sql = sql.replaceAll(":" + field.getName(), "\\$P\\{" + field.getName() + "\\}");
                     builder = builder.addParameter(field.getName(), parameters.get(field.getName()).getClass());

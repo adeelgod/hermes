@@ -116,7 +116,7 @@ block content
                                 i.fa(ng-class="{'fa-circle': field.column, 'fa-circle-o': !field.column}")
                             label(for='parameter') Is Column
                         .form-group(ng-show='field.column && form.printable')
-                            label(for='name') Width
+                            label(for='name') Width (in px)
                             input.form-control(name='name', ng-model='field.width', placeholder='Name', type='number')
                         .form-group
                             label(for='fieldDefValue') Default
