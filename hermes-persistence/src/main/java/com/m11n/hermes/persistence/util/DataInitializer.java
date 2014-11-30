@@ -38,7 +38,7 @@ public class DataInitializer {
             form = new Form();
             form.setDb("auswertung");
             form.setName("orders");
-            form.setDescription("This is the main search form.");
+            form.setDescription("Orders");
             form.setPosition(1);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("orders.sql")));
             form.setPrintable(true);
@@ -51,7 +51,11 @@ public class DataInitializer {
             fields.add(new FormField("unId", FormField.Type.TEXT.name(), 4, "", "ID", false, true));
             fields.add(new FormField("invoiceId", FormField.Type.TEXT.name(), 5, "", "Invoice", false, true));
             fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 6, "", "Order", false, true));
-            fields.add(new FormField("shippingId", FormField.Type.TEXT.name(), 7, "", "Shipping", false, true));
+
+            FormField shippingId = new FormField("shippingId", FormField.Type.TEXT.name(), 7, "", "Shipping", false, true);
+            shippingId.setWidth(150);
+            fields.add(shippingId);
+
             fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 8, "", "Firstname", false, true));
             fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 9, "", "Lastname", false, true));
             fields.add(new FormField("email", FormField.Type.TEXT.name(), 10, "", "Email", false, true));
@@ -68,7 +72,7 @@ public class DataInitializer {
             form = new Form();
             form.setDb("auswertung");
             form.setName("update");
-            form.setDescription("Enter description...");
+            form.setDescription("Synchronisation");
             form.setPosition(2);
             form.setExecuteOnStartup(true);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
@@ -83,7 +87,7 @@ public class DataInitializer {
             form = new Form();
             form.setDb("auswertung");
             form.setName("shipping");
-            form.setDescription("Enter description...");
+            form.setDescription("Shipping");
             form.setPosition(3);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("shipping.sql")));
             form.setPrintable(true);
@@ -100,7 +104,10 @@ public class DataInitializer {
             fields.add(statusField);
 
             // columns
-            fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 4, "", "Order", false, true));
+            FormField orderId = new FormField("orderId", FormField.Type.TEXT.name(), 4, "", "Order", false, true);
+            orderId.setWidth(60);
+            fields.add(orderId);
+
             fields.add(new FormField("weight", FormField.Type.TEXT.name(), 5, "", "Weight", false, true));
             fields.add(new FormField("company", FormField.Type.TEXT.name(), 6, "", "Company", false, true));
             fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 7, "", "Firstname", false, true));
