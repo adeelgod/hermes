@@ -121,9 +121,9 @@
                     <execution>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy file="../hermes-doc/target/generated-docs/html5/index.html" tofile="${project.build.directory}/classes/hermes-web-ui/help.html" />
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -149,7 +149,7 @@
                         </goals>
                         <configuration>
                             <headerType>console</headerType>
-                            <jar>${project.build.directory}/${artifactId}-${version}-shaded.jar</jar>
+                            <jar>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</jar>
                             <outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <cmdLine>--port "8080" --jersey "/api/*" --cors "/api/*"</cmdLine>
