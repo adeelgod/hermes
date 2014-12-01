@@ -9,10 +9,15 @@ block content
         .col-md-6
             form(role='form', name='orderForm', novalidate='')
                 .form-group
-                    h2
-                        i.fa.fa-calendar
-                        | &nbsp;
-                        | Order Search
+                    .row
+                        .col-md-6
+                            h2
+                                i.fa.fa-calendar
+                                | &nbsp;
+                                | Order Search
+                        .col-md-6
+                            label(for='chargeSize') Charge Size
+                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", type='number')
                     hr
                     .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}
