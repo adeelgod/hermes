@@ -14,6 +14,8 @@ block content
             ul.nav.nav-tabs(role='tablist')
                 li(role='presentation', ng-class="{'active': tab=='database'}")
                     a(href='', ng-click="tab='database'", role='tab') Database
+                li(role='presentation', ng-class="{'active': tab=='magento'}")
+                    a(href='', ng-click="tab='magento'", role='tab') Magento
                 li(role='presentation', ng-class="{'active': tab=='directory'}")
                     a(href='', ng-click="tab='directory'", role='tab') Directories
                 li(role='presentation', ng-class="{'active': tab=='form'}")
@@ -79,6 +81,14 @@ block content
                         .form-group
                             label(for='') Hibernate DDL Auto
                             input.form-control(name='hibernateDdl', ng-model="configuration['hibernate.hbm2ddl.auto']", placeholder='DDL Auto', type='text', disabled='')
+                .tab-pane(role='tabpanel', id='magento', ng-class="{'active': tab=='magento'}")
+                    form(role='form', name='magentoForm', novalidate='')
+                        .form-group
+                            label(for='magentoUsername') API Username
+                            input.form-control(name='magentoUsername', ng-model="configuration['hermes.magento.api.username']", placeholder='API Username', type='text')
+                        .form-group
+                            label(for='magentoPassword') API Password
+                            input.form-control(name='magentoPassword', ng-model="configuration['hermes.magento.api.password']", placeholder='API Password', type='password')
                 .tab-pane(role='tabpanel', id='directory', ng-class="{'active': tab=='directory'}")
                     form(role='form', name='directoryForm', novalidate='')
                         .form-group
