@@ -64,8 +64,18 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.match(/\d+/g));
             $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length <= 30);
             $scope.checks[shipping.id].city = (!shipping.city || shipping.city.length <= 30);
-            $scope.checks[shipping.id].zip = (shipping['zip'] && shipping['zip'].length === 5 && shipping.country==='DE');
-            $scope.checks[shipping.id].dhlAccount = (shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5); // TODO: check for "5pack%"
+
+            if(shipping.country==='DE') {
+                $scope.checks[shipping.id].zip = (shipping['zip'] && (''+shipping['zip']).length === 5);
+            } else {
+                $scope.checks[shipping.id].zip = true;
+            }
+
+            if(shipping.street1 && shipping.street1.indexOf('5pack')>=0) {
+                $scope.checks[shipping.id].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
+            } else {
+                $scope.checks[shipping.id].dhlAccount = true;
+            }
 
             shipping._selected = ($scope.checks[shipping.id].company &&
                 $scope.checks[shipping.id].firstname &&
