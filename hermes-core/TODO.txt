@@ -12,6 +12,8 @@
 - x single-step ausführung für die (create label, shipping)
 - x debug ausgabe der webservices (mit order nummer, highlight aktuelle order nummer in tabelle)
 - x (incl. new login)
+- alle auswählen
+- player symbols: start, stop, resume
 - aktiviere den Magento Service
 - label status regex or not
 - prio 2: bündel pdfs in zips, dann ssh copy
