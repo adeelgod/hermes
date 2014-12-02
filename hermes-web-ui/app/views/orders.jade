@@ -17,7 +17,7 @@ block content
                                 | Order Search
                         .col-md-6
                             label(for='chargeSize') Charge Size
-                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", type='number')
+                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", type='text')
                     hr
                     .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.name}}

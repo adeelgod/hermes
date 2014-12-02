@@ -14,6 +14,12 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                 if(field && field.parameter) {
                     var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                     $scope.params[field.name] = val;
+
+                    if(field.name==='from') {
+                        $scope.params['from'] = moment().startOf('day').subtract(24, 'hours');
+                    } else if(field.name==='until') {
+                        $scope.params['until'] = moment().startOf('day');
+                    }
                 }
             });
             $scope.loading = false;
@@ -178,5 +184,5 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         $scope.getForm($scope.configuration['hermes.orders.form']);
     });
 
-    $alert({content: 'Hi Daniel. Die Navigationsleiste ist jetzt umgestaltet. Melde Dich als Admin an, um alle Buttons zu sehen.', placement: 'top', type: 'info', show: true});
+    //$alert({content: 'Hi Daniel. Die Navigationsleiste ist jetzt umgestaltet. Melde Dich als Admin an, um alle Buttons zu sehen.', placement: 'top', type: 'info', show: true});
 });
