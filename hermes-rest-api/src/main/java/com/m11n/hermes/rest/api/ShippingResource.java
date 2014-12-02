@@ -57,9 +57,9 @@ public class ShippingResource {
         String message = magentoService.createIntrashipLabel(orderId);
         Map<String, Object> result = new HashMap<>();
         result.put("orderId", orderId);
-        result.put("status", ""); // TODO: correct this
+        result.put("status", "info"); // TODO: correct this
         result.put("message", message);
-        return Response.ok().build();
+        return Response.ok(result).build();
     }
 
     @GET
