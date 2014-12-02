@@ -12,9 +12,9 @@
 - x single-step ausführung für die (create label, shipping)
 - x debug ausgabe der webservices (mit order nummer, highlight aktuelle order nummer in tabelle)
 - x (incl. new login)
-- alle auswählen
-- player symbols: start, stop, resume
-- aktiviere den Magento Service
+- x aktiviere den Magento Service
+- x alle auswählen
+- x player symbols: start, stop, resume
 - label status regex or not
 - prio 2: bündel pdfs in zips, dann ssh copy
 - prio 2: UI für label status

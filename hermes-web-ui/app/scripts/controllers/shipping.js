@@ -5,6 +5,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.busy = false;
     $scope.params = {};
     $scope.checks = {};
+    $scope.runState = 'stopped';
     $scope.statuses = {};
     $scope.configuration = {};
     $scope.currentLog = {};
@@ -85,16 +86,29 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         }
     };
 
+    $scope.runStateToggle = function() {
+        switch($scope.runState) {
+            case 'paused':
+            case 'stopped':
+                $scope.runState = 'playing';
+                break;
+            case 'playing':
+                $scope.runState = 'paused';
+                break;
+        }
+    };
+
+    $scope.runStateStop = function() {
+        $scope.runState = 'stopped';
+        //$alert({content: 'Not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
     $scope.createShipping = function(entry) {
         $alert({content: 'Create shipping not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
     $scope.createLabel = function(entry) {
         $alert({content: 'Create label not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
-    };
-
-    $scope.create = function() {
-        $alert({content: 'Not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
     $scope.selectLog = function(entry) {

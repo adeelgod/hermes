@@ -46,13 +46,13 @@ block content
                                         i.fa.fa-search
                                         | &nbsp;
                                         | Search
-                                    button.btn.btn-default(type='button', ng-click='create()', ng-disabled='busy')
-                                        i.fa.fa-cogs
-                                        | &nbsp;
-                                        | Run
         .col-md-6
             .well.well-sm(ng-show='logging', style='max-height: 300px; overflow-y: scroll;')
-                //p(ng-show='currentLog.orderId') {{ currentLog }}
+                .btn-group.btn-group-sm
+                    button.btn.btn-default(type='button', ng-click='runStateToggle()')
+                        i.fa(ng-class="{'fa-play': runState=='stopped' || runState=='paused', 'fa-pause': runState=='playing'}")
+                    button.btn.btn-default(type='button', ng-click='runStateStop()', ng-show="runState=='playing' || runState=='paused'")
+                        i.fa.fa-stop
                 table.table.table-striped.table-condensed
                     thead
                         tr
@@ -95,12 +95,11 @@ block content
                 thead
                     tr
                         td.text-center
-                            //
-                                .btn-group
-                                    button.btn.btn-sm.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
-                                        i.fa.fa-check
-                                    button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
-                                        i.fa.fa-minus
+                            .btn-group(style='min-width: 70px')
+                                button.btn.btn-sm.btn-success(type='button', ng-click='select(true)', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-sm.btn-danger(type='button', ng-click='select(false)', ng-disabled='busy')
+                                    i.fa.fa-minus
                         td.text-left
                             h4 Order
                         td.text-left
