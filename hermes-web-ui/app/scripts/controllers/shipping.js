@@ -7,6 +7,75 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.checks = {};
     $scope.statuses = {};
     $scope.configuration = {};
+    $scope.currentLog = {};
+    $scope.logging = true;
+    $scope.logs = [
+        {
+            orderId: '300014222',
+            status: 'error',
+            message: 'DHL Intraship::create:: %::at least one shipment has errors %'
+        },
+        {
+            orderId: '300014287',
+            status: 'info',
+            message: 'DHL Intraship::create::[%]::ok | warning: the address could not be validated'
+        },
+        {
+            orderId: '300000011',
+            status: 'success',
+            message: 'DHL Intraship::pdf::0::PDF creation was successful'
+        },
+        {
+            orderId: '300014284',
+            status: 'error',
+            message: 'DHL Intraship::create:: %::Invalid fieldlength in %'
+        },
+        {
+            orderId: '300014288',
+            status: 'warning',
+            message: 'DHL Intraship::create::[%]::Unable to save PDF'
+        },
+        {
+            orderId: '300014285',
+            status: 'error',
+            message: 'DHL Intraship::create:: %::Invalid value %'
+        },
+        {
+            orderId: '300014289',
+            status: 'warning',
+            message: 'DHL Intraship::create::[%]::Could not connect to host'
+        },
+        {
+            orderId: '300014286',
+            status: 'error',
+            message: 'DHL Intraship::create:: %::at least one shipment has errors %'
+        },
+        {
+            orderId: '300000010',
+            status: 'success',
+            message: 'DHL Intraship::pdf::0::PDF creation was successful'
+        },
+        {
+            orderId: '300000008',
+            status: 'warning',
+            message: 'DHL Intraship::create::[%]::Not Found'
+        },
+        {
+            orderId: '300000009',
+            status: 'warning',
+            message: 'DHL Intraship::create::[%]::Login failed'
+        },
+        {
+            orderId: '300000012',
+            status: 'success',
+            message: 'DHL Intraship::pdf::0::PDF creation was successful'
+        },
+        {
+            orderId: '300000013',
+            status: 'success',
+            message: 'DHL Intraship::pdf::0::PDF creation was successful'
+        }
+    ]; // TODO: should be empty
     $scope.loading = true;
 
     $scope.debug = function() {
@@ -14,6 +83,26 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         if($scope.debugging) {
             $scope.params.status = '%';
         }
+    };
+
+    $scope.createShipping = function(entry) {
+        $alert({content: 'Create shipping not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
+    $scope.createLabel = function(entry) {
+        $alert({content: 'Create label not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
+    $scope.create = function() {
+        $alert({content: 'Not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
+    $scope.selectLog = function(entry) {
+        $scope.currentLog=entry;
+    };
+
+    $scope.clearLogs = function() {
+        $scope.logs = [];
     };
 
     $scope.getForm = function(name) {
