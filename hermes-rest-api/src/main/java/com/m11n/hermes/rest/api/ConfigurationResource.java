@@ -88,7 +88,7 @@ public class ConfigurationResource {
                 value = encrypt(value);
             } else if(key.contains("dir") && value.contains("\\")) {
                 // reduce pairs to singles
-                value = value.replaceAll("\\\\\\\\", "\\");
+                value = value.replaceAll("\\\\\\\\", "\\\\");
                 // replace all crap with forward slash
                 value = value.replaceAll("\\\\", "/");
             }
