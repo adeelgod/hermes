@@ -11,7 +11,8 @@
 - x windows paths
 - single-step ausführung für die checks (check1, check2)
 - debug ausgabe der webservices (mit order nummer, highlight aktuelle order nummer in tabelle)
-- aktiviere den Magento Service
+- aktiviere den Magento Service (incl. new login)
+- label status regex or not
 - prio 2: bündel pdfs in zips, dann ssh copy
 - prio 2: UI für label status
 
