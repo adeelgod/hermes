@@ -3,6 +3,18 @@
 - REST service invoke Magento label service
 - REST service custom "lieferschein" function by Indians
 
+- x DHL 5pack korrigieren
+- x enable charge
+- x magento "ping" function call
+- x magento webservice username, login
+- x from, until vorbelegen mit "heute mitternacht - 24h" (hardcoded in javascript)
+- x windows paths
+- single-step ausführung für die checks (check1, check2)
+- debug ausgabe der webservices (mit order nummer, highlight aktuelle order nummer in tabelle)
+- aktiviere den Magento Service
+- prio 2: bündel pdfs in zips, dann ssh copy
+- prio 2: UI für label status
+
 [6:21:04 PM] Daniel Schaaf:
 
 SELECT `Bestellung`,`weight`,`Firma`,`Kunden_vorname`,`Kunden_name`,`str1`,`str2`,`PLZ`,`Ort`,`Land`,`DHL_Account` FROM `mage_custom_order` WHERE `Status` = "processing";
