@@ -1,3 +1,5 @@
+/*global moment */
+
 'use strict';
 
 angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, ShippingSvc) {
@@ -13,71 +15,97 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.logs = [
         {
             orderId: '300014222',
+            createdAt: moment(),
             status: 'error',
             message: 'DHL Intraship::create:: %::at least one shipment has errors %'
         },
         {
             orderId: '300014287',
+            createdAt: moment().subtract(5, 'minutes'),
             status: 'info',
             message: 'DHL Intraship::create::[%]::ok | warning: the address could not be validated'
         },
         {
             orderId: '300000011',
+            createdAt: moment().subtract(7, 'minutes'),
             status: 'success',
             message: 'DHL Intraship::pdf::0::PDF creation was successful'
         },
         {
             orderId: '300014284',
+            createdAt: moment().subtract(8, 'minutes'),
             status: 'error',
             message: 'DHL Intraship::create:: %::Invalid fieldlength in %'
         },
         {
             orderId: '300014288',
+            createdAt: moment().subtract(9, 'minutes'),
             status: 'warning',
             message: 'DHL Intraship::create::[%]::Unable to save PDF'
         },
         {
             orderId: '300014285',
+            createdAt: moment().subtract(10, 'minutes'),
             status: 'error',
             message: 'DHL Intraship::create:: %::Invalid value %'
         },
         {
             orderId: '300014289',
+            createdAt: moment().subtract(12, 'minutes'),
             status: 'warning',
             message: 'DHL Intraship::create::[%]::Could not connect to host'
         },
         {
             orderId: '300014286',
+            createdAt: moment().subtract(14, 'minutes'),
             status: 'error',
             message: 'DHL Intraship::create:: %::at least one shipment has errors %'
         },
         {
             orderId: '300000010',
+            createdAt: moment().subtract(16, 'minutes'),
             status: 'success',
             message: 'DHL Intraship::pdf::0::PDF creation was successful'
         },
         {
             orderId: '300000008',
+            createdAt: moment().subtract(17, 'minutes'),
             status: 'warning',
             message: 'DHL Intraship::create::[%]::Not Found'
         },
         {
             orderId: '300000009',
+            createdAt: moment().subtract(19, 'minutes'),
             status: 'warning',
             message: 'DHL Intraship::create::[%]::Login failed'
         },
         {
             orderId: '300000012',
+            createdAt: moment().subtract(21, 'minutes'),
             status: 'success',
             message: 'DHL Intraship::pdf::0::PDF creation was successful'
         },
         {
             orderId: '300000013',
+            createdAt: moment().subtract(23, 'minutes'),
             status: 'success',
             message: 'DHL Intraship::pdf::0::PDF creation was successful'
         }
     ]; // TODO: should be empty
     $scope.loading = true;
+
+    $scope.tooltips = {
+        debugShowHide: {title: 'Show/Hide Debug Functions', placement: 'bottom', type: 'info'},
+        shipmentSearch: {title: 'Run Query', placement: 'bottom', type: 'info'},
+        shipmentRunStartPause: {title: 'Start/Pause Processing', placement: 'bottom', type: 'info'},
+        shipmentRunStop: {title: 'Abort', placement: 'bottom', type: 'info'},
+        shipmentStatus: {title: 'Check Intraship Stati', placement: 'bottom', type: 'info'},
+        shipmentCreate: {title: 'Create Shipment', placement: 'bottom', type: 'info'},
+        shipmentLabel: {title: 'Create Intraship Label', placement: 'bottom', type: 'info'},
+        logShowHide: {title: 'Show/Hide Log Window', placement: 'bottom', type: 'info'},
+        logClear: {title: 'Clear Log', placement: 'bottom', type: 'info'},
+        logEntries: {title: 'Number of Log Entries', placement: 'bottom', type: 'info'}
+    };
 
     $scope.debug = function() {
         $scope.debugging = !$scope.debugging;
@@ -101,14 +129,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.runStateStop = function() {
         $scope.runState = 'stopped';
         //$alert({content: 'Not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
-    };
-
-    $scope.createShipping = function(entry) {
-        $alert({content: 'Create shipping not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
-    };
-
-    $scope.createLabel = function(entry) {
-        $alert({content: 'Create label not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
     $scope.selectLog = function(entry) {
@@ -188,6 +208,20 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                 $scope.checks[shipping.id].city &&
                 $scope.checks[shipping.id].zip &&
                 $scope.checks[shipping.id].dhlAccount);
+        });
+    };
+
+    $scope.createShipment = function(entry) {
+        ShippingSvc.shipment({orderId: entry.orderId}).success(function(data) {
+            entry._updatedAt = moment();
+            entry.shipmentId = data.shipmentId;
+        });
+    };
+
+    $scope.createLabel = function(entry) {
+        ShippingSvc.label({orderId: entry.orderId}).success(function(data) {
+            data.createdAt = moment();
+            $scope.logs.unshift(data);
         });
     };
 
