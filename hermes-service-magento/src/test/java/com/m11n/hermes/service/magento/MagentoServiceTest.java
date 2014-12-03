@@ -36,5 +36,7 @@ public class MagentoServiceTest {
         logger.info("New Magento session. Logging in...");
         String sessionId = magentoService.login(username, password);
         logger.info("Session ID: {}", sessionId);
+        //MagentoInfoEntity info = magentoService.magentoInfo(sessionId);
+        //logger.info("Session OK: {} - {}", info.getMagento_version(), info.getMagento_edition());
     }
 }
