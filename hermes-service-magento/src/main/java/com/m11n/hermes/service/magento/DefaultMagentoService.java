@@ -46,7 +46,9 @@ public class DefaultMagentoService implements MagentoService {
                 sessionId = magentoService.login(username, password);
             } else {
                 logger.debug("Checking session...");
-                magentoService.catalogCategoryAttributeList(sessionId);
+                // TODO: fix this!
+                //MagentoInfoEntity info = magentoService.magentoInfo(sessionId);
+                //logger.debug("Session OK: {} - {}", info.getMagento_version(), info.getMagento_edition());
             }
         } catch (Exception e) {
             try {
@@ -79,7 +81,12 @@ public class DefaultMagentoService implements MagentoService {
     @Override
     public String createShipment(String orderId) throws Exception {
         checkSession();
-        return magentoService.salesOrderShipmentCreate(sessionId, orderId, null, null, 0, 0);
+        String shipmentId = magentoService.salesOrderShipmentCreate(sessionId, orderId, null, null, 0, 0);
+
+        logger.info("********* CREATE SHIPMENT: {} - {}", orderId, shipmentId);
+
+        //return "0000000001";
+        return shipmentId;
     }
 
     @Override
@@ -87,6 +94,11 @@ public class DefaultMagentoService implements MagentoService {
         Request req = new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
         Response res = client.newCall(req).execute();
 
-        return res.body().string();
+        String message = res.body().string();
+
+        logger.info("********* CREATE INTRASHIP: {} - {}", orderId, message);
+
+        //return "DHL Intraship::pdf::0::PDF creation was successful";
+        return message;
     }
 }
