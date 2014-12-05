@@ -1,7 +1,8 @@
 - persistence repository to check intraship status
-- REST service to check intraship status (via SQL queries for each order ID)
+- x REST service to check intraship status (via SQL queries for each order ID)
 - x REST service invoke Magento label service
 - x REST service custom "lieferschein" function by Indians
+- x http://www.magentocommerce.com/api/soap/sales/salesOrderShipment/sales_order_shipment.create.html
 
 - x DHL 5pack korrigieren
 - x enable charge
@@ -17,7 +18,7 @@
 - x player symbols: start, stop, resume
 - label status regex or not
 - prio 2: bündel pdfs in zips, dann ssh copy
-- prio 2: UI für label status
+- prio 2: UI für label statuser
 
 [6:21:04 PM] Daniel Schaaf:
 
