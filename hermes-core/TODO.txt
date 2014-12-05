@@ -3,6 +3,7 @@
 - x REST service invoke Magento label service
 - x REST service custom "lieferschein" function by Indians
 - x http://www.magentocommerce.com/api/soap/sales/salesOrderShipment/sales_order_shipment.create.html
+- http://go.magento.com/support/kb/entry/name/shipping-labels/
 
 - x DHL 5pack korrigieren
 - x enable charge
