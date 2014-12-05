@@ -15,7 +15,7 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
     }
 
     public int update(String sqlStatement, Map<String, Object> parameters) {
-        return jdbcTemplate.update(statement, parameters);
+        return jdbcTemplate.update(sqlStatement, parameters);
     }
 
     public String findShippingIdByOrderId(String orderId) {
