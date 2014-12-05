@@ -81,7 +81,7 @@ public class DefaultMagentoService implements MagentoService {
     @Override
     public String createShipment(String orderId) throws Exception {
         checkSession();
-        String shipmentId = magentoService.salesOrderShipmentCreate(sessionId, orderId, null, null, 0, 0);
+        String shipmentId = magentoService.salesOrderShipmentCreate(sessionId, orderId, new OrderItemIdQty[0], "", 0, 0);
 
         logger.info("********* CREATE SHIPMENT: {} - {}", orderId, shipmentId);
 
