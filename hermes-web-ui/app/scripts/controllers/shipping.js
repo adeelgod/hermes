@@ -182,6 +182,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             // TODO: make this configurable?!?
             $scope.checks[shipping.id].company = (!shipping.company || shipping.company.length <= 30);
             $scope.checks[shipping.id].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
+            $scope.checks[shipping.id].weight = (!shipping.weight || shipping.weight <= 25);
             $scope.checks[shipping.id].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
             $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.length <= 30);
             $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.match(/\d+/g));

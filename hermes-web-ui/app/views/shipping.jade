@@ -137,8 +137,8 @@ block content
                             | {{entry.orderId}}
                         td(ng-class="{ 'success': entry.shipmentId }")
                             span(ng-show='entry.shipmentId') {{entry.shipmentId}}
-                        td
-                            | {{entry.Weight}}
+                        td(ng-class="{ 'success': checks[entry.id].weight, 'danger': !checks[entry.id].weight }")
+                            | {{entry.weight}}
                         td(ng-class="{ 'success': checks[entry.id].company, 'danger': !checks[entry.id].company }")
                             | {{entry.Company}}
                         td(ng-class="{ 'success': checks[entry.id].firstname, 'danger': !checks[entry.id].firstname }")
