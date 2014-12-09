@@ -19,6 +19,7 @@
 - x player symbols: start, stop, resume
 - x label status regex or not
 - x prio 2: UI für label statuser
+- x ghostscript check only when configured
 - collect all statuses for all attempts
 - prio 2: bündel pdfs in zips, dann ssh copy
 

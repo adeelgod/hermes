@@ -87,11 +87,17 @@ public class DefaultPrinterService implements PrinterService {
     @PostConstruct
     public void init() {
         try {
-            GhostscriptRevision revision = Ghostscript.getRevision();
-            logger.info("############## GHOSTSCRIPT: {}", revision.getProduct());
-            logger.info("############## GHOSTSCRIPT: {}", revision.getNumber());
-            logger.info("############## GHOSTSCRIPT: {}", revision.getRevisionDate());
-            logger.info("############## GHOSTSCRIPT: {}", revision.getCopyright());
+            Properties p = PropertiesUtil.getProperties();
+
+            PrintMethod m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
+
+            if(PrintMethod.GHOSTSCRIPT.equals(m)) {
+                GhostscriptRevision revision = Ghostscript.getRevision();
+                logger.info("############## GHOSTSCRIPT: {}", revision.getProduct());
+                logger.info("############## GHOSTSCRIPT: {}", revision.getNumber());
+                logger.info("############## GHOSTSCRIPT: {}", revision.getRevisionDate());
+                logger.info("############## GHOSTSCRIPT: {}", revision.getCopyright());
+            }
         } catch(Throwable t) {
             logger.warn(t.toString(), t);
         }
