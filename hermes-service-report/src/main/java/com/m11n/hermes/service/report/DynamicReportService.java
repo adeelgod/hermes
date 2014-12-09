@@ -15,6 +15,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
 import java.io.OutputStream;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
@@ -41,7 +44,19 @@ public class DynamicReportService {
                     .setTemplate(DynamicReportTemplate.reportTemplate)
                     .setColumnStyle(textStyle);
 
-            for(FormField field : form.getFields()) {
+            List<FormField> fields = form.getFields();
+
+            Collections.sort(fields, new Comparator<FormField>() {
+                public int compare(FormField f1, FormField f2) {
+                    if (f1 == null || f2 == null || f1.getPosition() == null || f2.getPosition() == null) {
+                        return 0;
+                    }
+
+                    return f1.getPosition().compareTo(f2.getPosition());
+                }
+            });
+
+            for(FormField field : fields) {
                 if(field.getColumn()) {
                     ColumnBuilder<?, ?> column = field.getWidth()!=null && field.getWidth() > 0 ?
                             col.column(field.getDescription(), field.getName(), getDataType(field.getFieldType())).setMinWidth(field.getWidth()) :
