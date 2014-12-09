@@ -1,1 +1,0 @@
-DHL Intraship::create::[%]::ok | warning: the address could not be validated

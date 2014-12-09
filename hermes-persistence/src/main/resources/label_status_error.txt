@@ -1,3 +1,0 @@
-DHL Intraship::create:: %::at least one shipment has errors %
-DHL Intraship::create:: %::Invalid fieldlength in %
-DHL Intraship::create:: %::Invalid value %

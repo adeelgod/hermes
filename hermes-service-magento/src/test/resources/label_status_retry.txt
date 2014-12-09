@@ -1,0 +1,5 @@
+DHL Intraship::create::-2::Unable to save PDF to /home/l-carb-shop.de/public_html/var/intraship/documents/pdf--4/pdf--40/pdf--402/label-00340433836281813654.pdf.
+DHL Intraship::create::0::Could not connect to host
+DHL Intraship::create::0::Not Found
+DHL Intraship::create::0::Unable to save PDF to /home/l-carb-shop.de/public_html/var/intraship/documents/pdf--c/pdf--cf/pdf--cfe/label-960775432362.pdf.
+DHL Intraship::create::1001::login failed

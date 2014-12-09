@@ -1,0 +1,1 @@
+DHL Intraship::create::0::ok | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable])

@@ -6,6 +6,5 @@
         <class>com.m11n.hermes.core.model.DocumentLog</class>
         <class>com.m11n.hermes.core.model.Form</class>
         <class>com.m11n.hermes.core.model.FormField</class>
-        <class>com.m11n.hermes.core.model.LabelStatus</class>
     </persistence-unit>
 </persistence>
