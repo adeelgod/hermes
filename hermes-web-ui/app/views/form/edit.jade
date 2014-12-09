@@ -118,10 +118,10 @@ block content
                         .form-group(ng-show='field.column && form.printable')
                             label(for='name') Width (in px)
                             input.form-control(name='name', ng-model='field.width', placeholder='Name', type='number')
-                        .form-group
+                        .form-group(ng-show='field.parameter')
                             label(for='fieldDefValue') Default
                             input.form-control(name='fieldDefValue', ng-model='field.defValue', placeholder='Default', type='text')
-                        .form-group(ng-show="field.fieldType=='TEXT'")
+                        .form-group(ng-show="field.fieldType=='TEXT' && field.parameter")
                             .input-group
                                 span.input-group-btn
                                     button.btn.btn-primary(type='button', ng-click='addLookup()')
