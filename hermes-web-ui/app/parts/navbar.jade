@@ -17,7 +17,7 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                         i.fa.fa-2x.fa-search
                 li
                     a(href='', ui-sref='shipping', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.shipping')
-                        i.fa.fa-2x.fa-send
+                        i.fa.fa-2x.fa-truck
                 li.nav-divider
                 li(ng-show='loading')
                     a(href='')
@@ -38,10 +38,6 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                 li(ng-show='authenticated')
                     a(href='', ui-sref='form_list', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.forms')
                         i.fa.fa-2x.fa-list-alt
-                //
-                    li
-                        a(href='', data-animation='am-flip-x', data-html='true', bs-dropdown='dropdown')
-                            i.fa.fa-2x.fa-list-alt
                 li
                     a(href='', ui-sref='configuration', ng-show='authenticated', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.configuration')
                         i.fa.fa-2x.fa-cog
