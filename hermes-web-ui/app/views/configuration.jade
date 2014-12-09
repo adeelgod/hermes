@@ -92,6 +92,37 @@ block content
                         hr
                         .alert.alert-info(role='alert')
                             p Reminder: status patterns are defined as regular expressions.
+                                a.btn.btn-link(href='', ng-click='intrashipRegexExamples=!intrashipRegexExamples')
+                                    span(ng-hide='intrashipRegexExamples') Show Examples
+                                    span(ng-show='intrashipRegexExamples') Hide Examples
+                            table.table.table-condensed(ng-show='intrashipRegexExamples', class='am-fade')
+                                thead
+                                    tr
+                                        td
+                                            h4 Example
+                                        td
+                                            h4 Description
+                                tbody
+                                    tr
+                                        td
+                                            b (.+)
+                                        td Any character, one or more
+                                    tr
+                                        td
+                                            b (.*)
+                                        td Any character, zero or more
+                                    tr
+                                        td
+                                            b |
+                                        td "or" delimiter
+                                    tr
+                                        td
+                                            b \
+                                        td Escape character
+                                    tr
+                                        td
+                                            b \|
+                                        td Match character "|". Has to be escaped, because standalone "|" means "or"
                         .form-group
                             label(for='intrashipStatusSuccess') Intraship Status "success" Regex
                             input.form-control(name='intrashipStatusSuccess', ng-model="configuration['hermes.magento.intraship.status.success']", placeholder='Intraship Status success', type='text')
