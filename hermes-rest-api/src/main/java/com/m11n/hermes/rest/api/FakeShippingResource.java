@@ -47,7 +47,13 @@ public class FakeShippingResource {
         // NOTE: simulating more complex round-trip
         stati.add(createIntrashipResponse(orderId, "retry", "DHL Intraship::create::-2::Unable to save PDF to /home/l-carb-shop.de/public_html/var/intraship/documents/pdf--4/pdf--40/pdf--402/label-00340433836281813654.pdf.", 1));
         stati.add(createIntrashipResponse(orderId, "retry", "DHL Intraship::create::0::Could not connect to host", 2));
-        stati.add(createIntrashipResponse(orderId, "success", "DHL Intraship::pdf::0::PDF creation was successful", 3));
+
+        // NOTE: simulating intermittent error situations
+        if(labelCount.get()%3==0) {
+            stati.add(createIntrashipResponse(orderId, "error", "DHL Intraship::create::-2::at least one shipment has errors | your order could not be processed your order could not be processed  | the value integrativ - kinder miteinander e. v. has a wrong field length. the allowed field length is 30.", 3));
+        } else {
+            stati.add(createIntrashipResponse(orderId, "success", "DHL Intraship::pdf::0::PDF creation was successful", 3));
+        }
 
         return Response.ok(stati).build();
     }
