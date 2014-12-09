@@ -41,32 +41,22 @@ block content
                     .form-group
                         .row
                             .col-md-12
-                                button.btn.btn-lg.btn-primary(type='button', ng-click='query()', ng-disabled='busy', bs-tooltip='tooltips.shipmentSearch')
+                                button.btn.btn-lg.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                     i.fa.fa-search
                                     | &nbsp;
                                     | Search
         .col-md-8
             .well.well-sm(ng-show='logging', style='max-height: 300px; overflow-y: scroll;')
                 .btn-group.btn-group-sm.pull-left
-                    button.btn.btn-default(type='button', ng-click='runStateToggle()', bs-tooltip='tooltips.shipmentRunStartPause')
+                    button.btn.btn-default(type='button', ng-click='runStateToggle()')
                         i.fa(ng-class="{'fa-play': runState=='stopped' || runState=='paused', 'fa-pause': runState=='playing'}")
-                    button.btn.btn-default(type='button', ng-click='runStateStop()', ng-show="runState=='playing' || runState=='paused'", bs-tooltip='tooltips.shipmentRunStop')
+                    button.btn.btn-default(type='button', ng-click='runStateStop()', ng-show="runState=='playing' || runState=='paused'")
                         i.fa.fa-stop
                 .btn-group.btn-group-sm.pull-right
-                    button.btn.btn-danger(type='button', ng-click='clearLogs()', bs-tooltip='tooltips.logClear')
+                    button.btn.btn-danger(type='button', ng-click='clearLogs()')
                         i.fa.fa-trash
-                    button.btn.btn-default(type='button', disabled='', bs-tooltip='tooltips.logEntries') # {{logs.length}}
+                    button.btn.btn-default(type='button', disabled='') # {{logs.length}}
                 table.table.table-striped.table-condensed
-                    //
-                        thead
-                            tr
-                                td
-                                td
-                                td.text-left
-                                    h4 Order
-                                td.text-left
-                                    h4 Message
-                                td
                     tbody
                         tr
                             td(colspan='5')
@@ -77,9 +67,6 @@ block content
                             td.text-center
                                 i.fa(ng-class="{'fa-check-circle': entry.status=='success', 'fa-info-circle': entry.status=='info', 'fa-warning': entry.status=='warning', 'fa-exclamation-circle': entry.status=='error'}")
                             td {{entry.orderId}}
-                                //
-                                    span.label.label-default(ng-mouseover='selectLog(entry)')
-                                        | {{entry.orderId}}
                             td
                                 | {{entry.message}}
                             td
