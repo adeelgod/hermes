@@ -104,7 +104,7 @@ block content
                             h4 Order
                         td.text-left
                             h4 Shipping
-                        td.text-left
+                        td.text-center
                             h4 Weight
                         td.text-left
                             h4 Company
@@ -112,7 +112,7 @@ block content
                             h4 Firstname
                         td.text-left
                             h4 Lastname
-                        td.text-left
+                        td.text-center
                             h4 Phone
                         td.text-left
                             h4 Street
@@ -139,7 +139,7 @@ block content
                             | {{entry.orderId}}
                         td(ng-class="{ 'success': entry.shipmentId }")
                             span(ng-show='entry.shipmentId') {{entry.shipmentId}}
-                        td(ng-class="{ 'success': checks[entry.id].weight, 'danger': !checks[entry.id].weight }")
+                        td.text-right(ng-class="{ 'success': checks[entry.id].weight, 'danger': !checks[entry.id].weight }")
                             | {{entry.weight}}
                         td(ng-class="{ 'success': checks[entry.id].company, 'danger': !checks[entry.id].company }")
                             | {{entry.Company}}
@@ -147,7 +147,7 @@ block content
                             | {{entry.firstname}}
                         td(ng-class="{ 'success': checks[entry.id].lastname, 'danger': !checks[entry.id].lastname }")
                             | {{entry.lastname}}
-                        td(ng-class="{ 'success': checks[entry.id].phone, 'danger': !checks[entry.id].phone }")
+                        td.text-right(ng-class="{ 'success': checks[entry.id].phone, 'danger': !checks[entry.id].phone }")
                             | {{entry.phone}}
                         td(ng-class="{ 'success': checks[entry.id].street1, 'danger': !checks[entry.id].street1 }")
                             | {{entry.street1}}
