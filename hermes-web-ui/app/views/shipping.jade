@@ -113,6 +113,8 @@ block content
                         td.text-left
                             h4 Lastname
                         td.text-left
+                            h4 Phone
+                        td.text-left
                             h4 Street
                         td.text-left
                         td.text-left
@@ -145,6 +147,8 @@ block content
                             | {{entry.firstname}}
                         td(ng-class="{ 'success': checks[entry.id].lastname, 'danger': !checks[entry.id].lastname }")
                             | {{entry.lastname}}
+                        td(ng-class="{ 'success': checks[entry.id].phone, 'danger': !checks[entry.id].phone }")
+                            | {{entry.phone}}
                         td(ng-class="{ 'success': checks[entry.id].street1, 'danger': !checks[entry.id].street1 }")
                             | {{entry.street1}}
                         td(ng-class="{ 'success': checks[entry.id].street2, 'danger': !checks[entry.id].street2 }")
