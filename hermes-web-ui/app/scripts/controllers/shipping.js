@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, ShippingSvc, FakeShippingSvc) {
+angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc, FakeShippingSvc) {
     $scope.debugging = false;
     $scope.busy = false;
     $scope.params = {};
@@ -14,6 +14,9 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.logging = true;
     $scope.logs = [];
     $scope.loading = true;
+
+    $scope.successSound = ngAudio.load("audio/success.mp3");
+    $scope.errorSound = ngAudio.load("audio/error.mp3");
 
     $scope.tooltips = {
         debugShowHide: {title: 'Show/Hide Debug Functions', placement: 'bottom', type: 'info'},
@@ -130,6 +133,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     };
 
     $scope.createShipmentAndLabel = function(i) {
+        $scope.cancelErrorSound();
 
         if ($scope.shippings && i < $scope.shippings.length) {
             var entry = $scope.shippings[i];
@@ -163,14 +167,17 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                             } else {
                                 $scope.runState = 'paused';
                                 $alert({content: 'Label for order ID: ' + entry.orderId + ' was not successful. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
+                                $scope.loopErrorSound();
                             }
                         }).error(function(labelData) {
                             $scope.runState = 'paused';
                             $alert({content: 'Label for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
+                            $scope.loopErrorSound();
                         });
                     }).error(function(shipmentData) {
                         $scope.runState = 'paused';
                         $alert({content: 'Shipment for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
+                        $scope.loopErrorSound();
                     });
                 } else {
                     $log.debug('Skipping order ID (not selected): ' + entry.orderId);
@@ -178,11 +185,28 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                     $scope.createShipmentAndLabel(i);
                 }
             } else {
+                // NOTE: pausing/stopping in the middle
                 $alert({content: 'Shipment processing ' + $scope.runState + ' at #' + i + '.', placement: 'top', type: 'info', show: true, duration: 5});
             }
         } else {
             $scope.runState = 'stopped';
-            $alert({content: 'All selected shipments processed (#' + i + ').', placement: 'top', type: 'info', show: true, duration: 5});
+            $alert({content: 'All selected shipments processed (#' + i + ').', placement: 'top', type: 'success', show: true, duration: 5});
+            $scope.successSound.play();
+        }
+    };
+
+    $scope.loopErrorSound = function() {
+        // NOTE: play immediately the first time
+        $scope.errorSound.play();
+        $scope.errorSoundLoop = $interval(function() {
+            $scope.errorSound.play();
+        }, 60000); // TODO: configurable?
+    };
+
+    $scope.cancelErrorSound = function() {
+        if(angular.isDefined($scope.errorSoundLoop)) {
+            $interval.cancel($scope.errorSoundLoop);
+            $scope.errorSoundLoop = undefined;
         }
     };
 
