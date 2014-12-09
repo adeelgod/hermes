@@ -78,16 +78,16 @@ block content
                                 td Default
                                 td
                         tbody
-                            tr(ng-repeat="field in form.fields | orderBy: 'position'")
-                                td {{field.position}}
-                                td {{field.name}}
-                                td {{field.fieldType}}
-                                td {{field.parameter}}
-                                td {{field.column}}
-                                td {{field.defValue}}
+                            tr(ng-repeat="f in form.fields | orderBy: 'position'", ng-class="{'info': field.name==f.name}")
+                                td {{f.position}}
+                                td {{f.name}}
+                                td {{f.fieldType}}
+                                td {{f.parameter}}
+                                td {{f.column}}
+                                td {{f.defValue}}
                                 td
                                     .btn-group
-                                        button.btn.btn-success(type='button', ng-click='select(field)')
+                                        button.btn.btn-success(type='button', ng-click='select(f)')
                                             i.fa.fa-pencil
                                         button.btn.btn-danger(type='button', ng-click='removeField($index)')
                                             i.fa.fa-trash
