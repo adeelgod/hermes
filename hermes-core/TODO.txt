@@ -17,9 +17,10 @@
 - x aktiviere den Magento Service
 - x alle auswählen
 - x player symbols: start, stop, resume
-- label status regex or not
+- x label status regex or not
+- x prio 2: UI für label statuser
+- collect all statuses for all attempts
 - prio 2: bündel pdfs in zips, dann ssh copy
-- prio 2: UI für label statuser
 
 [6:21:04 PM] Daniel Schaaf:
 
