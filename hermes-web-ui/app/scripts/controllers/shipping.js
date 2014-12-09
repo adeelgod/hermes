@@ -114,23 +114,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         }
     };
 
-    $scope.runStateToggle = function() {
-        switch($scope.runState) {
-            case 'paused':
-            case 'stopped':
-                $scope.runState = 'playing';
-                break;
-            case 'playing':
-                $scope.runState = 'paused';
-                break;
-        }
-    };
-
-    $scope.runStateStop = function() {
-        $scope.runState = 'stopped';
-        //$alert({content: 'Not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
-    };
-
     $scope.selectLog = function(entry) {
         $scope.currentLog=entry;
     };
@@ -182,6 +165,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             // TODO: make this configurable?!?
             $scope.checks[shipping.id].company = (!shipping.company || shipping.company.length <= 30);
             $scope.checks[shipping.id].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
+            $scope.checks[shipping.id].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
             $scope.checks[shipping.id].weight = (!shipping.weight || shipping.weight <= 25);
             $scope.checks[shipping.id].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
             $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.length <= 30);
@@ -189,14 +173,27 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length <= 30);
             $scope.checks[shipping.id].city = (!shipping.city || shipping.city.length <= 30);
 
-            if(shipping.country==='DE') {
-                $scope.checks[shipping.id].zip = (shipping['zip'] && (''+shipping['zip']).length === 5);
-            } else {
-                $scope.checks[shipping.id].zip = true;
+            switch(shipping.country) {
+                case 'DE':
+                case 'IT':
+                    $scope.checks[shipping.id].zip = (shipping['zip'] && (''+shipping['zip']).length === 5);
+                    break;
+                case 'AT':
+                case 'BE':
+                case 'CH':
+                case 'DK':
+                    $scope.checks[shipping.id].zip = (shipping['zip'] && (''+shipping['zip']).length === 4);
+                    break;
+                default:
+                    $scope.checks[shipping.id].zip = true;
+                    break;
             }
 
             if(shipping.street1 && shipping.street1.indexOf('5pack')>=0) {
                 $scope.checks[shipping.id].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
+            } else if(shipping.street1 && shipping.street1.indexOf('packstat')>=0) {
+                $scope.checks[shipping.id].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
+                $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length === 0);
             } else {
                 $scope.checks[shipping.id].dhlAccount = true;
             }
@@ -212,15 +209,71 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         });
     };
 
+    $scope.play = function() {
+        for (var i = 0; i < $scope.shippings.length; i++) {
+            var entry = $scope.shippings[i];
+
+            if ($scope.runState === 'playing') {
+                if(entry._selected) {
+                    $log.info('Processing order ID (not selected): ' + entry.orderId);
+                    // TODO: enable this
+                    /**
+                    ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
+                        entry._selected = false;
+                        entry._updatedAt = moment();
+                        entry.shipmentId = shipmentData.shipmentId;
+
+                        ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
+                            labelData.createdAt = moment();
+                            $scope.logs.unshift(labelData);
+                        }).error(function(labelData) {
+                            $scope.runState = 'paused';
+                            $log.error('Label error with order ID: ' + entry.orderId);
+                        });
+                    }).error(function(shipmentData) {
+                        $scope.runState = 'paused';
+                        $log.error('Shipment error with order ID: ' + entry.orderId);
+                        $alert({content: 'Shipment not created for order ID: ' + entry.orderId, placement: 'top', type: 'danger', show: true});
+                    });
+                     */
+                } else {
+                    $log.info('Skipping order ID (not selected): ' + entry.orderId);
+                }
+            } else {
+                $log.info('Loop is going to break.');
+                break;
+            }
+        }
+    };
+
+    $scope.runStateToggle = function() {
+        switch($scope.runState) {
+            case 'paused':
+            case 'stopped':
+                $scope.runState = 'playing';
+                $scope.play();
+                break;
+            case 'playing':
+                $scope.runState = 'paused';
+                break;
+        }
+    };
+
+    $scope.runStateStop = function() {
+        $scope.runState = 'stopped';
+        //$scope.shippings = [];
+        //$alert({content: 'Not yet activated.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
     $scope.createShipment = function(entry) {
-        ShippingSvc.shipment({orderId: entry.orderId}).success(function(data) {
+        return ShippingSvc.shipment({orderId: entry.orderId}).success(function(data) {
             entry._updatedAt = moment();
             entry.shipmentId = data.shipmentId;
         });
     };
 
     $scope.createLabel = function(entry) {
-        ShippingSvc.label({orderId: entry.orderId}).success(function(data) {
+        return ShippingSvc.label({orderId: entry.orderId}).success(function(data) {
             data.createdAt = moment();
             $scope.logs.unshift(data);
         });
