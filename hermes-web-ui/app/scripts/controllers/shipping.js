@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, ShippingSvc) {
+angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, ShippingSvc, FakeShippingSvc) {
     $scope.debugging = false;
     $scope.busy = false;
     $scope.params = {};
@@ -12,6 +12,8 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.configuration = {};
     $scope.currentLog = {};
     $scope.logging = true;
+    $scope.logs = [];
+    /**
     $scope.logs = [
         {
             orderId: '300014222',
@@ -91,7 +93,8 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             status: 'success',
             message: 'DHL Intraship::pdf::0::PDF creation was successful'
         }
-    ]; // TODO: should be empty
+    ];
+     */
     $scope.loading = true;
 
     $scope.tooltips = {
@@ -168,24 +171,23 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             $scope.checks[shipping.id].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
             $scope.checks[shipping.id].weight = (!shipping.weight || shipping.weight <= 25);
             $scope.checks[shipping.id].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
-            $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.length <= 30);
-            $scope.checks[shipping.id].street1 = (!shipping.street1 || shipping.street1.match(/\d+/g));
+            $scope.checks[shipping.id].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.match(/\d+/g)) );
             $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length <= 30);
             $scope.checks[shipping.id].city = (!shipping.city || shipping.city.length <= 30);
 
             switch(shipping.country) {
                 case 'DE':
                 case 'IT':
-                    $scope.checks[shipping.id].zip = (shipping['zip'] && (''+shipping['zip']).length === 5);
+                    $scope.checks[shipping.id]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 5);
                     break;
                 case 'AT':
                 case 'BE':
                 case 'CH':
                 case 'DK':
-                    $scope.checks[shipping.id].zip = (shipping['zip'] && (''+shipping['zip']).length === 4);
+                    $scope.checks[shipping.id]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 4);
                     break;
                 default:
-                    $scope.checks[shipping.id].zip = true;
+                    $scope.checks[shipping.id]['zip'] = true;
                     break;
             }
 
@@ -202,47 +204,50 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                 $scope.checks[shipping.id].firstname &&
                 $scope.checks[shipping.id].lastname &&
                 $scope.checks[shipping.id].street1 &&
-                $scope.checks[shipping.id].street1 &&
+                $scope.checks[shipping.id].street2 &&
                 $scope.checks[shipping.id].city &&
-                $scope.checks[shipping.id].zip &&
+                $scope.checks[shipping.id]['zip'] &&
                 $scope.checks[shipping.id].dhlAccount);
         });
     };
 
-    $scope.play = function() {
-        for (var i = 0; i < $scope.shippings.length; i++) {
+    $scope.createShipmentAndLabel = function(i) {
+
+        if ($scope.shippings && i < $scope.shippings.length) {
             var entry = $scope.shippings[i];
 
             if ($scope.runState === 'playing') {
                 if(entry._selected) {
-                    $log.info('Processing order ID (not selected): ' + entry.orderId);
-                    // TODO: enable this
-                    /**
+                    $log.debug('Processing order ID: ' + entry.orderId);
                     ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
-                        entry._selected = false;
                         entry._updatedAt = moment();
                         entry.shipmentId = shipmentData.shipmentId;
 
                         ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
+                            entry._selected = false;
                             labelData.createdAt = moment();
                             $scope.logs.unshift(labelData);
+                            i++;
+                            $scope.createShipmentAndLabel(i);
                         }).error(function(labelData) {
                             $scope.runState = 'paused';
-                            $log.error('Label error with order ID: ' + entry.orderId);
+                            $alert({content: 'Label for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                         });
                     }).error(function(shipmentData) {
                         $scope.runState = 'paused';
-                        $log.error('Shipment error with order ID: ' + entry.orderId);
-                        $alert({content: 'Shipment not created for order ID: ' + entry.orderId, placement: 'top', type: 'danger', show: true});
+                        $alert({content: 'Shipment for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                     });
-                     */
                 } else {
-                    $log.info('Skipping order ID (not selected): ' + entry.orderId);
+                    $log.debug('Skipping order ID (not selected): ' + entry.orderId);
+                    i++;
+                    $scope.createShipmentAndLabel(i);
                 }
             } else {
-                $log.info('Loop is going to break.');
-                break;
+                $alert({content: 'Shipment processing ' + $scope.runState + ' at #' + i + '.', placement: 'top', type: 'info', show: true, duration: 5});
             }
+        } else {
+            $scope.runState = 'stopped';
+            $alert({content: 'All selected shipments processed (#' + i + ').', placement: 'top', type: 'info', show: true, duration: 5});
         }
     };
 
@@ -251,7 +256,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             case 'paused':
             case 'stopped':
                 $scope.runState = 'playing';
-                $scope.play();
+                $scope.createShipmentAndLabel(0);
                 break;
             case 'playing':
                 $scope.runState = 'paused';
