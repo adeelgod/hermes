@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, ExampleSvc, FormSvc) {
+angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, ExampleSvc, FormSvc) {
     $scope.loading = true;
     $scope.forms = [];
     $scope.updateForm = {};
@@ -46,11 +46,14 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, ExampleSv
     };
 
     $scope.synchronize = function() {
+        $scope.loading = true;
         var params = {};
         params['_form'] = $scope.updateForm.name;
         FormSvc.query(params).success(function(data) {
+            $scope.loading = false;
             $alert({content: 'Sync success!', placement: 'top', type: 'success', show: true, duration: 5});
         }).error(function(data) {
+            $scope.loading = false;
             $alert({content: 'Sync failed!', placement: 'top', type: 'danger', show: true, duration: 5});
         });
     };
