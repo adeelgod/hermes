@@ -33,9 +33,11 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
     $scope.debug = function() {
         $scope.debugging = !$scope.debugging;
+        /**
         if($scope.debugging) {
             $scope.params.status = '%';
         }
+         */
     };
 
     $scope.selectLog = function(entry) {
