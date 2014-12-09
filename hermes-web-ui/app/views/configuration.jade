@@ -89,6 +89,27 @@ block content
                         .form-group
                             label(for='magentoPassword') API Password
                             input.form-control(name='magentoPassword', ng-model="configuration['hermes.magento.api.password']", placeholder='API Password', type='password')
+                        hr
+                        .alert.alert-info(role='alert')
+                            p Reminder: status patterns are defined as regular expressions.
+                        .form-group
+                            label(for='intrashipStatusSuccess') Intraship Status "success" Regex
+                            input.form-control(name='intrashipStatusSuccess', ng-model="configuration['hermes.magento.intraship.status.success']", placeholder='Intraship Status success', type='text')
+                        .form-group
+                            label(for='intrashipStatusWarning') Intraship Status "warning" Regex
+                            input.form-control(name='intrashipStatusWarning', ng-model="configuration['hermes.magento.intraship.status.warning']", placeholder='Intraship Status warning', type='text')
+                        .form-group
+                            label(for='intrashipStatusError') Intraship Status "error" Regex
+                            input.form-control(name='intrashipStatusError', ng-model="configuration['hermes.magento.intraship.status.error']", placeholder='Intraship Status error', type='text')
+                        .form-group
+                            label(for='intrashipStatusRetry') Intraship Status "retry" Regex
+                            input.form-control(name='intrashipStatusRetry', ng-model="configuration['hermes.magento.intraship.status.retry']", placeholder='Intraship Status retry', type='text')
+                        .form-group
+                            label(for='intrashipStatusRetryCount') Intraship Retry Attempts
+                            input.form-control(name='intrashipStatusRetryCount', ng-model="configuration['hermes.magento.intraship.status.retry.count']", placeholder='Retry Attempts', type='text')
+                        .form-group
+                            label(for='intrashipStatusRetryWait') Intraship Retry Timeout
+                            input.form-control(name='intrashipStatusRetryTimeout', ng-model="configuration['hermes.magento.intraship.status.retry.wait']", placeholder='Retry Timeout', type='text')
                 .tab-pane(role='tabpanel', id='directory', ng-class="{'active': tab=='directory'}")
                     form(role='form', name='directoryForm', novalidate='')
                         .form-group
