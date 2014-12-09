@@ -3,6 +3,7 @@
 angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, ExampleSvc, FormSvc) {
     $scope.loading = true;
     $scope.forms = [];
+    $scope.updateForm = {};
 
     $scope.dropdown = [
         {
@@ -36,8 +37,21 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, ExampleSv
                 if(form.accessPublic) {
                     $scope.forms.push({text: form.description, href: '#!/form/execute/' + form.id});
                 }
+                if(form.name==='update') {
+                    $scope.updateForm = form;
+                }
             });
             $scope.loading = false;
+        });
+    };
+
+    $scope.synchronize = function() {
+        var params = {};
+        params['_form'] = $scope.updateForm.name;
+        FormSvc.query(params).success(function(data) {
+            $alert({content: 'Sync success!', placement: 'top', type: 'success', show: true, duration: 5});
+        }).error(function(data) {
+            $alert({content: 'Sync failed!', placement: 'top', type: 'danger', show: true, duration: 5});
         });
     };
 

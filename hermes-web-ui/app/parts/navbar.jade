@@ -25,6 +25,9 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                 li(ng-hide='loading')
                     a(href='', data-animation='am-flip-x', bs-dropdown='forms', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.execute')
                         i.fa.fa-2x.fa-play
+                li(ng-hide='loading')
+                    a(href='', ng-click='synchronize()')
+                        i.fa.fa-2x.fa-exchange
             ul.nav.navbar-nav.navbar-right
                 li(ng-show='authenticated')
                     a(href='', ng-click='exampleQueue()')
