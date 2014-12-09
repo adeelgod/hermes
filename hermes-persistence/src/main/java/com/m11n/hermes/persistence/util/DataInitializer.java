@@ -87,28 +87,29 @@ public class DataInitializer {
 
             List<FormField> fields = new ArrayList<>();
             // parameters
-            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1, "", "From", true, false));
-            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2, "", "Until", true, false));
+            //fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1, "", "From", true, false));
+            //fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2, "", "Until", true, false));
 
-            FormField statusField = new FormField("status", FormField.Type.TEXT.name(), 3, "", "Status", true, false);
+            FormField statusField = new FormField("status", FormField.Type.TEXT.name(), 1, "", "Status", true, false);
             statusField.setLookup(new HashSet<>(Arrays.asList("processing", "%")));
             fields.add(statusField);
 
             // columns
-            FormField orderId = new FormField("orderId", FormField.Type.TEXT.name(), 4, "", "Order", false, true);
+            FormField orderId = new FormField("orderId", FormField.Type.TEXT.name(), 2, "", "Order", false, true);
             orderId.setWidth(60);
             fields.add(orderId);
 
-            fields.add(new FormField("weight", FormField.Type.TEXT.name(), 5, "", "Weight", false, true));
-            fields.add(new FormField("company", FormField.Type.TEXT.name(), 6, "", "Company", false, true));
-            fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 7, "", "Firstname", false, true));
-            fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 8, "", "Lastname", false, true));
-            fields.add(new FormField("street1", FormField.Type.TEXT.name(), 9, "", "Street", false, true));
-            fields.add(new FormField("street2", FormField.Type.TEXT.name(), 10, "", "", false, true));
-            fields.add(new FormField("zip", FormField.Type.TEXT.name(), 11, "", "ZIP", false, true));
-            fields.add(new FormField("city", FormField.Type.TEXT.name(), 12, "", "City", false, true));
-            fields.add(new FormField("country", FormField.Type.TEXT.name(), 13, "", "Country", false, true));
-            fields.add(new FormField("dhlAccount", FormField.Type.TEXT.name(), 14, "", "DHL #", false, true));
+            fields.add(new FormField("weight", FormField.Type.TEXT.name(), 3, "", "Weight", false, true));
+            fields.add(new FormField("company", FormField.Type.TEXT.name(), 4, "", "Company", false, true));
+            fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 5, "", "Firstname", false, true));
+            fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 6, "", "Lastname", false, true));
+            fields.add(new FormField("phone", FormField.Type.TEXT.name(), 7, "", "Phone", false, true));
+            fields.add(new FormField("street1", FormField.Type.TEXT.name(), 8, "", "Street", false, true));
+            fields.add(new FormField("street2", FormField.Type.TEXT.name(), 9, "", "", false, true));
+            fields.add(new FormField("zip", FormField.Type.TEXT.name(), 10, "", "ZIP", false, true));
+            fields.add(new FormField("city", FormField.Type.TEXT.name(), 11, "", "City", false, true));
+            fields.add(new FormField("country", FormField.Type.TEXT.name(), 12, "", "Country", false, true));
+            fields.add(new FormField("dhlAccount", FormField.Type.TEXT.name(), 13, "", "DHL #", false, true));
 
             form.setFields(fields);
 
