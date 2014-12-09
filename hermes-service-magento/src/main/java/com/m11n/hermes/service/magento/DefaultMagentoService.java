@@ -1,6 +1,8 @@
 package com.m11n.hermes.service.magento;
 
 import com.m11n.hermes.core.service.MagentoService;
+import com.m11n.hermes.persistence.AuswertungRepository;
+import com.m11n.hermes.persistence.SalesFlatShipmentCommentRepository;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -10,7 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -32,6 +37,21 @@ public class DefaultMagentoService implements MagentoService {
     private String sessionId;
 
     private Mage_Api_Model_Server_V2_HandlerPortType magentoService;
+
+    @Inject
+    private SalesFlatShipmentCommentRepository salesFlatShipmentCommentRepository;
+
+    @Inject
+    private AuswertungRepository auswertungRepository;
+
+    @Inject
+    private IntrashipStatusTranslator intrashipStatusTranslator;
+
+    @Value("${hermes.magento.intraship.status.retry.count}")
+    private int intrashipRetryCount;
+
+    @Value("${hermes.magento.intraship.status.retry.wait}")
+    private long intrashipRetryWait;
 
     @PostConstruct
     public void init() throws Exception {
@@ -85,20 +105,68 @@ public class DefaultMagentoService implements MagentoService {
 
         logger.info("********* CREATE SHIPMENT: {} - {}", orderId, shipmentId);
 
-        //return "0000000001";
         return shipmentId;
     }
 
     @Override
-    public String createIntrashipLabel(String orderId) throws Exception {
-        Request req = new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
-        Response res = client.newCall(req).execute();
+    public Map<String, Object> createIntrashipLabel(String orderId) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        result.put("orderId", orderId);
 
-        String message = res.body().string();
+        try {
+            Request req = new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
+            Response res = client.newCall(req).execute();
 
-        logger.info("********* CREATE INTRASHIP: {} - {}", orderId, message);
+            String message = res.body().string();
+            String status = intrashipStatusTranslator.toStatus(message);
 
-        //return "DHL Intraship::pdf::0::PDF creation was successful";
-        return message;
+            logger.info("********* CREATE INTRASHIP: {} - {} ({})", orderId, message, status);
+
+            // TODO: retry logic
+
+            if("success".equals(status) || "warning".equals(status)) {
+                result.put("status", status);
+                result.put("message", message);
+                result.put("count", 1);
+
+                return result;
+            } else if("retry".equals(status)) {
+                for(int i=0; i<intrashipRetryCount; i++) {
+                    res = client.newCall(req).execute();
+
+                    message = res.body().string();
+                    status = intrashipStatusTranslator.toStatus(message);
+
+                    if("success".equals(status) || "warning".equals(status)) {
+                        result.put("status", status);
+                        result.put("message", message);
+                        result.put("count", i+2);
+
+                        return result;
+                    }
+                    logger.warn("Retry Intraship label: {} - #{} of {}", orderId, i, intrashipRetryCount);
+                    Thread.sleep(intrashipRetryWait);
+                }
+            }
+        } catch(Exception e) {
+            result.put("status", "error");
+            result.put("message", e.getMessage());
+            logger.error(e.toString(), e);
+        }
+
+        return result;
+    }
+
+    public List<String> getIntrashipStatuses(String orderId) {
+        String shippingId = auswertungRepository.findShippingIdByOrderId(orderId);
+        List<String> rawStatuses = salesFlatShipmentCommentRepository.findRawStatus(shippingId);
+
+        List<String> result = new ArrayList<>();
+
+        for(String rawStatus : rawStatuses) {
+            result.add(intrashipStatusTranslator.toStatus(rawStatus));
+        }
+
+        return result;
     }
 }
