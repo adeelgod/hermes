@@ -9,7 +9,7 @@ public interface MagentoService {
 
     String createShipment(String orderId) throws Exception;
 
-    Map<String, Object> createIntrashipLabel(String orderId) throws Exception;
+    List<Map<String, Object>> createIntrashipLabel(String orderId) throws Exception;
 
     List<String> getIntrashipStatuses(String orderId);
 }

@@ -109,52 +109,69 @@ public class DefaultMagentoService implements MagentoService {
     }
 
     @Override
-    public Map<String, Object> createIntrashipLabel(String orderId) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        result.put("orderId", orderId);
+    public List<Map<String, Object>> createIntrashipLabel(String orderId) throws Exception {
+        List<Map<String, Object>> stati = new ArrayList<>();
+
+        int attempts = 0;
 
         try {
-            Request req = new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
+            Request req = createIntrashipRequest(orderId);
             Response res = client.newCall(req).execute();
 
             String message = res.body().string();
             String status = intrashipStatusTranslator.toStatus(message);
 
-            logger.info("********* CREATE INTRASHIP: {} - {} ({})", orderId, message, status);
-
-            // TODO: retry logic
+            logger.debug("********* CREATE INTRASHIP: {} - {} ({})", orderId, message, status);
 
             if("success".equals(status) || "warning".equals(status)) {
-                result.put("status", status);
-                result.put("message", message);
-                result.put("count", 1);
-
-                return result;
+                attempts++;
+                stati.add(createIntrashipResponse(orderId, status, message, attempts));
             } else if("retry".equals(status)) {
                 for(int i=0; i<intrashipRetryCount; i++) {
+                    attempts++;
+                    req = createIntrashipRequest(orderId);
                     res = client.newCall(req).execute();
 
                     message = res.body().string();
                     status = intrashipStatusTranslator.toStatus(message);
 
-                    if("success".equals(status) || "warning".equals(status)) {
-                        result.put("status", status);
-                        result.put("message", message);
-                        result.put("count", i+2);
+                    logger.debug("********* CREATE INTRASHIP RETRY: {} - {} ({}) - # {}", orderId, message, status, (i+1));
 
-                        return result;
+                    stati.add(createIntrashipResponse(orderId, status, message, i+2));
+
+                    // TODO: decide if we should stop when an error status appears; is this possible?
+                    //if("success".equals(status) || "warning".equals(status) || "error".equals(status) || "unknown".equals(status)) {
+                    if("success".equals(status) || "warning".equals(status) || "unknown".equals(status)) {
+                        break;
+                    } else {
+                        logger.warn("Retry Intraship label: {} - #{} of {}", orderId, i, intrashipRetryCount);
+                        Thread.sleep(intrashipRetryWait);
                     }
-                    logger.warn("Retry Intraship label: {} - #{} of {}", orderId, i, intrashipRetryCount);
-                    Thread.sleep(intrashipRetryWait);
                 }
             }
         } catch(Exception e) {
-            result.put("status", "error");
-            result.put("message", e.getMessage());
+            logger.error("********* CREATE INTRASHIP FAILED: {} - {} - # {}", orderId, e.getMessage(), attempts);
+
+            stati.add(createIntrashipResponse(orderId, "error", e.getMessage(), attempts));
+
             logger.error(e.toString(), e);
         }
 
-        return result;
+        return stati;
+    }
+
+    private Request createIntrashipRequest(String orderId) {
+        return new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
+    }
+
+    private Map<String, Object> createIntrashipResponse(String orderId, String status, String message, int count) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", orderId);
+        response.put("status", status);
+        response.put("message", message);
+        response.put("count", count);
+
+        return response;
     }
 
     public List<String> getIntrashipStatuses(String orderId) {

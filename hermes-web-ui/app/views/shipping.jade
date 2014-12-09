@@ -60,15 +60,16 @@ block content
                     tbody
                         tr
                             td(colspan='5')
-                        tr(ng-repeat='entry in logs', ng-class="{'info': entry.status=='info', 'success': entry.status=='success', 'warning': entry.status=='warning', 'danger': entry.status=='error'}")
+                        tr(ng-repeat='entry in logs', ng-class="{'info': entry.status=='info', 'success': entry.status=='success', 'warning': entry.status=='warning' || entry.status=='retry', 'danger': entry.status=='error'}")
                             td.text-center
                                 button.btn.btn-sm.btn-default(type='button', ng-click='selectLog(entry)')
                                     i.fa(ng-class="{'fa-circle': currentLog.orderId==entry.orderId, 'fa-circle-o': currentLog.orderId!=entry.orderId}")
                             td.text-center
-                                i.fa(ng-class="{'fa-check-circle': entry.status=='success', 'fa-info-circle': entry.status=='info', 'fa-warning': entry.status=='warning', 'fa-exclamation-circle': entry.status=='error'}")
+                                i.fa(ng-class="{'fa-check-circle': entry.status=='success', 'fa-info-circle': entry.status=='info', 'fa-warning': entry.status=='warning' || entry.status=='retry', 'fa-exclamation-circle': entry.status=='error'}")
                             td {{entry.orderId}}
+                            td {{entry.message}}
                             td
-                                | {{entry.message}}
+                                span.label.label-default {{entry.count}}
                             td
                                 span.label.label-default(am-time-ago='entry.createdAt')
     .row(ng-show='busy')

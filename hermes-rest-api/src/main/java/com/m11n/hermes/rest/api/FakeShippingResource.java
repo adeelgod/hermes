@@ -9,10 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -41,13 +38,27 @@ public class FakeShippingResource {
     @Path("/label")
     @Produces(APPLICATION_JSON)
     public Response createLabel(@QueryParam("orderId") String orderId) throws Exception {
+        List<Map<String, Object>> stati = new ArrayList<>();
+
         logger.debug("Faking label... #{}", labelCount.incrementAndGet());
+
         Thread.sleep(2000L);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("orderId", orderId);
-        result.put("status", "success");
-        result.put("message", "DHL Intraship::pdf::0::PDF creation was successful");
-        return Response.ok(result).build();
+        // NOTE: simulating more complex round-trip
+        stati.add(createIntrashipResponse(orderId, "retry", "DHL Intraship::create::-2::Unable to save PDF to /home/l-carb-shop.de/public_html/var/intraship/documents/pdf--4/pdf--40/pdf--402/label-00340433836281813654.pdf.", 1));
+        stati.add(createIntrashipResponse(orderId, "retry", "DHL Intraship::create::0::Could not connect to host", 2));
+        stati.add(createIntrashipResponse(orderId, "success", "DHL Intraship::pdf::0::PDF creation was successful", 3));
+
+        return Response.ok(stati).build();
+    }
+
+    private Map<String, Object> createIntrashipResponse(String orderId, String status, String message, int count) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", orderId);
+        response.put("status", status);
+        response.put("message", message);
+        response.put("count", count);
+
+        return response;
     }
 }

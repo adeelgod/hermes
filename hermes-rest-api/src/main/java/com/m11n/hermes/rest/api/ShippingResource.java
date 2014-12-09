@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -36,7 +37,7 @@ public class ShippingResource {
     @Path("/label")
     @Produces(APPLICATION_JSON)
     public Response createLabel(@QueryParam("orderId") String orderId) throws Exception {
-        Map<String, Object> result = magentoService.createIntrashipLabel(orderId);
+        List<Map<String, Object>> result = magentoService.createIntrashipLabel(orderId);
         return Response.ok(result).build();
     }
 

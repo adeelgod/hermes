@@ -13,88 +13,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     $scope.currentLog = {};
     $scope.logging = true;
     $scope.logs = [];
-    /**
-    $scope.logs = [
-        {
-            orderId: '300014222',
-            createdAt: moment(),
-            status: 'error',
-            message: 'DHL Intraship::create:: %::at least one shipment has errors %'
-        },
-        {
-            orderId: '300014287',
-            createdAt: moment().subtract(5, 'minutes'),
-            status: 'info',
-            message: 'DHL Intraship::create::[%]::ok | warning: the address could not be validated'
-        },
-        {
-            orderId: '300000011',
-            createdAt: moment().subtract(7, 'minutes'),
-            status: 'success',
-            message: 'DHL Intraship::pdf::0::PDF creation was successful'
-        },
-        {
-            orderId: '300014284',
-            createdAt: moment().subtract(8, 'minutes'),
-            status: 'error',
-            message: 'DHL Intraship::create:: %::Invalid fieldlength in %'
-        },
-        {
-            orderId: '300014288',
-            createdAt: moment().subtract(9, 'minutes'),
-            status: 'warning',
-            message: 'DHL Intraship::create::[%]::Unable to save PDF'
-        },
-        {
-            orderId: '300014285',
-            createdAt: moment().subtract(10, 'minutes'),
-            status: 'error',
-            message: 'DHL Intraship::create:: %::Invalid value %'
-        },
-        {
-            orderId: '300014289',
-            createdAt: moment().subtract(12, 'minutes'),
-            status: 'warning',
-            message: 'DHL Intraship::create::[%]::Could not connect to host'
-        },
-        {
-            orderId: '300014286',
-            createdAt: moment().subtract(14, 'minutes'),
-            status: 'error',
-            message: 'DHL Intraship::create:: %::at least one shipment has errors %'
-        },
-        {
-            orderId: '300000010',
-            createdAt: moment().subtract(16, 'minutes'),
-            status: 'success',
-            message: 'DHL Intraship::pdf::0::PDF creation was successful'
-        },
-        {
-            orderId: '300000008',
-            createdAt: moment().subtract(17, 'minutes'),
-            status: 'warning',
-            message: 'DHL Intraship::create::[%]::Not Found'
-        },
-        {
-            orderId: '300000009',
-            createdAt: moment().subtract(19, 'minutes'),
-            status: 'warning',
-            message: 'DHL Intraship::create::[%]::Login failed'
-        },
-        {
-            orderId: '300000012',
-            createdAt: moment().subtract(21, 'minutes'),
-            status: 'success',
-            message: 'DHL Intraship::pdf::0::PDF creation was successful'
-        },
-        {
-            orderId: '300000013',
-            createdAt: moment().subtract(23, 'minutes'),
-            status: 'success',
-            message: 'DHL Intraship::pdf::0::PDF creation was successful'
-        }
-    ];
-     */
     $scope.loading = true;
 
     $scope.tooltips = {
@@ -219,16 +137,33 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             if ($scope.runState === 'playing') {
                 if(entry._selected) {
                     $log.debug('Processing order ID: ' + entry.orderId);
-                    ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
+                    FakeShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
                         entry._updatedAt = moment();
                         entry.shipmentId = shipmentData.shipmentId;
 
-                        ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
+                        FakeShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
                             entry._selected = false;
-                            labelData.createdAt = moment();
-                            $scope.logs.unshift(labelData);
-                            i++;
-                            $scope.createShipmentAndLabel(i);
+
+                            var proceed = false;
+
+                            // store all messages
+                            for(var j=0; j<labelData.length; j++) {
+                                labelData[j].createdAt = moment();
+                                $scope.logs.unshift(labelData[j]);
+
+                                // proceed only if you find acceptable status
+                                if(labelData[j].status==='success' || labelData[j].status==='warning') {
+                                    proceed = true;
+                                }
+                            }
+
+                            if(proceed) {
+                                i++;
+                                $scope.createShipmentAndLabel(i);
+                            } else {
+                                $scope.runState = 'paused';
+                                $alert({content: 'Label for order ID: ' + entry.orderId + ' was not successful. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
+                            }
                         }).error(function(labelData) {
                             $scope.runState = 'paused';
                             $alert({content: 'Label for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
@@ -279,8 +214,11 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
     $scope.createLabel = function(entry) {
         return ShippingSvc.label({orderId: entry.orderId}).success(function(data) {
-            data.createdAt = moment();
-            $scope.logs.unshift(data);
+            // store all messages
+            for(var j=0; j<labelData.length; j++) {
+                data[j].createdAt = moment();
+                $scope.logs.unshift(data[j]);
+            }
         });
     };
 
@@ -297,7 +235,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     };
 
     $scope.showStatus = function(shipping, pos) {
-        return ($scope.statuses[shipping.orderId] && $scope.statuses[shipping.orderId].length >= pos);
+        return ($scope.statuses[shipping.orderId] && $scope.statuses[shipping.orderId].length > pos);
     };
 
     $scope.hasStatus = function(shipping, pos) {
@@ -306,11 +244,14 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
     $scope.statusClass = function(shipping, pos) {
         if($scope.hasStatus(shipping, pos)) {
-            var status = $scope.statuses[shipping.orderId][pos].status;
+            var status = $scope.statuses[shipping.orderId][pos];
 
-            status = status==='error' ? 'danger' : status;
-
-            return status;
+            switch(status) {
+                case 'error':
+                    return 'danger';
+                default:
+                    return status;
+            }
         }
 
         return 'default';
