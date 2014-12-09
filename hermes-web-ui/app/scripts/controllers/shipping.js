@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc, FakeShippingSvc) {
+angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
     $scope.debugging = false;
     $scope.busy = false;
     $scope.params = {};
@@ -143,11 +143,11 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             if ($scope.runState === 'playing') {
                 if(entry._selected) {
                     $log.debug('Processing order ID: ' + entry.orderId);
-                    FakeShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
+                    ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
                         entry._updatedAt = moment();
                         entry.shipmentId = shipmentData.shipmentId;
 
-                        FakeShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
+                        ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
                             entry._selected = false;
 
                             var proceed = false;
