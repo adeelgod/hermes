@@ -51,6 +51,7 @@ public class FakeShippingResource {
         // NOTE: simulating intermittent error situations
         if(labelCount.get()%3==0) {
             stati.add(createIntrashipResponse(orderId, "error", "DHL Intraship::create::-2::at least one shipment has errors | your order could not be processed your order could not be processed  | the value integrativ - kinder miteinander e. v. has a wrong field length. the allowed field length is 30.", 3));
+            labelCount.set(0);
         } else {
             stati.add(createIntrashipResponse(orderId, "success", "DHL Intraship::pdf::0::PDF creation was successful", 3));
         }
