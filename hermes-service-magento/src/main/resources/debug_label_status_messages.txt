@@ -1,0 +1,29 @@
+<br />DHL Intraship::pdf::0::PDF creation was successful<br />Ihre L-Carb Shop Sendung ist Unterwegs<br />DHL Intraship::create::0::ok<br /> (unknown)
+DHL Intraship::create::0::ok | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable])
+DHL Intraship::create::-2::Invalid fieldlength in element 'PartnerID'. Please refer to documentation.
+DHL Intraship::create::-2::Unable to save PDF to /home/l-carb-shop.de/public_html/var/intraship/documents/pdf--4/pdf--40/pdf--402/label-00340433836281813654.pdf.
+DHL Intraship::create::0::Could not connect to host
+DHL Intraship::create::0::Not Found
+DHL Intraship::create::1001::login failed
+DHL Intraship::pdf::0::PDF creation was successful
+DHL Intraship::create::-2::Invalid fieldlength in element 'StreetNumber'. Please refer to documentation.
+DHL Intraship::create::-2::Invalid fieldlength in element 'Title'. Please refer to documentation.
+DHL Intraship::create::1001::login failed
+DHL Intraship::pdf::0::PDF creation was successful
+DHL Intraship::create::-2::Invalid value('6048') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::-2::Invalid value('D 88662') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::-2::Invalid value('D-53604') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::-2::Invalid value('DE-52531') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::0::Invalid fieldlength in element 'Name1'. Please refer to documentation.
+DHL Intraship::create::0::Invalid fieldlength in element 'Phone'. Please refer to documentation.
+DHL Intraship::create::0::Invalid value('8167') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::0::Invalid value('D-79576') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::0::Invalid value('Regensburg') in element 'germany'. Please refer to documentation.
+DHL Intraship::create::-2::at least one shipment has errors | for delivery to a packstation the entry of additional address data is not allowed. the entry has been removed. | your order could not be processed your order could not be processed
+DHL Intraship::create::-2::at least one shipment has errors | for delivery to a packstation the entry of additional address data is not allowed. the entry has been removed. | your order could not be processed your order could not be processed  | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable]) | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable])
+DHL Intraship::create::-2::at least one shipment has errors | house number is missing at the receiver address. | please enter number of 'packstation' into field housenr. | for delivery to a packstation the entry of additional address data is not allowed. the entry has been removed. | your order could not be processed your order could not be processed  | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable]) | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable])
+DHL Intraship::create::-2::at least one shipment has errors | illegal product code/attendance for a account. | your order could not be processed your order could not be processed -1 | product key is missing.
+DHL Intraship::create::-2::at least one shipment has errors | please enter 'customer id number' into field company name 2 or contact. | your order could not be processed your order could not be processed
+DHL Intraship::create::-2::at least one shipment has errors | your order could not be processed your order could not be processed  | the value dr.haspel u partner teststudio gmbh has a wrong field length. the allowed field length is 30.
+DHL Intraship::create::-2::at least one shipment has errors | your order could not be processed your order could not be processed  | the value enterprise autovermietung  m.putzki has a wrong field length. the allowed field length is 30. | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable]) | warning: the address could not be validated correctly. please correct the street name, because this is unknown for entered post code or written incorrect. this could lead to delays within shipment delivery advice ([non_codable])
+DHL Intraship::create::-2::at least one shipment has errors | your order could not be processed your order could not be processed  | the value integrativ - kinder miteinander e. v. has a wrong field length. the allowed field length is 30.
