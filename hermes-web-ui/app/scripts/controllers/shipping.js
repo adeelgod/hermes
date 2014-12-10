@@ -33,15 +33,14 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
     $scope.debug = function() {
         $scope.debugging = !$scope.debugging;
-        /**
-        if($scope.debugging) {
-            $scope.params.status = '%';
-        }
-         */
     };
 
     $scope.selectLog = function(entry) {
-        $scope.currentLog=entry;
+        if($scope.currentLog && $scope.currentLog.orderId===entry.orderId) {
+            $scope.currentLog = undefined;
+        } else {
+            $scope.currentLog=entry;
+        }
     };
 
     $scope.clearLogs = function() {
