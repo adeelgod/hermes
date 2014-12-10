@@ -19,12 +19,6 @@ block content
                                 i.fa.fa-list
                             button.btn(type='button', ng-click='debug()', ng-class="{'btn-danger': debugging, 'btn-default': !debugging}")
                                 i.fa.fa-bug
-                        //
-                            .btn-group.btn-group-sm(ng-show='debugging')
-                                button.btn.btn-success(type='button', ng-audio='audio/success.mp3')
-                                    i.fa.fa-play
-                                button.btn.btn-danger(type='button', ng-audio='audio/error.mp3')
-                                    i.fa.fa-play
                     hr
                     .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.description}}
@@ -62,12 +56,6 @@ block content
 
         .col-md-8
             .well.well-sm(ng-show='logging', style='max-height: 300px; overflow-y: scroll;')
-                //
-                    .btn-group.btn-group-sm.pull-left
-                        button.btn.btn-default(type='button', ng-click='runStateToggle()')
-                            i.fa(ng-class="{'fa-play': runState=='stopped' || runState=='paused', 'fa-pause': runState=='playing'}")
-                        button.btn.btn-default(type='button', ng-click='runStateStop()', ng-show="runState=='playing' || runState=='paused'")
-                            i.fa.fa-stop
                 .btn-group.btn-group-sm.pull-right
                     button.btn.btn-danger(type='button', ng-click='clearLogs()')
                         i.fa.fa-trash
