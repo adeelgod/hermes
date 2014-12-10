@@ -170,6 +170,7 @@
                                 <initialHeapSize>512</initialHeapSize>
                                 <maxHeapSize>1024</maxHeapSize>
                                 <opts>
+                                    <opt>-Dspring.profiles.active="production"</opt>
                                     <opt>-Dlogback.configurationFile=logback.xml</opt>
                                     <opt>-Dhermes.config=hermes.properties</opt>
                                     <opt>-Xmx1024m</opt>

@@ -1,10 +1,11 @@
 package com.m11n.hermes.rest.api;
 
-import com.m11n.hermes.service.magento.DefaultMagentoService;
+import com.m11n.hermes.core.service.MagentoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,8 +25,12 @@ public class ShippingResource {
     private static final Logger logger = LoggerFactory.getLogger(ShippingResource.class);
 
     @Inject
-    private DefaultMagentoService magentoService;
-    //private DebugMagentoService magentoService;
+    private MagentoService magentoService;
+
+    @PostConstruct
+    public void init() {
+        logger.debug("############################ SHIPPING RESOURCE MAGENTO IMPLEMENTATION: {}", magentoService.getClass().getName());
+    }
 
     @GET
     @Path("/shipment")

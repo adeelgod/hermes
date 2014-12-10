@@ -4,12 +4,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Profile("debug")
 @Service
 public class DebugMagentoService extends AbstractMagentoService {
 
