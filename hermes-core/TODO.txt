@@ -1,4 +1,7 @@
-- persistence repository to check intraship status
+- bank modul
+- webservice: www.l-carb-shop.de/rechnung?login=LOGIN&password=PASSWORD&id=ORDER_INCREMENT_ID
+
+- x persistence repository to check intraship status
 - x REST service to check intraship status (via SQL queries for each order ID)
 - x REST service invoke Magento label service
 - x REST service custom "lieferschein" function by Indians
@@ -53,7 +56,7 @@ Select parent_id, created_at, comment from l_carb_shop_de.mage_sales_flat_shipme
 - x default values are not set
 - x menus
 - x major UI cleanup
-- print preview pdf dynamicreports
+- x print preview pdf dynamicreports
 - delete forms in list not working
 
 ==================================================================================================================================
