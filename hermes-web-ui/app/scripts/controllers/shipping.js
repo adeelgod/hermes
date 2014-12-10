@@ -135,7 +135,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
     };
 
     $scope.createShipmentAndLabel = function(i) {
-        $scope.cancelErrorSound();
+        $scope.cancelSound();
 
         if ($scope.shippings && i < $scope.shippings.length) {
             var entry = $scope.shippings[i];
