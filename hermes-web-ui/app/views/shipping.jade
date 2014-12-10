@@ -55,7 +55,7 @@ block content
                                         button.btn.btn-lg.btn-default(type='button', ng-click='runStateStop()', ng-show="runState=='playing' || runState=='paused'")
                                             i.fa.fa-stop
                             .col-md-4
-                                button.btn.btn-default(type='button', ng-click='cancelErrorSound()', ng-show='errorSoundLoop')
+                                button.btn.btn-default(type='button', ng-click='cancelSound()', ng-show='errorSoundLoop || successSoundLoop')
                                     span.fa-stack
                                         i.fa.fa-volume-up.fa-stack-1x
                                         i.fa.fa-ban.fa-stack-2x.text-danger

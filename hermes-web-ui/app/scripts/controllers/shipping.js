@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
+angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc, FakeShippingSvc) {
     $scope.debugging = false;
     $scope.busy = false;
     $scope.params = {};
@@ -143,11 +143,11 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             if ($scope.runState === 'playing') {
                 if(entry._selected) {
                     $log.debug('Processing order ID: ' + entry.orderId);
-                    ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
+                    FakeShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
                         entry._updatedAt = moment();
                         entry.shipmentId = shipmentData.shipmentId;
 
-                        ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
+                        FakeShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
                             entry._selected = false;
 
                             var proceed = false;
@@ -193,7 +193,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         } else {
             $scope.runState = 'stopped';
             $alert({content: 'All selected shipments processed (#' + i + ').', placement: 'top', type: 'success', show: true, duration: 5});
-            $scope.successSound.play();
+            $scope.loopSuccessSound();
         }
     };
 
@@ -210,6 +210,26 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             $interval.cancel($scope.errorSoundLoop);
             $scope.errorSoundLoop = undefined;
         }
+    };
+
+    $scope.loopSuccessSound = function() {
+        // NOTE: play immediately the first time
+        $scope.successSound.play();
+        $scope.successSoundLoop = $interval(function() {
+            $scope.successSound.play();
+        }, 60000); // TODO: configurable?
+    };
+
+    $scope.cancelSuccessSound = function() {
+        if(angular.isDefined($scope.successSoundLoop)) {
+            $interval.cancel($scope.successSoundLoop);
+            $scope.successSoundLoop = undefined;
+        }
+    };
+
+    $scope.cancelSound = function() {
+        $scope.cancelSuccessSound();
+        $scope.cancelErrorSound();
     };
 
     $scope.runStateToggle = function() {
