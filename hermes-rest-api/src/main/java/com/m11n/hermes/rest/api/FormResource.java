@@ -101,8 +101,6 @@ public class FormResource {
     @Path("download")
     @Produces(APPLICATION_JSON)
     public Response download(final List<Map<String, Object>> items) {
-        logger.debug("#################### DOWNLOAD: {}", items);
-
         executor.submit(new Runnable() {
             @Override
             public void run() {
