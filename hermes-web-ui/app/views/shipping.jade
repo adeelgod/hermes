@@ -131,27 +131,27 @@ block content
                             | {{entry.orderId}}
                         td(ng-class="{ 'success': entry.shipmentId }")
                             span(ng-show='entry.shipmentId') {{entry.shipmentId}}
-                        td.text-right(ng-class="{ 'success': checks[entry.id].weight, 'danger': !checks[entry.id].weight }")
+                        td.text-right(ng-class="{ 'success': checks[entry.orderId].weight, 'danger': !checks[entry.orderId].weight }")
                             | {{entry.weight}}
-                        td(ng-class="{ 'success': checks[entry.id].company, 'danger': !checks[entry.id].company }")
+                        td(ng-class="{ 'success': checks[entry.orderId].company, 'danger': !checks[entry.orderId].company }")
                             | {{entry.Company}}
-                        td(ng-class="{ 'success': checks[entry.id].firstname, 'danger': !checks[entry.id].firstname }")
+                        td(ng-class="{ 'success': checks[entry.orderId].firstname, 'danger': !checks[entry.orderId].firstname }")
                             | {{entry.firstname}}
-                        td(ng-class="{ 'success': checks[entry.id].lastname, 'danger': !checks[entry.id].lastname }")
+                        td(ng-class="{ 'success': checks[entry.orderId].lastname, 'danger': !checks[entry.orderId].lastname }")
                             | {{entry.lastname}}
-                        td.text-right(ng-class="{ 'success': checks[entry.id].phone, 'danger': !checks[entry.id].phone }")
+                        td.text-right(ng-class="{ 'success': checks[entry.orderId].phone, 'danger': !checks[entry.orderId].phone }")
                             | {{entry.phone}}
-                        td(ng-class="{ 'success': checks[entry.id].street1, 'danger': !checks[entry.id].street1 }")
+                        td(ng-class="{ 'success': checks[entry.orderId].street1, 'danger': !checks[entry.orderId].street1 }")
                             | {{entry.street1}}
-                        td(ng-class="{ 'success': checks[entry.id].street2, 'danger': !checks[entry.id].street2 }")
+                        td(ng-class="{ 'success': checks[entry.orderId].street2, 'danger': !checks[entry.orderId].street2 }")
                             | {{entry.street2}}
-                        td(ng-class="{ 'success': checks[entry.id].zip, 'danger': !checks[entry.id].zip }")
+                        td(ng-class="{ 'success': checks[entry.orderId].zip, 'danger': !checks[entry.orderId].zip }")
                             | {{entry.zip}}
-                        td(ng-class="{ 'success': checks[entry.id].city, 'danger': !checks[entry.id].city }")
+                        td(ng-class="{ 'success': checks[entry.orderId].city, 'danger': !checks[entry.orderId].city }")
                             | {{entry.city}}
                         td
                             | {{entry.country}}
-                        td(ng-class="{ 'success': checks[entry.id].dhlAccount, 'danger': !checks[entry.id].dhlAccount }")
+                        td(ng-class="{ 'success': checks[entry.orderId].dhlAccount, 'danger': !checks[entry.orderId].dhlAccount }")
                             | {{entry.dhlAccount}}
                         td
                             span.label(class='label-{{statusClass(entry, 0)}}', ng-show='showStatus(entry, 0)') 1

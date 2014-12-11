@@ -83,53 +83,55 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
     $scope.check = function() {
         angular.forEach($scope.shippings, function(shipping) {
-            if(!$scope.checks[shipping.id]) {
-                $scope.checks[shipping.id] = {};
+            if(!$scope.checks[shipping.orderId]) {
+                $scope.checks[shipping.orderId] = {};
             }
 
             // TODO: make this configurable?!?
-            $scope.checks[shipping.id].company = (!shipping.company || shipping.company.length <= 30);
-            $scope.checks[shipping.id].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
-            $scope.checks[shipping.id].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
-            $scope.checks[shipping.id].weight = (!shipping.weight || shipping.weight <= 25);
-            $scope.checks[shipping.id].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
-            $scope.checks[shipping.id].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.match(/\d+/g)) );
-            $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length <= 30);
-            $scope.checks[shipping.id].city = (!shipping.city || shipping.city.length <= 30);
+            $scope.checks[shipping.orderId].company = (!shipping.company || shipping.company.length <= 30);
+            $scope.checks[shipping.orderId].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
+            $scope.checks[shipping.orderId].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
+            $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight <= 25);
+            $scope.checks[shipping.orderId].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
+            $scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.match(/\d+/g)) );
+            $scope.checks[shipping.orderId].street2 = (!shipping.street2 || shipping.street2.length <= 30);
+            $scope.checks[shipping.orderId].city = (!shipping.city || shipping.city.length <= 30);
 
             switch(shipping.country) {
                 case 'DE':
                 case 'IT':
-                    $scope.checks[shipping.id]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 5);
+                    $scope.checks[shipping.orderId]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 5);
                     break;
                 case 'AT':
                 case 'BE':
                 case 'CH':
                 case 'DK':
-                    $scope.checks[shipping.id]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 4);
+                    $scope.checks[shipping.orderId]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 4);
                     break;
                 default:
-                    $scope.checks[shipping.id]['zip'] = true;
+                    $scope.checks[shipping.orderId]['zip'] = true;
                     break;
             }
 
             if(shipping.street1 && shipping.street1.indexOf('5pack')>=0) {
-                $scope.checks[shipping.id].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
+                $scope.checks[shipping.orderId].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
             } else if(shipping.street1 && shipping.street1.indexOf('packstat')>=0) {
-                $scope.checks[shipping.id].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
-                $scope.checks[shipping.id].street2 = (!shipping.street2 || shipping.street2.length === 0);
+                console.log('Drin 2....');
+                $scope.checks[shipping.orderId].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
+                $scope.checks[shipping.orderId].street2 = (!shipping.street2 || shipping.street2.length === 0);
             } else {
-                $scope.checks[shipping.id].dhlAccount = true;
+                $scope.checks[shipping.orderId].dhlAccount = true;
             }
 
-            shipping._selected = ($scope.checks[shipping.id].company &&
-                $scope.checks[shipping.id].firstname &&
-                $scope.checks[shipping.id].lastname &&
-                $scope.checks[shipping.id].street1 &&
-                $scope.checks[shipping.id].street2 &&
-                $scope.checks[shipping.id].city &&
-                $scope.checks[shipping.id]['zip'] &&
-                $scope.checks[shipping.id].dhlAccount);
+            console.log('Drin 5....' + $scope.checks[shipping.orderId].dhlAccount);
+            shipping._selected = ($scope.checks[shipping.orderId].company &&
+                $scope.checks[shipping.orderId].firstname &&
+                $scope.checks[shipping.orderId].lastname &&
+                $scope.checks[shipping.orderId].street1 &&
+                $scope.checks[shipping.orderId].street2 &&
+                $scope.checks[shipping.orderId].city &&
+                $scope.checks[shipping.orderId]['zip'] &&
+                $scope.checks[shipping.orderId].dhlAccount);
         });
     };
 
