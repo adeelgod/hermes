@@ -3,7 +3,9 @@ package com.m11n.hermes.rest.api;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.SshService;
 import com.m11n.hermes.persistence.FormRepository;
+import com.m11n.hermes.persistence.IntrashipDocumentRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,10 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -34,8 +40,13 @@ public class FormResource {
     @Inject
     private FormRepository formRepository;
 
+    @Inject
+    private IntrashipDocumentRepository intrashipDocumentRepository;
+
     @Value("${hermes.result.dir}")
     private String resultDir;
+
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -83,86 +94,47 @@ public class FormResource {
             }
         }
 
-        /**
-        Form form = formRepository.findByName(parameters.get("_form").toString());
+        return Response.ok(result).build();
+    }
 
-        final boolean checkFiles = parameters.get("_checkFiles")==null ? false : (Boolean)parameters.get("_checkFiles");
-        final boolean downloadFiles = parameters.get("_downloadFiles")==null ? false : (Boolean)parameters.get("_downloadFiles");
+    @POST
+    @Path("download")
+    @Produces(APPLICATION_JSON)
+    public Response download(final List<Map<String, Object>> items) {
+        logger.debug("#################### DOWNLOAD: {}", items);
 
-        for(FormField field : form.getFields()) {
-            if(field.getType().equals(FormField.Type.DATE.name())) {
-                String value = parameters.get(field.getName()).toString();
-                DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
-                DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                parameters.put(field.getName(), df.print(dt));
-            }
-        }
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                for(Map<String, Object> item : items) {
+                    String orderId = item.get("orderId")==null ? null : item.get("orderId").toString();
+                    String shippingId = item.get("shippingId")==null ? null : item.get("shippingId").toString();
 
-        for(Map.Entry<String, Object> entry : parameters.entrySet()) {
-            logger.info("#################### PARAM: {} = {} ({})", entry.getKey(), entry.getValue(), entry.getValue().getClass().getName());
-        }
+                    if(!StringUtils.isEmpty(orderId) && !StringUtils.isEmpty(shippingId)) {
+                        logger.debug("#################### DOWNLOAD: {} - {}", orderId, shippingId);
 
-        String[] statements = form.getSqlStatement().split(";");
+                        boolean labelExists = new File(resultDir + "/" + orderId + "/label.pdf").exists();
 
-        Object result = null;
+                        if(!labelExists) {
+                            String labelPath = intrashipDocumentRepository.findFilePath(shippingId);
 
-        for(String statement : statements) {
-            statement = statement.trim();
-
-            logger.info("#################### STATEMENT: {}", statement);
-
-            if(statement.toLowerCase().startsWith("select")) {
-                result = auswertungRepository.query(form.getSqlStatement(), parameters, new BaseRowMapper() {
-                    @Override
-                    public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
-                        Map<String, Object> row = new HashMap<>();
-                        ResultSetMetaData metaData = resultSet.getMetaData();
-
-                        for(int j=1; j<=metaData.getColumnCount(); j++) {
-                            String name = getLabel(metaData, j);
-                            Object value = getValue(resultSet, j);
-
-                            row.put(name, value);
-                        }
-
-                        if(row.containsKey("orderId") && checkFiles) {
-                            row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
-                            row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
-
-                            if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                                String orderId = row.get("orderId").toString();
-                                String shippingId = row.get("shippingId").toString();
-
-                                String path = intrashipDocumentRepository.findFilePath(shippingId);
-
-                                if(path!=null) {
-                                    try {
-                                        File f = new File(resultDir + "/" + row.get("orderId"));
-                                        if(!f.exists()) {
-                                            f.mkdirs();
-                                        }
-                                        logger.info("#################### COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
-                                        sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
-                                        row.put("_labelExists", true);
-                                    } catch (Exception e) {
-                                        logger.error(e.toString(), e);
-                                    }
-                                } else {
-                                    logger.info("#################### NOT FOUND: {} -> {}", orderId, shippingId);
+                            try {
+                                File f = new File(resultDir + "/" + orderId);
+                                if (!f.exists()) {
+                                    f.mkdirs();
                                 }
+                                logger.debug("#################### COPY: {} -> {}", labelPath, resultDir + "/" + orderId + "/label.pdf");
+                                sshService.copy(labelPath, resultDir + "/" + orderId + "/label.pdf");
+                            } catch (Exception e) {
+                                logger.error(e.toString(), e);
                             }
                         }
-
-                        return row;
                     }
-                });
-            } else {
-                result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
+                }
             }
-        }
-         */
+        });
 
-        return Response.ok(result).build();
+        return Response.ok().build();
     }
 
     @GET

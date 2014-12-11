@@ -36,10 +36,13 @@ block content
                     .form-group
                         .row
                             .col-md-4
-                                button.btn.btn-lg.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
+                                button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
                                     i.fa.fa-search
                                     | &nbsp;
                                     | Search
+                                //
+                                    button.btn.btn-primary(type='button', ng-click='download()', ng-disabled='busy')
+                                        i.fa.fa-cloud-download
                             .col-md-4(ng-show='shippings')
                                 .row
                                     .col-sm-6

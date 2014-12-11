@@ -75,6 +75,18 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
         });
     };
 
+    $scope.download = function() {
+        $scope.busy = true;
+
+        // Tests: [{orderId: '300014778', shippingId: '00340433836238284070'}, {orderId: '300014797', shippingId: '00340433836238303108'}]
+        FormSvc.download($scope.shippings).success(function(data) {
+            $scope.busy = false;
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Download failed!', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
+    };
+
     $scope.select = function(selected) {
         angular.forEach($scope.shippings, function(shipping) {
             shipping._selected = selected;
@@ -171,16 +183,19 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                                 $scope.runState = 'paused';
                                 $alert({content: 'Label for order ID: ' + entry.orderId + ' was not successful. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                                 $scope.loopErrorSound();
+                                $scope.download();
                             }
                         }).error(function(labelData) {
                             $scope.runState = 'paused';
                             $alert({content: 'Label for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                             $scope.loopErrorSound();
+                            $scope.download();
                         });
                     }).error(function(shipmentData) {
                         $scope.runState = 'paused';
                         $alert({content: 'Shipment for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                         $scope.loopErrorSound();
+                        $scope.download();
                     });
                 } else {
                     $log.debug('Skipping order ID (not selected): ' + entry.orderId);
@@ -195,6 +210,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             $scope.runState = 'stopped';
             $alert({content: 'All selected shipments processed (#' + i + ').', placement: 'top', type: 'success', show: true, duration: 5});
             $scope.loopSuccessSound();
+            $scope.download();
         }
     };
 

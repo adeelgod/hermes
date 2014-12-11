@@ -36,8 +36,8 @@
 - x execute update on all navbar buttons
 - x packstat und DHL # check funktioniert nicht
 - x report wird nur bei erste charge gedruckt
-- download intraship label pdfs after shipping process done
-- prio 2: bündel pdfs in zips, dann ssh copy
+- x download intraship label pdfs after shipping process done
+- x prio 2: bündel pdfs in zips, dann ssh copy
 - print spool is disabled... maybe disable wait period; add config "hermes.print.fast" true/false
 
 [6:21:04 PM] Daniel Schaaf:

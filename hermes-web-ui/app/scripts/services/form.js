@@ -23,6 +23,13 @@ angular.module('hermes.ui')
                     data: params
                 });
             },
+            download: function(params) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/forms/download',
+                    data: params
+                });
+            },
             save: function(form) {
                 return $http({
                     method: 'POST',
