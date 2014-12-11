@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
+angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
     $scope.debugging = false;
     $scope.busy = false;
     $scope.params = {};
@@ -128,14 +128,12 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
             if(shipping.street1 && shipping.street1.indexOf('5pack')>=0) {
                 $scope.checks[shipping.orderId].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
             } else if(shipping.street1 && shipping.street1.indexOf('packstat')>=0) {
-                console.log('Drin 2....');
                 $scope.checks[shipping.orderId].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
                 $scope.checks[shipping.orderId].street2 = (!shipping.street2 || shipping.street2.length === 0);
             } else {
                 $scope.checks[shipping.orderId].dhlAccount = true;
             }
 
-            console.log('Drin 5....' + $scope.checks[shipping.orderId].dhlAccount);
             shipping._selected = ($scope.checks[shipping.orderId].company &&
                 $scope.checks[shipping.orderId].firstname &&
                 $scope.checks[shipping.orderId].lastname &&
@@ -155,7 +153,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
             if ($scope.runState === 'playing') {
                 if(entry._selected) {
-                    $log.debug('Processing order ID: ' + entry.orderId);
                     ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
                         entry._updatedAt = moment();
                         entry.shipmentId = shipmentData.shipmentId;
@@ -176,6 +173,8 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                                 }
                             }
 
+                            $scope.status(entry);
+
                             if(proceed) {
                                 i++;
                                 $scope.createShipmentAndLabel(i);
@@ -186,6 +185,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                                 $scope.download();
                             }
                         }).error(function(labelData) {
+                            $scope.status(entry);
                             $scope.runState = 'paused';
                             $alert({content: 'Label for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                             $scope.loopErrorSound();
@@ -198,7 +198,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
                         $scope.download();
                     });
                 } else {
-                    $log.debug('Skipping order ID (not selected): ' + entry.orderId);
                     i++;
                     $scope.createShipmentAndLabel(i);
                 }
