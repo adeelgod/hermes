@@ -212,4 +212,6 @@ angular.module('hermes.ui').controller('FormCtrl', function ($rootScope, $scope,
             }
         });
     });
+
+    FormSvc.synchronize($scope);
 });
