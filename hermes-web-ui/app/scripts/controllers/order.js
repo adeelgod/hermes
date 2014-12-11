@@ -16,9 +16,9 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                     $scope.params[field.name] = val;
 
                     if(field.name==='from') {
-                        $scope.params['from'] = moment().startOf('day').subtract(24, 'hours');
+                        $scope.params['from'] = moment().startOf('day');
                     } else if(field.name==='until') {
-                        $scope.params['until'] = moment().startOf('day');
+                        $scope.params['until'] = moment().startOf('day').add(24, 'hours');
                     }
                 }
             });
