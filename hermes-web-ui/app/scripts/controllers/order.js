@@ -7,6 +7,8 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.loading = true;
 
+    $scope.selectedOrders = [];
+
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
@@ -27,11 +29,13 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     };
 
     $scope.charge = function(index) {
-        var chargeSize = $scope.configuration['hermes.charge.size'];
+        var chargeSize = Number($scope.configuration['hermes.charge.size']);
         return Math.ceil( (index+1)/chargeSize);
     };
 
     $scope.query = function() {
+        $scope.selectedOrders = [];
+
         $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
         $scope.params['_checkFiles'] = true;
         $scope.params['_downloadFiles'] = true;
@@ -50,6 +54,21 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         angular.forEach($scope.orders, function(order) {
             order._selected = selected;
         });
+    };
+
+    $scope.selectEntry = function(entry) {
+        entry._selected=!entry._selected;
+
+        if(entry._selected) {
+            $scope.selectedOrders.push(entry);
+        } else {
+            for(var i=0; i<$scope.selectedOrders.length; i++) {
+                if(entry.orderId===$scope.selectedOrders[i].orderId) {
+                    $scope.selectedOrders.splice(i, 1);
+                    break;
+                }
+            }
+        }
     };
 
     var move = function (ar, old_index, new_index) {
@@ -105,43 +124,40 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         if(!skipIteration) {
             iterator++;
         }
-        if($scope.orders[iterator]) {
-            if($scope.orders[iterator]._selected) {
+        if(iterator<$scope.orders.length && $scope.orders[iterator]) {
+            if($scope.orders[iterator]._selected===true) {
 
-                //$scope.params._order_ids.push($scope.orders[iterator].orderId);
+                var chargeSize = Number($scope.configuration['hermes.charge.size']);
 
-                var chargeSize = $scope.configuration['hermes.charge.size'];
+                $log.info('######## count: ' + count + ' iterator: ' + iterator);
 
                 // first print charge report
-                if( count%(chargeSize+1)===0) {
-                    $scope.printReport().then(function() {
-                        $log.info('Printing: charge!');
-                        //iterator++;
+                if( count%chargeSize===0 ) {
+                    if(count<$scope.selectedOrders.length) {
+                        $scope.printReport().then(function() {
+                            count++;
+                            printNext(true);
+                        });
+                    } else {
                         count++;
                         printNext(true);
-                    });
+                    }
                 } else {
                     // TODO: check invoice ID and shipping ID exist
                     $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
-                        $log.info('Printed: ' + $scope.orders[iterator].orderId + ' (invoice)');
                         $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
-                            $log.info('Printed: ' + $scope.orders[iterator].orderId + ' (label)');
-                            //iterator++;
                             count++;
                             printNext();
                         });
                     });
                 }
             } else {
-                //iterator++;
                 printNext();
             }
         } else {
             $scope.busy = false;
-        }
-
-        if(iterator>=$scope.orders.length) {
-            $scope.busy = false;
+            iterator = -1;
+            count = 0;
         }
     };
 
@@ -158,10 +174,10 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         params._order_ids = [];
         params._templates = $scope.configuration['hermes.reporting.template.report'];
 
-        var chargeSize = $scope.configuration['hermes.charge.size'];
-        var start = chargeSize*count;
-        var end = chargeSize*count+chargeSize;
-        $log.info('######## start: ' + start + ' end: ' + end);
+        var chargeSize = Number($scope.configuration['hermes.charge.size']);
+        var start = chargeSize*Math.floor(count/chargeSize);
+        var end = start+chargeSize;
+        $log.info('######## start: ' + start + ' end: ' + end + ' #' + count + ' - ' + (count%chargeSize));
         for(var i=start; i<end; i++) {
             if($scope.orders[i]._selected) {
                 params._order_ids.push($scope.orders[i].orderId);

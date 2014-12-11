@@ -91,7 +91,7 @@ block content
                                 button.btn.btn-sm.btn-default(type='button', ng-click='moveDown($index)', ng-disabled='busy')
                                     i.fa.fa-caret-down
                         td.text-center
-                            button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
+                            button.btn.btn-sm.btn-default(type='button', ng-click='selectEntry(entry)', ng-disabled='busy')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td {{entry.unId}}
                         td {{entry.orderId}}
