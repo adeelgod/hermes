@@ -153,6 +153,8 @@ angular.module('hermes.ui').controller('FormCtrl', function ($rootScope, $scope,
     };
 
     $scope.list();
+
+    FormSvc.synchronize($scope);
 }).controller('FormExecuteCtrl', function ($scope, $log, $stateParams, $alert, FormSvc, ReportSvc) {
     $scope.executing = false;
     $scope.loading = true;

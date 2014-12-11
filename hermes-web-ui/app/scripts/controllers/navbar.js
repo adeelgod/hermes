@@ -46,6 +46,8 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, F
     };
 
     $scope.synchronize = function() {
+        FormSvc.synchronize($scope);
+        /**
         $scope.loading = true;
         var params = {};
         params['_form'] = $scope.updateForm.name;
@@ -56,6 +58,7 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, F
             $scope.loading = false;
             $alert({content: 'Sync failed!', placement: 'top', type: 'danger', show: true, duration: 5});
         });
+         */
     };
 
     $scope.$on('form.reload', function() {

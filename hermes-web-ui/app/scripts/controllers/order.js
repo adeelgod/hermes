@@ -184,5 +184,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         $scope.getForm($scope.configuration['hermes.orders.form']);
     });
 
+    FormSvc.synchronize($scope);
+
     //$alert({content: 'Hi Daniel. Die Navigationsleiste ist jetzt umgestaltet. Melde Dich als Admin an, um alle Buttons zu sehen.', placement: 'top', type: 'info', show: true});
 });

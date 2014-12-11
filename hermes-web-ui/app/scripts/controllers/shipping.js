@@ -307,4 +307,6 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $log, $
 
         $scope.getForm($scope.configuration['hermes.shipping.form']);
     });
+
+    FormSvc.synchronize($scope);
 });
