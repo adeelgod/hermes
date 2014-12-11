@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParams, $alert, FormSvc) {
+angular.module('hermes.ui').controller('FormCtrl', function ($rootScope, $scope, $stateParams, $alert, FormSvc) {
     $scope.forms = [];
     $scope.field = {};
     $scope.lookup = '';
@@ -96,6 +96,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($scope, $stateParam
             $scope.form = data;
             $scope.list().then(function() {
                 $alert({content: 'Form saved: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
+                $rootScope.$broadcast('form.reload');
             });;
         });
     };

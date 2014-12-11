@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, ExampleSvc, FormSvc) {
+angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, FormSvc) {
     $scope.loading = true;
     $scope.forms = [];
     $scope.updateForm = {};
@@ -58,9 +58,9 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, E
         });
     };
 
-    $scope.exampleQueue = function() {
-        ExampleSvc.queue();
-    };
+    $scope.$on('form.reload', function() {
+        $scope.list();
+    });
 
     $scope.list();
 });
