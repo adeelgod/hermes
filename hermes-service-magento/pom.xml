@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes-service</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../hermes-service</relativePath>
     </parent>
 
     <artifactId>hermes-service-magento</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Hermes :: Service :: Magento</name>
