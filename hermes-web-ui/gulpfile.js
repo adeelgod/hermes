@@ -172,7 +172,7 @@ gulp.task('fonts', function () {
 
 // extras
 gulp.task('extras', function () {
-    return gulp.src(['app/*.*', 'app/**/*.json', '!app/bower_components/**/*.json', '!app/*.html', '!app/**/*.jade'], { dot: true })
+    return gulp.src(['app/*.*', 'app/**/*.json', 'app/**/*.mp3', 'app/**/*.webm', '!app/bower_components/**/*.json', '!app/*.html', '!app/**/*.jade'], { dot: true })
         .pipe(gulp.dest('dist'));
 });
 

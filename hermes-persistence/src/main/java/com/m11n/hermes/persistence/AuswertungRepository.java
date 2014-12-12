@@ -1,6 +1,7 @@
 package com.m11n.hermes.persistence;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -14,8 +15,16 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
     }
 
     public int update(String sqlStatement, Map<String, Object> parameters) {
-        // TODO: check insert/update
-        //return jdbcTemplate.update(statement, parameters);
-        return 0;
+        return jdbcTemplate.update(sqlStatement, parameters);
+    }
+
+    public String findShippingIdByOrderId(String orderId) {
+        String sql = "select shipping_id from Auswertung.mage_custom_order where Bestellung = " + orderId;
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Collections.<String, Object>emptyMap());
+        if(result.next()) {
+            return result.getString(1);
+        } else {
+            return null;
+        }
     }
 }

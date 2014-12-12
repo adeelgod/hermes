@@ -81,11 +81,19 @@ public class ConfigurationResource {
         Properties p = new Properties();
 
         for(Map.Entry<String, String> entry : properties.entrySet()) {
-            if(entry.getKey().contains("password")) {
-                p.setProperty(entry.getKey(), encrypt(entry.getValue()));
-            } else {
-                p.setProperty(entry.getKey(), entry.getValue());
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            if(key.contains("password")) {
+                value = encrypt(value);
+            } else if(key.contains("dir") && value.contains("\\")) {
+                // reduce pairs to singles
+                value = value.replaceAll("\\\\\\\\", "\\\\");
+                // replace all crap with forward slash
+                value = value.replaceAll("\\\\", "/");
             }
+
+            p.setProperty(key, value);
         }
 
         p.store(new FileOutputStream("hermes.properties"), "Hermes");

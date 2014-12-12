@@ -20,7 +20,7 @@ update  mage_custom_order as a left join l_carb_shop_de.mage_sales_flat_order   
 
 update  mage_custom_order as a left join l_carb_shop_de.mage_sales_flat_shipment_track    as b on b.parent_id    =  a.shipping_id  set a.`shipping_lable`=b.`track_number`    where b.parent_id    =  a.shipping_id      ;
 
-update  mage_custom_order as a left join l_carb_shop_de.mage_sales_flat_order_address    as b on b.parent_id    =  a.order_id  set a.`ort`=b.`city`, a.land = b.country_id, a.PLZ = b.postcode    where  b.parent_id    =  a.order_id    ;
+update  mage_custom_order as a left join l_carb_shop_de.mage_sales_flat_order_address    as b on b.parent_id    =  a.order_id  set a.`str1`=b.`street`,a.`Firma`=b.`company`,a.`Telefon`=b.`telephone`,a.`DHL_Account`=b.`dhlaccount`,a.`ort`=b.`city`, a.land = b.country_id, a.PLZ = b.postcode    where  b.parent_id    =  a.order_id   and address_type = "shipping" ;
 
 insert ignore into mage_custom_order_item( `Item_id`, order_id, `Produkt_id`, `Produkt_name`, `Anzahl`, `Preis_netto`, `Gesamtpreis_netto_aus_Item`, `Steuersatz`, `MWsT`) select a.item_id, a.order_id,  a.product_id, a.name, a.qty_ordered, a.price, a.qty_ordered* a.price as summe_produkte, a.tax_percent, a.tax_amount  from l_carb_shop_de.mage_sales_flat_order_item as a;
 

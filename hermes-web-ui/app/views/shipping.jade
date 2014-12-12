@@ -1,0 +1,172 @@
+extends /layouts/_page
+block content
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-hide='loading')
+        .col-md-4
+            form(role='form', name='shippingForm', novalidate='')
+                .form-group
+                    h2
+                        i.fa.fa-calendar
+                        | &nbsp;
+                        | Shipping Search
+                        | &nbsp;
+                        .btn-group
+                            button.btn(type='button', ng-click='logging=!logging', ng-class="{'btn-primary': logging, 'btn-default': !logging}")
+                                i.fa.fa-list
+                            button.btn(type='button', ng-click='debug()', ng-class="{'btn-danger': debugging, 'btn-default': !debugging}")
+                                i.fa.fa-bug
+                    hr
+                    .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
+                        label(for='{{field.name}}') {{field.description}}
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && (!field.lookup || field.lookup.length == 0)", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        .row(ng-if="field.fieldType=='DATETIME'")
+                            .col-md-8
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}} date', bs-datepicker='', type='text')
+                            .col-md-4
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
+                        br
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && field.lookup.length > 0", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
+                            i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
+                    .form-group
+                        .row
+                            .col-md-4
+                                button.btn.btn-lg.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
+                                    i.fa.fa-search
+                                    | &nbsp;
+                                    | Search
+                                //
+                                    button.btn.btn-primary(type='button', ng-click='download()', ng-disabled='busy')
+                                        i.fa.fa-cloud-download
+                            .col-md-4(ng-show='shippings')
+                                .row
+                                    .col-sm-6
+                                        button.btn.btn-lg.btn-default(type='button', ng-click='runStateToggle()')
+                                            i.fa(ng-class="{'fa-play': runState=='stopped' || runState=='paused', 'fa-pause': runState=='playing'}")
+                                    .col-sm-6
+                                        button.btn.btn-lg.btn-default(type='button', ng-click='runStateStop()', ng-show="runState=='playing' || runState=='paused'")
+                                            i.fa.fa-stop
+                            .col-md-4
+                                button.btn.btn-default(type='button', ng-click='cancelSound()', ng-show='errorSoundLoop || successSoundLoop')
+                                    span.fa-stack
+                                        i.fa.fa-volume-up.fa-stack-1x
+                                        i.fa.fa-ban.fa-stack-2x.text-danger
+
+        .col-md-8
+            .well.well-sm(ng-show='logging', style='height: 260px; overflow-y: scroll;')
+                .btn-group.btn-group-sm.pull-right
+                    button.btn.btn-danger(type='button', ng-click='clearLogs()')
+                        i.fa.fa-trash
+                    button.btn.btn-default(type='button', disabled='') # {{logs.length}}
+                table.table.table-striped.table-condensed
+                    tbody
+                        tr
+                            td(colspan='5')
+                        tr(ng-repeat='entry in logs', ng-class="{'info': entry.status=='info', 'success': entry.status=='success', 'warning': entry.status=='warning' || entry.status=='retry', 'danger': entry.status=='error'}")
+                            td.text-center
+                                button.btn.btn-sm.btn-default(type='button', ng-click='selectLog(entry)')
+                                    i.fa(ng-class="{'fa-circle': currentLog.orderId==entry.orderId, 'fa-circle-o': currentLog.orderId!=entry.orderId}")
+                            td.text-center
+                                i.fa(ng-class="{'fa-check-circle': entry.status=='success', 'fa-info-circle': entry.status=='info', 'fa-question-circle': entry.status=='unknown', 'fa-warning': entry.status=='warning' || entry.status=='retry', 'fa-exclamation-circle': entry.status=='error'}")
+                            td {{entry.orderId}}
+                            td {{entry.message}}
+                            td
+                                span.label.label-default {{entry.count}}
+                            td
+                                span.label.label-default(am-time-ago='entry.createdAt')
+    .row(ng-show='busy')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-hide='busy')
+        .col-md-12
+            table.table.table-striped.table-condensed(ng-show='shippings')
+                thead
+                    tr
+                        td.text-center
+                            .btn-group(style='min-width: 70px')
+                                button.btn.btn-sm.btn-default(type='button', ng-click='select(true)', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-sm.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
+                                    i.fa.fa-minus
+                        td.text-left
+                            h4 Order
+                        td.text-left
+                            h4 Shipping
+                        td.text-center
+                            h4 Weight
+                        td.text-left
+                            h4 Company
+                        td.text-left
+                            h4 Firstname
+                        td.text-left
+                            h4 Lastname
+                        td.text-center
+                            h4 Phone
+                        td.text-left
+                            h4 Street
+                        td.text-left
+                        td.text-left
+                            h4 ZIP
+                        td.text-left
+                            h4 City
+                        td.text-left
+                            h4 Country
+                        td.text-left
+                            h4 DHL #
+                        td
+                            h4 Status
+                        td
+                            button.btn.btn-sm.btn-warning(type='button', ng-click='statusAll()', ng-show='debugging', ng-disabled='busy')
+                                i.fa.fa-bullseye
+                tbody
+                    tr(ng-repeat='entry in shippings', ng-class="{'info': currentLog.orderId==entry.orderId}")
+                        td.text-center
+                            button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
+                                i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
+                        td
+                            | {{entry.orderId}}
+                        td(ng-class="{ 'success': entry.shipmentId }")
+                            span(ng-show='entry.shipmentId') {{entry.shipmentId}}
+                        td.text-right(ng-class="{ 'success': checks[entry.orderId].weight, 'danger': !checks[entry.orderId].weight }")
+                            | {{entry.weight}}
+                        td(ng-class="{ 'success': checks[entry.orderId].company, 'danger': !checks[entry.orderId].company }")
+                            | {{entry.Company}}
+                        td(ng-class="{ 'success': checks[entry.orderId].firstname, 'danger': !checks[entry.orderId].firstname }")
+                            | {{entry.firstname}}
+                        td(ng-class="{ 'success': checks[entry.orderId].lastname, 'danger': !checks[entry.orderId].lastname }")
+                            | {{entry.lastname}}
+                        td.text-right(ng-class="{ 'success': checks[entry.orderId].phone, 'danger': !checks[entry.orderId].phone }")
+                            | {{entry.phone}}
+                        td(ng-class="{ 'success': checks[entry.orderId].street1, 'danger': !checks[entry.orderId].street1 }")
+                            | {{entry.street1}}
+                        td(ng-class="{ 'success': checks[entry.orderId].street2, 'danger': !checks[entry.orderId].street2 }")
+                            | {{entry.street2}}
+                        td(ng-class="{ 'success': checks[entry.orderId].zip, 'danger': !checks[entry.orderId].zip }")
+                            | {{entry.zip}}
+                        td(ng-class="{ 'success': checks[entry.orderId].city, 'danger': !checks[entry.orderId].city }")
+                            | {{entry.city}}
+                        td
+                            | {{entry.country}}
+                        td(ng-class="{ 'success': checks[entry.orderId].dhlAccount, 'danger': !checks[entry.orderId].dhlAccount }")
+                            | {{entry.dhlAccount}}
+                        td
+                            span.label(class='label-{{statusClass(entry, 0)}}', ng-show='showStatus(entry, 0)') 1
+                            | &nbsp;
+                            span.label(class='label-{{statusClass(entry, 1)}}', ng-show='showStatus(entry, 1)') 2
+                            | &nbsp;
+                            span.label(class='label-{{statusClass(entry, 2)}}', ng-show='showStatus(entry, 2)') 3
+                        td
+                            .btn-group.btn-group-sm(style='min-width: 100px')
+                                button.btn.btn-warning(type='button', ng-click='status(entry)', ng-show='debugging', ng-disabled='busy', bs-tooltip='tooltips.shipmentStatus')
+                                    i.fa.fa-bullseye
+                                button.btn.btn-default(type='button', ng-click='createShipment(entry)', ng-show='debugging', ng-disabled='busy')
+                                    i.fa.fa-truck
+                                button.btn.btn-default(type='button', ng-click='createLabel(entry)', ng-show='debugging', ng-disabled='busy')
+                                    i.fa.fa-bookmark-o

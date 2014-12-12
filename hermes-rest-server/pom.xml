@@ -1,23 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
-
-    <properties>
-        <m11n.project.main>com.m11n.hermes.rest.server.Main</m11n.project.main>
-    </properties>
 
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes-rest</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <relativePath>../hermes-rest</relativePath>
     </parent>
 
     <artifactId>hermes-rest-server</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Hermes :: REST :: Server</name>
+
+    <properties>
+        <m11n.project.main>com.m11n.hermes.rest.server.Main</m11n.project.main>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -121,9 +121,9 @@
                     <execution>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy file="../hermes-doc/target/generated-docs/html5/index.html" tofile="${project.build.directory}/classes/hermes-web-ui/help.html" />
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -140,6 +140,58 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>console</headerType>
+                            <jar>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</jar>
+                            <outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
+                            <downloadUrl>http://java.com/download</downloadUrl>
+                            <cmdLine>--port "8080" --jersey "/api/*" --cors "/api/*"</cmdLine>
+                            <classPath>
+                                <mainClass>${m11n.project.main}</mainClass>
+                                <addDependencies>false</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <icon>src/main/resources/icon/application.ico</icon>
+                            <singleInstance>
+                                <mutexName>${project.artifactId}</mutexName>
+                                <windowTitle>${project.name}</windowTitle>
+                            </singleInstance>
+                            <jre>
+                                <minVersion>1.8.0</minVersion>
+                                <jdkPreference>jreOnly</jdkPreference>
+                                <runtimeBits>64/32</runtimeBits>
+                                <initialHeapSize>512</initialHeapSize>
+                                <maxHeapSize>1024</maxHeapSize>
+                                <opts>
+                                    <opt>-Dspring.profiles.active="production"</opt>
+                                    <opt>-Dlogback.configurationFile=logback.xml</opt>
+                                    <opt>-Dhermes.config=hermes.properties</opt>
+                                    <opt>-Xmx1024m</opt>
+                                    <opt>-Xms512m</opt>
+                                </opts>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.1.0</fileVersion>
+                                <txtFileVersion>${project.version}</txtFileVersion>
+                                <fileDescription>${project.name}</fileDescription>
+                                <copyright>2014 Monkeys in Town Lda.</copyright>
+                                <productVersion>1.0.1.0</productVersion>
+                                <txtProductVersion>${project.version}</txtProductVersion>
+                                <productName>${project.name}</productName>
+                                <companyName>Monkeys in Town Lda.</companyName>
+                                <internalName>${project.name}</internalName>
+                                <originalFilename>${project.artifactId}.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

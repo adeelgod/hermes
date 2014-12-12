@@ -1,5 +1,6 @@
 package com.m11n.hermes.service.report;
 
+import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.ReportService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -60,6 +61,9 @@ implements ReportService
     @Inject
     @Named("dataSourceLCarb")
     private DataSource dataSourceLCarb;
+
+    @Inject
+    private DynamicReportService dynamicReportService;
 
     @PostConstruct
     public void init() 
@@ -172,6 +176,10 @@ implements ReportService
                 }
             }
         }
+    }
+
+    public void generate(Form form, Map<String, Object> parameters, OutputStream os) {
+        dynamicReportService.generate(form, parameters, os);
     }
     
     private String getDir(String dir)

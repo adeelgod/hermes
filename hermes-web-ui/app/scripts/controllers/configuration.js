@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $log, ConfigurationSvc, FileUploader, FormSvc, PrinterSvc, ReportSvc) {
+    $scope.loading = true;
+
     $scope.database = {};
 
     $scope.databases = [
@@ -48,16 +50,23 @@ angular.module('hermes.ui').controller('ConfigurationCtrl', function ($scope, $l
     });
 
     $scope.save = function() {
-        ConfigurationSvc.save($scope.configuration);
+        $scope.loading = true;
+        ConfigurationSvc.save($scope.configuration).success(function(data) {
+            $scope.loading = false;
+        }).error(function(data) {
+            $scope.loading = false;
+        });
     };
 
     $scope.refresh = function() {
+        $scope.loading = true;
         ConfigurationSvc.list().success(function(data) {
             //$scope.configuration = data;
             $scope.configuration = data.properties;
             $scope.printers = data.printers;
             $scope.forms = data.forms;
             $scope.reports = data.templates;
+            $scope.loading = false;
         });
     };
 

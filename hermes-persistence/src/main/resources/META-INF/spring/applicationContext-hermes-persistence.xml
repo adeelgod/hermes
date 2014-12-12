@@ -63,10 +63,19 @@
 
     <!-- Entity Manager -->
 
+    <bean id="pmu" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+        <property name="defaultDataSource" ref="dataSourceJpa" />
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+    </bean>
+
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jpaVendorAdapter" ref="vendorAdapter" />
+        <!--
         <property name="dataSource" ref="dataSourceJpa" />
+        -->
         <property name="packagesToScan" value="com.m11n.hermes" />
+        <property name="persistenceUnitManager" ref="pmu" />
+        <property name="persistenceUnitName" value="hermes" />
         <property name="jpaPropertyMap">
             <map>
                 <entry key="hibernate.dialect" value="${hibernate.dialect}" />
