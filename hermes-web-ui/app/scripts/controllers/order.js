@@ -9,6 +9,10 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
     $scope.selectedOrders = [];
 
+    $scope.currentOrder = {};
+
+    $scope.currentOrder = {};
+
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
             $scope.frm = data;
@@ -129,23 +133,28 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
                 var chargeSize = Number($scope.configuration['hermes.charge.size']);
 
-                $log.info('######## count: ' + count + ' iterator: ' + iterator);
-
                 // first print charge report
-                if( count%chargeSize===0 ) {
-                    if(count<$scope.selectedOrders.length) {
+                if( !skipIteration && count%chargeSize===0 ) {
+                    if(iterator<$scope.selectedOrders.length) {
                         $scope.printReport().then(function() {
-                            count++;
+                            $log.info('######## REPORT  order: ' +  $scope.orders[iterator].orderId + ' count: ' + count + ' iterator: ' + iterator);
                             printNext(true);
                         });
                     } else {
-                        count++;
+                        //count++;
                         printNext(true);
                     }
                 } else {
                     // TODO: check invoice ID and shipping ID exist
+                    $scope.currentOrder.orderId = $scope.orders[iterator].orderId;
                     $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
+                        $log.info('######## INVOICE order: ' +  $scope.orders[iterator].orderId + ' count: ' + count + ' iterator: ' + iterator);
+
+                        $scope.currentOrder.invoiceId = $scope.orders[iterator].invoiceId;
                         $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
+                            $log.info('######## LABEL   order: ' +  $scope.orders[iterator].orderId + ' count: ' + count + ' iterator: ' + iterator);
+
+                            $scope.currentOrder.shippingId = $scope.orders[iterator].shippingId;
                             count++;
                             printNext();
                         });
@@ -153,11 +162,19 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                 }
             } else {
                 printNext();
+                $scope.currentOrder.orderId = {};
+                $scope.currentOrder.orderId = null;
+                $scope.currentOrder.invoiceId = null;
+                $scope.currentOrder.shippingId = null;
             }
         } else {
             $scope.busy = false;
             iterator = -1;
             count = 0;
+            $scope.currentOrder.orderId = {};
+            $scope.currentOrder.orderId = null;
+            $scope.currentOrder.invoiceId = null;
+            $scope.currentOrder.shippingId = null;
         }
     };
 

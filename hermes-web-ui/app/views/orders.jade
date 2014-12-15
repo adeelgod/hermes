@@ -81,7 +81,7 @@ block content
                         td.text-left
                             h4 Customer
                 tbody
-                    tr(ng-repeat='entry in orders')
+                    tr(ng-repeat='entry in orders', ng-class="{'info': currentOrder.orderId==entry.orderId}")
                         td
                             h4 {{charge($index)}}
                         td
@@ -96,13 +96,9 @@ block content
                         td {{entry.unId}}
                         td {{entry.orderId}}
                         td(ng-class="{ 'success': entry._invoiceExists, 'danger': !entry._invoiceExists }")
-                            //
-                                span.label(ng-class="{ 'label-success': entry._invoiceExists, 'label-danger': !entry._invoiceExists }")
-                                    i.fa(ng-class="{ 'fa-check': entry._invoiceExists, 'fa-minus': !entry._invoiceExists }")
-                            | &nbsp;{{entry.invoiceId}}
+                            | {{entry.invoiceId}}&nbsp;
+                            i.fa.fa-spin(ng-class="{'fa-circle-o-notch': currentOrder.invoiceId==entry.invoiceId}")
                         td(ng-class="{ 'success': entry._labelExists, 'danger': !entry._labelExists }")
-                            //
-                                span.label(ng-class="{ 'label-success': entry._labelExists, 'label-danger': !entry._labelExists }")
-                                    i.fa(ng-class="{ 'fa-check': entry._labelExists, 'fa-minus': !entry._labelExists }")
-                            | &nbsp;{{entry.shippingId}}
+                            | {{entry.shippingId}}&nbsp;
+                            i.fa.fa-spin(ng-class="{'fa-circle-o-notch': currentOrder.shippingId==entry.shippingId}")
                         td {{entry.lastname}}, {{entry.firstname}}
