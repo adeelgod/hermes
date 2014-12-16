@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $interval, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
     $scope.params = {_order_ids: []};
 
     $scope.busy = false;
@@ -100,6 +100,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         }
     };
 
+    // TODO: remove
     $scope.doPrint = function(order, type) {
         return PrinterSvc.print({orderId: order.orderId, type: type}).success(function(data) {
             $alert({content: 'Printed order: ' + order.orderId + ' (' + type + ')', placement: 'top', type: 'success', show: true, duration: 5});
@@ -124,9 +125,11 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         });
     };
 
+    // TODO: remove
     var iterator = -1;
     var count = 0;
 
+    // TODO: remove
     var printNext = function(skipIteration) {
         if(!skipIteration) {
             iterator++;
@@ -181,13 +184,62 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         }
     };
 
-    $scope.print = function() {
-        iterator = -1;
-        count = 0;
-        $scope.busy = true;
-        printNext();
+    $scope.printCancel = function() {
+        PrinterSvc.cancel().success(function(data) {
+            $scope.busy = false;
+            if($scope.printStatusLoop) {
+                $interval.cancel($scope.printStatusLoop);
+                $scope.printStatusLoop = undefined;
+            }
+            $alert({content: 'Printing cancelled!', placement: 'top', type: 'danger', show: true, duration: 5});
+        }).error(function(data) {
+            // TODO: not sure about that
+            //$scope.busy = false;
+            //$alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
     };
 
+    $scope.print = function() {
+        // TODO: remove
+        iterator = -1;
+        count = 0;
+
+        $scope.busy = true;
+
+        // new approach
+        var req = {orderIds: [], chargeSize: $scope.chargeSize};
+
+        for(var i=0; i<$scope.orders.length; i++) {
+            if($scope.orders[i] && $scope.orders[i]._selected) {
+                req.orderIds.push($scope.orders[i].orderId);
+            }
+        }
+
+        PrinterSvc.printAll(req).success(function(data) {
+            //$scope.busy = false;
+            $alert({content: 'Documents queued', placement: 'top', type: 'success', show: true, duration: 5});
+            $scope.printStatusLoop = $interval(function() {
+                PrinterSvc.status().success(function(data) {
+                    $scope.busy = Boolean(data);
+                    if(!$scope.busy) {
+                        $interval.cancel($scope.printStatusLoop);
+                        $scope.printStatusLoop = undefined;
+                        $alert({content: 'Print queue empty.', placement: 'top', type: 'success', show: true});
+                    }
+                }).error(function(data) {
+                    // TODO: not sure about that
+                    //$scope.busy = false;
+                    //$alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
+                });
+            }, 5000); // TODO: configurable?
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
+        //printNext();
+    };
+
+    // TODO: remove
     $scope.printReport = function() {
         var params = angular.copy($scope.params);
         params.type = 'REPORT';

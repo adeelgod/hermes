@@ -1,7 +1,14 @@
 - bank modul
 - webservice: www.l-carb-shop.de/rechnung?login=LOGIN&password=PASSWORD&id=ORDER_INCREMENT_ID
 
-- cancel print
+- x ticket system
+- x alle orders auswählen
+- x reports, server side implementation
+- x print fast
+- x cancel print
+- reports löschen geht nicht
+- fields report automatisch
+- sound 2x hört nix
 
 - x persistence repository to check intraship status
 - x REST service to check intraship status (via SQL queries for each order ID)
