@@ -19,10 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,8 +37,6 @@ public class PrinterResource {
 
     @Inject
     private ReportService reportService;
-
-    private String lastError;
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -71,7 +66,7 @@ public class PrinterResource {
         executor = Executors.newSingleThreadExecutor();
         running.set(0);
 
-        logger.info("!!!!!!!!!!!!!!!!!!!!! Printing cancelled.");
+        logger.warn("Printing cancelled.");
         return Response.ok().build();
     }
 
@@ -84,15 +79,17 @@ public class PrinterResource {
         try {
             if(running.get()<=0) {
                 Properties p = PropertiesUtil.getProperties();
-                Integer chargeSize = req.getChargeSize()==null? Integer.valueOf(p.getProperty("hermes.charge.size")) : req.getChargeSize();
+                Integer chargeSize = req.getChargeSize()==null || req.getChargeSize()==0? Integer.valueOf(p.getProperty("hermes.charge.size")) : req.getChargeSize();
 
                 int i=0;
 
-                running.set(req.getOrderIds().size()-1);
+                for(String orderId : req.getOrders()) {
+                    logger.debug("############################### QUEUE - REPORT - i: {} cs: {} loop: {}", i, chargeSize, (i % chargeSize));
 
-                for(String orderId : req.getOrderIds()) {
                     if(i%chargeSize==0) {
-                        print(new PrintRequest(DocumentType.REPORT.name(), orderId, req.getChargeSize()));
+                        List<String> chargeOrders = slice(req.getOrders(), i, chargeSize);
+
+                        print(new PrintRequest(DocumentType.REPORT.name(), orderId, chargeOrders, req.getChargeSize()));
                     }
                     print(new PrintRequest(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
                     print(new PrintRequest(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
@@ -115,6 +112,8 @@ public class PrinterResource {
     }
 
     private void print(final PrintRequest req) {
+        running.incrementAndGet();
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -144,38 +143,32 @@ public class PrinterResource {
                         printer = p.getProperty("hermes.printer.report");
                     }
 
-                    for (String orderId : req.getOrderIds()) {
-                        if(Thread.interrupted()) {
-                            logger.warn("Skipping print request: {}", req);
-                            return;
-                        }
-                        if (documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
-                            print(documentType, printer, dir + "/" + orderId + "/" + req.getType().toLowerCase() + ".pdf", fast);
-                        } else if (documentType.equals(DocumentType.REPORT)) {
-                            logger.info("******************************************** PRINT: REPORT ORDER_IDS {}", req.getOrderIds());
+                    if (documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
+                        print(documentType, printer, dir + "/" + req.getOrderId() + "/" + req.getType().toLowerCase() + ".pdf", fast);
+                    } else if (documentType.equals(DocumentType.REPORT)) {
+                        String[] templates = StringUtils.trimToEmpty(req.getTemplates()).split("\\|");
 
-                            String[] templates = req.getTemplates().split("\\|");
-
-                            for (String template : templates) {
-                                if(Thread.interrupted()) {
-                                    logger.warn("Skipping print request: {}", req);
-                                    return;
-                                }
-                                String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
-
-                                Map<String, Object> params = new HashMap<>();
-                                params.put("_order_ids", req.getOrderIds());
-
-                                reportService.generate(template, params, "pdf", reportOutput);
-
-                                print(documentType, printer, reportOutput, fast);
-
-                                // cleanup
-                                FileUtils.deleteQuietly(new File(reportOutput));
+                        for (String template : templates) {
+                            if(Thread.interrupted()) {
+                                logger.warn("Skipping print request: {}", req);
+                                return;
                             }
+
+                            logger.info("PRINT: REPORT ORDER_IDS {} - {}", req.getOrders(), template);
+
+                            String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
+
+                            Map<String, Object> params = new HashMap<>();
+                            params.put("_order_ids", req.getOrders());
+
+                            reportService.generate(template, params, "pdf", reportOutput);
+
+                            print(documentType, printer, reportOutput, fast);
+
+                            // cleanup
+                            FileUtils.deleteQuietly(new File(reportOutput));
                         }
                     }
-
                 } catch (Exception e) {
                     logger.error(e.toString(), e);
                 } finally {
@@ -188,7 +181,7 @@ public class PrinterResource {
     private void print(DocumentType type, String printer, String path, boolean fast) throws Exception {
 
         if(new File(path).exists()) {
-            logger.info("******************************************** PRINT: printer:{} type:{} file:{} fast: {}", printer, type, path, fast);
+            logger.info("PRINT: printer:{} type:{} file:{} fast: {} count: {}", printer, type, path, fast, running.get());
 
             printerService.print(path, printer);
 
@@ -199,10 +192,21 @@ public class PrinterResource {
                     logger.warn("Stopped queue.");
                 }
 
-                logger.info("******************************************** PRINT: wakeup");
+                logger.info("PRINT: wakeup");
             }
         } else {
-            logger.warn("******************************************** PRINT: file not found {}", path);
+            logger.warn("PRINT: file not found {}", path);
         }
+    }
+
+    public static <T> List<T> slice(List<T> list, int index, int count) {
+        List<T> result = new ArrayList<>();
+        if (index >= 0 && index < list.size()) {
+            int end = index + count < list.size() ? index + count : list.size();
+            for (int i = index; i < end; i++) {
+                result.add(list.get(i));
+            }
+        }
+        return result;
     }
 }

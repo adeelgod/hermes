@@ -207,11 +207,11 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $interval,
         $scope.busy = true;
 
         // new approach
-        var req = {orderIds: [], chargeSize: $scope.chargeSize};
+        var req = {orders: [], chargeSize: $scope.configuration['hermes.charge.size']};
 
         for(var i=0; i<$scope.orders.length; i++) {
             if($scope.orders[i] && $scope.orders[i]._selected) {
-                req.orderIds.push($scope.orders[i].orderId);
+                req.orders.push($scope.orders[i].orderId);
             }
         }
 
