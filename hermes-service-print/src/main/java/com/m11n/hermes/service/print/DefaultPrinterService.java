@@ -122,10 +122,12 @@ public class DefaultPrinterService implements PrinterService {
 
         for (PrintService printer : printServices) {
             if(printer.getName().equals(name)) {
+                /**
                 DocFlavor[] flavors = printer.getSupportedDocFlavors();
                 for(DocFlavor flavor : flavors) {
                     logger.debug("+++++++++++ DOCFLAVOR {}: {}", name, flavor);
                 }
+                 */
                 return printer;
             }
         }
