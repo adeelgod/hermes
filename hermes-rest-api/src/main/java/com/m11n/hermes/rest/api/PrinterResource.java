@@ -96,6 +96,8 @@ public class PrinterResource {
                     }
                     print(new PrintRequest(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
                     print(new PrintRequest(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
+
+                    i++;
                 }
             } else {
                 logger.warn("Please cancel first all running print jobs.");
