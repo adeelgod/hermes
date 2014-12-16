@@ -48,6 +48,9 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         FormSvc.query($scope.params).success(function(data) {
             $scope.busy = false;
             $scope.orders = data;
+            angular.forEach($scope.orders, function(order) {
+                order._selected = true;
+            });
         }).error(function(data) {
             $scope.busy = false;
             $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
