@@ -1,7 +1,9 @@
 package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.model.DocumentType;
+import com.m11n.hermes.core.model.PrintJob;
 import com.m11n.hermes.core.model.PrintRequest;
+import com.m11n.hermes.core.model.PrintRequestCharge;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
 import com.m11n.hermes.core.util.PropertiesUtil;
@@ -74,32 +76,28 @@ public class PrinterResource {
     @Path("/print/all")
     @Produces(APPLICATION_JSON)
     public synchronized Response printAll(final PrintRequest req) throws Exception {
-        // same order as javascript: reports per charge, invoice, label
-
         try {
             if(running.get()<=0) {
-                Properties p = PropertiesUtil.getProperties();
-                Integer chargeSize = req.getChargeSize()==null || req.getChargeSize()==0? Integer.valueOf(p.getProperty("hermes.charge.size")) : req.getChargeSize();
+                //Properties p = PropertiesUtil.getProperties();
+                //Integer chargeSize = req.getChargeSize()==null || req.getChargeSize()==0? Integer.valueOf(p.getProperty("hermes.charge.size")) : req.getChargeSize();
 
-                int i=0;
+                for(PrintRequestCharge charge : req.getCharges()) {
+                    if(charge.getOrders()!=null && !charge.getOrders().isEmpty()) {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("_charge", charge.getPos());
+                        params.put("_order_ids", charge.getOrders());
+                        print(new PrintJob(DocumentType.REPORT.name(), null, params, req.getChargeSize()));
 
-                for(String orderId : req.getOrders()) {
-                    logger.debug("############################### QUEUE - REPORT - i: {} cs: {} loop: {}", i, chargeSize, (i % chargeSize));
-
-                    if(i%chargeSize==0) {
-                        List<String> chargeOrders = slice(req.getOrders(), i, chargeSize);
-
-                        print(new PrintRequest(DocumentType.REPORT.name(), orderId, chargeOrders, req.getChargeSize()));
+                        for(String orderId : charge.getOrders()) {
+                            print(new PrintJob(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
+                            print(new PrintJob(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
+                        }
                     }
-                    print(new PrintRequest(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
-                    print(new PrintRequest(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
-
-                    i++;
                 }
             } else {
                 logger.warn("Please cancel first all running print jobs.");
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             if(e instanceof InterruptedException) {
                 logger.warn("Print job cancelled.");
             } else {
@@ -111,7 +109,7 @@ public class PrinterResource {
         return Response.ok().build();
     }
 
-    private void print(final PrintRequest req) {
+    private void print(final PrintJob req) {
         running.incrementAndGet();
 
         executor.execute(new Runnable() {
@@ -154,14 +152,11 @@ public class PrinterResource {
                                 return;
                             }
 
-                            logger.info("PRINT: REPORT ORDER_IDS {} - {}", req.getOrders(), template);
+                            logger.info("PRINT: REPORT PARAMS {} - {}", req.getParams(), template);
 
                             String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
 
-                            Map<String, Object> params = new HashMap<>();
-                            params.put("_order_ids", req.getOrders());
-
-                            reportService.generate(template, params, "pdf", reportOutput);
+                            reportService.generate(template, req.getParams(), "pdf", reportOutput);
 
                             print(documentType, printer, reportOutput, fast);
 

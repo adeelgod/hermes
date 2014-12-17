@@ -207,11 +207,22 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $interval,
         $scope.busy = true;
 
         // new approach
-        var req = {orders: [], chargeSize: $scope.configuration['hermes.charge.size']};
+        var req = {charges: [], chargeSize: $scope.configuration['hermes.charge.size']};
+
+        var prevCharge = 0;
+        var charge = {};
 
         for(var i=0; i<$scope.orders.length; i++) {
+            var curCharge = $scope.charge(i);
+            if(curCharge!==prevCharge) {
+                charge = {};
+                charge.pos = curCharge;
+                charge.orders = [];
+                req.charges.push(charge);
+                prevCharge = curCharge;
+            }
             if($scope.orders[i] && $scope.orders[i]._selected) {
-                req.orders.push($scope.orders[i].orderId);
+                charge.orders.push($scope.orders[i].orderId);
             }
         }
 
