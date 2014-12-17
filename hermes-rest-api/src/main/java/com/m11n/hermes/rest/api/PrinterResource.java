@@ -78,9 +78,6 @@ public class PrinterResource {
     public synchronized Response printAll(final PrintRequest req) throws Exception {
         try {
             if(running.get()<=0) {
-                //Properties p = PropertiesUtil.getProperties();
-                //Integer chargeSize = req.getChargeSize()==null || req.getChargeSize()==0? Integer.valueOf(p.getProperty("hermes.charge.size")) : req.getChargeSize();
-
                 for(PrintRequestCharge charge : req.getCharges()) {
                     if(charge.getOrders()!=null && !charge.getOrders().isEmpty()) {
                         Map<String, Object> params = new HashMap<>();
