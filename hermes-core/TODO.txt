@@ -6,7 +6,7 @@
 - x reports, server side implementation
 - x print fast
 - x cancel print
-- reports löschen geht nicht
+- x reports löschen geht nicht
 - fields report automatisch
 - sound 2x hört nix
 

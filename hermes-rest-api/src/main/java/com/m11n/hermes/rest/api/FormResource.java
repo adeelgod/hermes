@@ -150,8 +150,8 @@ public class FormResource {
 
     @DELETE
     @Produces(APPLICATION_JSON)
-    public Response remove(@QueryParam("uid") String uid) {
-        formRepository.delete(uid);
+    public Response remove(@QueryParam("id") String id) {
+        formRepository.delete(id);
         return Response.ok().build();
     }
 }

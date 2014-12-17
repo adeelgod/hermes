@@ -145,10 +145,11 @@ angular.module('hermes.ui').controller('FormCtrl', function ($rootScope, $scope,
     };
 
     $scope.removeForm = function(id) {
+        $scope.loading = true;
         FormSvc.remove({id: id}).success(function(data) {
             $scope.list().then(function() {
                 $alert({content: 'Form deleted: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
-            });;
+            });
         });
     };
 
