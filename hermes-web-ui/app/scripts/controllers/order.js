@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
+angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $interval, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
     $scope.params = {_order_ids: []};
 
     $scope.busy = false;
@@ -8,6 +8,10 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
     $scope.loading = true;
 
     $scope.selectedOrders = [];
+
+    $scope.currentOrder = {};
+
+    $scope.currentOrder = {};
 
     $scope.getForm = function(name) {
         FormSvc.get(name).success(function(data) {
@@ -44,6 +48,9 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         FormSvc.query($scope.params).success(function(data) {
             $scope.busy = false;
             $scope.orders = data;
+            angular.forEach($scope.orders, function(order) {
+                order._selected = true;
+            });
         }).error(function(data) {
             $scope.busy = false;
             $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
@@ -93,6 +100,7 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         }
     };
 
+    // TODO: remove
     $scope.doPrint = function(order, type) {
         return PrinterSvc.print({orderId: order.orderId, type: type}).success(function(data) {
             $alert({content: 'Printed order: ' + order.orderId + ' (' + type + ')', placement: 'top', type: 'success', show: true, duration: 5});
@@ -117,9 +125,11 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
         });
     };
 
+    // TODO: remove
     var iterator = -1;
     var count = 0;
 
+    // TODO: remove
     var printNext = function(skipIteration) {
         if(!skipIteration) {
             iterator++;
@@ -129,23 +139,28 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
 
                 var chargeSize = Number($scope.configuration['hermes.charge.size']);
 
-                $log.info('######## count: ' + count + ' iterator: ' + iterator);
-
                 // first print charge report
-                if( count%chargeSize===0 ) {
-                    if(count<$scope.selectedOrders.length) {
+                if( !skipIteration && count%chargeSize===0 ) {
+                    if(iterator<$scope.selectedOrders.length) {
                         $scope.printReport().then(function() {
-                            count++;
+                            $log.info('######## REPORT  order: ' +  $scope.orders[iterator].orderId + ' count: ' + count + ' iterator: ' + iterator);
                             printNext(true);
                         });
                     } else {
-                        count++;
+                        //count++;
                         printNext(true);
                     }
                 } else {
                     // TODO: check invoice ID and shipping ID exist
+                    $scope.currentOrder.orderId = $scope.orders[iterator].orderId;
                     $scope.doPrint($scope.orders[iterator], 'INVOICE').then(function() {
+                        $log.info('######## INVOICE order: ' +  $scope.orders[iterator].orderId + ' count: ' + count + ' iterator: ' + iterator);
+
+                        $scope.currentOrder.invoiceId = $scope.orders[iterator].invoiceId;
                         $scope.doPrint($scope.orders[iterator], 'LABEL').then(function() {
+                            $log.info('######## LABEL   order: ' +  $scope.orders[iterator].orderId + ' count: ' + count + ' iterator: ' + iterator);
+
+                            $scope.currentOrder.shippingId = $scope.orders[iterator].shippingId;
                             count++;
                             printNext();
                         });
@@ -153,21 +168,89 @@ angular.module('hermes.ui').controller('OrderCtrl', function ($scope, $log, $ale
                 }
             } else {
                 printNext();
+                $scope.currentOrder.orderId = {};
+                $scope.currentOrder.orderId = null;
+                $scope.currentOrder.invoiceId = null;
+                $scope.currentOrder.shippingId = null;
             }
         } else {
             $scope.busy = false;
             iterator = -1;
             count = 0;
+            $scope.currentOrder.orderId = {};
+            $scope.currentOrder.orderId = null;
+            $scope.currentOrder.invoiceId = null;
+            $scope.currentOrder.shippingId = null;
         }
     };
 
-    $scope.print = function() {
-        iterator = -1;
-        count = 0;
-        $scope.busy = true;
-        printNext();
+    $scope.printCancel = function() {
+        PrinterSvc.cancel().success(function(data) {
+            $scope.busy = false;
+            if($scope.printStatusLoop) {
+                $interval.cancel($scope.printStatusLoop);
+                $scope.printStatusLoop = undefined;
+            }
+            $alert({content: 'Printing cancelled!', placement: 'top', type: 'danger', show: true, duration: 5});
+        }).error(function(data) {
+            // TODO: not sure about that
+            //$scope.busy = false;
+            //$alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
     };
 
+    $scope.print = function() {
+        // TODO: remove
+        iterator = -1;
+        count = 0;
+
+        $scope.busy = true;
+
+        // new approach
+        var req = {charges: [], chargeSize: $scope.configuration['hermes.charge.size']};
+
+        var prevCharge = 0;
+        var charge = {};
+
+        for(var i=0; i<$scope.orders.length; i++) {
+            var curCharge = $scope.charge(i);
+            if(curCharge!==prevCharge) {
+                charge = {};
+                charge.pos = curCharge;
+                charge.orders = [];
+                req.charges.push(charge);
+                prevCharge = curCharge;
+            }
+            if($scope.orders[i] && $scope.orders[i]._selected) {
+                charge.orders.push($scope.orders[i].orderId);
+            }
+        }
+
+        PrinterSvc.printAll(req).success(function(data) {
+            //$scope.busy = false;
+            $alert({content: 'Documents queued', placement: 'top', type: 'success', show: true, duration: 5});
+            $scope.printStatusLoop = $interval(function() {
+                PrinterSvc.status().success(function(data) {
+                    $scope.busy = Boolean(data);
+                    if(!$scope.busy) {
+                        $interval.cancel($scope.printStatusLoop);
+                        $scope.printStatusLoop = undefined;
+                        $alert({content: 'Print queue empty.', placement: 'top', type: 'success', show: true});
+                    }
+                }).error(function(data) {
+                    // TODO: not sure about that
+                    //$scope.busy = false;
+                    //$alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
+                });
+            }, 5000); // TODO: configurable?
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
+        //printNext();
+    };
+
+    // TODO: remove
     $scope.printReport = function() {
         var params = angular.copy($scope.params);
         params.type = 'REPORT';

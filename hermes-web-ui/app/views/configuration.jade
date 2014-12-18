@@ -209,6 +209,12 @@ block content
                 .tab-pane(role='tabpanel', id='print', ng-class="{'active': tab=='print'}")
                     form(role='form', name='printForm', novalidate='')
                         .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.fast']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.printer.fast'], 'fa-circle-o': !configuration['hermes.printer.fast']}")
+                            label(for='') Fast print
+                            p.alert.alert-warning
+                                | This is an experimental feature
+                        .form-group
                             label(for='printMethod') Printing Method
                             button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.method']", ng-options='method.name as method.name for method in printMethods', bs-select='')
                         .form-group(ng-show="configuration['hermes.printer.method']=='ACROBAT'")

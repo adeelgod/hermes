@@ -1,6 +1,35 @@
 - bank modul
 - webservice: www.l-carb-shop.de/rechnung?login=LOGIN&password=PASSWORD&id=ORDER_INCREMENT_ID
 
+- DHL tracker
+We have often Problems with DHL. We want to track their statues. For this I asked a specialist, to programm a scrabbing php class, which recieves the Tracking Numner of a dhl Sending and gives back a daytime and a status.
+I will built a custom table, which will have the status and daytime of all send DHL packets in it. (mage_custom_shipments)
+I want you to build a cron, which will run the scarbber class for all entries, which do not have a specific status.
+In case of specific Status changes I want to generate emails to myselve or the customer.
+Like: Dear customer. DHL tried today to diliver your order. But noone was there. Please pick up your package within the next 7 days in the Post Office Marienstreasse"
+Detailed Information will follow.
+Because I have not all Information which types of status are posible, I want to develope step by step.
+First only fill the Database with status information. Then build up a flexible functionality for email sending. In final version we will need a veiw on this table in backoffice.
+So release will be:
+Built up the cron
+The cron should run 3 times a day: 7:00, 12:00, 18:00
+first step will be to load all new shipments into status table:
+insert ignore into mage_custom_shipments (`order_id`,increment_id, `tracking_no`,`customer_name`,`customer_email`,`Daytime_send`,Daytime_last_status, Daytime_last_status_change) select a.order_id , b.increment_id, a.shipment_number , concat(b.customer_firstname, " ",b.customer_lastname), b.customer_email, b.updated_at, CURRENT_TIMESTAMP(), b.updated_at from mage_intraship_shipment as a left join mage_sales_flat_order as b on a.order_id = b.entity_id where a.order_id = b.entity_id and a.shipment_number is not null;
+Then select shipments, for wich status should be read out with scrabbing class:
+Select tracking_no , concat("http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&idc=",tracking_no) from mage_custom_shipments where DATE != CURDATE and last_status != "zugestellt"
+run the scabber class for any of this entries and write back results into mage_custom_shipments_DHL_status ( tracking_no, Status_time, status)
+set Status information in mage_custom_shipments:
+Update mage_custom_shipments as a left join mage_custom_shipments_DHL_status as b on a.tracking_no = b.tracking_no set a.last_status = "zugestellt" , Daytime_last_status = CURRENT_TIMESTAMP(), Daytime_last_status_change = Status_time where a.Daytime_last_status < Status_time and a.last_status != "zugestellt" and b.Status Like "%erfolgreich zugestellt%"
+
+- x ticket system
+- x alle orders auswählen
+- x reports, server side implementation
+- x print fast
+- x cancel print
+- x reports löschen geht nicht
+- fields report automatisch
+- sound 2x hört nix
+
 - x persistence repository to check intraship status
 - x REST service to check intraship status (via SQL queries for each order ID)
 - x REST service invoke Magento label service

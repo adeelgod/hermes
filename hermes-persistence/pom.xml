@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <relativePath>../</relativePath>
     </parent>
 
     <artifactId>hermes-persistence</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>Hermes :: Persistence</name>
