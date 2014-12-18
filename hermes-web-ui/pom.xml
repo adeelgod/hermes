@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes-web</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
         <relativePath>../hermes-web</relativePath>
     </parent>
 
     <artifactId>hermes-web-ui</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hermes :: Web :: UI</name>
