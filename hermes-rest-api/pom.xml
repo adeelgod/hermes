@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes-rest</artifactId>
-        <version>1.0.3-SNAPSHOT</version>
+        <version>1.0.2</version>
         <relativePath>../hermes-rest</relativePath>
     </parent>
 
     <artifactId>hermes-rest-api</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>Hermes :: REST :: API</name>
