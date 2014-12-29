@@ -6,4 +6,8 @@ import java.util.Map;
 
 public interface BankService {
     BankStatement convert(Map<String, String> entry) throws Exception;
+
+    BankStatement save(BankStatement bs);
+
+    BankStatement extract(BankStatement bs);
 }

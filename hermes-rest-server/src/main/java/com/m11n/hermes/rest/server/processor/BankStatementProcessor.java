@@ -18,12 +18,11 @@ public class BankStatementProcessor {
     private BankService bankService;
 
     public void process(List<Map<String, String>> entries) {
-        // TODO: implement this
         for(Map<String, String> entry : entries) {
             try {
                 BankStatement bs = bankService.convert(entry);
-
-                logger.debug("########################### CSV: {}", bs);
+                bs = bankService.extract(bs);
+                bankService.save(bs);
             } catch (Exception e) {
                 logger.error(e.toString(), e);
             }

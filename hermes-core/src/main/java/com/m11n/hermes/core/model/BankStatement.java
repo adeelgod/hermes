@@ -56,6 +56,16 @@ public class BankStatement extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "firstname")
+    private String firstname;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "lastname")
+    private String lastname;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "account")
     private String account;
 
@@ -211,6 +221,56 @@ public class BankStatement extends DirectBean
      */
     public final Property<String> clientId() {
         return metaBean().clientId().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the firstname.
+     * @return the value of the property
+     */
+    public String getFirstname() {
+        return firstname;
+    }
+
+    /**
+     * Sets the firstname.
+     * @param firstname  the new value of the property
+     */
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    /**
+     * Gets the the {@code firstname} property.
+     * @return the property, not null
+     */
+    public final Property<String> firstname() {
+        return metaBean().firstname().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the lastname.
+     * @return the value of the property
+     */
+    public String getLastname() {
+        return lastname;
+    }
+
+    /**
+     * Sets the lastname.
+     * @param lastname  the new value of the property
+     */
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    /**
+     * Gets the the {@code lastname} property.
+     * @return the property, not null
+     */
+    public final Property<String> lastname() {
+        return metaBean().lastname().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -430,6 +490,8 @@ public class BankStatement extends DirectBean
                     JodaBeanUtils.equal(getHash(), other.getHash()) &&
                     JodaBeanUtils.equal(getOrderId(), other.getOrderId()) &&
                     JodaBeanUtils.equal(getClientId(), other.getClientId()) &&
+                    JodaBeanUtils.equal(getFirstname(), other.getFirstname()) &&
+                    JodaBeanUtils.equal(getLastname(), other.getLastname()) &&
                     JodaBeanUtils.equal(getAccount(), other.getAccount()) &&
                     JodaBeanUtils.equal(getTransferDate(), other.getTransferDate()) &&
                     JodaBeanUtils.equal(getValutaDate(), other.getValutaDate()) &&
@@ -449,6 +511,8 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getHash());
         hash = hash * 31 + JodaBeanUtils.hashCode(getOrderId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getClientId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getFirstname());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getLastname());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAccount());
         hash = hash * 31 + JodaBeanUtils.hashCode(getTransferDate());
         hash = hash * 31 + JodaBeanUtils.hashCode(getValutaDate());
@@ -462,7 +526,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(416);
+        StringBuilder buf = new StringBuilder(480);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -478,6 +542,8 @@ public class BankStatement extends DirectBean
         buf.append("hash").append('=').append(JodaBeanUtils.toString(getHash())).append(',').append(' ');
         buf.append("orderId").append('=').append(JodaBeanUtils.toString(getOrderId())).append(',').append(' ');
         buf.append("clientId").append('=').append(JodaBeanUtils.toString(getClientId())).append(',').append(' ');
+        buf.append("firstname").append('=').append(JodaBeanUtils.toString(getFirstname())).append(',').append(' ');
+        buf.append("lastname").append('=').append(JodaBeanUtils.toString(getLastname())).append(',').append(' ');
         buf.append("account").append('=').append(JodaBeanUtils.toString(getAccount())).append(',').append(' ');
         buf.append("transferDate").append('=').append(JodaBeanUtils.toString(getTransferDate())).append(',').append(' ');
         buf.append("valutaDate").append('=').append(JodaBeanUtils.toString(getValutaDate())).append(',').append(' ');
@@ -518,6 +584,16 @@ public class BankStatement extends DirectBean
          */
         private final MetaProperty<String> clientId = DirectMetaProperty.ofReadWrite(
                 this, "clientId", BankStatement.class, String.class);
+        /**
+         * The meta-property for the {@code firstname} property.
+         */
+        private final MetaProperty<String> firstname = DirectMetaProperty.ofReadWrite(
+                this, "firstname", BankStatement.class, String.class);
+        /**
+         * The meta-property for the {@code lastname} property.
+         */
+        private final MetaProperty<String> lastname = DirectMetaProperty.ofReadWrite(
+                this, "lastname", BankStatement.class, String.class);
         /**
          * The meta-property for the {@code account} property.
          */
@@ -567,6 +643,8 @@ public class BankStatement extends DirectBean
                 "hash",
                 "orderId",
                 "clientId",
+                "firstname",
+                "lastname",
                 "account",
                 "transferDate",
                 "valutaDate",
@@ -593,6 +671,10 @@ public class BankStatement extends DirectBean
                     return orderId;
                 case 908408390:  // clientId
                     return clientId;
+                case 133788987:  // firstname
+                    return firstname;
+                case -1458646495:  // lastname
+                    return lastname;
                 case -1177318867:  // account
                     return account;
                 case -2143998407:  // transferDate
@@ -659,6 +741,22 @@ public class BankStatement extends DirectBean
          */
         public final MetaProperty<String> clientId() {
             return clientId;
+        }
+
+        /**
+         * The meta-property for the {@code firstname} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> firstname() {
+            return firstname;
+        }
+
+        /**
+         * The meta-property for the {@code lastname} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> lastname() {
+            return lastname;
         }
 
         /**
@@ -737,6 +835,10 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getOrderId();
                 case 908408390:  // clientId
                     return ((BankStatement) bean).getClientId();
+                case 133788987:  // firstname
+                    return ((BankStatement) bean).getFirstname();
+                case -1458646495:  // lastname
+                    return ((BankStatement) bean).getLastname();
                 case -1177318867:  // account
                     return ((BankStatement) bean).getAccount();
                 case -2143998407:  // transferDate
@@ -771,6 +873,12 @@ public class BankStatement extends DirectBean
                     return;
                 case 908408390:  // clientId
                     ((BankStatement) bean).setClientId((String) newValue);
+                    return;
+                case 133788987:  // firstname
+                    ((BankStatement) bean).setFirstname((String) newValue);
+                    return;
+                case -1458646495:  // lastname
+                    ((BankStatement) bean).setLastname((String) newValue);
                     return;
                 case -1177318867:  // account
                     ((BankStatement) bean).setAccount((String) newValue);
