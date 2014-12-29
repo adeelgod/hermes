@@ -21,6 +21,7 @@
         <module>../hermes-service-report</module>
         <module>../hermes-service-ssh</module>
         <module>../hermes-service-magento</module>
+        <module>../hermes-service-bank</module>
     </modules>
 
     <dependencies>

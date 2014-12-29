@@ -9,12 +9,12 @@
     <files>
         <file>
             <source>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</source>
-            <outputDirectory>/${project.artifactId}</outputDirectory>
+            <outputDirectory>${project.artifactId}</outputDirectory>
             <destName>${project.artifactId}.jar</destName>
         </file>
         <file>
             <source>${project.build.directory}/${project.artifactId}.exe</source>
-            <outputDirectory>/${project.artifactId}</outputDirectory>
+            <outputDirectory>${project.artifactId}</outputDirectory>
             <destName>${project.artifactId}.exe</destName>
         </file>
     </files>
@@ -22,7 +22,7 @@
         <!--
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>/${project.artifactId}</outputDirectory>
+            <outputDirectory>${project.artifactId}</outputDirectory>
             <includes>
                 <include>${project.artifactId}-${project.version}-shaded.jar</include>
             </includes>
@@ -30,35 +30,37 @@
         -->
         <fileSet>
             <directory>${basedir}/src/main/conf</directory>
-            <outputDirectory>/${project.artifactId}</outputDirectory>
+            <outputDirectory>${project.artifactId}</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
         </fileSet>
+        <!--
         <fileSet>
             <directory>${basedir}/src/main/examples</directory>
-            <outputDirectory>/${project.artifactId}/examples</outputDirectory>
+            <outputDirectory>${project.artifactId}/examples</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
         </fileSet>
+        -->
         <fileSet>
             <directory>${basedir}/src/main/templates</directory>
-            <outputDirectory>/${project.artifactId}/templates</outputDirectory>
+            <outputDirectory>${project.artifactId}/templates</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>${basedir}/src/main/script</directory>
-            <outputDirectory>/${project.artifactId}</outputDirectory>
+            <outputDirectory>${project.artifactId}</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>${basedir}/../hermes-doc/target/generated-docs</directory>
-            <outputDirectory>/${project.artifactId}/doc</outputDirectory>
+            <outputDirectory>${project.artifactId}/doc</outputDirectory>
             <includes>
                 <include>**/*.pdf</include>
                 <include>**/*.html</include>

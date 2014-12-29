@@ -52,6 +52,11 @@
             <artifactId>hermes-service-magento</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>hermes-service-bank</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Jasypt -->
         <dependency>
