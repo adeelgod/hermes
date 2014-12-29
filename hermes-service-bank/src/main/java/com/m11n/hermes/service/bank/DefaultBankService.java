@@ -54,7 +54,7 @@ public class DefaultBankService implements BankService {
                 + entry.get("currency");
 
         BankStatement bs = new BankStatement();
-        bs.setHash(DigestUtils.sha256Hex(tmp));
+        bs.setHash(DigestUtils.sha384Hex(tmp));
         bs.setAccount(entry.get("account"));
         bs.setTransferDate(df.parse(entry.get("transferDate")));
         bs.setValutaDate(df.parse(entry.get("valutaDate")));
