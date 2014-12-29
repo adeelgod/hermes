@@ -289,13 +289,13 @@ public class DocumentLog extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash += hash * 31 + JodaBeanUtils.hashCode(getUid());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getOrderId());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getDocumentId());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getType());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getProcessedAt());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getPrintedAt());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getPrinted());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getUid());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getOrderId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getDocumentId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getType());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getProcessedAt());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getPrintedAt());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getPrinted());
         return hash;
     }
 

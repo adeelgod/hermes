@@ -156,9 +156,9 @@ public class PrintRequest extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash += hash * 31 + JodaBeanUtils.hashCode(getTemplates());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getChargeSize());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getCharges());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getTemplates());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getChargeSize());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getCharges());
         return hash;
     }
 

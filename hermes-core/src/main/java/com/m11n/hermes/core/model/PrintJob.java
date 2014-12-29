@@ -230,11 +230,11 @@ public class PrintJob extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash += hash * 31 + JodaBeanUtils.hashCode(getType());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getOrderId());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getParams());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getTemplates());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getChargeSize());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getType());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getOrderId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getParams());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getTemplates());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getChargeSize());
         return hash;
     }
 

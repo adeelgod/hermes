@@ -479,19 +479,19 @@ public class Form extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash += hash * 31 + JodaBeanUtils.hashCode(getId());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getDb());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getName());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getDescription());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getSchedule());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getMenu());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getExecuteOnStartup());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getSqlStatement());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getFontSize());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getPrintable());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getAccessPublic());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getFields());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getDb());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getName());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getSchedule());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getMenu());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getExecuteOnStartup());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getSqlStatement());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getPosition());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getFontSize());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getPrintable());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getAccessPublic());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getFields());
         return hash;
     }
 

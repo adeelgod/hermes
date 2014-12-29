@@ -434,17 +434,17 @@ public class FormField extends DirectBean
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash += hash * 31 + JodaBeanUtils.hashCode(getId());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getFormId());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getName());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getDescription());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getDefValue());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getPosition());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getFieldType());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getLookup());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getParameter());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getColumn());
-        hash += hash * 31 + JodaBeanUtils.hashCode(getWidth());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getFormId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getName());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getDefValue());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getPosition());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getFieldType());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getLookup());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getParameter());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getColumn());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getWidth());
         return hash;
     }
 
