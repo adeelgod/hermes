@@ -44,13 +44,13 @@ public class DefaultBankService implements BankService {
         NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
-        String tmp = entry.get("account") + "|"
-                + entry.get("transferDate") + "|"
-                + entry.get("valutaDate") + "|"
-                + entry.get("receiver1") + "|"
-                + entry.get("receiver2") + "|"
-                + entry.get("description") + "|"
-                + entry.get("amount") + "|"
+        // NOTE: leave out valuta date, b/c always the same as transfer date; minimizing data items
+        String tmp = entry.get("account")
+                + entry.get("transferDate")
+                + entry.get("receiver1")
+                + entry.get("receiver2")
+                + entry.get("description")
+                + entry.get("amount")
                 + entry.get("currency");
 
         BankStatement bs = new BankStatement();
