@@ -14,6 +14,8 @@ hermes-web-ui/dist/
 hermes-web-ui/node_modules/
 *.log
 *.iml
+*.ipr
+*.iws
 atlassian-ide-plugin.xml
 pom.xml.tag
 pom.xml.releaseBackup
