@@ -127,6 +127,11 @@ public class DataInitializer {
             bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(3\\d{8}|3\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 1, "orderId", true));
         }
 
+        bsp = bankStatementPatternRepository.findByName("default_invoice_id");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_invoice_id", 1, ".*(re?c?h?n?u?n?g?s?\\.?\\-?\\s*)(nr\\.?)?(\\d{4}).*", true, 3, "invoiceId", true));
+        }
+
         bsp = bankStatementPatternRepository.findByName("default_client_id");
         if(bsp==null) {
             bankStatementPatternRepository.save(new BankStatementPattern("default_client_id", 1, ".*(ku?n?de?n?\\.?\\s*)(nr\\.?)?(\\d{4}).*", true, 3, "clientId", true));
