@@ -1,7 +1,9 @@
 package com.m11n.hermes.persistence.util;
 
+import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
+import com.m11n.hermes.persistence.BankStatementPatternRepository;
 import com.m11n.hermes.persistence.FormRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.DependsOn;
@@ -20,6 +22,9 @@ public class DataInitializer {
 
     @Inject
     private FormRepository formRepository;
+
+    @Inject
+    private BankStatementPatternRepository bankStatementPatternRepository;
 
     @PostConstruct
     public void init() throws Exception {
@@ -115,5 +120,17 @@ public class DataInitializer {
 
             formRepository.save(form);
         }
+
+
+        BankStatementPattern bsp = bankStatementPatternRepository.findByName("default_order_id");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(3\\d{8}|3\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 1, "orderId", true));
+        }
+
+        bsp = bankStatementPatternRepository.findByName("default_client_id");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_client_id", 1, ".*(ku?n?de?n?\\.?\\s*)(nr\\.?)?(\\d{4}).*", true, 3, "clientId", true));
+        }
+        // TODO: put more patterns for other attributes (firstname, lastname)?
     }
 }

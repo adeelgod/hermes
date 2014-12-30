@@ -10,4 +10,6 @@ public interface BankService {
     BankStatement save(BankStatement bs);
 
     BankStatement extract(BankStatement bs);
+
+    void reload();
 }
