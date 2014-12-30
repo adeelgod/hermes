@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +49,6 @@ public class DefaultBankService implements BankService {
                 bsp.setRegex(Pattern.compile(bsp.getPattern()));
             }
 
-            logger.debug("++++++++++++++++++++++++++++ PATTERN: {}", bsp.getPattern());
             patterns.add(bsp);
         }
     }
@@ -75,7 +73,6 @@ public class DefaultBankService implements BankService {
             if(m.matches()) {
                 String value = m.group(bsp.getPatternGroup()).replaceAll(" ", ""); // TODO: optional?
                 bs.property(bsp.getAttribute()).set(value);
-                logger.debug("++++++++++++++++++++++++++++ PROPERTY: {} = {}", bsp.getAttribute(), value);
                 if(bsp.getStopOnFirstMatch()) {
                     break;
                 }
