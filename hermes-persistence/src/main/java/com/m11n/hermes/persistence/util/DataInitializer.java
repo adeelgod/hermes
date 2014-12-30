@@ -124,7 +124,7 @@ public class DataInitializer {
 
         BankStatementPattern bsp = bankStatementPatternRepository.findByName("default_order_id");
         if(bsp==null) {
-            bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(3\\d{8}|3\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 1, "orderId", true));
+            bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(b\\s?e\\s?s\\s?t\\s?e\\s?l\\s?l\\s*n\\s?r\\s?\\.?\\:?)?(3\\d{8}|3\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 2, "orderId", true));
         }
 
         bsp = bankStatementPatternRepository.findByName("default_invoice_id");
@@ -136,6 +136,30 @@ public class DataInitializer {
         if(bsp==null) {
             bankStatementPatternRepository.save(new BankStatementPattern("default_client_id", 1, ".*(ku?n?de?n?\\.?\\s*)(nr\\.?)?(\\d{4}).*", true, 3, "clientId", true));
         }
-        // TODO: put more patterns for other attributes (firstname, lastname)?
+
+        bsp = bankStatementPatternRepository.findByName("default_client_firstname");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_client_firstname", 2, "^SEPA-GUTSCHRIFT(\\sIM\\sAUFTR\\.V\\.)?\\s+([a-zA-Z]+)\\s+([a-zA-Z]+).*", true, 2, "firstname", true));
+        }
+
+        bsp = bankStatementPatternRepository.findByName("default_client_lastname");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_client_lastname", 3, "^SEPA-GUTSCHRIFT(\\sIM\\sAUFTR\\.V\\.)?\\s+([a-zA-Z]+)\\s+([a-zA-Z]+).*", true, 3, "lastname", true));
+        }
+
+        bsp = bankStatementPatternRepository.findByName("default_client_firstname_inverted");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_client_firstname_inverted", 4, "^SEPA-GUTSCHRIFT(\\sIM\\sAUFTR\\.V\\.)?\\s+([a-zA-Z]+)\\s*,\\s*([a-zA-Z]+).*", true, 2, "firstname", true));
+        }
+
+        bsp = bankStatementPatternRepository.findByName("default_client_lastname_inverted");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_client_lastname_inverted", 5, "^SEPA-GUTSCHRIFT(\\sIM\\sAUFTR\\.V\\.)?\\s+([a-zA-Z]+)\\s*,\\s*([a-zA-Z]+).*", true, 3, "lastname", true));
+        }
+
+        bsp = bankStatementPatternRepository.findByName("default_client_ebay_name");
+        if(bsp==null) {
+            bankStatementPatternRepository.save(new BankStatementPattern("default_client_ebay_name", 6, ".*e\\s?b\\s?a\\s?y\\s?n\\s?a\\s?m\\s?e\\s*([a-zA-Z0-9]*)", true, 1, "ebayName", true));
+        }
     }
 }
