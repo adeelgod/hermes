@@ -17,8 +17,6 @@ public class CorsFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        logger.warn("DON'T USE THIS CORS FILTER IN PRODUCTION!!!");
-
         HttpServletRequest request = (HttpServletRequest)req;
         // see here:
         // - https://github.com/spring-projects/spring-framework/blob/49d7bda72248b5a08fda3d42ed10d9e127396e6a/spring-websocket/src/main/java/org/springframework/web/socket/sockjs/support/AbstractSockJsService.java#L355-L383
