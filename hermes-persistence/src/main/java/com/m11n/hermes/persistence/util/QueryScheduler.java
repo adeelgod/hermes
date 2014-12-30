@@ -49,7 +49,6 @@ public class QueryScheduler {
     @PostConstruct
     public void init() {
         for(Form form : formRepository.findByExecuteOnStartup(true)) {
-            logger.info("+++++++++++++++++++ EXECUTING QUERY: {}", form.getName());
             query(form, false, false, Collections.<String, Object>emptyMap());
         }
     }
@@ -112,19 +111,6 @@ public class QueryScheduler {
 
         for(String statement : statements) {
             statement = statement.trim();
-
-            /**
-            for(Map.Entry<String, Object> parameter : parameters.entrySet()){
-                String value = parameter.getValue().toString();
-                Matcher m = functions.matcher(value);
-
-                if(m.matches()) {
-                    statement.replaceAll(":" + parameter.getKey(), value);
-                }
-            }
-             */
-
-            logger.info("#################### STATEMENT: {}", statement);
 
             if(statement.toLowerCase().startsWith("select")) {
                 if("auswertung".equalsIgnoreCase(form.getDb())) {
