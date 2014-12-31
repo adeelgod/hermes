@@ -7,7 +7,6 @@
                         h4.modal-title
                             i.fa.fa-check-circle(ng-show='currentBankStatement.confirmed')
                             i.fa.fa-exclamation-circle(ng-hide='currentBankStatement.confirmed')
-                .row
                     .col-md-6
                         .btn-group.btn-group-sm.pull-right
                             button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
@@ -60,7 +59,7 @@
                                 label
                                     input(type='checkbox', ng-model='search.lastname')
                                     | Lastname 4 chars
-                            button.btn.btn-default(type='button', ng-click='resolve()')
+                            button.btn.btn-primary(type='button', ng-click='resolve()')
                                 i.fa.fa-search
                 .row
                     .col-md-12
