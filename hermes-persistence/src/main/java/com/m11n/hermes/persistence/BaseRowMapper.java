@@ -28,6 +28,7 @@ public abstract class BaseRowMapper implements RowMapper<Map<String, Object>> {
             case Types.INTEGER:
                 value = resultSet.getInt(i);
                 break;
+            case Types.DOUBLE:
             case Types.DECIMAL:
                 value = resultSet.getDouble(i);
                 break;
@@ -35,6 +36,8 @@ public abstract class BaseRowMapper implements RowMapper<Map<String, Object>> {
                 value = resultSet.getBigDecimal(i);
                 break;
             case Types.DATE:
+            case Types.TIME:
+            case Types.TIMESTAMP:
                 value = resultSet.getDate(i);
                 break;
         }
