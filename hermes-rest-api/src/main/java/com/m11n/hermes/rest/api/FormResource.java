@@ -18,10 +18,8 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
