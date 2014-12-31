@@ -50,13 +50,16 @@
                         form.form-inline
                             .checkbox
                                 label
-                                    input(type='checkbox', ng-model='search.amount') Identical Amount
+                                    input(type='checkbox', ng-model='search.amount')
+                                    | Identical Amount
                             .checkbox
                                 label
-                                    input(type='checkbox', ng-model='search.amountDiff') Amount < 1 EUR
+                                    input(type='checkbox', ng-model='search.amountDiff')
+                                    | Amount < 1 EUR
                             .checkbox
                                 label
-                                    input(type='checkbox', ng-model='search.lastname') Lastname 4 chars
+                                    input(type='checkbox', ng-model='search.lastname')
+                                    | Lastname 4 chars
                             button.btn.btn-default(type='button', ng-click='resolve()')
                                 i.fa.fa-search
                 .row
