@@ -46,6 +46,12 @@ angular.module('hermes.ui', [
             templateUrl: 'views/shipping.html',
             controller: 'ShippingCtrl'
         })
+        .state('bank', {
+            abstract: false,
+            url: '/bank',
+            templateUrl: 'views/bank.html',
+            controller: 'BankCtrl'
+        })
         .state('configuration', {
             abstract: false,
             url: '/configuration',

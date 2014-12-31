@@ -1,0 +1,41 @@
+extends /layouts/_page
+block content
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-hide='loading')
+        .col-md-12
+            table.table.table-striped.table-condensed(ng-show='bankStatements')
+                thead
+                    tr
+                        td.text-center
+                            .btn-group(style='min-width: 70px')
+                                button.btn.btn-sm.btn-default(type='button', ng-click='select(true)', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-sm.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
+                                    i.fa.fa-minus
+                        td.text-left
+                            h4 Date
+                        td.text-left
+                            h4 Description
+                        td.text-center
+                            h4 Amount
+                        td.text-left
+                            h4 Client
+                        td.text-left
+                            h4 Ebay Name
+                        td.text-left
+                            h4 Order
+                tbody
+                    tr(ng-repeat='entry in bankStatements')
+                        td.text-center
+                            button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
+                                i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
+                        td {{entry.transferDate | date:'dd.MM.yyyy'}}
+                        td {{entry.description}}
+                        td.text-right {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}
+                        td {{entry.firstname}}&nbsp;{{entry.lastname}}
+                        td {{entry.ebayName}}
+                        td {{entry.orderId}}

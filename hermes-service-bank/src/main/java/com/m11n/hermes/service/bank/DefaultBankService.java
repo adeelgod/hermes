@@ -3,9 +3,12 @@ package com.m11n.hermes.service.bank;
 import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.service.BankService;
+import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.BankStatementPatternRepository;
 import com.m11n.hermes.persistence.BankStatementRepository;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
@@ -15,10 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +33,9 @@ public class DefaultBankService implements BankService {
 
     @Inject
     private BankStatementPatternRepository bankStatementPatternRepository;
+
+    @Inject
+    private AuswertungRepository auswertungRepository;
 
     private Set<BankStatementPattern> patterns = new HashSet<>();
 
@@ -70,11 +73,33 @@ public class DefaultBankService implements BankService {
         for(BankStatementPattern bsp : patterns) {
             Matcher m = bsp.getRegex().matcher(bs.getDescription());
 
-            if(m.matches()) {
+            // NOTE: just take the first match
+            if(m.find()) {
                 String value = m.group(bsp.getPatternGroup()).replaceAll(" ", ""); // TODO: optional?
-                bs.property(bsp.getAttribute()).set(value);
+
+                // NOTE: only set if empty
+                if(bs.property(bsp.getAttribute()).get()==null) {
+                    bs.property(bsp.getAttribute()).set(value);
+                }
+                /**
                 if(bsp.getStopOnFirstMatch()) {
                     break;
+                }
+                 */
+            }
+        }
+
+        if(!StringUtils.isEmpty(bs.getOrderId())) {
+            List<Map<String, Object>> result = auswertungRepository.findOrdersByOrderId(bs.getOrderId());
+
+            if(result!=null && !result.isEmpty()) {
+                Map<String, Object> order = result.get(0);
+                bs.setFirstname(ObjectUtils.defaultIfNull(order.get("firstname"), "").toString());
+                bs.setLastname(ObjectUtils.defaultIfNull(order.get("lastname"), "").toString());
+                Double amount = (Double)ObjectUtils.defaultIfNull(order.get("amount"), 0.0d);
+                bs.setAmountDiff(bs.getAmount()-amount);
+                if(order.get("ebayName")!=null) {
+                    bs.setEbayName(order.get("ebayName").toString());
                 }
             }
         }
@@ -107,5 +132,9 @@ public class DefaultBankService implements BankService {
         bs.setCurrency(entry.get("currency"));
 
         return bs;
+    }
+
+    public List<Map<String, Object>> getOrders(String orderId) {
+        return auswertungRepository.findOrdersByOrderId(orderId);
     }
 }
