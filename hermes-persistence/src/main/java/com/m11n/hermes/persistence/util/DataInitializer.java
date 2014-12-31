@@ -122,6 +122,57 @@ public class DataInitializer {
         }
 
 
+        // bank
+        form = formRepository.findByName("bank");
+        if(form==null) {
+            form = new Form();
+            form.setDb("auswertung");
+            form.setName("bank");
+            form.setDescription("Bank Zahlungen (normal)");
+            form.setPosition(4);
+            form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank.sql")));
+            form.setPrintable(false);
+            form.setAccessPublic(false);
+            form = formRepository.save(form);
+
+            List<FormField> fields = new ArrayList<>();
+            // parameters
+            fields.add(new FormField("confirmed", FormField.Type.BOOLEAN.name(), 1, "false", "Confirmed", true, false));
+
+            form.setFields(fields);
+
+            formRepository.save(form);
+        }
+
+
+        // bank advanced
+        form = formRepository.findByName("bank_advanced");
+        if(form==null) {
+            form = new Form();
+            form.setDb("auswertung");
+            form.setName("bank_advanced");
+            form.setDescription("Bank Zahlungen (advanced)");
+            form.setPosition(4);
+            form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank_advanced.sql")));
+            form.setPrintable(false);
+            form.setAccessPublic(false);
+            form = formRepository.save(form);
+
+            List<FormField> fields = new ArrayList<>();
+            // parameters
+            fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1, "", "From", true, false));
+            fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2, "", "Until", true, false));
+            fields.add(new FormField("confirmed", FormField.Type.BOOLEAN.name(), 3, "false", "Confirmed", true, false));
+            fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 4, "%", "Order ID", true, false));
+            fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 5, "%", "Firstname", true, false));
+            fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 6, "%", "Lastname", true, false));
+
+            form.setFields(fields);
+
+            formRepository.save(form);
+        }
+
+
         BankStatementPattern bsp = bankStatementPatternRepository.findByName("default_order_id");
         if(bsp==null) {
             bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(b\\s?e?\\s?s?\\s?t?\\s?e?\\s?l?\\s?l?-?\\s*n?\\s?r?\\s?\\.?\\:?)?(30\\d{7}|3\\s?0\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 2, "orderId", true));

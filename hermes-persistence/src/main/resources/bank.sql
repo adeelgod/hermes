@@ -1,0 +1,1 @@
+SELECT uuid, account, amount, currency, receiver1, receiver2, description, firstname, lastname, confirmed, transfer_date as transferDate, valuta_date as valutaDate, order_id as orderId, client_id as clientId, invoice_id as invoiceId, amount_diff as amountDiff, ebay_name as ebayName FROM bank_statement WHERE confirmed = :confirmed AND amount > 0

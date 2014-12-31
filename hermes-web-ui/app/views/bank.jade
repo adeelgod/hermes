@@ -7,6 +7,41 @@ block content
                     span.sr-only &nbsp;
     .row(ng-hide='loading')
         .col-md-12
+            form(role='form', name='bankForm', novalidate='')
+                .form-group
+                    .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'", ng-show='advanced')
+                        label(for='{{field.name}}') {{field.description}}
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && (!field.lookup || field.lookup.length == 0)", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        .row(ng-if="field.fieldType=='DATETIME'")
+                            .col-md-8
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}} date', bs-datepicker='', type='text')
+                            .col-md-4
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
+                        br
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && field.lookup.length > 0", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
+                            i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
+                    .form-group
+                        .row
+                            .col-md-6
+                                .btn-group.btn-group-lg
+                                    button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
+                                        i.fa.fa-search
+                                        | &nbsp;
+                                        | Run
+                                    button.btn.btn-default(type='button', ng-click='toggleAdvanced()', ng-disabled='busy')
+                                        i.fa.fa-cogs
+                                        | &nbsp;
+                                        span(ng-show='advanced') Simple
+                                        span(ng-hide='advanced') Advanced
+                            .col-md-6
+                                button.btn.btn-lg.btn-success(type='button', ng-click='assign()', ng-disabled='busy', ng-show='bankStatements')
+                                    i.fa.fa-check
+                                    | &nbsp;
+                                    | Assign
+    .row(ng-hide='loading')
+        .col-md-12
             table.table.table-striped.table-condensed(ng-show='bankStatements')
                 thead
                     tr
@@ -25,11 +60,12 @@ block content
                         td.text-left
                             h4 Client
                         td.text-left
-                            h4 Ebay Name
+                            h4 Ebay
                         td.text-left
                             h4 Order
+                        td
                 tbody
-                    tr(ng-repeat='entry in bankStatements')
+                    tr(ng-repeat='entry in bankStatements', ng-class="{'success': entry._selected}")
                         td.text-center
                             button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
@@ -39,3 +75,6 @@ block content
                         td {{entry.firstname}}&nbsp;{{entry.lastname}}
                         td {{entry.ebayName}}
                         td {{entry.orderId}}
+                        td
+                            button.btn.btn-sm.btn-default(type='button', ng-click='edit(entry)', ng-disabled='busy')
+                                i.fa.fa-pencil
