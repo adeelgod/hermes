@@ -1,0 +1,65 @@
+.modal(role='dialog', tabindex='-1')
+    .modal-dialog
+        .modal-content
+            .modal-header
+                .row
+                    .col-md-6
+                        h4.modal-title
+                            i.fa.fa-check-circle(ng-show='currentBankStatement.confirmed')
+                            i.fa.fa-exclamation-circle(ng-hide='currentBankStatement.confirmed')
+                .row
+                    .col-md-6
+                        .btn-group.btn-group-sm.pull-right
+                            button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
+                                i.fa.fa-chevron-left
+                            button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
+                                i.fa.fa-chevron-right
+                            button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                                i.fa.fa-check
+                            button.btn.btn-danger(type='button', ng-click='$hide()')
+                                i.fa.fa-close
+            .modal-body
+                .row
+                    .col-md-12
+                        table.table.table-striped.table-condensed(ng-show='currentBankStatement')
+                            thead
+                                tr
+                                    td.text-left
+                                        h4 Date
+                                    td.text-left
+                                        h4 Description
+                                    td.text-center
+                                        h4 Amount
+                                    td.text-left
+                                        h4 Client
+                                    td.text-left
+                                        h4 Ebay
+                                    td.text-left
+                                        h4 Order
+                                    td
+                            tbody
+                                tr
+                                    td {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
+                                    td {{currentBankStatement.description}}
+                                    td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
+                                    td {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
+                                    td {{currentBankStatement.ebayName}}
+                                    td {{currentBankStatement.orderId}}
+                .row
+                    .col-md-12
+                        form.form-inline
+                            .checkbox
+                                label
+                                    input(type='checkbox', ng-model='search.amount') Identical Amount
+                            .checkbox
+                                label
+                                    input(type='checkbox', ng-model='search.amountDiff') Amount < 1 EUR
+                            .checkbox
+                                label
+                                    input(type='checkbox', ng-model='search.lastname') Lastname 4 chars
+                            button.btn.btn-default(type='button', ng-click='resolve()')
+                                i.fa.fa-search
+                .row
+                    .col-md-12
+                        // TODO: implement this
+            //.modal-footer

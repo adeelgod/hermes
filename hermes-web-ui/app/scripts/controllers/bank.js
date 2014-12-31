@@ -6,6 +6,9 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
     $scope.params = {};
     $scope.advanced = false;
     $scope.formName = 'bank';
+    $scope.currentBankStatement = null;
+
+    var editModal = $modal({scope: $scope, template: 'views/bank/edit.tpl.html', show: false});
 
     $scope.getForm = function() {
         $scope.loading = true;
@@ -47,12 +50,34 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         });
     };
 
-    $scope.edit = function(entry) {
+    $scope.edit = function(index) {
+        $scope.currentBankStatementIndex = index;
+        $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+        editModal.$promise.then(editModal.show);
+    };
+
+    $scope.next = function() {
+        $scope.currentBankStatementIndex++;
+        if($scope.currentBankStatementIndex>=$scope.bankStatements.length) {
+            $scope.currentBankStatementIndex = 0;
+        }
+        $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+    };
+
+    $scope.previous = function() {
+        $scope.currentBankStatementIndex--;
+        if($scope.currentBankStatementIndex<0) {
+            $scope.currentBankStatementIndex = $scope.bankStatements.length-1;
+        }
+        $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+    };
+
+    $scope.assign = function() {
         // TODO: implement this
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
-    $scope.assign = function() {
+    $scope.resolve = function() {
         // TODO: implement this
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
