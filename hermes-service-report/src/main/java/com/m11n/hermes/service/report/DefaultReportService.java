@@ -55,8 +55,8 @@ implements ReportService
     private String virtualizerType;
     
     @Inject
-    @Named("dataSourceAuswertung")
-    private DataSource dataSourceAuswertung;
+    @Named("dataSourceJpa")
+    private DataSource dataSourceJpa;
 
     @Inject
     @Named("dataSourceLCarb")
@@ -111,7 +111,7 @@ implements ReportService
             try 
             {
                 // TODO: decide depending on parameter
-                connection = dataSourceAuswertung.getConnection();
+                connection = dataSourceJpa.getConnection();
                 
                 if(template.endsWith("jrxml"))
                 {

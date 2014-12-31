@@ -27,8 +27,8 @@ public class DynamicReportService {
     private static final Logger logger = LoggerFactory.getLogger(DefaultReportService.class);
 
     @Inject
-    @Named("dataSourceAuswertung")
-    private DataSource dataSourceAuswertung;
+    @Named("dataSourceJpa")
+    private DataSource dataSourceJpa;
 
     @Inject
     @Named("dataSourceLCarb")
@@ -76,7 +76,7 @@ public class DynamicReportService {
             if("lcarb".equals(form.getDb())) {
                 builder = builder.setConnection(dataSourceLCarb.getConnection());
             } else {
-                builder = builder.setConnection(dataSourceAuswertung.getConnection());
+                builder = builder.setConnection(dataSourceJpa.getConnection());
             }
 
             builder.toPdf(os);

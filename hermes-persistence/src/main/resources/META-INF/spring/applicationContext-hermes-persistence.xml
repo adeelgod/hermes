@@ -18,13 +18,6 @@
         <property name="jdbcUrl" value="${hermes.db.auswertung.url}" />
     </bean>
 
-    <bean id="dataSourceAuswertung" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
-        <property name="username" value="${hermes.db.auswertung.username}" />
-        <property name="password" value="${hermes.db.auswertung.password}" />
-        <property name="driverClass" value="${hermes.db.auswertung.driver}" />
-        <property name="jdbcUrl" value="${hermes.db.auswertung.url}" />
-    </bean>
-
     <bean id="dataSourceLCarb" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
         <property name="username" value="${hermes.db.lcarb.username}" />
         <property name="password" value="${hermes.db.lcarb.password}" />
@@ -33,7 +26,7 @@
     </bean>
 
     <bean id="jdbcTemplateAuswertung" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg ref="dataSourceAuswertung" />
+        <constructor-arg ref="dataSourceJpa" />
     </bean>
 
     <bean id="jdbcTemplateLCarb" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
@@ -44,6 +37,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <!--
     <bean id="transactionManagerAuswertung" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceAuswertung" />
     </bean>
@@ -51,6 +45,7 @@
     <bean id="transactionManagerLCarb" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceLCarb" />
     </bean>
+    -->
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSourceJpa" />
