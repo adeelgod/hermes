@@ -62,6 +62,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
             $scope.currentBankStatementIndex = 0;
         }
         $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+        $scope.search = {};
     };
 
     $scope.previous = function() {
@@ -70,9 +71,15 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
             $scope.currentBankStatementIndex = $scope.bankStatements.length-1;
         }
         $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+        $scope.search = {};
     };
 
     $scope.assign = function() {
+        // TODO: implement this
+        $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
+    $scope.ignore = function() {
         // TODO: implement this
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };

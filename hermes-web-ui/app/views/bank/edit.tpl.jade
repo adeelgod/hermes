@@ -3,20 +3,38 @@
         .modal-content
             .modal-header
                 .row
-                    .col-md-6
-                        h4.modal-title
+                    .col-md-1
+                        h3.modal-title
                             i.fa.fa-check-circle(ng-show='currentBankStatement.confirmed')
                             i.fa.fa-exclamation-circle(ng-hide='currentBankStatement.confirmed')
                     .col-md-6
+                        form.form-inline
+                            .btn-group.btn-group-sm(ng-model='search', bs-checkbox-group=)
+                                label.btn.btn-default
+                                    input(type='checkbox', value='amount')
+                                    | Identical Amount
+                                label.btn.btn-default
+                                    input(type='checkbox', value='amountDiff')
+                                    | Amount < 1 EUR
+                                label.btn.btn-default
+                                    input(type='checkbox', value='lastname')
+                                    | Lastname 4 chars
+                            button.btn.btn-primary(type='button', ng-click='resolve()')
+                                i.fa.fa-search
+                    .col-md-1
+                        button.btn.btn-sm.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                            i.fa.fa-check
+                            | &nbsp;
+                            | Assign
+                    .col-md-3
                         .btn-group.btn-group-sm.pull-right
                             button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
                                 i.fa.fa-chevron-left
                             button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
                                 i.fa.fa-chevron-right
-                            button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
-                                i.fa.fa-check
-                            button.btn.btn-danger(type='button', ng-click='$hide()')
-                                i.fa.fa-close
+                    .col-md-1
+                        button.btn.btn-sm.btn-danger.pull-right(type='button', ng-click='$hide()')
+                            i.fa.fa-close
             .modal-body
                 .row
                     .col-md-12
@@ -35,7 +53,6 @@
                                         h4 Ebay
                                     td.text-left
                                         h4 Order
-                                    td
                             tbody
                                 tr
                                     td {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
@@ -44,23 +61,6 @@
                                     td {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                                     td {{currentBankStatement.ebayName}}
                                     td {{currentBankStatement.orderId}}
-                .row
-                    .col-md-12
-                        form.form-inline
-                            .checkbox
-                                label
-                                    input(type='checkbox', ng-model='search.amount')
-                                    | &snbsp;Identical Amount
-                            .checkbox
-                                label
-                                    input(type='checkbox', ng-model='search.amountDiff')
-                                    | &snbsp;Amount < 1 EUR
-                            .checkbox
-                                label
-                                    input(type='checkbox', ng-model='search.lastname')
-                                    | &snbsp;Lastname 4 chars
-                            button.btn.btn-primary(type='button', ng-click='resolve()')
-                                i.fa.fa-search
                 .row
                     .col-md-12
                         // TODO: implement this
