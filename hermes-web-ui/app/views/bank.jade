@@ -36,15 +36,19 @@ block content
                                         span(ng-show='advanced') Simple
                                         span(ng-hide='advanced') Advanced
                             .col-md-6
-                                .btn-group.btn-group-lg.pull-right
-                                    button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy', ng-show='bankStatements')
+                                .btn-group.btn-group-lg.pull-right(ng-show='bankStatements')
+                                    button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                                         i.fa.fa-check
                                         | &nbsp;
                                         | Assign
-                                    button.btn.btn-default(type='button', ng-click='ignore()', ng-disabled='busy', ng-show='bankStatements')
+                                    button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
                                         i.fa.fa-ban
                                         | &nbsp;
                                         | Ignore
+                                    button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                                        i.fa.fa-undo
+                                        | &nbsp;
+                                        | Reset
     .row(ng-hide='loading')
         .col-md-12
             table.table.table-striped.table-condensed(ng-show='bankStatements')
@@ -56,6 +60,8 @@ block content
                                     i.fa.fa-check
                                 button.btn.btn-sm.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
+                        td.text-center
+                            h4 Status
                         td.text-left
                             h4 Date
                         td.text-left
@@ -74,6 +80,11 @@ block content
                         td.text-center
                             button.btn.btn-sm.btn-default(type='button', ng-click='entry._selected=!entry._selected', ng-disabled='busy')
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
+                        td.text-center
+                            span.label(ng-class="{'label-default': entry.status=='new', 'label-success': entry.status=='confirmed', 'label-danger': entry.status=='ignored'}")
+                                i.fa.fa-exclamation-circle(ng-show="entry.status=='new'")
+                                i.fa.fa-check-circle(ng-show="entry.status=='confirmed'")
+                                i.fa.fa-ban(ng-show="entry.status=='ignored'")
                         td {{entry.transferDate | date:'dd.MM.yyyy'}}
                         td {{entry.description}}
                         td.text-right {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}

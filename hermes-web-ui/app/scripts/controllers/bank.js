@@ -86,6 +86,12 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
+    $scope.reset = function() {
+        // TODO: implement this
+        $scope.currentBankStatement.status='new';
+        $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
+    };
+
     $scope.resolve = function() {
         // TODO: implement this
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});

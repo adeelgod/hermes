@@ -6,7 +6,7 @@
                     .col-md-6
                         form.form-inline
                             .form-group
-                                h4.modal-title
+                                h4
                                     span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
                                         i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                         i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
@@ -24,15 +24,13 @@
                             button.btn.btn-primary(type='button', ng-click='resolve()')
                                 i.fa.fa-search
                     .col-md-3
-                        .btn-group.btn-group-sm
+                        .btn-group.btn-group-sm(ng-show='bankStatements')
                             button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                                 i.fa.fa-check
-                                | &nbsp;
-                                | Assign
-                            button.btn.btn-default(type='button', ng-click='ignore()', ng-disabled='busy', ng-show='bankStatements')
+                            button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
                                 i.fa.fa-ban
-                                | &nbsp;
-                                | Ignore
+                            button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                                i.fa.fa-undo
                     .col-md-2
                         .btn-group.btn-group-sm.pull-right
                             button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
