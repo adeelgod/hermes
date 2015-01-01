@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -75,7 +76,7 @@ public class PatternTest
             bs.setReceiver1(parts[3]);
             bs.setReceiver2(parts[4]);
             bs.setDescription(parts[5]);
-            bs.setAmount(nf.parse(parts[6]).doubleValue());
+            bs.setAmount(new BigDecimal(nf.parse(parts[6]).doubleValue()));
             bs.setCurrency(parts[7]);
 
             Matcher m = bsp.getRegex().matcher(bs.getDescription());

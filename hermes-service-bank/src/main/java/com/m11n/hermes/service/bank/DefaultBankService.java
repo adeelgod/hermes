@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -97,7 +98,7 @@ public class DefaultBankService implements BankService {
                 bs.setFirstname(ObjectUtils.defaultIfNull(order.get("firstname"), "").toString());
                 bs.setLastname(ObjectUtils.defaultIfNull(order.get("lastname"), "").toString());
                 Double amount = (Double)ObjectUtils.defaultIfNull(order.get("amount"), 0.0d);
-                bs.setAmountDiff(bs.getAmount()-amount);
+                bs.setAmountDiff(bs.getAmount().subtract(new BigDecimal(amount)));
                 if(order.get("ebayName")!=null) {
                     bs.setEbayName(order.get("ebayName").toString());
                 }
@@ -128,7 +129,7 @@ public class DefaultBankService implements BankService {
         bs.setReceiver1(entry.get("receiver1"));
         bs.setReceiver2(entry.get("receiver2"));
         bs.setDescription(entry.get("description"));
-        bs.setAmount(nf.parse(entry.get("amount")).doubleValue());
+        bs.setAmount(new BigDecimal(nf.parse(entry.get("amount")).doubleValue()));
         bs.setCurrency(entry.get("currency"));
 
         return bs;
