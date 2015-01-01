@@ -76,11 +76,13 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
 
     $scope.assign = function() {
         // TODO: implement this
+        $scope.currentBankStatement.status='confirmed';
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
     $scope.ignore = function() {
         // TODO: implement this
+        $scope.currentBankStatement.status='ignored';
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 

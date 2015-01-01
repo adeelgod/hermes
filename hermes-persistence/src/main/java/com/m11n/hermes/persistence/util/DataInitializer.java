@@ -137,7 +137,7 @@ public class DataInitializer {
 
             List<FormField> fields = new ArrayList<>();
             // parameters
-            fields.add(new FormField("confirmed", FormField.Type.BOOLEAN.name(), 1, "false", "Confirmed", true, false));
+            fields.add(new FormField("status", FormField.Type.TEXT.name(), 1, "new", "Status", true, false));
 
             form.setFields(fields);
 
@@ -162,7 +162,9 @@ public class DataInitializer {
             // parameters
             fields.add(new FormField("from", FormField.Type.DATETIME.name(), 1, "", "From", true, false));
             fields.add(new FormField("until", FormField.Type.DATETIME.name(), 2, "", "Until", true, false));
-            fields.add(new FormField("confirmed", FormField.Type.BOOLEAN.name(), 3, "false", "Confirmed", true, false));
+            FormField status = new FormField("status", FormField.Type.TEXT.name(), 3, "new", "Status", true, false);
+            status.setLookup(new HashSet<>(Arrays.asList("new", "confirmed", "ignored", "%")));
+            fields.add(status);
             fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 4, "%", "Order ID", true, false));
             fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 5, "%", "Firstname", true, false));
             fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 6, "%", "Lastname", true, false));

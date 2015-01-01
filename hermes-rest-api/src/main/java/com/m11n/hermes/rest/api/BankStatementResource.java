@@ -15,6 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 
+import java.math.BigDecimal;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/bank/statements")
@@ -41,6 +43,6 @@ public class BankStatementResource {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
 
-        return Response.ok(bankStatementRepository.findByConfirmedAndAmountGreaterThan(false, 0.0)).cacheControl(cc).build();
+        return Response.ok(bankStatementRepository.findByStatusAndAmountGreaterThan("new", new BigDecimal(0.0))).cacheControl(cc).build();
     }
 }
