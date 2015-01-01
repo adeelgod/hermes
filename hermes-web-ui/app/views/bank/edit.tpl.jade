@@ -7,9 +7,10 @@
                         form.form-inline
                             .form-group
                                 h4.modal-title
-                                    span.label(ng-class="{'label-default': currentBankStatement.status!='confirmed', 'label-success': currentBankStatement.status=='confirmed'}")
+                                    span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
+                                        i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                         i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
-                                        i.fa.fa-exclamation-circle(ng-hide="currentBankStatement.status=='confirmed'")
+                                        i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
                             .btn-group.btn-group-sm(ng-model='search', bs-checkbox-group='')
                                 label.btn.btn-default
                                     input(type='checkbox', value='amount')
