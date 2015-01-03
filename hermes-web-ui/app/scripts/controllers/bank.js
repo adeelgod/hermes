@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $modal, FormSvc) {
+angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $modal, FormSvc, BankSvc) {
     $scope.busy = false;
     $scope.loading = true;
     $scope.params = {};
     $scope.advanced = false;
     $scope.formName = 'bank';
     $scope.currentBankStatement = null;
+    $scope.search = {};
 
     var editModal = $modal({scope: $scope, template: 'views/bank/edit.tpl.html', show: false});
 
@@ -51,6 +52,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
     };
 
     $scope.edit = function(index) {
+        $scope.orders = null;
         $scope.currentBankStatementIndex = index;
         $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
         editModal.$promise.then(editModal.show);
@@ -92,9 +94,17 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
     };
 
-    $scope.resolve = function() {
-        // TODO: implement this
-        $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
+    $scope.filter = function() {
+        $scope.busy = true;
+        var params = angular.copy($scope.search);
+        params.uuid = $scope.currentBankStatement.uuid;
+        BankSvc.filter(params).success(function(data) {
+            $scope.orders = data;
+            $scope.busy = false;
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Could not find any matches.', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
     };
 
     $scope.toggleAdvanced = function() {

@@ -135,6 +135,10 @@ public class DefaultBankService implements BankService {
         return bs;
     }
 
+    public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, boolean or) {
+        return auswertungRepository.findOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, or);
+    }
+
     public List<Map<String, Object>> getOrders(String orderId) {
         return auswertungRepository.findOrdersByOrderId(orderId);
     }

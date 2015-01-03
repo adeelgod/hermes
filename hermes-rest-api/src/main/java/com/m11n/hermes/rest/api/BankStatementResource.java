@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 
@@ -44,5 +42,15 @@ public class BankStatementResource {
         cc.setNoCache(true);
 
         return Response.ok(bankStatementRepository.findByStatusAndAmountGreaterThan("new", new BigDecimal(0.0))).cacheControl(cc).build();
+    }
+
+    @GET
+    @Path("filter")
+    @Produces(APPLICATION_JSON)
+    public Response filter(@QueryParam("uuid") String uuid, @QueryParam("lastnameCriteria") @DefaultValue("%") String lastnameCriteria, @QueryParam("amount") @DefaultValue("false") boolean amount, @QueryParam("amountDiff") @DefaultValue("false") boolean amountDiff, @QueryParam("lastname") @DefaultValue("false") boolean lastname, @QueryParam("or") @DefaultValue("true") boolean or) {
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+
+        return Response.ok(bankService.filter(uuid, lastnameCriteria, amount, amountDiff, lastname, or)).cacheControl(cc).build();
     }
 }

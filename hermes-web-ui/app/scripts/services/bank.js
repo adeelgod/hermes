@@ -10,6 +10,13 @@ angular.module('hermes.ui')
                     url: 'api/bank/statements',
                     params: params
                 });
+            },
+            filter: function(params) {
+                return $http({
+                    method: 'GET',
+                    url: 'api/bank/statements/filter',
+                    params: params
+                });
             }
         };
     });

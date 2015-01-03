@@ -3,7 +3,7 @@
         .modal-content
             .modal-header
                 .row
-                    .col-md-6
+                    .col-md-7
                         form.form-inline
                             .form-group
                                 h4
@@ -14,16 +14,18 @@
                             .btn-group.btn-group-sm(ng-model='search', bs-checkbox-group='')
                                 label.btn.btn-default
                                     input(type='checkbox', value='amount')
-                                    | Identical Amount
+                                    | Amnt. eq.
                                 label.btn.btn-default
                                     input(type='checkbox', value='amountDiff')
-                                    | Amount < 1 EUR
+                                    | Amnt. < 1 EUR
                                 label.btn.btn-default
                                     input(type='checkbox', value='lastname')
-                                    | Lastname 4 chars
-                            button.btn.btn-primary(type='button', ng-click='resolve()')
+                                    | 4 chars
+                            .form-group
+                                input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Search...')
+                            button.btn.btn-primary(type='button', ng-click='filter()')
                                 i.fa.fa-search
-                    .col-md-3
+                    .col-md-2
                         .btn-group.btn-group-sm(ng-show='bankStatements')
                             button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                                 i.fa.fa-check
@@ -74,7 +76,7 @@
                         hr
                 .row
                     .col-md-12
-                        table.table.table-striped.table-condensed
+                        table.table.table-striped.table-condensed(ng-show='orders')
                             thead
                                 tr
                                     td
@@ -91,15 +93,15 @@
                                     td.text-left
                                         h4 Ebay
                             tbody
-                                tr
+                                tr(ng-repeat='entry in orders', ng-class="{'success': entry._selected}")
                                     td
-                                        button.btn.btn-default(type='button', ng-model='', bs-checkbox='')
+                                        button.btn.btn-default(type='button', ng-model='entry._selected', bs-checkbox='')
                                             i.fa.fa-circle-o
-                                    td ---
-                                    td ---
-                                    td ---
-                                    td ---
-                                    td ---
-                                    td ---
+                                    td {{entry.orderId}}
+                                    td {{entry.type}}
+                                    td {{entry.transferDate}}
+                                    td {{entry.amount}}
+                                    td {{entry.firstname}}&nbsp;{{entry.lastname}}
+                                    td {{entry.ebayName}}
                         // TODO: implement this
             //.modal-footer
