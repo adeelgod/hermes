@@ -57,10 +57,10 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
             }
 
             if(amount) {
-                filters.add("abs(a.GesamtPreis_der_Bestellung_Brutto - b.amount) < 1");
+                filters.add("a.GesamtPreis_der_Bestellung_Brutto = b.amount");
             }
             if(amountDiff) {
-                filters.add("a.GesamtPreis_der_Bestellung_Brutto = b.amount");
+                filters.add("abs(a.GesamtPreis_der_Bestellung_Brutto - b.amount) < 1");
             }
             if(lastname) {
                 filters.add("locate(\n" +
