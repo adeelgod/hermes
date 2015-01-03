@@ -68,15 +68,15 @@
                                     td {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                                     td {{currentBankStatement.ebayName}}
                                     td {{currentBankStatement.orderId}}
-                .row
+                .row(ng-show='orders')
                     .col-md-10.col-md-offset-1.text-center
                         hr
                         h3
                             i.fa.fa-exchange
                         hr
-                .row
+                .row(ng-show='orders')
                     .col-md-12
-                        table.table.table-striped.table-condensed(ng-show='orders')
+                        table.table.table-striped.table-condensed
                             thead
                                 tr
                                     td
