@@ -21,8 +21,12 @@
                                 label.btn.btn-default
                                     input(type='checkbox', value='lastname')
                                     | 4 chars
+                                label.btn.btn-default
+                                    input(type='checkbox', value='or')
+                                    span(ng-show='search.or') OR
+                                    span(ng-hide='search.or') AND
                             .form-group
-                                input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Search...')
+                                input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Search...', style='max-width: 100px')
                             button.btn.btn-primary(type='button', ng-click='filter()')
                                 i.fa.fa-search
                     .col-md-2
@@ -52,22 +56,22 @@
                                         h4 Date
                                     td.text-left
                                         h4 Description
-                                    td.text-center
+                                    td.text-right
                                         h4 Amount
-                                    td.text-left
+                                    td.text-right
                                         h4 Client
-                                    td.text-left
+                                    td.text-right
                                         h4 Ebay
-                                    td.text-left
+                                    td.text-center
                                         h4 Order
                             tbody
                                 tr
-                                    td {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
-                                    td {{currentBankStatement.description}}
+                                    td.text-left {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
+                                    td.text-left {{currentBankStatement.description}}
                                     td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
-                                    td {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
-                                    td {{currentBankStatement.ebayName}}
-                                    td {{currentBankStatement.orderId}}
+                                    td.text-right {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
+                                    td.text-right {{currentBankStatement.ebayName}}
+                                    td.text-center {{currentBankStatement.orderId}}
                 .row(ng-show='orders')
                     .col-md-10.col-md-offset-1.text-center
                         hr
@@ -80,28 +84,31 @@
                             thead
                                 tr
                                     td
-                                    td.text-left
+                                    td.text-center
                                         h4 Order
                                     td.text-left
                                         h4 Type
-                                    td.text-left
-                                        h4 Date
                                     td.text-center
+                                        h4 Status
+                                    td.text-center
+                                        h4 Date
+                                    td.text-right
                                         h4 Amount
-                                    td.text-left
+                                    td.text-center
                                         h4 Client
-                                    td.text-left
+                                    td.text-center
                                         h4 Ebay
                             tbody
                                 tr(ng-repeat='entry in orders', ng-class="{'success': entry._selected}")
                                     td
-                                        button.btn.btn-default(type='button', ng-model='entry._selected', bs-checkbox='')
-                                            i.fa.fa-circle-o
-                                    td {{entry.orderId}}
-                                    td {{entry.type}}
-                                    td {{entry.transferDate}}
-                                    td {{entry.amount}}
-                                    td {{entry.firstname}}&nbsp;{{entry.lastname}}
-                                    td {{entry.ebayName}}
+                                        button.btn.btn-default(type='button', ng-click='selectOrder(entry)')
+                                            i.fa(ng-class="{'fa-circle': entry._selected, 'fa-circle-o': !entry._selected}")
+                                    td.text-center {{entry.orderId}}
+                                    td.text-center {{entry.type}}
+                                    td.text-center {{entry.status}}
+                                    td.text-center {{entry.orderDate | date:'dd.MM.yyyy'}}
+                                    td.text-right {{entry.amount | currency:'':2}}&nbsp;EUR
+                                    td.text-center {{entry.firstname}}&nbsp;{{entry.lastname}}
+                                    td.text-right {{entry.ebayName}}
                         // TODO: implement this
             //.modal-footer

@@ -51,6 +51,12 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         });
     };
 
+    $scope.selectOrder = function(entry) {
+        angular.forEach($scope.orders, function(order) {
+            order._selected = (entry.uuid===order.uuid);
+        });
+    };
+
     $scope.edit = function(index) {
         $scope.orders = null;
         $scope.currentBankStatementIndex = index;
@@ -59,6 +65,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
     };
 
     $scope.next = function() {
+        $scope.orders = null;
         $scope.currentBankStatementIndex++;
         if($scope.currentBankStatementIndex>=$scope.bankStatements.length) {
             $scope.currentBankStatementIndex = 0;
@@ -68,6 +75,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
     };
 
     $scope.previous = function() {
+        $scope.orders = null;
         $scope.currentBankStatementIndex--;
         if($scope.currentBankStatementIndex<0) {
             $scope.currentBankStatementIndex = $scope.bankStatements.length-1;
