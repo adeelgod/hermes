@@ -49,11 +49,11 @@ public class BankStatementResource {
     @GET
     @Path("filter")
     @Produces(APPLICATION_JSON)
-    public Response filter(@QueryParam("uuid") String uuid, @QueryParam("lastnameCriteria") @DefaultValue("") String lastnameCriteria, @QueryParam("amount") @DefaultValue("false") boolean amount, @QueryParam("amountDiff") @DefaultValue("false") boolean amountDiff, @QueryParam("lastname") @DefaultValue("false") boolean lastname, @QueryParam("or") @DefaultValue("false") boolean or) {
+    public Response filter(@QueryParam("uuid") String uuid, @QueryParam("lastnameCriteria") @DefaultValue("") String lastnameCriteria, @QueryParam("amount") @DefaultValue("false") boolean amount, @QueryParam("amountDiff") @DefaultValue("false") boolean amountDiff, @QueryParam("lastname") @DefaultValue("false") boolean lastname, @QueryParam("orderId") @DefaultValue("") String orderId, @QueryParam("or") @DefaultValue("false") boolean or) {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
 
-        return Response.ok(bankService.filter(uuid, lastnameCriteria, amount, amountDiff, lastname, or)).cacheControl(cc).build();
+        return Response.ok(bankService.filter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or)).cacheControl(cc).build();
     }
 
     @POST

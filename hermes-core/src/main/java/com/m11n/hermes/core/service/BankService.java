@@ -12,7 +12,7 @@ public interface BankService {
 
     BankStatement extract(BankStatement bs);
 
-    List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, boolean or);
+    List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or);
 
     List<Map<String, Object>> getOrders(String orderId);
 

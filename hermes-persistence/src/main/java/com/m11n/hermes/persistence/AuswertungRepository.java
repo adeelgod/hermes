@@ -43,7 +43,7 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());
     }
 
-    public List<Map<String, Object>> findOrderByFilter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, boolean or) {
+    public List<Map<String, Object>> findOrderByFilter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
         try {
             String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("filter.sql"));
 
@@ -52,7 +52,7 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
             List<String> filters = new ArrayList<>();
 
             // NOTE: by default lastname will be filtered if nothing is selected
-            if(!(amount || amountDiff || lastname) && (StringUtils.isEmpty(lastnameCriteria) || "%".equals(lastnameCriteria))) {
+            if(!(amount || amountDiff || lastname) && (StringUtils.isEmpty(lastnameCriteria) || "%".equals(lastnameCriteria)) && StringUtils.isEmpty(orderId)) {
                 lastname = true;
             }
 
@@ -66,6 +66,9 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                 filters.add("locate(\n" +
                         "  left(replace(replace(replace(replace(lower(a.Kunden_name), 'ä', ''), 'ö', ''), 'ü', ''), 'ß', ''), 4)," +
                         "  replace(replace(replace(replace(lower(b.description), 'ä', ''), 'ö', ''), 'ü', ''), 'ß', '')) >= 0");
+            }
+            if(!StringUtils.isEmpty(orderId)) {
+                filters.add("a.Bestellung = " + orderId);
             }
 
             if(!StringUtils.isEmpty(lastnameCriteria)) {

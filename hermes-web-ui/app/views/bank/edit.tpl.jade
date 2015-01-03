@@ -3,7 +3,7 @@
         .modal-content
             .modal-header
                 .row
-                    .col-md-8(style='padding: 0')
+                    .col-md-8(style='padding-right: 0')
                         form.form-inline
                             .form-group
                                 h4
@@ -21,6 +21,9 @@
                                 label.btn.btn-default
                                     input(type='checkbox', value='lastname')
                                     | 4 chars
+                                label.btn.btn-default
+                                    input(type='checkbox', value='orderId')
+                                    | Order
                                 label.btn.btn-default
                                     input(type='checkbox', value='or')
                                     span(ng-show='search.or') OR

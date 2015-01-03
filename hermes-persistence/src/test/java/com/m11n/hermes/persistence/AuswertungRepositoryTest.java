@@ -21,15 +21,15 @@ public class AuswertungRepositoryTest {
 
     @Test
     public void test() {
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, true, true, true);
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, true, true, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, false, false, true);
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, false, false, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, true, false, true);
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, true, false, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, false, true, true);
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, false, true, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "mü%", false, false, false, false);
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "mü%", false, false, false, "30000000", false);
         logger.debug("=========================================================");
     }
 }

@@ -145,6 +145,9 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         $scope.busy = true;
         var params = angular.copy($scope.search);
         params.uuid = $scope.currentBankStatement.uuid;
+        if(params.orderId) {
+            params.orderId = $scope.currentBankStatement.orderId;
+        }
         BankSvc.filter(params).success(function(data) {
             $scope.orders = data;
             $scope.busy = false;
