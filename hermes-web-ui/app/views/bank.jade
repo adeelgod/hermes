@@ -37,15 +37,15 @@ block content
                                         span(ng-hide='advanced') Advanced
                             .col-md-6
                                 .btn-group.btn-group-lg.pull-right(ng-show='bankStatements')
-                                    button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                                    button.btn.btn-success(type='button', ng-click='assignSelected()', ng-disabled='busy')
                                         i.fa.fa-check
                                         | &nbsp;
                                         | Assign
-                                    button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
+                                    button.btn.btn-danger(type='button', ng-click='ignoreSelected()', ng-disabled='busy')
                                         i.fa.fa-ban
                                         | &nbsp;
                                         | Ignore
-                                    button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                                    button.btn.btn-default(type='button', ng-click='resetSelected()', ng-disabled='busy')
                                         i.fa.fa-undo
                                         | &nbsp;
                                         | Reset

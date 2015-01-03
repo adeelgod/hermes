@@ -84,37 +84,61 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         $scope.search = {};
     };
 
-    $scope.assign = function() {
+    $scope.process = function(statusFn, statements) {
         $scope.busy = true;
-        BankSvc.assign($scope.currentBankStatement).success(function(data) {
-            $scope.currentBankStatement.status=data.status;
+
+        statusFn(statements).success(function(data) {
+            angular.forEach(data, function(statement) {
+                for(var j=0; j<$scope.bankStatements.length; j++) {
+                    if($scope.bankStatements[j].uuid===statement.uuid) {
+                        $scope.bankStatements[j].status = statement.status;
+                        break;
+                    }
+                }
+            });
             $scope.busy = false;
         }).error(function(data) {
             $scope.busy = false;
-            $alert({content: 'Could not assign statement.', placement: 'top', type: 'danger', show: true, duration: 5});
+            $alert({content: 'Could not process request.', placement: 'top', type: 'danger', show: true, duration: 5});
         });
+    };
+
+    $scope.processSelected = function(statusFn) {
+        $scope.busy = true;
+        var statements = [];
+
+        for(var i=0; i<$scope.bankStatements.length; i++) {
+            if($scope.bankStatements[i]._selected) {
+                $scope.bankStatements[i]._selected = null;
+                delete $scope.bankStatements[i]._selected;
+                statements.push($scope.bankStatements[i]);
+            }
+        }
+        $scope.process(statusFn, statements);
+    };
+
+    $scope.assignSelected = function() {
+        $scope.processSelected(BankSvc.assign);
+    };
+
+    $scope.ignoreSelected = function() {
+        $scope.processSelected(BankSvc.ignore);
+    };
+
+    $scope.resetSelected = function() {
+        $scope.processSelected(BankSvc.reset);
+    };
+
+    $scope.assign = function() {
+        $scope.process(BankSvc.assign, [$scope.currentBankStatement]);
     };
 
     $scope.ignore = function() {
-        $scope.busy = true;
-        BankSvc.ignore($scope.currentBankStatement).success(function(data) {
-            $scope.currentBankStatement.status=data.status;
-            $scope.busy = false;
-        }).error(function(data) {
-            $scope.busy = false;
-            $alert({content: 'Could not ignore statement.', placement: 'top', type: 'danger', show: true, duration: 5});
-        });
+        $scope.process(BankSvc.ignore, [$scope.currentBankStatement]);
     };
 
     $scope.reset = function() {
-        $scope.busy = true;
-        BankSvc.reset($scope.currentBankStatement).success(function(data) {
-            $scope.currentBankStatement.status=data.status;
-            $scope.busy = false;
-        }).error(function(data) {
-            $scope.busy = false;
-            $alert({content: 'Could not reset statement.', placement: 'top', type: 'danger', show: true, duration: 5});
-        });
+        $scope.process(BankSvc.reset, [$scope.currentBankStatement]);
     };
 
     $scope.filter = function() {
