@@ -1,19 +1,24 @@
 package com.m11n.hermes.persistence;
 
+import com.google.common.base.Joiner;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class AuswertungRepository extends AbstractAuswertungRepository {
+    private static final Logger logger = LoggerFactory.getLogger(AuswertungRepository.class);
+
     public List<Map<String, Object>> query(String sqlStatement, Map<String, Object> parameters, RowMapper<Map<String, Object>> mapper) {
         return jdbcTemplate.query(sqlStatement, parameters, mapper);
     }
@@ -36,6 +41,50 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         String sql = "select Bestellung as orderId, GesamtPreis_der_Bestellung_Brutto as amount, Kundenummer as clientId, Kunden_vorname as firstname, Kunden_name as lastname, Kunden_ebay_name as ebayName, typ as type, Status as status from Auswertung.mage_custom_order where Bestellung = " + orderId;
 
         return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());
+    }
+
+    public List<Map<String, Object>> findOrderByFilter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, boolean or) {
+        try {
+            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("filter.sql"));
+
+            String join = or ? " OR " : " AND ";
+
+            List<String> filters = new ArrayList<>();
+
+            // NOTE: by default lastname will be filtered if nothing is selected
+            if(!(amount && amountDiff && lastname)) {
+                lastname = true;
+            }
+
+            if(amount) {
+                filters.add("abs(a.GesamtPreis_der_Bestellung_Brutto - b.amount) < 1");
+            }
+            if(amountDiff) {
+                filters.add("a.GesamtPreis_der_Bestellung_Brutto = b.amount");
+            }
+            if(lastname) {
+                filters.add("locate(\n" +
+                        "  left(replace(replace(replace(replace(lower(a.Kunden_name), 'ä', ''), 'ö', ''), 'ü', ''), 'ß', ''), 4)," +
+                        "  replace(replace(replace(replace(lower(b.description), 'ä', ''), 'ö', ''), 'ü', ''), 'ß', '')) >= 0");
+            }
+
+            if(StringUtils.isEmpty(lastnameCriteria)) {
+                lastnameCriteria = "%";
+            }
+
+            filters.add("a.Kunden_name LIKE '" + lastnameCriteria + "'");
+
+            sql = String.format(sql, Joiner.on(join).join(filters));
+
+            // TODO: remove this in production
+            logger.debug(sql);
+
+            return jdbcTemplate.query(sql, Collections.<String, Object>singletonMap("uuid", uuid), new DefaultMapper());
+        } catch (IOException e) {
+            logger.error(e.toString(), e);
+        }
+
+        return Collections.emptyList();
     }
 
     public static class DefaultMapper extends BaseRowMapper {
