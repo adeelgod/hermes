@@ -53,7 +53,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
 
     $scope.selectOrder = function(entry) {
         angular.forEach($scope.orders, function(order) {
-            order._selected = (entry.uuid===order.uuid);
+            order._selected = (entry.orderId===order.orderId);
         });
     };
 
