@@ -17,6 +17,27 @@ angular.module('hermes.ui')
                     url: 'api/bank/statements/filter',
                     params: params
                 });
+            },
+            assign: function(params) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/bank/statements/assign',
+                    data: params
+                });
+            },
+            ignore: function(params) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/bank/statements/ignore',
+                    data: params
+                });
+            },
+            reset: function(params) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/bank/statements/reset',
+                    data: params
+                });
             }
         };
     });

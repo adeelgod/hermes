@@ -85,21 +85,36 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
     };
 
     $scope.assign = function() {
-        // TODO: implement this
-        $scope.currentBankStatement.status='confirmed';
-        $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
+        $scope.busy = true;
+        BankSvc.assign($scope.currentBankStatement).success(function(data) {
+            $scope.currentBankStatement.status=data.status;
+            $scope.busy = false;
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Could not assign statement.', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
     };
 
     $scope.ignore = function() {
-        // TODO: implement this
-        $scope.currentBankStatement.status='ignored';
-        $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
+        $scope.busy = true;
+        BankSvc.ignore($scope.currentBankStatement).success(function(data) {
+            $scope.currentBankStatement.status=data.status;
+            $scope.busy = false;
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Could not ignore statement.', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
     };
 
     $scope.reset = function() {
-        // TODO: implement this
-        $scope.currentBankStatement.status='new';
-        $alert({content: 'Not yet implemented.', placement: 'top', type: 'warning', show: true, duration: 5});
+        $scope.busy = true;
+        BankSvc.reset($scope.currentBankStatement).success(function(data) {
+            $scope.currentBankStatement.status=data.status;
+            $scope.busy = false;
+        }).error(function(data) {
+            $scope.busy = false;
+            $alert({content: 'Could not reset statement.', placement: 'top', type: 'danger', show: true, duration: 5});
+        });
     };
 
     $scope.filter = function() {

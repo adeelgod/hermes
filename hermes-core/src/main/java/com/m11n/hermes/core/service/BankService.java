@@ -16,5 +16,11 @@ public interface BankService {
 
     List<Map<String, Object>> getOrders(String orderId);
 
+    BankStatement assign(BankStatement bs);
+
+    BankStatement ignore(BankStatement bs);
+
+    BankStatement reset(BankStatement bs);
+
     void reload();
 }

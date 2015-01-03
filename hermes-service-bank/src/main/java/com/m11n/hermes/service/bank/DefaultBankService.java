@@ -142,4 +142,24 @@ public class DefaultBankService implements BankService {
     public List<Map<String, Object>> getOrders(String orderId) {
         return auswertungRepository.findOrdersByOrderId(orderId);
     }
+
+    public BankStatement assign(BankStatement bs) {
+        // TODO: invoke webservices
+        bs.setStatus("confirmed");
+        bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
+        return bs;
+    }
+
+    public BankStatement ignore(BankStatement bs) {
+        bs.setStatus("ignored");
+        bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
+        return bs;
+    }
+
+    public BankStatement reset(BankStatement bs) {
+        // TODO: anything else to process here?
+        bs.setStatus("new");
+        bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
+        return bs;
+    }
 }

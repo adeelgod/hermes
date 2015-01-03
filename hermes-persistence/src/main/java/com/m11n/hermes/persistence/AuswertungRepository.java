@@ -68,11 +68,9 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                         "  replace(replace(replace(replace(lower(b.description), 'ä', ''), 'ö', ''), 'ü', ''), 'ß', '')) >= 0");
             }
 
-            if(StringUtils.isEmpty(lastnameCriteria)) {
-                lastnameCriteria = "%";
+            if(!StringUtils.isEmpty(lastnameCriteria)) {
+                filters.add("a.Kunden_name LIKE '" + lastnameCriteria + "'");
             }
-
-            filters.add("a.Kunden_name LIKE '" + lastnameCriteria + "'");
 
             sql = String.format(sql, Joiner.on(join).join(filters));
 

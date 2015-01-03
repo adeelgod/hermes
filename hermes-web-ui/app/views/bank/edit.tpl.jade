@@ -3,7 +3,7 @@
         .modal-content
             .modal-header
                 .row
-                    .col-md-7
+                    .col-md-8(style='padding: 0')
                         form.form-inline
                             .form-group
                                 h4
@@ -26,10 +26,10 @@
                                     span(ng-show='search.or') OR
                                     span(ng-hide='search.or') AND
                             .form-group
-                                input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Search...', style='max-width: 100px')
-                            button.btn.btn-primary(type='button', ng-click='filter()')
+                                input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...', style='max-width: 100px')
+                            button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
                                 i.fa.fa-search
-                    .col-md-2
+                    .col-md-2(style='padding: 0')
                         .btn-group.btn-group-sm(ng-show='bankStatements')
                             button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                                 i.fa.fa-check
@@ -37,13 +37,13 @@
                                 i.fa.fa-ban
                             button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
                                 i.fa.fa-undo
-                    .col-md-2
+                    .col-md-1(style='padding: 0')
                         .btn-group.btn-group-sm.pull-right
                             button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
                                 i.fa.fa-chevron-left
                             button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
                                 i.fa.fa-chevron-right
-                    .col-md-1
+                    .col-md-1(style='padding-left: 0')
                         button.btn.btn-sm.btn-danger.pull-right(type='button', ng-click='$hide()')
                             i.fa.fa-close
             .modal-body
@@ -74,10 +74,8 @@
                                     td.text-center {{currentBankStatement.orderId}}
                 .row(ng-show='orders')
                     .col-md-10.col-md-offset-1.text-center
-                        hr
                         h3
-                            i.fa.fa-exchange
-                        hr
+                            i.fa.fa-exchange.fa-rotate-90
                 .row(ng-show='orders')
                     .col-md-12
                         table.table.table-striped.table-condensed
