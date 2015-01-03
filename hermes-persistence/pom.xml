@@ -83,6 +83,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-sql</artifactId>
+        </dependency>
 
         <!-- Datasource -->
         <dependency>
@@ -115,5 +119,29 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>hermes.persistence.generate</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.mysema.querydsl</groupId>
+                        <artifactId>querydsl-maven-plugin</artifactId>
+                        <version>${querydsl.version}</version>
+                        <configuration>
+                            <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+                            <jdbcUrl>jdbc:mysql://127.0.0.1:13306/Auswertung</jdbcUrl>
+                            <packageName>com.m11n.hermes.persistence.query</packageName>
+                            <targetFolder>${project.build.sourceDirectory}</targetFolder>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
