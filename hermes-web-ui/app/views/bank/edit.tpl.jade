@@ -52,7 +52,7 @@
                         table.table.table-striped.table-condensed(ng-show='currentBankStatement')
                             thead
                                 tr
-                                    td.text-left
+                                    td.text-center
                                         h4 Date
                                     td.text-left
                                         h4 Description
@@ -60,16 +60,16 @@
                                         h4 Amount
                                     td.text-right
                                         h4 Client
-                                    td.text-right
+                                    td.text-center
                                         h4 Ebay
                                     td.text-center
                                         h4 Order
                             tbody
                                 tr
-                                    td.text-left {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
+                                    td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
                                     td.text-left {{currentBankStatement.description}}
                                     td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
-                                    td.text-right {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
+                                    td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                                     td.text-right {{currentBankStatement.ebayName}}
                                     td.text-center {{currentBankStatement.orderId}}
                 .row(ng-show='orders')
@@ -84,7 +84,7 @@
                                     td
                                     td.text-center
                                         h4 Order
-                                    td.text-left
+                                    td.text-center
                                         h4 Type
                                     td.text-center
                                         h4 Status
