@@ -52,7 +52,7 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
             List<String> filters = new ArrayList<>();
 
             // NOTE: by default lastname will be filtered if nothing is selected
-            if(!(amount && amountDiff && lastname)) {
+            if(!(amount || amountDiff || lastname) && (StringUtils.isEmpty(lastnameCriteria) || "%".equals(lastnameCriteria))) {
                 lastname = true;
             }
 

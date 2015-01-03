@@ -22,5 +22,14 @@ public class AuswertungRepositoryTest {
     @Test
     public void test() {
         auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, true, true, true);
+        logger.debug("=========================================================");
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, false, false, true);
+        logger.debug("=========================================================");
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, true, false, true);
+        logger.debug("=========================================================");
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, false, true, true);
+        logger.debug("=========================================================");
+        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "mü%", false, false, false, false);
+        logger.debug("=========================================================");
     }
 }
