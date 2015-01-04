@@ -20,10 +20,24 @@ block content
                             input.form-control(name='description', ng-model="pattern.description", placeholder='Description', type='text')
                         .form-group
                             label(for='position') Position
-                            input.form-control(name='position', ng-model="pattern.pos", placeholder='Position', type='text')
+                            input.form-control(name='position', ng-model="pattern.pos", placeholder='Position', type='number')
                         .form-group
                             label(for='pattern') Pattern
                             textarea.form-control(name='pattern', ng-model="pattern.pattern", placeholder='Pattern', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='pattern.caseInsensitive', bs-checkbox='')
+                                i.fa(ng-class="{'fa-sort-alpha-asc': pattern.caseInsensitive, 'fa-minus': !pattern.caseInsensitive}")
+                            label(for='caseInsensitive') Case insensitive
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model='pattern.stopOnFirstMatch', bs-checkbox='')
+                                i.fa(ng-class="{'fa-stop': pattern.stopOnFirstMatch, 'fa-minus': !pattern.stopOnFirstMatch}")
+                            label(for='stopOnFirstMatch') Stop on first match
+                        .form-group
+                            label(for='patternGroup') Group
+                            input.form-control(name='patternGroup', ng-model="pattern.patternGroup", placeholder='Group', type='number')
+                        .form-group
+                            label(for='attribute') Attribute
+                            input.form-control(name='attribute', ng-model="pattern.attribute", placeholder='Attribute', type='text')
                     button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
                         i.fa.fa-floppy-o
                         | &nbsp;
