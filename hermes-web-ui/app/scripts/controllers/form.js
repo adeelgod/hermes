@@ -97,7 +97,7 @@ angular.module('hermes.ui').controller('FormCtrl', function ($rootScope, $scope,
             $scope.list().then(function() {
                 $alert({content: 'Form saved: ' + $scope.form.name, placement: 'top', type: 'success', show: true, duration: 3});
                 $rootScope.$broadcast('form.reload');
-            });;
+            });
         });
     };
 
