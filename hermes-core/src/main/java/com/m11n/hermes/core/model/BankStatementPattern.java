@@ -49,6 +49,11 @@ public class BankStatementPattern extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "description")
+    private String description;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "pos")
     private Integer pos;
 
@@ -162,6 +167,31 @@ public class BankStatementPattern extends DirectBean
      */
     public final Property<String> name() {
         return metaBean().name().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the description.
+     * @return the value of the property
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the description.
+     * @param description  the new value of the property
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Gets the the {@code description} property.
+     * @return the property, not null
+     */
+    public final Property<String> description() {
+        return metaBean().description().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -354,6 +384,7 @@ public class BankStatementPattern extends DirectBean
             BankStatementPattern other = (BankStatementPattern) obj;
             return JodaBeanUtils.equal(getId(), other.getId()) &&
                     JodaBeanUtils.equal(getName(), other.getName()) &&
+                    JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
                     JodaBeanUtils.equal(getPos(), other.getPos()) &&
                     JodaBeanUtils.equal(getPattern(), other.getPattern()) &&
                     JodaBeanUtils.equal(getCaseInsensitive(), other.getCaseInsensitive()) &&
@@ -370,6 +401,7 @@ public class BankStatementPattern extends DirectBean
         int hash = getClass().hashCode();
         hash = hash * 31 + JodaBeanUtils.hashCode(getId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getName());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
         hash = hash * 31 + JodaBeanUtils.hashCode(getPos());
         hash = hash * 31 + JodaBeanUtils.hashCode(getPattern());
         hash = hash * 31 + JodaBeanUtils.hashCode(getCaseInsensitive());
@@ -382,7 +414,7 @@ public class BankStatementPattern extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(320);
+        StringBuilder buf = new StringBuilder(352);
         buf.append("BankStatementPattern{");
         int len = buf.length();
         toString(buf);
@@ -396,6 +428,7 @@ public class BankStatementPattern extends DirectBean
     protected void toString(StringBuilder buf) {
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
+        buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
         buf.append("pos").append('=').append(JodaBeanUtils.toString(getPos())).append(',').append(' ');
         buf.append("pattern").append('=').append(JodaBeanUtils.toString(getPattern())).append(',').append(' ');
         buf.append("caseInsensitive").append('=').append(JodaBeanUtils.toString(getCaseInsensitive())).append(',').append(' ');
@@ -425,6 +458,11 @@ public class BankStatementPattern extends DirectBean
          */
         private final MetaProperty<String> name = DirectMetaProperty.ofReadWrite(
                 this, "name", BankStatementPattern.class, String.class);
+        /**
+         * The meta-property for the {@code description} property.
+         */
+        private final MetaProperty<String> description = DirectMetaProperty.ofReadWrite(
+                this, "description", BankStatementPattern.class, String.class);
         /**
          * The meta-property for the {@code pos} property.
          */
@@ -467,6 +505,7 @@ public class BankStatementPattern extends DirectBean
                 this, null,
                 "id",
                 "name",
+                "description",
                 "pos",
                 "pattern",
                 "caseInsensitive",
@@ -488,6 +527,8 @@ public class BankStatementPattern extends DirectBean
                     return id;
                 case 3373707:  // name
                     return name;
+                case -1724546052:  // description
+                    return description;
                 case 111188:  // pos
                     return pos;
                 case -791090288:  // pattern
@@ -536,6 +577,14 @@ public class BankStatementPattern extends DirectBean
          */
         public final MetaProperty<String> name() {
             return name;
+        }
+
+        /**
+         * The meta-property for the {@code description} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> description() {
+            return description;
         }
 
         /**
@@ -602,6 +651,8 @@ public class BankStatementPattern extends DirectBean
                     return ((BankStatementPattern) bean).getId();
                 case 3373707:  // name
                     return ((BankStatementPattern) bean).getName();
+                case -1724546052:  // description
+                    return ((BankStatementPattern) bean).getDescription();
                 case 111188:  // pos
                     return ((BankStatementPattern) bean).getPos();
                 case -791090288:  // pattern
@@ -628,6 +679,9 @@ public class BankStatementPattern extends DirectBean
                     return;
                 case 3373707:  // name
                     ((BankStatementPattern) bean).setName((String) newValue);
+                    return;
+                case -1724546052:  // description
+                    ((BankStatementPattern) bean).setDescription((String) newValue);
                     return;
                 case 111188:  // pos
                     ((BankStatementPattern) bean).setPos((Integer) newValue);

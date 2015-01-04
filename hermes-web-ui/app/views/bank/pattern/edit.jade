@@ -1,0 +1,30 @@
+extends /layouts/_page
+block content
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-hide='loading')
+        .col-md-12
+            .panel.panel-default
+                .panel-heading
+                    h3.panel-title Pattern: {{pattern.name}}
+                .panel-body
+                    form(role='form', name='patternForm', novalidate='')
+                        .form-group
+                            label(for='name') Name (must be unique!)
+                            input.form-control(name='name', ng-model="pattern.name", placeholder='Name', type='text')
+                        .form-group
+                            label(for='description') Description
+                            input.form-control(name='description', ng-model="pattern.description", placeholder='Description', type='text')
+                        .form-group
+                            label(for='position') Position
+                            input.form-control(name='position', ng-model="pattern.pos", placeholder='Position', type='text')
+                        .form-group
+                            label(for='pattern') Pattern
+                            textarea.form-control(name='pattern', ng-model="pattern.pattern", placeholder='Pattern', type='text')
+                    button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
+                        i.fa.fa-floppy-o
+                        | &nbsp;
+                        | Save

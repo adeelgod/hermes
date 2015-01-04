@@ -42,6 +42,9 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                 li(ng-show='authenticated')
                     a(href='', ui-sref='form_list', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.forms')
                         i.fa.fa-2x.fa-list-alt
+                li(ng-show='authenticated')
+                    a(href='', ui-sref='bank_pattern_list')
+                        i.fa.fa-2x.fa-magic
                 li
                     a(href='', ui-sref='configuration', ng-show='authenticated', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.configuration')
                         i.fa.fa-2x.fa-cog

@@ -52,6 +52,18 @@ angular.module('hermes.ui', [
             templateUrl: 'views/bank.html',
             controller: 'BankCtrl'
         })
+        .state('bank_pattern_edit', {
+            abstract: false,
+            url: '/pattern/edit/:id',
+            templateUrl: 'views/bank/pattern/edit.html',
+            controller: 'BankPatternCtrl'
+        })
+        .state('bank_pattern_list', {
+            abstract: false,
+            url: '/pattern/list',
+            templateUrl: 'views/bank/pattern/list.html',
+            controller: 'BankPatternListCtrl'
+        })
         .state('configuration', {
             abstract: false,
             url: '/configuration',
