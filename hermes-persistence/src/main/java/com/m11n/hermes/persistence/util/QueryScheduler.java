@@ -85,9 +85,14 @@ public class QueryScheduler {
                     row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
 
                     if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                        String shippingId = row.get("shippingId").toString();
+                        if(row.get("shippingId")!=null) {
+                            String shippingId = row.get("shippingId").toString();
 
-                        row.put("_labelPath", intrashipDocumentRepository.findFilePath(shippingId));
+                            row.put("_labelPath", intrashipDocumentRepository.findFilePath(shippingId));
+                        } else {
+                            logger.warn("FILE NOT FOUND: {}", resultDir + "/" + row.get("orderId") + "/label.pdf");
+                            row.put("shippingId", "");
+                        }
                     }
                 }
 
@@ -96,8 +101,10 @@ public class QueryScheduler {
         };
 
         for(FormField field : form.getFields()) {
-            // TODO: what's up with TIME?
-            if(field.getFieldType().equals(FormField.Type.DATE.name()) || field.getFieldType().equals(FormField.Type.DATETIME.name())) {
+            if(field.getFieldType() == null) {
+                logger.error("*************************************** ORPHAN FIELD: {}", field);
+            }
+            if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
                 String value = parameters.get(field.getName()).toString();
                 DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
                 DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");

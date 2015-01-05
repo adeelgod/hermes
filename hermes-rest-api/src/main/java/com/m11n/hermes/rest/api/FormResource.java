@@ -16,6 +16,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -59,7 +60,12 @@ public class FormResource {
     @Path("query")
     @Produces(APPLICATION_JSON)
     public Response query(Map<String, Object> parameters) {
-        Object result = queryScheduler.query(parameters);
+        Object result = Collections.emptyList();
+        try {
+            result = queryScheduler.query(parameters);
+        } catch(Exception e) {
+            logger.error(e.toString(), e);
+        }
 
         if(result instanceof List) {
             List<Map<String, Object>> r = (List<Map<String, Object>>)result;
@@ -79,14 +85,14 @@ public class FormResource {
                             if(!f.exists()) {
                                 f.mkdirs();
                             }
-                            logger.info("#################### COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
+                            logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
                             sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
                             row.put("_labelExists", true);
                         } catch (Exception e) {
                             logger.error(e.toString(), e);
                         }
                     } else {
-                        logger.info("#################### NOT FOUND: {} -> {}", orderId, shippingId);
+                        logger.info("FILE NOT FOUND: {} -> {}", orderId, shippingId);
                     }
                 }
             }
@@ -107,7 +113,7 @@ public class FormResource {
                     String shippingId = item.get("shippingId")==null ? null : item.get("shippingId").toString();
 
                     if(!StringUtils.isEmpty(orderId) && !StringUtils.isEmpty(shippingId)) {
-                        logger.debug("#################### DOWNLOAD: {} - {}", orderId, shippingId);
+                        logger.debug("DOWNLOAD: {} - {}", orderId, shippingId);
 
                         boolean labelExists = new File(resultDir + "/" + orderId + "/label.pdf").exists();
 
