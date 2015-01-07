@@ -15,4 +15,10 @@
 
     <import resource="applicationContext-hermes-persistence.xml" />
 
+    <bean class="com.m11n.hermes.similarity.StringSimilarityServiceImpl">
+        <constructor-arg>
+            <bean class="com.m11n.hermes.similarity.DiceCoefficientStrategy"/>
+        </constructor-arg>
+    </bean>
+
 </beans>

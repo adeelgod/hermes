@@ -3,9 +3,11 @@ package com.m11n.hermes.service.bank;
 import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.service.BankService;
+import com.m11n.hermes.core.service.MagentoService;
 import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.BankStatementPatternRepository;
 import com.m11n.hermes.persistence.BankStatementRepository;
+import com.m11n.hermes.similarity.StringSimilarityService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +39,12 @@ public class DefaultBankService implements BankService {
 
     @Inject
     private AuswertungRepository auswertungRepository;
+
+    @Inject
+    private StringSimilarityService similarityService;
+
+    @Inject
+    private MagentoService magentoService;
 
     private Set<BankStatementPattern> patterns = new HashSet<>();
 
