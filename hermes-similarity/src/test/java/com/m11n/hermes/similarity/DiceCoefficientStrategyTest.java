@@ -25,6 +25,7 @@ package com.m11n.hermes.similarity;
 
 import static org.junit.Assert.*;
 
+import com.m11n.hermes.similarity.util.UmlautUtil;
 import org.junit.Test;
 
 public class DiceCoefficientStrategyTest {
@@ -86,4 +87,15 @@ public class DiceCoefficientStrategyTest {
 		assertEquals(expected, actual, delta);
 	}
 
+
+    @Test
+    public void testSzetSissimilarity() {
+        SimilarityStrategy s = new DiceCoefficientStrategy();
+        String first = UmlautUtil.replace("Schloss");
+        String second = UmlautUtil.replace("Schloß");
+        double expected = 1.000;
+        double delta = 0.000;
+        double actual = s.score(first, second);
+        assertEquals(expected, actual, delta);
+    }
 }
