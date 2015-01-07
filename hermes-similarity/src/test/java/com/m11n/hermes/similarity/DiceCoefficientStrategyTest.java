@@ -87,7 +87,6 @@ public class DiceCoefficientStrategyTest {
 		assertEquals(expected, actual, delta);
 	}
 
-
     @Test
     public void testSzetSissimilarity() {
         SimilarityStrategy s = new DiceCoefficientStrategy();
@@ -95,6 +94,17 @@ public class DiceCoefficientStrategyTest {
         String second = UmlautUtil.replace("Schloß");
         double expected = 1.000;
         double delta = 0.000;
+        double actual = s.score(first, second);
+        assertEquals(expected, actual, delta);
+    }
+
+    @Test
+    public void testCombinationSissimilarity() {
+        SimilarityStrategy s = new DiceCoefficientStrategy();
+        String first = "Aleksandar Vidakovic";
+        String second = "Vidakovic Aleksandar";
+        double expected = 1.000;
+        double delta = 0.120;
         double actual = s.score(first, second);
         assertEquals(expected, actual, delta);
     }
