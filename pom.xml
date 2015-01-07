@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.m11n</groupId>
         <artifactId>m11n-project</artifactId>
-        <version>1.0.12</version>
+        <version>1.0.13-SNAPSHOT</version>
     </parent>
 
     <groupId>com.m11n.hermes</groupId>
@@ -41,6 +41,12 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -120,6 +126,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
+                <module>hermes-similarity</module>
                 <module>hermes-core</module>
                 <module>hermes-test</module>
                 <module>hermes-persistence</module>
@@ -136,6 +143,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
+                <module>hermes-similarity</module>
                 <module>hermes-core</module>
                 <module>hermes-test</module>
                 <module>hermes-persistence</module>
