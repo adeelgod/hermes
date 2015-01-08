@@ -125,6 +125,18 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $alert,
                     break;
             }
 
+            switch(shipping.country) {
+                case 'AN':
+                case 'CH':
+                case 'LI':
+                case 'VT':
+                    $scope.checks[shipping.orderId]['country'] = false;
+                    break;
+                default:
+                    $scope.checks[shipping.orderId]['country'] = true;
+                    break;
+            }
+
             if(shipping.street1 && shipping.street1.indexOf('5pack')>=0) {
                 $scope.checks[shipping.orderId].dhlAccount = (!shipping.dhlAccount && (''+shipping.dhlAccount).length >= 5);
             } else if(shipping.street1 && shipping.street1.indexOf('packstat')>=0) {
@@ -141,6 +153,7 @@ angular.module('hermes.ui').controller('ShippingCtrl', function ($scope, $alert,
                 $scope.checks[shipping.orderId].street2 &&
                 $scope.checks[shipping.orderId].city &&
                 $scope.checks[shipping.orderId]['zip'] &&
+                $scope.checks[shipping.orderId].country &&
                 $scope.checks[shipping.orderId].dhlAccount);
         });
     };
