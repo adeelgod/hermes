@@ -56,9 +56,12 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
     };
 
     $scope.selectOrder = function(entry) {
+        entry._selected = !entry._selected;
+        /**
         angular.forEach($scope.orders, function(order) {
             order._selected = (entry.orderId===order.orderId);
         });
+         */
     };
 
     $scope.edit = function(index) {
