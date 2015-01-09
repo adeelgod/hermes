@@ -67,70 +67,74 @@ public class QueryScheduler {
     }
 
     public Object query(final Form form, final boolean checkFiles, final boolean downloadFiles, Map<String, Object> parameters) {
-        RowMapper<Map<String, Object>> mapper = new BaseRowMapper() {
-            @Override
-            public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
-                Map<String, Object> row = new HashMap<>();
-                ResultSetMetaData metaData = resultSet.getMetaData();
-
-                for(int j=1; j<=metaData.getColumnCount(); j++) {
-                    String name = getLabel(metaData, j);
-                    Object value = getValue(resultSet, j);
-
-                    row.put(name, value);
-                }
-
-                if(row.containsKey("orderId") && checkFiles) {
-                    row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
-                    row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
-
-                    if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                        if(row.get("shippingId")!=null) {
-                            String shippingId = row.get("shippingId").toString();
-
-                            row.put("_labelPath", intrashipDocumentRepository.findFilePath(shippingId));
-                        } else {
-                            logger.warn("FILE NOT FOUND: {}", resultDir + "/" + row.get("orderId") + "/label.pdf");
-                            row.put("shippingId", "");
-                        }
-                    }
-                }
-
-                return row;
-            }
-        };
-
-        for(FormField field : form.getFields()) {
-            if(field.getFieldType() == null) {
-                logger.error("*************************************** ORPHAN FIELD: {}", field);
-            }
-            if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
-                String value = parameters.get(field.getName()).toString();
-                DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
-                DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                parameters.put(field.getName(), df.print(dt));
-            }
-        }
-
-        String[] statements = form.getSqlStatement().split(";");
-
         Object result = null;
 
-        for(String statement : statements) {
-            statement = statement.trim();
+        try {
+            RowMapper<Map<String, Object>> mapper = new BaseRowMapper() {
+                @Override
+                public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
+                    Map<String, Object> row = new HashMap<>();
+                    ResultSetMetaData metaData = resultSet.getMetaData();
 
-            if(statement.toLowerCase().startsWith("select")) {
-                if("auswertung".equalsIgnoreCase(form.getDb())) {
-                    result = auswertungRepository.query(statement, parameters, mapper);
-                } else if("lcarb".equalsIgnoreCase(form.getDb())) {
-                    result = lCarbRepository.query(statement, parameters, mapper);
-                } else {
-                    logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
-                    result = auswertungRepository.query(statement, parameters, mapper);
+                    for(int j=1; j<=metaData.getColumnCount(); j++) {
+                        String name = getLabel(metaData, j);
+                        Object value = getValue(resultSet, j);
+
+                        row.put(name, value);
+                    }
+
+                    if(row.containsKey("orderId") && checkFiles) {
+                        row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
+                        row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
+
+                        if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
+                            if(row.get("shippingId")!=null) {
+                                String shippingId = row.get("shippingId").toString();
+
+                                row.put("_labelPath", intrashipDocumentRepository.findFilePath(shippingId));
+                            } else {
+                                logger.warn("FILE NOT FOUND: {}", resultDir + "/" + row.get("orderId") + "/label.pdf");
+                                row.put("shippingId", "");
+                            }
+                        }
+                    }
+
+                    return row;
                 }
-            } else {
-                result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
+            };
+
+            for(FormField field : form.getFields()) {
+                if(field.getFieldType() == null) {
+                    logger.error("*************************************** ORPHAN FIELD: {}", field);
+                }
+                if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
+                    String value = parameters.get(field.getName()).toString();
+                    DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
+                    DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                    parameters.put(field.getName(), df.print(dt));
+                }
             }
+
+            String[] statements = form.getSqlStatement().split(";");
+
+            for(String statement : statements) {
+                statement = statement.trim();
+
+                if(statement.toLowerCase().startsWith("select")) {
+                    if("auswertung".equalsIgnoreCase(form.getDb())) {
+                        result = auswertungRepository.query(statement, parameters, mapper);
+                    } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+                        result = lCarbRepository.query(statement, parameters, mapper);
+                    } else {
+                        logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+                        result = auswertungRepository.query(statement, parameters, mapper);
+                    }
+                } else {
+                    result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
+                }
+            }
+        } catch(Throwable t) {
+            logger.error(t.toString(), t);
         }
 
         return result;
