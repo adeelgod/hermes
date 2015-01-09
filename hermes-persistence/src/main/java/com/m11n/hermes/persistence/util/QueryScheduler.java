@@ -3,6 +3,7 @@ package com.m11n.hermes.persistence.util;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.persistence.*;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -118,19 +119,21 @@ public class QueryScheduler {
             String[] statements = form.getSqlStatement().split(";");
 
             for(String statement : statements) {
-                statement = statement.trim();
+                statement = statement.trim().replaceAll("\n", "").replaceAll("\r", "");
 
-                if(statement.toLowerCase().startsWith("select")) {
-                    if("auswertung".equalsIgnoreCase(form.getDb())) {
-                        result = auswertungRepository.query(statement, parameters, mapper);
-                    } else if("lcarb".equalsIgnoreCase(form.getDb())) {
-                        result = lCarbRepository.query(statement, parameters, mapper);
+                if(!StringUtils.isEmpty(statement)) {
+                    if(statement.toLowerCase().startsWith("select")) {
+                        if("auswertung".equalsIgnoreCase(form.getDb())) {
+                            result = auswertungRepository.query(statement, parameters, mapper);
+                        } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+                            result = lCarbRepository.query(statement, parameters, mapper);
+                        } else {
+                            logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+                            result = auswertungRepository.query(statement, parameters, mapper);
+                        }
                     } else {
-                        logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
-                        result = auswertungRepository.query(statement, parameters, mapper);
+                        result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
                     }
-                } else {
-                    result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
                 }
             }
         } catch(Throwable t) {

@@ -20,11 +20,21 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
     private static final Logger logger = LoggerFactory.getLogger(AuswertungRepository.class);
 
     public List<Map<String, Object>> query(String sqlStatement, Map<String, Object> parameters, RowMapper<Map<String, Object>> mapper) {
-        return jdbcTemplate.query(sqlStatement, parameters, mapper);
+        if(!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
+            return jdbcTemplate.query(sqlStatement, parameters, mapper);
+        } else {
+            logger.warn("Query statement empty!");
+            return Collections.emptyList();
+        }
     }
 
     public int update(String sqlStatement, Map<String, Object> parameters) {
-        return jdbcTemplate.update(sqlStatement, parameters);
+        if(!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
+            return jdbcTemplate.update(sqlStatement, parameters);
+        } else {
+            logger.warn("Query statement empty!");
+            return 0;
+        }
     }
 
     public String findShippingIdByOrderId(String orderId) {
