@@ -53,13 +53,7 @@ block content
     .row
         .col-md-8(style='padding-right: 0')
             form.form-inline
-                .form-group
-                    h4
-                        span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
-                            i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
-                            i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
-                            i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
-                .btn-group.btn-group-sm(ng-model='search', bs-checkbox-group='')
+                .btn-group(ng-model='search', bs-checkbox-group='')
                     label.btn.btn-default
                         input(type='checkbox', value='amount')
                         | Amnt. eq.
@@ -80,8 +74,8 @@ block content
                     input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...', style='max-width: 100px')
                 button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
                     i.fa.fa-search
-        .col-md-2(style='padding: 0')
-            .btn-group.btn-group-sm(ng-show='bankStatements')
+        .col-md-3(style='padding: 0')
+            .btn-group(ng-show='bankStatements')
                 button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                     i.fa.fa-check
                 button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
@@ -89,19 +83,17 @@ block content
                 button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
                     i.fa.fa-undo
         .col-md-1(style='padding: 0')
-            .btn-group.btn-group-sm.pull-right
+            .btn-group.pull-right
                 button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
                     i.fa.fa-chevron-left
                 button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
                     i.fa.fa-chevron-right
-        .col-md-1(style='padding-left: 0')
-            button.btn.btn-sm.btn-danger.pull-right(type='button', ng-click='$hide()')
-                i.fa.fa-close
     .row(ng-hide='loading')
         .col-md-12
             table.table.table-striped.table-condensed(ng-show='currentBankStatement')
                 thead
                     tr
+                        td
                         td.text-center
                             h4 Date
                         td.text-left
@@ -116,6 +108,12 @@ block content
                             h4 Order
                 tbody
                     tr
+                        td.text-center
+                            h4
+                                span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
+                                    i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
+                                    i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
+                                    i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
                         td.text-left {{currentBankStatement.description}}
                         td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}

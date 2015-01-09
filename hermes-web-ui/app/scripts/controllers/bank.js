@@ -41,6 +41,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
             $scope.bankStatements = data;
             if($scope.bankStatements.length>0) {
                 $scope.edit(0);
+                $scope.filter();
             }
         }).error(function(data) {
             $scope.busy = false;
@@ -75,6 +76,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         }
         $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
         $scope.search = {};
+        $scope.filter();
     };
 
     $scope.previous = function() {
@@ -85,6 +87,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         }
         $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
         $scope.search = {};
+        $scope.filter();
     };
 
     $scope.process = function(statusFn, statements) {
