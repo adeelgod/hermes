@@ -49,7 +49,7 @@ angular.module('hermes.ui', [
         .state('bank', {
             abstract: false,
             url: '/bank',
-            templateUrl: 'views/bank.html',
+            templateUrl: 'views/bank/detail.html',
             controller: 'BankCtrl'
         })
         .state('bank_pattern_edit', {

@@ -39,6 +39,9 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         FormSvc.query($scope.params).success(function(data) {
             $scope.busy = false;
             $scope.bankStatements = data;
+            if($scope.bankStatements.length>0) {
+                $scope.edit(0);
+            }
         }).error(function(data) {
             $scope.busy = false;
             $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
@@ -61,7 +64,7 @@ angular.module('hermes.ui').controller('BankCtrl', function ($scope, $alert, $mo
         $scope.orders = null;
         $scope.currentBankStatementIndex = index;
         $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
-        editModal.$promise.then(editModal.show);
+        //editModal.$promise.then(editModal.show);
     };
 
     $scope.next = function() {
