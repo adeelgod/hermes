@@ -25,4 +25,4 @@ WHERE
     OR
     (a.typ='Shop_vorkasse' AND a.Status='pending')
   )
-LIMIT 100
+LIMIT 250
