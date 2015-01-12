@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractMagentoService implements MagentoService {
 
@@ -22,6 +23,12 @@ public abstract class AbstractMagentoService implements MagentoService {
 
     @Value("${hermes.magento.api.password}")
     protected String password;
+
+    @Value("${hermes.magento.api.retry.max:3}")
+    protected Integer retryMax;
+
+    @Value("${hermes.magento.api.retry.wait:500}")
+    protected Long retryWait;
 
     @Inject
     protected SalesFlatShipmentCommentRepository salesFlatShipmentCommentRepository;
@@ -37,6 +44,83 @@ public abstract class AbstractMagentoService implements MagentoService {
 
     @Value("${hermes.magento.intraship.status.retry.wait}")
     protected long intrashipRetryWait;
+
+    protected AtomicInteger retry = new AtomicInteger();
+
+    protected String sessionId;
+
+    protected Mage_Api_Model_Server_V2_HandlerPortType magentoService;
+
+    protected void init() throws Exception {
+        MagentoServiceLocator locator = new MagentoServiceLocator();
+        magentoService = locator.getMage_Api_Model_Server_V2_HandlerPort();
+    }
+
+    protected boolean checkSession() {
+        try {
+            if(sessionId==null) {
+                logger.info("New session. Logging in...");
+                login();
+            } else {
+                ping();
+            }
+            retry.set(0);
+            return true;
+        } catch (Exception e) {
+            logger.warn("Possible Magento session timeout - {}.", e.getMessage());
+            retry();
+        }
+
+        return false;
+    }
+
+    protected boolean login() throws Exception {
+        sessionId = magentoService.login(username, password);
+        return (sessionId!=null);
+    }
+
+    protected void retry() {
+        logger.warn("RETRY: Trying to login again.");
+
+        while(retry.incrementAndGet()<=retryMax) {
+            sessionId = null;
+            logger.warn("RETRY: Waiting {}ms before trying again.", retryWait);
+
+            try {
+                Thread.sleep(retryWait);
+
+
+                if(login()) {
+                    logger.warn("RETRY: Re-try success!");
+                    return;
+                }
+            } catch (Exception e) {
+                // ignore
+                logger.warn(e.getMessage());
+            }
+        }
+
+        logger.warn("RETRY: Reached maximum re-tries of {}", retryMax);
+        reset();
+    }
+
+    protected void reset() {
+        sessionId = null;
+        retry.set(0);
+    }
+
+    @Override
+    public void ping() throws Exception {
+        ApiEntity[] entities = magentoService.resources(sessionId);
+        boolean ok = (entities!=null && entities.length>0);
+        logger.debug("Session OK: {}", ok);
+
+        if(!ok) {
+            throw new RuntimeException("Ping failed.");
+        }
+        //MagentoInfoEntity info = magentoService.magentoInfo(sessionId);
+        //logger.debug("Session OK: {} - {}", info.getMagento_version(), info.getMagento_edition());
+    }
 
     @Override
     public List<Map<String, Object>> createIntrashipLabel(String orderId) throws Exception {

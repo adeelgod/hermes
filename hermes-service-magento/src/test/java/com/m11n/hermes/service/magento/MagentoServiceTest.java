@@ -30,4 +30,18 @@ public class MagentoServiceTest {
 
         logger.info("+++++++++++++++++ MESSAGES: {}", messages);
     }
+
+    @Test
+    public void testRetry() throws Exception {
+        logger.info("+++++++++++++++++ TEST RETRY: START.");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        magentoService.getShipmentInfo("30000001");
+        logger.info("+++++++++++++++++ TEST RETRY: END.");
+    }
 }

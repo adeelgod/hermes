@@ -21,11 +21,14 @@ public class DebugMagentoService extends AbstractMagentoService {
 
     private List<String> messages = new ArrayList<>();
 
+    private AtomicInteger ping = new AtomicInteger();
+
     @PostConstruct
     public void init() {
-        logger.debug("################ DEBUG - MAGENTO SERVICE INITIALIZED");
-
         try {
+            super.init();
+            logger.debug("################ DEBUG - MAGENTO SERVICE INITIALIZED");
+
             LineIterator iterator = IOUtils.lineIterator(DebugMagentoService.class.getClassLoader().getResourceAsStream("debug_label_status_messages.txt"), "UTF-8");
 
             while(iterator.hasNext()) {
@@ -36,9 +39,30 @@ public class DebugMagentoService extends AbstractMagentoService {
         }
     }
 
+    /**
+    protected boolean login() throws Exception {
+        throw new RuntimeException("Break!");
+    }
+
+    protected boolean login() throws Exception {
+        logger.debug("LOGIN: {}/{}", username, password);
+        return super.login();
+    }
+     */
+
+    @Override
+    public void ping() throws Exception {
+        super.ping();
+
+        if(ping.incrementAndGet()%4==0) {
+            throw new RuntimeException("Fake ping exception");
+        }
+    }
+
     @Override
     public Map<String, Object> getShipmentInfo(String shipmentId) throws Exception {
         logger.debug("################ DEBUG - SHIPMENT INFO: {}", shipmentId);
+        checkSession();
         Thread.sleep(500L);
 
         Map<String, Object> result = new HashMap<>();
@@ -55,6 +79,7 @@ public class DebugMagentoService extends AbstractMagentoService {
     @Override
     public String createShipment(String orderId) throws Exception {
         logger.debug("################ DEBUG - CREATE SHIPMENT: {} - {}", orderId);
+        checkSession();
         Thread.sleep(500L);
         return new Date().getTime()+"";
     }
@@ -62,6 +87,7 @@ public class DebugMagentoService extends AbstractMagentoService {
     @Override
     protected List<String> doCreateIntrashipLabel(String orderId) throws Exception {
         logger.debug("################ DEBUG - DO CREATE INTRASHIP LABEL: {}", orderId);
+        checkSession();
         Thread.sleep(2000L);
         String message = messages.get(messageCounter.getAndIncrement() % messages.size());
         logger.debug("################ DEBUG - INTRASHIP MESSAGE: {}", message);

@@ -21,38 +21,10 @@ public class DefaultMagentoService extends AbstractMagentoService {
 
     private OkHttpClient client = new OkHttpClient();
 
-    private String sessionId;
-
-    private Mage_Api_Model_Server_V2_HandlerPortType magentoService;
-
     @PostConstruct
     public void init() throws Exception {
-        MagentoServiceLocator locator = new MagentoServiceLocator();
-        magentoService = locator.getMage_Api_Model_Server_V2_HandlerPort();
-        logger.debug("********* PRODUCTION - MAGENTO SERVICE INITIALIZED");
-    }
-
-    private void checkSession() throws Exception {
-        try {
-            if(sessionId==null) {
-                logger.info("New Magento session. Logging in...");
-                sessionId = magentoService.login(username, password);
-            } else {
-                logger.debug("Checking session...");
-                // TODO: fix this!
-                //MagentoInfoEntity info = magentoService.magentoInfo(sessionId);
-                //logger.debug("Session OK: {} - {}", info.getMagento_version(), info.getMagento_edition());
-            }
-        } catch (Exception e) {
-            try {
-                logger.warn("Possible Magento session timeout. Trying to login again.");
-                sessionId = magentoService.login(username, password);
-            } catch (Exception ex) {
-                logger.error("Login failed.");
-                logger.error(e.toString(), e);
-                sessionId = null;
-            }
-        }
+        super.init();
+        logger.debug("################ PRODUCTION - MAGENTO SERVICE INITIALIZED");
     }
 
     @Override

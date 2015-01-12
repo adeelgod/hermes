@@ -5,6 +5,8 @@ import java.util.Map;
 
 public interface MagentoService {
 
+    void ping() throws Exception;
+
     Map<String, Object> getShipmentInfo(String shipmentId) throws Exception;
 
     String createShipment(String orderId) throws Exception;
