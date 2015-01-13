@@ -89,6 +89,12 @@ block content
                         .form-group
                             label(for='magentoPassword') API Password
                             input.form-control(name='magentoPassword', ng-model="configuration['hermes.magento.api.password']", placeholder='API Password', type='password')
+                        .form-group
+                            label(for='magentoRetryWait') Retry Wait (in ms)
+                            input.form-control(name='magentoRetryWait', ng-model="configuration['hermes.magento.api.retry.wait']", placeholder='API Retry Wait', type='text')
+                        .form-group
+                            label(for='magentoRetryMax') Retry Max.
+                            input.form-control(name='magentoRetryMax', ng-model="configuration['hermes.magento.api.retry.max']", placeholder='API Retry Max.', type='text')
                         hr
                         .alert.alert-info(role='alert')
                             p Reminder: status patterns are defined as regular expressions.
@@ -264,6 +270,12 @@ block content
                         .form-group
                             label(for='sshRemoteBinding') Remote Binding
                             input.form-control(name='sshRemoteBinding', ng-model="configuration['hermes.ssh.remote.binding']", placeholder='Remote Binding', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.ssh.compression']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.ssh.compression'], 'fa-circle-o': !configuration['hermes.ssh.compression']}")
+                            label(for='') SSH Compression
+                            p.alert.alert-warning
+                                | This is an experimental feature
             button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
                 i.fa.fa-floppy-o
                 | &nbsp;

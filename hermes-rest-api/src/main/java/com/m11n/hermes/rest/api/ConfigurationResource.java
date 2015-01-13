@@ -48,6 +48,8 @@ public class ConfigurationResource {
     public Response list() throws Exception {
         Properties p = PropertiesUtil.getProperties();
 
+        migrate(p);
+
         Map<String, Object> configuration = new HashMap<>();
 
         configuration.put("properties", p);
@@ -73,6 +75,22 @@ public class ConfigurationResource {
         cc.setNoCache(true);
 
         return Response.ok(configuration).cacheControl(cc).build();
+    }
+
+    private void migrate(Properties p) {
+        // NOTE: fill in defaults for new properties
+        String[] migrations = new String[]{
+                "hermes.magento.api.retry.max", "3",
+                "hermes.magento.api.retry.wait", "500",
+                "hermes.ssh.compression", "3"
+        };
+        for(int i=0; i<migrations.length; i+=2) {
+            String key = migrations[i];
+            String value = migrations[i+1];
+            if(StringUtils.isEmpty(p.getProperty(key))) {
+                p.setProperty(key, value);
+            }
+        }
     }
 
     @POST

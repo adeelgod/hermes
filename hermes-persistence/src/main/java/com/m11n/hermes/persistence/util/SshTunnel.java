@@ -36,6 +36,9 @@ public class SshTunnel {
     @Value("${hermes.ssh.local.port}")
     private int localPort;
 
+    @Value("${hermes.ssh.compression:true}")
+    private boolean compression;
+
     private Session session;
 
     @PostConstruct
@@ -52,7 +55,7 @@ public class SshTunnel {
             // Additional SSH options.  See your ssh_config manual for
             // more options.  Set options according to your requirements.
             java.util.Properties config = new java.util.Properties();
-            //config.put("Compression", "yes");
+            config.put("Compression", compression ? "yes" : "no");
             //config.put("ConnectionAttempts","2");
             config.put("StrictHostKeyChecking", "no");
 
@@ -65,20 +68,19 @@ public class SshTunnel {
             Channel channel = session.openChannel("shell");
             channel.connect();
 
-            logger.info("######## CHANNEL CONNECTED: {}", channel.isConnected());
+            logger.info("######## COMPRESSION: {}", config.get("Compression"));
+            logger.info("######## CHANNEL    : {}", channel.isConnected());
 
             // NOTE: the second remoteHost parameter is the binding address of the MySQL server... which is listening only on localhost
             //assignedPort = session.setPortForwardingL("127.0.0.1", localPort, remoteHost, remotePort);
             assignedPort = session.setPortForwardingL(localPort, remoteBinding, remotePort);
 
-            logger.info("######## SESSION CONNECTED: {}", session.isConnected());
-
-            logger.info("######## SERVER: {}", session.getServerVersion());
-            logger.info("######## SERVER: {}", session.getHost());
-            logger.info("######## CLIENT: {}", session.getClientVersion());
-            logger.info("######## FWD: {}", session.getPortForwardingL());
-
-            logger.info("##################### ASSIGNED PORT: {}", assignedPort);
+            logger.info("######## SESSION    : {}", session.isConnected());
+            logger.info("######## VERSION    : {}", session.getServerVersion());
+            logger.info("######## SERVER     : {}", session.getHost());
+            logger.info("######## CLIENT     : {}", session.getClientVersion());
+            logger.info("######## FWD        : {}", session.getPortForwardingL());
+            logger.info("######## PORT       : {}", assignedPort);
         } catch (Exception e) {
             logger.error(e.toString(), e);
         }
