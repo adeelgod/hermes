@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.m11n</groupId>
         <artifactId>m11n-project</artifactId>
-        <version>1.0.13-SNAPSHOT</version>
+        <version>1.0.13</version>
     </parent>
 
     <groupId>com.m11n.hermes</groupId>
@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <name>Hermes :: Parent</name>
-    <inceptionYear>2014</inceptionYear>
+    <inceptionYear>2014-2015</inceptionYear>
 
     <ciManagement>
         <system>Jenkins</system>
