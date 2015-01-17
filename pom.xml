@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.m11n</groupId>
         <artifactId>m11n-project</artifactId>
-        <version>1.0.14</version>
+        <version>1.0.15</version>
     </parent>
 
     <groupId>com.m11n.hermes</groupId>
@@ -24,6 +24,7 @@
     <properties>
         <hermes.build.timestamp>${maven.build.timestamp}</hermes.build.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+        <m11n.version>1.0.15</m11n.version>
     </properties>
 
     <dependencyManagement>
@@ -100,6 +101,10 @@
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>
+                <configuration>
+                    <username>${bitbucket.username}</username>
+                    <password>${bitbucket.password}</password>
+                </configuration>
                 <!--
                 <configuration>
                     <configuration>
