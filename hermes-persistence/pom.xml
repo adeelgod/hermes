@@ -87,6 +87,10 @@
             <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-sql</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.monkeysintown</groupId>
+            <artifactId>jdbc-ssh</artifactId>
+        </dependency>
 
         <!-- Datasource -->
         <dependency>
