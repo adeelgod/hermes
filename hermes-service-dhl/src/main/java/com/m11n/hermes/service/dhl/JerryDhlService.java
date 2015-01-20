@@ -22,7 +22,7 @@ public class JerryDhlService extends AbstractDhlService {
         DhlTrackingStatus status = new DhlTrackingStatus();
         status.setDate(doc.$(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2)").text());
         status.setMessage(doc.$(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3)").text());
-        status.setNext(doc.$(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3)").text());
+        status.setNext(doc.$(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(3)").text());
 
         // TODO: needs more work
 
