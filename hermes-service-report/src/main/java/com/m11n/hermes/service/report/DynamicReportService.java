@@ -37,7 +37,11 @@ public class DynamicReportService {
     public void generate(Form form, Map<String, Object> parameters, OutputStream os) {
         StyleBuilder textStyle = stl.style(DynamicReportTemplate.columnStyle).setBorder(stl.pen1Point());
 
-        String sql = form.getSqlStatement();
+        String[] parts = form.getSqlStatement().split(";");
+
+        String sql = parts[parts.length-1];
+
+        logger.debug("REPORT USING SQL STATEMENT: {}", sql);
 
         try {
             JasperReportBuilder builder = report()
