@@ -9,8 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -27,12 +25,6 @@ public class DhlResource {
     @Path("/tracking/status")
     @Produces(APPLICATION_JSON)
     public Response track(@QueryParam("code") String code) {
-        String result = dhlService.getTrackingStatus(code);
-
-        Map<String, String> status = new HashMap<>();
-        status.put("status", "unknown");
-        status.put("description", result);
-
-        return Response.status(Response.Status.OK).entity(status).build();
+        return Response.status(Response.Status.OK).entity(dhlService.getTrackingStatus(code)).build();
     }
 }

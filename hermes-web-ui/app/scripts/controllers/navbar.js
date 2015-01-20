@@ -31,9 +31,9 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, F
 
     $scope.trackingStatus = function () {
         DhlSvc.trackingStatus({code: $scope.trackingCode}).success(function(data) {
-            $alert({content: 'DHL Tracking Status: ' + data.description, placement: 'top', type: 'success', show: true, duration: 15});
+            $alert({content: data.date + ': ' + data.message + ' (next: ' + data.next + ')', placement: 'top', type: 'success', show: true, duration: 15});
         }).error(function(data) {
-            $alert({content: 'DHL Tracking Status: ' + data.description, placement: 'top', type: 'danger', show: true, duration: 15});
+            $alert({content: 'DHL Tracking Status: ' + data.message, placement: 'top', type: 'danger', show: true, duration: 15});
         });
     };
 

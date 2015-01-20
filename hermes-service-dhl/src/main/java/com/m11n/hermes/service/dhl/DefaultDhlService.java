@@ -2,6 +2,7 @@ package com.m11n.hermes.service.dhl;
 
 import com.google.common.net.HttpHeaders;
 import com.m11n.hermes.core.model.DhlRequest;
+import com.m11n.hermes.core.model.DhlTrackingStatus;
 import com.squareup.okhttp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,17 +75,20 @@ public class DefaultDhlService extends AbstractDhlService {
         });
     }
 
-    public String getTrackingStatus(String code) {
+    public DhlTrackingStatus getTrackingStatus(String code) {
         DhlRequest request = createRequest("d-get-piece");
         request.setPieceCode(code);
 
         String response = get(trackingUrl, request);
 
+        DhlTrackingStatus status = new DhlTrackingStatus();
+        status.setMessage(response);
+
         logger.debug(response);
 
         // TODO: needs more work
 
-        return response;
+        return status;
     }
 
     private DhlRequest createRequest(String name) {
