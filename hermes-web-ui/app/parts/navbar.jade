@@ -51,3 +51,8 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                 li
                     button.btn.navbar-btn.btn-primary(type='button', ui-sref='signin', ng-hide='authenticated', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.signin') Sign in
                     button.btn.navbar-btn.btn-danger(type='button', ng-click='logout()', ng-show='authenticated', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.logout') Logout
+            form.navbar-form.navbar-right
+                .form-group
+                    input.form-control(type='text', ng-model='trackingCode')
+                button.btn.btn-primary(type='submit', ng-click='trackingStatus()', placeholder='Tracking ID')
+                    i.fa.fa-bullseye

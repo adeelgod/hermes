@@ -1,13 +1,11 @@
 package com.m11n.hermes.service.dhl;
 
 import jodd.jerry.Jerry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JerryDhlService extends AbstractDhlService {
-    private static final Logger logger = LoggerFactory.getLogger(JerryDhlService.class);
+    //private static final Logger logger = LoggerFactory.getLogger(JerryDhlService.class);
 
     public JerryDhlService() {
 
@@ -19,8 +17,6 @@ public class JerryDhlService extends AbstractDhlService {
         Jerry doc = Jerry.jerry(html);
 
         String result = doc.$(".col > h2:nth-child(1)").text();
-
-        logger.info(result);
 
         // TODO: needs more work
 

@@ -32,6 +32,10 @@ public class DefaultDhlService extends AbstractDhlService {
 
     private String trackingUrl;
 
+    public DefaultDhlService() {
+
+    }
+
     public DefaultDhlService(String cigUsername, String cigPassword, String appName, String password, MODE mode) {
         this(cigUsername, cigPassword, appName, password, "en", "ISO-8859-1", mode);
     }

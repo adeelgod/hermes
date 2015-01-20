@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, FormSvc) {
+angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, FormSvc, DhlSvc) {
     $scope.loading = true;
     $scope.forms = [];
     $scope.updateForm = {};
@@ -27,6 +27,14 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, F
         configuration: {title: 'Change configuration...', placement: 'bottom', type: 'info'},
         signin: {title: 'Login...', placement: 'bottom', type: 'info'},
         logout: {title: 'Logout...', placement: 'bottom', type: 'info'}
+    };
+
+    $scope.trackingStatus = function () {
+        DhlSvc.trackingStatus({code: $scope.trackingCode}).success(function(data) {
+            $alert({content: 'DHL Tracking Status: ' + data.description, placement: 'top', type: 'success', show: true, duration: 15});
+        }).error(function(data) {
+            $alert({content: 'DHL Tracking Status: ' + data.description, placement: 'top', type: 'danger', show: true, duration: 15});
+        });
     };
 
     $scope.list = function() {
