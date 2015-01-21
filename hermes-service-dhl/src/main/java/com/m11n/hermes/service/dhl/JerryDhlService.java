@@ -21,7 +21,13 @@ public class JerryDhlService extends AbstractDhlService {
 
     private static final String SUCCESS_MESSAGE_PICKUP = "The recipient has picked up the shipment from".toLowerCase();
 
-    private static final String PENDING_MESSAGE = "The instruction data for this shipment have been provided by the sender to DHL electronically ".toLowerCase();
+    private static final String SUCCESS_MESSAGE_READY = "The shipment is ready for pick-up".toLowerCase(); // TODO: success or pending?!?
+
+    private static final String PENDING_MESSAGE = "The instruction data for this shipment have been provided by the sender to DHL electronically".toLowerCase();
+
+    private static final String PENDING_PROCESSED_DESTINATION_MESSAGE = "The shipment has been processed in the destination".toLowerCase();
+
+    private static final String PENDING_PROCESSED_PARCEL_CENTER_MESSAGE = "The shipment has been processed in the parcel center".toLowerCase();
 
     private static final String ERROR_MESSAGE = "we do not currently have information about shipment".toLowerCase();
 
