@@ -34,9 +34,18 @@ public class DhlServiceTest {
     public void testCheckTracking() throws Exception {
         jerryService.checkTracking();
 
-        while(jerryService.trackingCheckStatus()) {
+        int i = 0;
+
+        while(jerryService.trackingCheckStatus() && i<3) {
             Thread.sleep(1000);
             logger.debug("#### WAITING FOR CHECKS TO FINISH...");
+            i++;
+        }
+
+        try {
+            jerryService.cancelTracking();
+        } catch (Exception e) {
+            // ignore
         }
     }
 }
