@@ -11,6 +11,21 @@
 
     <jpa:repositories base-package="com.m11n.hermes.persistence"/>
 
+    <bean id="dataSourceJpa" class="com.zaxxer.hikari.HikariDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.db.auswertung.username}" />
+        <property name="password" value="${hermes.db.auswertung.password}" />
+        <property name="driverClassName" value="${hermes.db.auswertung.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.auswertung.url}" />
+    </bean>
+
+    <bean id="dataSourceLCarb" class="com.zaxxer.hikari.HikariDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.db.lcarb.username}" />
+        <property name="password" value="${hermes.db.lcarb.password}" />
+        <property name="driverClassName" value="${hermes.db.lcarb.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.lcarb.url}" />
+    </bean>
+
+    <!--
     <bean id="dataSourceJpa" class="com.jolbox.bonecp.BoneCPDataSource" depends-on="sshTunnel">
         <property name="username" value="${hermes.db.auswertung.username}" />
         <property name="password" value="${hermes.db.auswertung.password}" />
@@ -24,6 +39,7 @@
         <property name="driverClass" value="${hermes.db.lcarb.driver}" />
         <property name="jdbcUrl" value="${hermes.db.lcarb.url}" />
     </bean>
+    -->
 
     <bean id="jdbcTemplateAuswertung" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg ref="dataSourceJpa" />

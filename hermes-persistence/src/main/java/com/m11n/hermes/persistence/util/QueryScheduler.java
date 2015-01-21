@@ -4,6 +4,7 @@ import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.persistence.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -67,7 +68,6 @@ public class QueryScheduler {
 
     }
 
-    @Transactional
     public Object query(Map<String, Object> parameters) {
         Form form = formRepository.findByName(parameters.get("_form").toString());
 
@@ -77,7 +77,6 @@ public class QueryScheduler {
         return query(form, checkFiles, downloadFiles, parameters);
     }
 
-    @Transactional
     public Object query(final Form form, final boolean checkFiles, final boolean downloadFiles, Map<String, Object> parameters) {
         Object result = null;
 
@@ -127,12 +126,18 @@ public class QueryScheduler {
                 }
             }
 
-            if(multipleQueries && !Boolean.TRUE.equals(form.getPrintable())) {
+            String sqlStatement = form.getSqlStatement().toLowerCase();
+
+            StopWatch watch = new StopWatch();
+            watch.start();
+            if(multipleQueries && !Boolean.TRUE.equals(form.getPrintable()) && (sqlStatement.contains("update") || sqlStatement.contains("insert") || sqlStatement.contains("delete")) ) {
                 logger.debug("Execute multi-query batch: {}", form.getName());
                 result = executeBatch(form, parameters);
             } else {
                 result = executeSingleStep(form, parameters, mapper);
             }
+            watch.stop();
+            logger.debug("Query took: {} - {}", form.getName(), watch.toString());
 
             /**
              *
