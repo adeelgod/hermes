@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, FormSvc, DhlSvc) {
+angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $interval, $alert, FormSvc, DhlSvc) {
     $scope.loading = true;
     $scope.forms = [];
     $scope.updateForm = {};
@@ -29,9 +29,50 @@ angular.module('hermes.ui').controller('NavbarCtrl', function ($scope, $alert, F
         logout: {title: 'Logout...', placement: 'bottom', type: 'info'}
     };
 
+    $scope.trackingCheck = function () {
+        $scope.checkBusy = true;
+        DhlSvc.trackingCheck().success(function(data) {
+            $alert({
+                content: 'Checks scheduled...',
+                placement: 'top',
+                type: 'success',
+                show: true,
+                duration: 3});
+            $scope.trackingCheckLoop = $interval(function() {
+                DhlSvc.trackingCheckStatus().success(function(data) {
+                    $scope.checkBusy = Boolean(data);
+                    if(!$scope.checkBusy) {
+                        $interval.cancel($scope.trackingCheckLoop);
+                        $scope.trackingCheckLoop = undefined;
+                        $alert({content: 'All tracking checks finished.', placement: 'top', type: 'success', show: true, duration: 3});
+                    }
+                });
+            }, 5000); // TODO: configurable?
+        }).error(function(data) {
+            $alert({content: 'DHL Tracking Status: ' + data.message, placement: 'top', type: 'danger', show: true, duration: 15});
+            $scope.checkBusy = false;
+        });
+    };
+
+    $scope.trackingCheckCancel = function () {
+        DhlSvc.trackingCheckCancel().success(function(data) {
+            $alert({
+                content: 'Tracking check cancelled!',
+                placement: 'top',
+                type: 'success',
+                show: true,
+                duration: 3});
+        });
+    };
+
     $scope.trackingStatus = function () {
         DhlSvc.trackingStatus({code: $scope.trackingCode}).success(function(data) {
-            $alert({content: data.date + ': ' + data.message + ' (next: ' + data.next + ')', placement: 'top', type: 'success', show: true, duration: 15});
+            $alert({
+                content: data.date + ': ' + data.message + (data.next ? ' (next: ' + data.next + ')':''),
+                placement: 'top',
+                type: data.status,
+                show: true,
+                duration: 15});
         }).error(function(data) {
             $alert({content: 'DHL Tracking Status: ' + data.message, placement: 'top', type: 'danger', show: true, duration: 15});
         });

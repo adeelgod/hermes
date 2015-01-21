@@ -8,5 +8,11 @@ public interface DhlService {
         SANDBOX, PRODUCTION
     }
 
-    public DhlTrackingStatus getTrackingStatus(String code);
+    DhlTrackingStatus getTrackingStatus(String code);
+
+    boolean trackingCheckStatus();
+
+    void checkTracking();
+
+    void cancelTracking() throws Exception;
 }

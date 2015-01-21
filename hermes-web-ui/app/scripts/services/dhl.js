@@ -10,6 +10,27 @@ angular.module('hermes.ui')
                     url: 'api/dhl/tracking/status',
                     params: params
                 });
+            },
+            trackingCheck: function(params) {
+                return $http({
+                    method: 'GET',
+                    url: 'api/dhl/tracking/check',
+                    params: params
+                });
+            },
+            trackingCheckStatus: function(params) {
+                return $http({
+                    method: 'GET',
+                    url: 'api/dhl/tracking/check/status',
+                    params: params
+                });
+            },
+            trackingCheckCancel: function(params) {
+                return $http({
+                    method: 'GET',
+                    url: 'api/dhl/tracking/check/cancel',
+                    params: params
+                });
             }
         };
     });

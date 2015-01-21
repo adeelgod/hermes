@@ -9,6 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @FixMethodOrder
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,5 +34,25 @@ public class AuswertungRepositoryTest {
         logger.debug("=========================================================");
         auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "mü%", false, false, false, "30000000", false);
         logger.debug("=========================================================");
+    }
+
+    @Test
+    public void testDhlQueries() {
+        logger.debug("## date: {}", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
+        Long countResult = auswertungRepository.countDhlStatus("00340433836323587185");
+        logger.debug("## count: {}", countResult);
+        countResult = auswertungRepository.countDhlStatus("00340433836959656156");
+        logger.debug("## count: {}", countResult);
+        auswertungRepository.deleteDhlStatus("00340433836323587185");
+        countResult = auswertungRepository.countDhlStatus("00340433836323587185");
+        logger.debug("## count: {}", countResult);
+        auswertungRepository.createDhlStatus("00340433836323587185", new Date(), "TEST STATUS");
+        auswertungRepository.updateDhlStatus("00340433836323587185", new Date(), "TEST STATUS UPDATE");
+        countResult = auswertungRepository.countDhlStatus("00340433836323587185");
+        logger.debug("## count: {}", countResult);
+
+        List<String> codes = auswertungRepository.findPendingTrackingCodes();
+
+        logger.debug("## codes: {}", codes);
     }
 }

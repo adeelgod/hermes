@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 
 @Repository
@@ -35,6 +37,56 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
             logger.warn("Query statement empty!");
             return 0;
         }
+    }
+
+    public List<String> findPendingTrackingCodes() {
+        return jdbcTemplate.query("SELECT tracking_no FROM mage_custom_shipments WHERE last_status != 'zugestellt'", new RowMapper<String>() {
+            @Override
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getString(1);
+            }
+        });
+    }
+
+    public Long countDhlStatus(String code) {
+        return jdbcTemplate.queryForObject("select count(tracking_no) from mage_custom_shipments_DHL_status where tracking_no = :code", Collections.singletonMap("code", code), Long.class);
+    }
+
+    public void deleteDhlStatus(String code) {
+        jdbcTemplate.update("DELETE FROM mage_custom_shipments_DHL_status where tracking_no = :code", Collections.singletonMap("code", code));
+    }
+
+    public void createDhlStatus(String code, Date date, String status) {
+        jdbcTemplate.update("INSERT  INTO mage_custom_shipments_DHL_status (tracking_no, Status_time, Status) VALUES ( :code, :date_status, :status )", new MapSqlParameterSource().addValue(
+                "date_status",
+                new java.sql.Date(date.getTime()),
+                //new SimpleDateFormat("yyyy-MM-dd").format(date),
+                Types.TIMESTAMP
+        ).addValue(
+                "code",
+                code,
+                Types.VARCHAR
+        ).addValue(
+                "status",
+                status,
+                Types.VARCHAR
+        ));
+    }
+
+    public void updateDhlStatus(String code, Date date, String status) {
+        jdbcTemplate.update("UPDATE mage_custom_shipments_DHL_status SET Status_time = :date_status, Status = :status WHERE tracking_no = :code", new MapSqlParameterSource().addValue(
+                "date_status",
+                new java.sql.Date(date.getTime()),
+                Types.TIMESTAMP
+        ).addValue(
+                "code",
+                code,
+                Types.VARCHAR
+        ).addValue(
+                "status",
+                status,
+                Types.VARCHAR
+        ));
     }
 
     public String findShippingIdByOrderId(String orderId) {

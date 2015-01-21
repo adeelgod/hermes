@@ -53,6 +53,13 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                     button.btn.navbar-btn.btn-danger(type='button', ng-click='logout()', ng-show='authenticated', data-placement='bottom-left', data-type='info', bs-tooltip='tooltips.logout') Logout
             form.navbar-form.navbar-right
                 .form-group
-                    input.form-control(type='text', ng-model='trackingCode')
-                button.btn.btn-primary(type='submit', ng-click='trackingStatus()', placeholder='Tracking ID')
+                    input.form-control(type='text', ng-model='trackingCode', placeholder='Tracking ID')
+                button.btn.btn-primary(type='submit', ng-click='trackingStatus()')
                     i.fa.fa-bullseye
+            form.navbar-form.navbar-right
+                button.btn.btn-primary(type='button', ng-click='trackingCheck()', ng-hide='checkBusy')
+                    i.fa.fa-play
+                button.btn.btn-danger(type='button', ng-click='trackingCheckCancel()', ng-show='checkBusy')
+                    i.fa.fa-fw.fa-stop
+                    | &nbsp;
+                    i.fa.fa-fw.fa-spinner.fa-spin

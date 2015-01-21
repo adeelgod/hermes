@@ -22,6 +22,29 @@ public class DhlResource {
     private JerryDhlService dhlService;
 
     @GET
+    @Path("/tracking/check/status")
+    @Produces(APPLICATION_JSON)
+    public Response status() {
+        return Response.ok(dhlService.trackingCheckStatus()).build();
+    }
+
+    @GET
+    @Path("/tracking/check")
+    @Produces(APPLICATION_JSON)
+    public Response check() {
+        dhlService.checkTracking();
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/tracking/check/cancel")
+    @Produces(APPLICATION_JSON)
+    public Response cancel() throws Exception {
+        dhlService.cancelTracking();
+        return Response.ok().build();
+    }
+
+    @GET
     @Path("/tracking/status")
     @Produces(APPLICATION_JSON)
     public Response track(@QueryParam("code") String code) {
