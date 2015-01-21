@@ -53,6 +53,6 @@ public class AuswertungRepositoryTest {
 
         List<String> codes = auswertungRepository.findPendingTrackingCodes();
 
-        logger.debug("## codes: {}", codes);
+        logger.debug("## codes: {}", codes.size());
     }
 }

@@ -63,6 +63,10 @@ block content
                         .form-group
                             label(for='dbLCarbPassword') Database Password
                             input.form-control(name='dbLCarbPassword', ng-model="configuration['hermes.db.lcarb.password']", placeholder='Password', type='password')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.db.multiple.queries']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.db.multiple.queries'], 'fa-circle-o': !configuration['hermes.db.multiple.queries']}")
+                            label(for='') Query optimization
                         hr
                         .form-group
                             label(for='') Hibernate Dialect

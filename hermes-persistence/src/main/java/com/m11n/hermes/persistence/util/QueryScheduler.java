@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -45,6 +46,9 @@ public class QueryScheduler {
     @Value("${hermes.result.dir}")
     private String resultDir;
 
+    @Value("${hermes.db.multiple.queries:true}")
+    private boolean multipleQueries;
+
     // private Pattern functions = Pattern.compile("(\\s*|^)(ADDDATE|ADDTIME|CURDATE|CURRENT_DATE|CURRENT_TIME|CURRENT_TIMESTAMP|CURTIME|DATE_ADD|DATE_FORMAT|DATE_SUB|DATE|DATEDIFF|DAY|DAYNAME|DAYOFMONTH|DAYOFWEEK|DAYOFYEAR|EXTRACT|FROM_DAYS|FROM_UNIXTIME|GET_FORMAT|HOUR|LAST_DAY|LOCALTIME|LOCALTIMESTAMP|MAKEDATE|MAKETIME|MICROSECOND|MINUTE|MONTH|MONTHNAME|NOW|PERIOD_ADD|PERIOD_DIFF|QUARTER|SEC_TO_TIME|SECOND|STR_TO_DATE|SUBDATE|SUBTIME|SYSDATE|TIME_FORMAT|TIME_TO_SEC|TIME|TIMEDIFF|TIMESTAMP|TIMESTAMPADD|TIMESTAMPDIFF|TO_DAYS|UNIX_TIMESTAMP|UTC_DATE|UTC_TIME|UTC_TIMESTAMP|WEEK|WEEKDAY|WEEKOFYEAR|YEAR|YEARWEEK)(.*|$)", Pattern.CASE_INSENSITIVE);
 
     @PostConstruct
@@ -52,12 +56,18 @@ public class QueryScheduler {
         for(Form form : formRepository.findByExecuteOnStartup(true)) {
             query(form, false, false, Collections.<String, Object>emptyMap());
         }
+
+        if(multipleQueries) {
+            logger.warn("EXPERIMENTAL FEATURE: query optimization (enabled)");
+
+        }
     }
 
     public void schedule(Form form) {
 
     }
 
+    @Transactional
     public Object query(Map<String, Object> parameters) {
         Form form = formRepository.findByName(parameters.get("_form").toString());
 
@@ -67,6 +77,7 @@ public class QueryScheduler {
         return query(form, checkFiles, downloadFiles, parameters);
     }
 
+    @Transactional
     public Object query(final Form form, final boolean checkFiles, final boolean downloadFiles, Map<String, Object> parameters) {
         Object result = null;
 
@@ -116,6 +127,17 @@ public class QueryScheduler {
                 }
             }
 
+            if(multipleQueries && !Boolean.TRUE.equals(form.getPrintable())) {
+                logger.debug("Execute multi-query batch: {}", form.getName());
+                result = executeBatch(form, parameters);
+            } else {
+                result = executeSingleStep(form, parameters, mapper);
+            }
+
+            /**
+             *
+             * TODO: experimental
+             *
             String[] statements = form.getSqlStatement().split(";");
 
             for(String statement : statements) {
@@ -136,10 +158,56 @@ public class QueryScheduler {
                     }
                 }
             }
+             */
         } catch(Throwable t) {
             logger.error(t.toString(), t);
         }
 
         return result;
+    }
+
+    private Object executeSingleStep(Form form, Map<String, Object> parameters, RowMapper<Map<String, Object>> mapper) {
+        Object result = null;
+
+        String[] statements = form.getSqlStatement().split(";");
+
+        for(String statement : statements) {
+            statement = statement.trim().replaceAll("\n", "").replaceAll("\r", "");
+
+            if(!StringUtils.isEmpty(statement)) {
+                if(statement.toLowerCase().startsWith("select")) {
+                    if("auswertung".equalsIgnoreCase(form.getDb())) {
+                        result = auswertungRepository.query(statement, parameters, mapper);
+                    } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+                        result = lCarbRepository.query(statement, parameters, mapper);
+                    } else {
+                        logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+                        result = auswertungRepository.query(statement, parameters, mapper);
+                    }
+                } else {
+                    result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // NOTE: only works as an update statement
+    private Object executeBatch(Form form, Map<String, Object> parameters) {
+        int result;
+
+        String statement = form.getSqlStatement().replaceAll("\n", "").replaceAll("\r", "");
+
+        if("auswertung".equalsIgnoreCase(form.getDb())) {
+            result = auswertungRepository.update(statement, parameters);
+        } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+            result = lCarbRepository.update(statement, parameters);
+        } else {
+            logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+            result = auswertungRepository.update(statement, parameters);
+        }
+
+        return Collections.singletonMap("modified", result);
     }
 }
