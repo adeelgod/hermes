@@ -155,7 +155,7 @@ public class FormResource {
     @Produces(APPLICATION_JSON)
     public Response save(Form form) {
         if(form.getId()==null && (form.getFields()==null || form.getFields().isEmpty())) {
-            List<FormField> fields = queryToFieldsUtil.toFields(form.getSqlStatement());
+            List<FormField> fields = queryToFieldsUtil.toFields(form.getDb(), form.getSqlStatement());
 
             if(!fields.isEmpty()) {
                 form.setFields(fields);

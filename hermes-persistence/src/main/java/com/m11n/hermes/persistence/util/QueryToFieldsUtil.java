@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,14 +19,21 @@ import java.util.List;
 public class QueryToFieldsUtil {
 
     @Inject
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    @Named("jdbcTemplateAuswertung")
+    protected NamedParameterJdbcTemplate jdbcTemplateAuswertung;
 
-    public List<FormField> toFields(String sql) {
+    @Inject
+    @Named("jdbcTemplateLCarb")
+    protected NamedParameterJdbcTemplate jdbcTemplateLCarb;
+
+    public List<FormField> toFields(String database, String sql) {
         final List<FormField> fields = new ArrayList<>();
 
         int pos = sql.toLowerCase().indexOf("where"); // TODO: probably needs improvement
         pos = pos == -1 ? sql.length() : pos;
         sql = sql.substring(0, pos) + " limit 1";
+
+        NamedParameterJdbcTemplate jdbcTemplate = "lcarb".equals(database) ? jdbcTemplateLCarb : jdbcTemplateAuswertung;
 
         jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new RowCallbackHandler() {
             @Override
