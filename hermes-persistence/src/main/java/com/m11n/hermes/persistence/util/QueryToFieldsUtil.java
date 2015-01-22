@@ -37,25 +37,21 @@ public class QueryToFieldsUtil {
             String[] statements = sql.split(";");
             sql = statements[statements.length - 1].trim().toLowerCase();
 
-            logger.debug("++++++++++++++++ SQL TO FIELDS: {}", sql);
-
             if ( StringUtils.isEmpty(sql) && (statements.length-2)>=0 ) {
                 // NOTE: last statement had a semicolon at the end
                 sql = statements[statements.length - 2].trim().toLowerCase();
             }
-
-            logger.debug("++++++++++++++++ SQL TO FIELDS: {}", sql);
 
             if (!StringUtils.isEmpty(sql) &&
                     !sql.contains("update ") &&
                     !sql.contains("insert ") &&
                     !sql.contains("delete ")) {
 
-                int pos = sql.toLowerCase().indexOf("where"); // TODO: probably needs improvement
+                int pos = sql.toLowerCase().indexOf("where");
                 pos = pos == -1 ? sql.length() : pos;
                 sql = sql.substring(0, pos) + " limit 1";
 
-                logger.debug("++++++++++++++++ SQL TO FIELDS: {}", sql);
+                logger.debug("DETECT FIELDS FOR: {}", sql);
 
                 NamedParameterJdbcTemplate jdbcTemplate = "lcarb".equals(database) ? jdbcTemplateLCarb : jdbcTemplateAuswertung;
 
