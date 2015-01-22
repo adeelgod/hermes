@@ -157,10 +157,11 @@ public class FormResource {
         if(form.getId()==null && (form.getFields()==null || form.getFields().isEmpty())) {
             List<FormField> fields = queryToFieldsUtil.toFields(form.getDb(), form.getSqlStatement());
 
-            if(!fields.isEmpty()) {
+            if (!fields.isEmpty()) {
                 form.setFields(fields);
             }
         }
+
         return Response.ok(formRepository.save(form)).build();
     }
 
