@@ -89,6 +89,7 @@
         </dependency>
 
         <!-- Datasource -->
+        <!--
         <dependency>
             <groupId>com.jolbox</groupId>
             <artifactId>bonecp</artifactId>
@@ -97,6 +98,7 @@
             <groupId>com.jolbox</groupId>
             <artifactId>bonecp-spring</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP-java6</artifactId>
