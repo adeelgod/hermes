@@ -1,10 +1,12 @@
 package com.m11n.hermes.rest.api;
 
 import com.m11n.hermes.core.model.Form;
+import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.core.service.SshService;
 import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.persistence.IntrashipDocumentRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
+import com.m11n.hermes.persistence.util.QueryToFieldsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,9 @@ public class FormResource {
 
     @Inject
     private IntrashipDocumentRepository intrashipDocumentRepository;
+
+    @Inject
+    private QueryToFieldsUtil queryToFieldsUtil;
 
     @Value("${hermes.result.dir}")
     private String resultDir;
@@ -149,6 +154,13 @@ public class FormResource {
     @POST
     @Produces(APPLICATION_JSON)
     public Response save(Form form) {
+        if(form.getId()==null && (form.getFields()==null || form.getFields().isEmpty())) {
+            List<FormField> fields = queryToFieldsUtil.toFields(form.getSqlStatement());
+
+            if(!fields.isEmpty()) {
+                form.setFields(fields);
+            }
+        }
         return Response.ok(formRepository.save(form)).build();
     }
 
