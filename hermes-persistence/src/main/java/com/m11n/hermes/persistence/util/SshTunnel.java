@@ -61,6 +61,8 @@ public class SshTunnel {
 
             session.setConfig(config);
             session.setDaemonThread(true);
+            session.setServerAliveInterval(60000);
+            //session.setServerAliveCountMax(1);
 
             // Connect
             session.connect();
@@ -75,6 +77,8 @@ public class SshTunnel {
             //assignedPort = session.setPortForwardingL("127.0.0.1", localPort, remoteHost, remotePort);
             assignedPort = session.setPortForwardingL(localPort, remoteBinding, remotePort);
 
+            logger.info("######## KEEP ALIVE : {}", session.getServerAliveInterval());
+            logger.info("######## ALIVE MAX. : {}", session.getServerAliveCountMax());
             logger.info("######## SESSION    : {}", session.isConnected());
             logger.info("######## VERSION    : {}", session.getServerVersion());
             logger.info("######## SERVER     : {}", session.getHost());
