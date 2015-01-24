@@ -7,6 +7,7 @@ angular.module('hermes.ui', [
     'ngAnimate',
     'ngTouch',
     'ngSanitize',
+    'hermes.ui.views',
     'gettext',
     'ngAudio',
     'mgcrea.ngStrap',

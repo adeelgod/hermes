@@ -4,7 +4,8 @@
 
 //script(src='bower_components/fastclick/lib/fastclick.js')
 script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-// build:js scripts/vendor.js
+
+// build:js({app, .tmp}) scripts/vendor.js
 // bower:js
 script(src='bower_components/moment/moment.js')
 script(src='bower_components/stacktrace-js/stacktrace.js')
@@ -28,9 +29,6 @@ script(src='bower_components/angular-xeditable/dist/js/xeditable.js')
 // endbower
 // endbuild
 
-//script(src='scripts/parts.tpl.js')
-//script(src='scripts/views.tpl.js')
-
 // build:js scripts/scripts.js
 script(src='scripts/app.js')
 script(src='scripts/services/language.js')
@@ -46,6 +44,7 @@ script(src='scripts/services/security.js')
 script(src='scripts/services/dhl.js')
 script(src='scripts/services/example.js')
 script(src='scripts/controllers/app.js')
+script(src='scripts/controllers/about.js')
 script(src='scripts/controllers/navbar.js')
 script(src='scripts/controllers/footer.js')
 script(src='scripts/controllers/printer.js')
@@ -56,4 +55,5 @@ script(src='scripts/controllers/bankpattern.js')
 script(src='scripts/controllers/configuration.js')
 script(src='scripts/controllers/form.js')
 script(src='scripts/controllers/signin.js')
+script(src='scripts/views.tpl.js')
 // endbuild

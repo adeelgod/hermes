@@ -4,7 +4,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: /home/spaddo/workspace/hermes/hermes-web-ui/.tmp/index.html
-#: /home/spaddo/workspace/hermes/hermes-web-ui/.tmp/parts/footer.html
+#: index.html:103
+#: parts/footer.html:5
 msgid "About"
 msgstr ""

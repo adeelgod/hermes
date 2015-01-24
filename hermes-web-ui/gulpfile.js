@@ -3,8 +3,6 @@
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var gettext = require('gulp-angular-gettext');
-//var downloadatomshell = require('gulp-download-atom-shell');
-//var gulpAtom = require('gulp-atom');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
@@ -38,21 +36,7 @@ gulp.task('translations', function () {
 
 // converts templates to Javascript
 gulp.task('html2js', function () {
-    return gulp.src(".tmp/parts/*.tpl.html")
-        .pipe($.minifyHtml({
-            empty: true,
-            spare: true,
-            quotes: true
-        }))
-        .pipe($.ngHtml2js({
-            moduleName: "hlu.ui.parts",
-            prefix: "parts/"
-        }))
-        .pipe($.concat("parts.tpl.js"))
-        .pipe(gulp.dest(".tmp/scripts"))
-        .pipe($.size());
-
-    gulp.src(".tmp/views/*.html")
+    return gulp.src([".tmp/views/*.html"])
         .pipe($.minifyHtml({
             empty: true,
             spare: true,
@@ -95,18 +79,6 @@ gulp.task('jade', ['markdown'], function () {
         .pipe(gulp.dest('.tmp'));
 });
 
-gulp.task('styles-embed', function () {
-    return gulp.src('app/bower_components/flags-sprite/dist/flags.css')
-        .pipe($.cssBase64({
-            verbose: true,
-            baseDir: './',
-            maxWeightResource: 100000,
-            extensionsAllowed: ['.png']
-        }))
-        .pipe(gulp.dest('.tmp/styles'))
-        .pipe($.size());
-});
-
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.less')
         .pipe($.less())
@@ -120,31 +92,28 @@ gulp.task('scripts', function () {
     return gulp.src('app/scripts/**/*.js')
         .pipe($.jshint())
         .pipe($.jshint.reporter(require('jshint-stylish')))
-        .pipe($.uglify())
+        .pipe($.ngAnnotate())
+        .pipe(gulp.dest('.tmp/scripts'))
         .pipe($.size());
 });
 
 gulp.task('html', function () {
-    var jsFilter = $.filter('**/*.js');
-    var cssFilter = $.filter('**/*.css');
+    var assets = $.useref.assets();
 
-    //return gulp.src(['.tmp/**/*.html', '!.tmp/parts/*.html', '!.tmp/views/*.html'])
     return gulp.src(['.tmp/**/*.html'])
         .pipe($.plumber({
             errorHandler: onError
         }))
-        .pipe($.useref.assets({searchPath: '{.tmp,app}'}))
-        .pipe(jsFilter)
-        //.pipe($.sourcemaps.init())
-        .pipe($.ngAnnotate())
-        .pipe($.uglify())
-        //.pipe($.sourcemaps.write('.'))
-        .pipe(jsFilter.restore())
-        .pipe(cssFilter)
-        .pipe($.csso())
-        .pipe(cssFilter.restore())
-        .pipe($.rev())
-        .pipe($.useref.restore())
+        .pipe(assets)
+        .pipe($.if('*.js', $.sourcemaps.init()))
+        .pipe($.if('*.js', $.uglify()))
+        .pipe($.if('*.js', $.sourcemaps.write()))
+        .pipe($.if('*.css', $.sourcemaps.init()))
+        .pipe($.if('*.css', $.csso()))
+        .pipe($.if('*.css', $.sourcemaps.write()))
+        .pipe(assets.restore())
+        .pipe($.if('*.js', $.rev()))
+        .pipe($.if('*.css', $.rev()))
         .pipe($.useref())
         .pipe($.revReplace())
         .pipe(gulp.dest('dist'))
@@ -172,44 +141,36 @@ gulp.task('fonts', function () {
 
 // extras
 gulp.task('extras', function () {
-    return gulp.src(['app/*.*', 'app/**/*.json', 'app/**/*.mp3', 'app/**/*.webm', '!app/bower_components/**/*.json', '!app/*.html', '!app/**/*.jade'], { dot: true })
+    return gulp.src(['app/*.*', 'app/**/*.json', 'app/**/*.mp3', 'app/**/*.webm', '!app/bower_components/**/*.json', '!app/bower_components/**/*.mp3', '!app/*.html', '!app/**/*.jade'], { dot: true })
         .pipe(gulp.dest('dist'));
 });
 
 // clean
 gulp.task('clean', function () {
     return gulp.src(['.tmp', 'dist'], { read: false })
-        .pipe($.clean());
+        .pipe($.rimraf());
 });
 
 // build
-gulp.task('build', function(callback) {
-    runSequence('styles', 'styles-embed', 'scripts', 'jade', 'html2js', 'html', 'pot', 'translations', 'images', 'fonts', 'extras', callback);
-});
-
-gulp.task('default', ['clean'], function () {
-    gulp.start('build');
+gulp.task('build', function() {
+    runSequence('styles', 'scripts', 'jade', 'html2js', 'html', 'pot', 'translations', 'images', 'fonts', 'extras');
 });
 
 // connect
-gulp.task('connect', function () {
-    var connect = require('connect');
-    var app = connect()
-        .use(require('connect-livereload')({ port: 35729 }))
-        .use(connect.static('app'))
-        .use(connect.static('.tmp'))
-        .use(connect.directory('app'));
-
-    require('http').createServer(app)
-        .listen(9000)
-        .on('listening', function () {
-            console.log('Started connect web server on http://localhost:9000');
-        });
+gulp.task('connectDev', function () {
+    $.connect.server({
+        root: ['app', '.tmp', 'app/bower_components/font-awesome'],
+        port: 8000,
+        livereload: true
+    });
 });
 
-// serve
-gulp.task('serve', ['connect'], function () {
-    require('opn')('http://localhost:9000');
+gulp.task('connectDist', function () {
+    $.connect.server({
+        root: 'dist',
+        port: 8001,
+        livereload: true
+    });
 });
 
 // inject bower components
@@ -225,9 +186,7 @@ gulp.task('wiredep', function () {
 });
 
 // watch
-gulp.task('watch', ['connect', 'serve'], function () {
-    var server = $.livereload();
-
+gulp.task('watch', ['connectDev'], function () {
     // watch for changes
 
     gulp.watch([
@@ -236,9 +195,7 @@ gulp.task('watch', ['connect', 'serve'], function () {
         '.tmp/scripts/**/*.js',
         'app/scripts/**/*.js',
         'app/images/**/*'
-    ]).on('change', function (file) {
-        server.changed(file.path);
-    });
+    ]);
 
     gulp.watch('app/styles/**/*.less', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts']);
@@ -249,3 +206,7 @@ gulp.task('watch', ['connect', 'serve'], function () {
     gulp.watch('bower.json', ['wiredep']);
     gulp.watch('gulpfile.js', ['build']);
 });
+
+//gulp.task('default', ['connectDist', 'connectDev', 'watch']);
+
+gulp.task('default', ['clean', 'build', 'watch']);
