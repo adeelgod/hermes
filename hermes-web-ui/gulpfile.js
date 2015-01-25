@@ -146,8 +146,11 @@ gulp.task('extras', function () {
 
 // clean
 gulp.task('clean', function () {
+    var del = require('del');
+    var vinylPaths = require('vinyl-paths');
+
     return gulp.src(['.tmp', 'dist'], { read: false })
-        .pipe($.rimraf());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('clean-build', ['clean'], function () {
