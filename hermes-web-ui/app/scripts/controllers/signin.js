@@ -1,13 +1,21 @@
-'use strict';
+(function(module) {
+    'use strict';
 
-angular.module('hermes.ui').controller('SignInCtrl', function ($scope, SecuritySvc) {
-    // TODO: implement this
+    try {
+        module = angular.module('hermes.ui.controller');
+    } catch (e) {
+        module = angular.module('hermes.ui.controller', []);
+    }
 
-    $scope.login = {
-        rememberMe: true
-    };
+    module.controller('SignInCtrl', function ($scope, SecuritySvc) {
+        // TODO: implement this
 
-    $scope.signin = function() {
-        SecuritySvc.login($scope.login);
-    };
-});
+        $scope.login = {
+            rememberMe: true
+        };
+
+        $scope.signin = function() {
+            SecuritySvc.login($scope.login);
+        };
+    });
+})();

@@ -1,4 +1,12 @@
-'use strict';
+(function(module) {
+    'use strict';
 
-angular.module('hermes.ui').controller('AboutCtrl', function ($scope) {
-});
+    try {
+        module = angular.module('hermes.ui.controller');
+    } catch (e) {
+        module = angular.module('hermes.ui.controller', []);
+    }
+
+    module.controller('AboutCtrl', function ($scope) {
+    });
+})();

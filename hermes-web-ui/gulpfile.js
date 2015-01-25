@@ -61,6 +61,7 @@ gulp.task('scripts', function () {
 
 gulp.task('jade', ['markdown', 'scripts', 'styles'], function () {
     var bowerFiles = require('main-bower-files');
+    var wiredep = require('wiredep').stream;
 
     // NOTE: pretty option is extremely important; otherwise the html pipeline breaks
     return gulp.src(['app/**/*.jade', '!app/layouts/**/*.jade'])
@@ -75,12 +76,15 @@ gulp.task('jade', ['markdown', 'scripts', 'styles'], function () {
         .pipe($.replace('@@googleSiteVerification', 'TODO_GOOGLE_SITE_VERIFICATION'))
         .pipe($.inject(
             gulp.src(bowerFiles(), {read: false}),
-            {name: 'vendor', relative: true}
+            {name: 'vendor', relative: true, addRootSlash: false}
         ))
         .pipe($.inject(
             gulp.src('.tmp/**/*.js', {read: false}).pipe($.angularFilesort()),
-            {name: 'angular', relative: true}
+            {name: 'angular', addRootSlash: false, ignorePath: '.tmp'}
         ))
+        .pipe(wiredep({
+            directory: 'bower_components'
+        }))
         .pipe(gulp.dest('.tmp'))
         .pipe($.filter(['views/**/*.html']))
         .pipe($.minifyHtml({
@@ -157,7 +161,7 @@ gulp.task('build', ['html', 'images', 'fonts', 'extras'], function() {
 // connect
 gulp.task('connectDev', function () {
     $.connect.server({
-        root: ['app', '.tmp', 'bower_components/font-awesome'],
+        root: ['./.tmp', './', '../bower_components/font-awesome'],
         port: 8000,
         livereload: true
     });
@@ -165,7 +169,7 @@ gulp.task('connectDev', function () {
 
 gulp.task('connectDist', function () {
     $.connect.server({
-        root: 'dist',
+        root: ['dist'],
         port: 8001,
         livereload: true
     });
@@ -187,4 +191,4 @@ gulp.task('watch', ['connectDev'], function () {
 
 //gulp.task('default', ['connectDist', 'connectDev', 'watch']);
 
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', ['build']);

@@ -1,7 +1,15 @@
-'use strict';
+/* global angular */
 
-angular.module('hermes.ui')
-    .factory('SecuritySvc', function ($rootScope, $http, $state, $alert) {
+(function(module) {
+    'use strict';
+
+    try {
+        module = angular.module('hermes.ui.service');
+    } catch (e) {
+        module = angular.module('hermes.ui.service', []);
+    }
+
+    module.factory('SecuritySvc', function ($rootScope, $http, $state, $alert) {
         // Public API here
         var authenticated = false;
 
@@ -31,3 +39,4 @@ angular.module('hermes.ui')
             }
         };
     });
+})();

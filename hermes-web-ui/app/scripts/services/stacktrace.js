@@ -1,9 +1,16 @@
-/*global printStackTrace */
+/* global printStackTrace */
+/* global angular */
 
-'use strict';
+(function(module) {
+    'use strict';
 
-angular.module('hermes.ui')
-    .factory('StacktraceSvc', function () {
+    try {
+        module = angular.module('hermes.ui.service');
+    } catch (e) {
+        module = angular.module('hermes.ui.service', []);
+    }
+
+    module.factory('StacktraceSvc', function () {
         // Service logic
         // ...
 
@@ -12,3 +19,4 @@ angular.module('hermes.ui')
             print: printStackTrace
         };
     });
+})();

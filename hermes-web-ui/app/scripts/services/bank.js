@@ -1,7 +1,15 @@
-'use strict';
+/* global angular */
 
-angular.module('hermes.ui')
-    .factory('BankSvc', function ($http) {
+(function(module) {
+    'use strict';
+
+    try {
+        module = angular.module('hermes.ui.service');
+    } catch (e) {
+        module = angular.module('hermes.ui.service', []);
+    }
+
+    module.factory('BankSvc', function ($http) {
         // Public API here
         return {
             list: function(params) {
@@ -41,3 +49,4 @@ angular.module('hermes.ui')
             }
         };
     });
+})();

@@ -1,7 +1,15 @@
-'use strict';
+/* global angular */
 
-angular.module('hermes.ui')
-    .factory('ShippingSvc', function ($http) {
+(function(module) {
+    'use strict';
+
+    try {
+        module = angular.module('hermes.ui.service');
+    } catch (e) {
+        module = angular.module('hermes.ui.service', []);
+    }
+
+    module.factory('ShippingSvc', function ($http) {
         // Public API here
         return {
             label: function(params) {
@@ -27,3 +35,4 @@ angular.module('hermes.ui')
             }
         };
     });
+})();

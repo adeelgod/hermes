@@ -54,7 +54,7 @@
                                 <goal>exec</goal>
                             </goals>
                             <configuration>
-                                <executable>/usr/local/bin/npm</executable>
+                                <executable>npm</executable>
                                 <arguments>
                                     <argument>install</argument>
                                 </arguments>
@@ -67,7 +67,7 @@
                                 <goal>exec</goal>
                             </goals>
                             <configuration>
-                                <executable>/usr/local/bin/bower</executable>
+                                <executable>bower</executable>
                                 <arguments>
                                     <argument>install</argument>
                                 </arguments>
@@ -80,7 +80,7 @@
                                 <goal>exec</goal>
                             </goals>
                             <configuration>
-                                <executable>/usr/local/bin/gulp</executable>
+                                <executable>gulp</executable>
                                 <arguments>
                                     <argument>build</argument>
                                 </arguments>

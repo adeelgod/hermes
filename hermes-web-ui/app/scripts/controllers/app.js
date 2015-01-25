@@ -1,13 +1,21 @@
-'use strict';
+(function(module) {
+    'use strict';
 
-angular.module('hermes.ui').controller('AppCtrl', function ($scope, SecuritySvc) {
-    $scope.authenticated = false;
+    try {
+        module = angular.module('hermes.ui.controller');
+    } catch (e) {
+        module = angular.module('hermes.ui.controller', []);
+    }
 
-    $scope.$on('hermes.authenticated', function (event, data) {
-        $scope.authenticated = data;
+    module.controller('AppCtrl', function ($scope, SecuritySvc) {
+        $scope.authenticated = false;
+
+        $scope.$on('hermes.authenticated', function (event, data) {
+            $scope.authenticated = data;
+        });
+
+        $scope.logout = function() {
+            SecuritySvc.logout();
+        };
     });
-
-    $scope.logout = function() {
-        SecuritySvc.logout();
-    };
-});
+})();

@@ -1,7 +1,15 @@
-'use strict';
+/* global angular */
 
-angular.module('hermes.ui')
-    .factory('LanguageSvc', function (gettextCatalog) {
+(function(module) {
+    'use strict';
+
+    try {
+        module = angular.module('hermes.ui.service');
+    } catch (e) {
+        module = angular.module('hermes.ui.service', []);
+    }
+
+    module.factory('LanguageSvc', function (gettextCatalog) {
         var lang ='en';
 
         gettextCatalog.debug = true;
@@ -19,3 +27,4 @@ angular.module('hermes.ui')
             }
         };
     });
+})();
