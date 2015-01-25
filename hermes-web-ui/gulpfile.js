@@ -146,6 +146,10 @@ gulp.task('clean', function () {
         .pipe($.rimraf());
 });
 
+gulp.task('clean-build', ['clean'], function () {
+    gulp.run('build');
+});
+
 // build
 gulp.task('build', ['html', 'images', 'fonts', 'extras'], function() {
 });
