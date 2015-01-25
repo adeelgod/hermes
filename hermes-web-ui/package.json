@@ -4,6 +4,7 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.10",
+    "gulp-angular-filesort": "^1.0.4",
     "gulp-angular-gettext": "^2.1.0",
     "gulp-autoprefixer": "^2.1.0",
     "gulp-bower-files": "^0.2.7",
@@ -17,6 +18,7 @@
     "gulp-if": "^1.2.5",
     "gulp-imacss": "^0.3.0",
     "gulp-imagemin": "^2.1.0",
+    "gulp-inject": "^1.1.1",
     "gulp-install": "^0.2.0",
     "gulp-jade": "^0.11.0",
     "gulp-jshint": "^1.9.0",
@@ -39,10 +41,9 @@
     "gulp-useref": "^1.1.1",
     "gulp-util": "^3.0.2",
     "jshint-stylish": "^1.0.0",
+    "main-bower-files": "^2.5.0",
     "readable-stream": "^1.0.33",
-    "run-sequence": "^1.0.2",
-    "through2": "^0.6.3",
-    "wiredep": "^2.2.2"
+    "through2": "^0.6.3"
   },
   "engines": {
     "node": ">=0.10.0"

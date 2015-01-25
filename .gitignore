@@ -8,10 +8,10 @@ hermes-rest-server/inbox/
 hermes-rest-server/result/
 hermes-rest-server/templates/
 hermes-rest-server/.splitcache
-hermes-web-ui/.tmp/
-hermes-web-ui/app/bower_components/
-hermes-web-ui/dist/
-hermes-web-ui/node_modules/
+.tmp/
+bower_components/
+dist/
+node_modules/
 *.log
 *.iml
 *.ipr
