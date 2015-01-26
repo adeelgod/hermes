@@ -126,16 +126,14 @@ gulp.task('images', function () {
             progressive: true,
             interlaced: true
         })))
-        .pipe(gulp.dest('dist/images'))
-        .pipe($.size());
+        .pipe(gulp.dest('dist/images'));
 });
 
 // fonts
 gulp.task('fonts', function () {
     return gulp.src(['bower_components/**/fonts/*.{eot,otf,svg,ttf,woff}', 'bower_components/**/font/*.{eot,otf,svg,ttf,woff}'])
         .pipe($.flatten())
-        .pipe(gulp.dest('dist/fonts'))
-        .pipe($.size());
+        .pipe(gulp.dest('dist/fonts'));
 });
 
 // extras
@@ -162,15 +160,15 @@ gulp.task('build', ['html', 'images', 'fonts', 'extras'], function() {
 });
 
 // connect
-gulp.task('connectDev', function () {
+gulp.task('connect-dev', function () {
     $.connect.server({
-        root: ['./.tmp', './', '../bower_components/font-awesome'],
+        root: ['./.tmp', './', 'bower_components/font-awesome'],
         port: 8000,
         livereload: true
     });
 });
 
-gulp.task('connectDist', function () {
+gulp.task('connect-dist', function () {
     $.connect.server({
         root: ['dist'],
         port: 8001,
@@ -179,7 +177,7 @@ gulp.task('connectDist', function () {
 });
 
 // watch
-gulp.task('watch', ['connectDev'], function () {
+gulp.task('watch', ['connect-dev'], function () {
     // watch for changes
 
     gulp.watch('app/styles/**/*.less', ['styles']);
@@ -190,6 +188,16 @@ gulp.task('watch', ['connectDev'], function () {
     gulp.watch('app/po/*.po', ['translations']);
     gulp.watch('bower.json', ['jade']);
     gulp.watch('gulpfile.js', ['build']);
+
+    gulp.watch([
+        '.tmp/*.html',
+        '.tmp/styles/**/*.css',
+        'app/js/**/*.js',
+        'app/images/**/*'
+    ]).on('change', function (file) {
+        gulp.src( file.path)
+            .pipe( $.connect.reload() );
+    });
 });
 
 //gulp.task('default', ['connectDist', 'connectDev', 'watch']);
