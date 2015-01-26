@@ -48,6 +48,10 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         });
     }
 
+    public void timestampPrint(String orderId) {
+        jdbcTemplate.update("UPDATE mage_custom_order SET gedruckt = CURRENT_TIMESTAMP WHERE Bestellung = :orderId", Collections.singletonMap("orderId", orderId));
+    }
+
     public Long countDhlStatus(String code) {
         return jdbcTemplate.queryForObject("select count(tracking_no) from mage_custom_shipments_DHL_status where tracking_no = :code", Collections.singletonMap("code", code), Long.class);
     }

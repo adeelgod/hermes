@@ -55,4 +55,9 @@ public class AuswertungRepositoryTest {
 
         logger.debug("## codes: {}", codes.size());
     }
+
+    //@Test
+    public void testTimestampPrint() {
+        auswertungRepository.timestampPrint("200000053");
+    }
 }

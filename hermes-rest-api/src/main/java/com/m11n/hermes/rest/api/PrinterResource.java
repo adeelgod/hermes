@@ -7,6 +7,7 @@ import com.m11n.hermes.core.model.PrintRequestCharge;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
 import com.m11n.hermes.core.util.PropertiesUtil;
+import com.m11n.hermes.persistence.AuswertungRepository;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,8 +23,10 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -39,6 +42,9 @@ public class PrinterResource {
 
     @Inject
     private ReportService reportService;
+
+    @Inject
+    private AuswertungRepository auswertungRepository;
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -86,8 +92,13 @@ public class PrinterResource {
                         print(new PrintJob(DocumentType.REPORT.name(), null, params, req.getChargeSize()));
 
                         for(String orderId : charge.getOrders()) {
-                            print(new PrintJob(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
-                            print(new PrintJob(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
+                            Future<Boolean> invoiceSuccess = print(new PrintJob(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
+                            Future<Boolean> labelSuccess = print(new PrintJob(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
+
+                            // TODO: check if this doesn't block
+                            if(invoiceSuccess.get() && labelSuccess.get()) {
+                                auswertungRepository.timestampPrint(orderId);
+                            }
                         }
                     }
                 }
@@ -106,16 +117,17 @@ public class PrinterResource {
         return Response.ok().build();
     }
 
-    private void print(final PrintJob req) {
+    private Future<Boolean> print(final PrintJob req) {
         running.incrementAndGet();
 
-        executor.execute(new Runnable() {
+        return executor.submit(new Callable<Boolean>() {
+            boolean success = false;
             @Override
-            public void run() {
+            public Boolean call() {
                 try {
-                    if(Thread.interrupted()) {
+                    if (Thread.interrupted()) {
                         logger.warn("Skipping print request: {}", req);
-                        return;
+                        return false;
                     }
                     Properties p = PropertiesUtil.getProperties();
 
@@ -140,13 +152,14 @@ public class PrinterResource {
 
                     if (documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
                         print(documentType, printer, dir + "/" + req.getOrderId() + "/" + req.getType().toLowerCase() + ".pdf", fast);
+                        success = true;
                     } else if (documentType.equals(DocumentType.REPORT)) {
                         String[] templates = StringUtils.trimToEmpty(req.getTemplates()).split("\\|");
 
                         for (String template : templates) {
-                            if(Thread.interrupted()) {
+                            if (Thread.interrupted()) {
                                 logger.warn("Skipping print request: {}", req);
-                                return;
+                                return false;
                             }
 
                             logger.info("PRINT: REPORT PARAMS {} - {}", req.getParams(), template);
@@ -157,6 +170,8 @@ public class PrinterResource {
 
                             print(documentType, printer, reportOutput, fast);
 
+                            success = true;
+
                             // cleanup
                             FileUtils.deleteQuietly(new File(reportOutput));
                         }
@@ -166,6 +181,8 @@ public class PrinterResource {
                 } finally {
                     running.decrementAndGet();
                 }
+
+                return success;
             }
         });
     }
@@ -187,7 +204,7 @@ public class PrinterResource {
                 logger.info("PRINT: wakeup");
             }
         } else {
-            logger.warn("PRINT: file not found {}", path);
+            throw new RuntimeException("PRINT: file not found " + path);
         }
     }
 
