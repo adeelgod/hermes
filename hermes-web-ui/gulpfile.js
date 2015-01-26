@@ -178,10 +178,7 @@ gulp.task('connect-dev', function () {
     $.connect.server({
         root: ['./.tmp', './', 'bower_components/font-awesome'],
         port: 8000,
-        livereload: true,
-        open: {
-            browser: 'firefox' // if not working OS X browser: 'Google Chrome'
-        }
+        livereload: true
     });
 });
 
@@ -189,10 +186,7 @@ gulp.task('connect-dist', function () {
     $.connect.server({
         root: ['dist'],
         port: 8001,
-        livereload: true,
-        open: {
-            browser: 'firefox' // if not working OS X browser: 'Google Chrome'
-        }
+        livereload: true
     });
 });
 
