@@ -5,32 +5,31 @@ var gulp = require('gulp');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
+var merge = require('merge-stream');
+var gettext = require('gulp-angular-gettext');
 
-gulp.task('translations', ['pot'], function () {
-    var gettext = require('gulp-angular-gettext');
+gulp.task('i18n', function () {
 
-    return gulp.src('app/po/**/*.po')
+    var compile = gulp.src('app/po/**/*.po')
         .pipe(gettext.compile({
             // options to pass to angular-gettext-tools...
             format: 'json'
         }))
         .pipe(gulp.dest('app/data/translations/'));
-});
 
-gulp.task('pot', function () {
-    var gettext = require('gulp-angular-gettext');
-
-    return gulp.src(['.tmp/**/*.html', 'app/scripts/**/*.js'])
+    var extract = gulp.src(['.tmp/**/*.html', 'app/scripts/**/*.js'])
         .pipe(gettext.extract('template.pot', {
             // options to pass to angular-gettext-tools...
         }))
         .pipe(gulp.dest('app/po/'));
+
+    return merge(compile, extract);
 });
 
 gulp.task('html', ['jade'], function () {
     var assets = $.useref.assets();
 
-    return gulp.src(['.tmp/**/*.html'])
+    var html = gulp.src(['.tmp/**/*.html'])
         .pipe(assets)
         .pipe($.if('*.js', $.sourcemaps.init()))
         .pipe($.if('*.js', $.uglify()))
@@ -44,6 +43,21 @@ gulp.task('html', ['jade'], function () {
         .pipe($.useref())
         .pipe($.revReplace())
         .pipe(gulp.dest('dist'));
+
+    var compile = gulp.src('app/po/**/*.po')
+        .pipe(gettext.compile({
+            // options to pass to angular-gettext-tools...
+            format: 'json'
+        }))
+        .pipe(gulp.dest('app/data/translations/'));
+
+    var extract = gulp.src(['.tmp/**/*.html', 'app/scripts/**/*.js'])
+        .pipe(gettext.extract('template.pot', {
+            // options to pass to angular-gettext-tools...
+        }))
+        .pipe(gulp.dest('app/po/'));
+
+    return merge(html, compile, extract);
 });
 
 // Scripts
@@ -164,7 +178,10 @@ gulp.task('connect-dev', function () {
     $.connect.server({
         root: ['./.tmp', './', 'bower_components/font-awesome'],
         port: 8000,
-        livereload: true
+        livereload: true,
+        open: {
+            browser: 'firefox' // if not working OS X browser: 'Google Chrome'
+        }
     });
 });
 
@@ -172,7 +189,10 @@ gulp.task('connect-dist', function () {
     $.connect.server({
         root: ['dist'],
         port: 8001,
-        livereload: true
+        livereload: true,
+        open: {
+            browser: 'firefox' // if not working OS X browser: 'Google Chrome'
+        }
     });
 });
 
@@ -185,7 +205,7 @@ gulp.task('watch', ['connect-dev'], function () {
     gulp.watch('app/images/**/*', ['images']);
     gulp.watch('app/content/**/*.md', ['jade']);
     gulp.watch('app/**/*.jade', ['jade']);
-    gulp.watch('app/po/*.po', ['translations']);
+    gulp.watch('app/po/*.po', ['i18n']);
     gulp.watch('bower.json', ['jade']);
     gulp.watch('gulpfile.js', ['build']);
 
@@ -195,11 +215,11 @@ gulp.task('watch', ['connect-dev'], function () {
         'app/js/**/*.js',
         'app/images/**/*'
     ]).on('change', function (file) {
-        gulp.src( file.path)
-            .pipe( $.connect.reload() );
+        gulp.src(file.path)
+            .pipe($.connect.reload());
     });
+
+    require('opn')('http://localhost:8000');
 });
 
-//gulp.task('default', ['connectDist', 'connectDev', 'watch']);
-
-gulp.task('default', ['build']);
+gulp.task('default', ['build', 'watch']);
