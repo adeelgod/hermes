@@ -1,5 +1,6 @@
 package com.m11n.hermes.service.dhl;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +19,16 @@ import javax.inject.Inject;
 public class DhlServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(DhlServiceTest.class);
 
+    @Inject
+    private DefaultDhlService defaultService;
 
-    //private DefaultDhlService defaultService = new DefaultDhlService("danielschaaf", "", "dhl_entwicklerportal", "Dhl_123!", DhlService.MODE.SANDBOX);
     @Inject
     private JerryDhlService jerryService;
+
+    @Before
+    public void setUp() throws Exception {
+        defaultService =  new DefaultDhlService();
+    }
 
     @Test
     public void testTrackingCode() {
@@ -47,5 +54,10 @@ public class DhlServiceTest {
         } catch (Exception e) {
             // ignore
         }
+    }
+
+    @Test
+    public void testGetVersion() throws Exception {
+        logger.debug("************ DHL webservice: {}", defaultService.getVersion());
     }
 }
