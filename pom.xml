@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.m11n</groupId>
         <artifactId>m11n-project</artifactId>
-        <version>1.0.18</version>
+        <version>1.0.19</version>
     </parent>
 
     <groupId>com.m11n.hermes</groupId>
@@ -24,7 +24,7 @@
     <properties>
         <hermes.build.timestamp>${maven.build.timestamp}</hermes.build.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-        <m11n.version>1.0.18</m11n.version>
+        <m11n.version>1.0.19</m11n.version>
     </properties>
 
     <dependencyManagement>
