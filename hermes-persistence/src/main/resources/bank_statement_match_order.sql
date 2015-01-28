@@ -1,8 +1,8 @@
 SELECT
-  a.Bestellung as orderId, a.GesamtPreis_der_Bestellung_Brutto as amount, a.Datum_Kauf as orderDate, a.typ as type, a.Status as status, a.Kunden_ebay_name as ebayName, a.Kunden_vorname as firstname, a.Kunden_name as lastname, 1.0 as matching
+  CAST(a.Bestellung as CHAR) as orderId, a.GesamtPreis_der_Bestellung_Brutto as amount, a.Datum_Kauf as orderDate, a.typ as type, a.Status as status, a.Kunden_ebay_name as ebayName, a.Kunden_vorname as firstname, a.Kunden_name as lastname, 1.0 as matching
 FROM
   mage_custom_order AS a,
-  bank_statement AS b
+  hermes_bank_statement AS b
 WHERE
   b.uuid = :uuid
   AND

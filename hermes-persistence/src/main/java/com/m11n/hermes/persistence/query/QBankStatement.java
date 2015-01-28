@@ -22,7 +22,7 @@ public class QBankStatement extends com.mysema.query.sql.RelationalPathBase<QBan
 
     private static final long serialVersionUID = 1222000383;
 
-    public static final QBankStatement bankStatement = new QBankStatement("bank_statement");
+    public static final QBankStatement bankStatement = new QBankStatement("hermes_bank_statement");
 
     public final StringPath account = createString("account");
 
@@ -63,7 +63,7 @@ public class QBankStatement extends com.mysema.query.sql.RelationalPathBase<QBan
     public final com.mysema.query.sql.PrimaryKey<QBankStatement> primary = createPrimaryKey(uuid);
 
     public QBankStatement(String variable) {
-        super(QBankStatement.class, forVariable(variable), "null", "bank_statement");
+        super(QBankStatement.class, forVariable(variable), "null", "hermes_bank_statement");
         addMetadata();
     }
 
@@ -73,12 +73,12 @@ public class QBankStatement extends com.mysema.query.sql.RelationalPathBase<QBan
     }
 
     public QBankStatement(Path<? extends QBankStatement> path) {
-        super(path.getType(), path.getMetadata(), "null", "bank_statement");
+        super(path.getType(), path.getMetadata(), "null", "hermes_bank_statement");
         addMetadata();
     }
 
     public QBankStatement(PathMetadata<?> metadata) {
-        super(QBankStatement.class, metadata, "null", "bank_statement");
+        super(QBankStatement.class, metadata, "null", "hermes_bank_statement");
         addMetadata();
     }
 

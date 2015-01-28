@@ -111,12 +111,10 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
 
     public List<Map<String, Object>> findBankStatementOrderByMatch(String uuid) {
         try {
-            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("bank_statement_match.sql"));
+            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("bank_statement_match.sql")).replaceAll(":uuid", "\"" + uuid + "\"");
 
-            // TODO: remove this in production
-            logger.debug(sql);
-
-            return jdbcTemplate.query(sql, Collections.<String, Object>singletonMap("uuid", uuid), new DefaultMapper());
+            //return jdbcTemplate.query(sql, Collections.<String, Object>singletonMap("uuid", uuid), new DefaultMapper());
+            return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());
         } catch (IOException e) {
             logger.error(e.toString(), e);
         }
@@ -157,9 +155,6 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
             }
 
             sql = String.format(sql, Joiner.on(join).join(filters));
-
-            // TODO: remove this in production
-            logger.debug(sql);
 
             return jdbcTemplate.query(sql, Collections.<String, Object>singletonMap("uuid", uuid), new DefaultMapper());
         } catch (IOException e) {

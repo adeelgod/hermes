@@ -90,7 +90,7 @@ block content
                         td
                         td.text-center
                             h4 Date
-                        td.text-left
+                        td.text-left(style='width:600px')
                             h4 Description
                         td.text-right
                             h4 Amount
@@ -100,6 +100,8 @@ block content
                             h4 Ebay
                         td.text-center
                             h4 Order
+                        td.text-center
+                            h4 Match %
                         td
                 tbody
                     tr
@@ -110,11 +112,12 @@ block content
                                     i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
                                     i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
-                        td.text-left {{currentBankStatement.description}}
+                        td.text-left(style='width:600px') {{currentBankStatement.description}}
                         td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
                         td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                         td.text-right {{currentBankStatement.ebayName}}
                         td.text-center {{currentBankStatement.orderId}}
+                        td.text-center {{currentBankStatement.matching * 100}} &nbsp;%
                         td.text-center(style='min-width:100px; padding:0')
                             .btn-group.btn-group-sm(ng-show='bankStatements')
                                 button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')

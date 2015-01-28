@@ -5,6 +5,7 @@ import com.m11n.hermes.core.service.BankService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -17,12 +18,18 @@ public class BankStatementProcessor {
     @Inject
     private BankService bankService;
 
+    @Transactional
     public void process(List<Map<String, String>> entries) {
         for(Map<String, String> entry : entries) {
             try {
                 BankStatement bs = bankService.convert(entry);
-                bs = bankService.extract(bs);
-                bankService.save(bs);
+                if(!bankService.exists(bs)) {
+                    bs = bankService.save(bs); // NOTE: necessary to have a reference ID
+                    bs = bankService.extract(bs);
+                    bankService.save(bs);
+                } else {
+                    logger.warn("Bank statement already imported: {}", bs);
+                }
             } catch (Exception e) {
                 logger.error(e.toString(), e);
             }

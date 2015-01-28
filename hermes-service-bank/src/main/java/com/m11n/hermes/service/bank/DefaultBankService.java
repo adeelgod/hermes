@@ -48,6 +48,16 @@ public class DefaultBankService implements BankService {
 
     private Set<BankStatementPattern> patterns = new HashSet<>();
 
+    private final static BigDecimal MATCH_THRESHOLD_0 = new BigDecimal(0.0d);
+
+    private final static BigDecimal MATCH_THRESHOLD_80 = new BigDecimal(0.8d);
+
+    private final static BigDecimal MATCH_THRESHOLD_100 = new BigDecimal(1.0d);
+
+    private final static String[] ORDER_ATTRIBUTES = new String[] {
+            "orderId", "amount", "ebayName", "firstname", "lastname", "matching"
+    };
+
     @PostConstruct
     public void init() {
         reload();
@@ -66,54 +76,64 @@ public class DefaultBankService implements BankService {
     }
 
     public BankStatement save(BankStatement bs) {
-        BankStatement result = bankStatementRepository.findByHash(bs.getHash());
+        return bankStatementRepository.save(bs);
+    }
 
-        if(result==null) {
-            bs = bankStatementRepository.save(bs);
-            return bs;
-        }
-
-        logger.warn("Bank statement exists already: {} (equals={})", result, result.equals(bs));
-
-        return result;
+    public boolean exists(BankStatement bs) {
+        return (bankStatementRepository.findByHash(bs.getHash())!=null);
     }
 
     public BankStatement extract(BankStatement bs) {
         bs = extractFromMatch(bs);
 
-        if(bs.getMatching()<0.8) {
-            logger.debug("Using fallback extraction via REGEX: {}", bs);
+        if(MATCH_THRESHOLD_80.compareTo(bs.getMatching())==1) {
             bs = extractFromDescription(bs);
         }
+
+        logger.debug("Matching: {}", bs.getMatching());
 
         return bs;
     }
 
     private BankStatement extractFromMatch(BankStatement bs) {
-        List<Map<String, Object>> matches = auswertungRepository.findBankStatementOrderByMatch(bs.getId());
+        logger.debug("Matching (count): {}", bankStatementRepository.count());
+        logger.debug("Matching (count): {}", bankStatementRepository.findOne(bs.getId()));
 
-        if(matches!=null && !matches.isEmpty()) {
-            Map<String, Object> match = matches.get(0); // NOTE: best match
+        List<Map<String, Object>> orders = auswertungRepository.findBankStatementOrderByMatch(bs.getId());
 
-            for(Map.Entry<String, Object> attribute : match.entrySet()) {
-                bs.property(attribute.getKey()).set(attribute.getValue());
+        if(orders!=null && !orders.isEmpty()) {
+            Map<String, Object> order = orders.get(0); // NOTE: best match
+
+            for(String key : ORDER_ATTRIBUTES) {
+                Object value = order.get(key);
+                if(value instanceof Double) {
+                    value = new BigDecimal((Double)value).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+                }
+
+                bs.property(key).set(value);
             }
 
-            if(bs.getMatching()<1.0 && matches.size()>1) {
-                int weight = matches.size();
+            logger.debug("Matching (extract): {}", bs);
+
+            if(orders.size()>1) {
+                int weight = orders.size();
                 int count = 0;
 
                 double matching = 0.0;
 
-                for(Map<String, Object> m : matches) {
-                    matching = matching + ( (Double)m.get("matching") * weight);
+                for(Map<String, Object> o : orders) {
+                    matching = matching + ( (Double)o.get("matching") * weight);
 
                     count += weight;
                     weight--;
                 }
 
-                bs.setMatching(matching / Double.valueOf(count));
+                bs.setMatching(new BigDecimal(matching).divide(new BigDecimal(count)).setScale(2, BigDecimal.ROUND_HALF_EVEN));
+
+                logger.debug("Matching (weighted): {}", bs.getMatching());
             }
+        } else {
+            logger.debug("Matching (not found): {}", bs.getId());
         }
 
         return bs;
@@ -125,12 +145,15 @@ public class DefaultBankService implements BankService {
 
             // NOTE: just take the first match
             if(m.find()) {
-                // NOTE: if we find any match here in general there is a confidence of 80% that it's OK
-                bs.setMatching(0.8);
+                if(MATCH_THRESHOLD_0.compareTo(bs.getMatching())==0) {
+                    // NOTE: if we find any match here in general there is a confidence of 80% that it's OK
+                    bs.setMatching(new BigDecimal(MATCH_THRESHOLD_80.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_EVEN)); // NOTE: copy, only set it once
+                }
                 String value = m.group(bsp.getPatternGroup()).replaceAll(" ", ""); // TODO: optional?
 
                 // NOTE: only set if empty
                 if(bs.property(bsp.getAttribute()).get()==null) {
+                    // TODO: actually we would need type checks here if stuff is not string
                     bs.property(bsp.getAttribute()).set(value);
                 }
                 /**
@@ -149,7 +172,7 @@ public class DefaultBankService implements BankService {
                 bs.setFirstname(ObjectUtils.defaultIfNull(order.get("firstname"), "").toString());
                 bs.setLastname(ObjectUtils.defaultIfNull(order.get("lastname"), "").toString());
                 Double amount = (Double)ObjectUtils.defaultIfNull(order.get("amount"), 0.0d);
-                bs.setAmountDiff(bs.getAmount().subtract(new BigDecimal(amount)));
+                bs.setAmountDiff(bs.getAmount().subtract(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_EVEN));
                 if(order.get("ebayName")!=null) {
                     bs.setEbayName(order.get("ebayName").toString());
                 }

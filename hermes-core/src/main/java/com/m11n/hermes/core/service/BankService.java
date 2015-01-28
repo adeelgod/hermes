@@ -10,6 +10,8 @@ public interface BankService {
 
     BankStatement save(BankStatement bs);
 
+    boolean exists(BankStatement bs);
+
     BankStatement extract(BankStatement bs);
 
     List<Map<String, Object>> match(String uuid);
