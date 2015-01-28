@@ -79,11 +79,54 @@ public class DefaultBankService implements BankService {
     }
 
     public BankStatement extract(BankStatement bs) {
+        bs = extractFromMatch(bs);
+
+        if(bs.getMatching()<0.8) {
+            logger.debug("Using fallback extraction via REGEX: {}", bs);
+            bs = extractFromDescription(bs);
+        }
+
+        return bs;
+    }
+
+    private BankStatement extractFromMatch(BankStatement bs) {
+        List<Map<String, Object>> matches = auswertungRepository.findBankStatementOrderByMatch(bs.getId());
+
+        if(matches!=null && !matches.isEmpty()) {
+            Map<String, Object> match = matches.get(0); // NOTE: best match
+
+            for(Map.Entry<String, Object> attribute : match.entrySet()) {
+                bs.property(attribute.getKey()).set(attribute.getValue());
+            }
+
+            if(bs.getMatching()<1.0 && matches.size()>1) {
+                int weight = matches.size();
+                int count = 0;
+
+                double matching = 0.0;
+
+                for(Map<String, Object> m : matches) {
+                    matching = matching + ( (Double)m.get("matching") * weight);
+
+                    count += weight;
+                    weight--;
+                }
+
+                bs.setMatching(matching / Double.valueOf(count));
+            }
+        }
+
+        return bs;
+    }
+
+    private BankStatement extractFromDescription(BankStatement bs) {
         for(BankStatementPattern bsp : patterns) {
             Matcher m = bsp.getRegex().matcher(bs.getDescription());
 
             // NOTE: just take the first match
             if(m.find()) {
+                // NOTE: if we find any match here in general there is a confidence of 80% that it's OK
+                bs.setMatching(0.8);
                 String value = m.group(bsp.getPatternGroup()).replaceAll(" ", ""); // TODO: optional?
 
                 // NOTE: only set if empty
@@ -91,9 +134,9 @@ public class DefaultBankService implements BankService {
                     bs.property(bsp.getAttribute()).set(value);
                 }
                 /**
-                if(bsp.getStopOnFirstMatch()) {
-                    break;
-                }
+                 if(bsp.getStopOnFirstMatch()) {
+                 break;
+                 }
                  */
             }
         }
@@ -143,8 +186,12 @@ public class DefaultBankService implements BankService {
         return bs;
     }
 
+    public List<Map<String, Object>> match(String uuid) {
+        return auswertungRepository.findBankStatementOrderByMatch(uuid);
+    }
+
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
-        return auswertungRepository.findOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
+        return auswertungRepository.findBankStatementOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
     }
 
     public List<Map<String, Object>> getOrders(String orderId) {

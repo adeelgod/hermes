@@ -109,9 +109,24 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());
     }
 
-    public List<Map<String, Object>> findOrderByFilter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
+    public List<Map<String, Object>> findBankStatementOrderByMatch(String uuid) {
         try {
-            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("filter.sql"));
+            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("bank_statement_match.sql"));
+
+            // TODO: remove this in production
+            logger.debug(sql);
+
+            return jdbcTemplate.query(sql, Collections.<String, Object>singletonMap("uuid", uuid), new DefaultMapper());
+        } catch (IOException e) {
+            logger.error(e.toString(), e);
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<Map<String, Object>> findBankStatementOrderByFilter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
+        try {
+            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("bank_statement_filter.sql"));
 
             String join = or ? " OR " : " AND ";
 

@@ -24,15 +24,15 @@ public class AuswertungRepositoryTest {
 
     @Test
     public void test() {
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, true, true, "30000000", true);
+        auswertungRepository.findBankStatementOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, true, true, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, false, false, "30000000", true);
+        auswertungRepository.findBankStatementOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", true, false, false, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, true, false, "30000000", true);
+        auswertungRepository.findBankStatementOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, true, false, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, false, true, "30000000", true);
+        auswertungRepository.findBankStatementOrderByFilter("abcdefghijklmnopqrstuvwxyz", "%", false, false, true, "30000000", true);
         logger.debug("=========================================================");
-        auswertungRepository.findOrderByFilter("abcdefghijklmnopqrstuvwxyz", "mü%", false, false, false, "30000000", false);
+        auswertungRepository.findBankStatementOrderByFilter("abcdefghijklmnopqrstuvwxyz", "mü%", false, false, false, "30000000", false);
         logger.debug("=========================================================");
     }
 
