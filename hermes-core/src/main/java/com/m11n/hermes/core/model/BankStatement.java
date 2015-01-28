@@ -11,7 +11,6 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import org.joda.beans.Bean;
 import org.joda.beans.BeanBuilder;
@@ -28,7 +27,7 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 
 @BeanDefinition
 @JsonIgnoreProperties({"meta", "metaBean"})
-@XmlRootElement(name = "bank_statement")
+@XmlRootElement(name = "hermes_bank_statement")
 @Entity
 @Table(name = "bank_statement")
 public class BankStatement extends DirectBean

@@ -30,7 +30,7 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 @JsonIgnoreProperties({"meta", "metaBean"})
 @XmlRootElement(name = "bank_statement_pattern")
 @Entity
-@Table(name = "bank_statement_pattern")
+@Table(name = "hermes_bank_statement_pattern")
 public class BankStatementPattern extends DirectBean
 {
     @PropertyDefinition
