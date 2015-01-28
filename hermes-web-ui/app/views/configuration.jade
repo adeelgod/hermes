@@ -16,6 +16,8 @@ block content
                     a(href='', ng-click="tab='database'", role='tab') Database
                 li(role='presentation', ng-class="{'active': tab=='magento'}")
                     a(href='', ng-click="tab='magento'", role='tab') Magento
+                li(role='presentation', ng-class="{'active': tab=='dhl'}")
+                    a(href='', ng-click="tab='dhl'", role='tab') DHL
                 li(role='presentation', ng-class="{'active': tab=='directory'}")
                     a(href='', ng-click="tab='directory'", role='tab') Directories
                 li(role='presentation', ng-class="{'active': tab=='form'}")
@@ -99,6 +101,28 @@ block content
                         .form-group
                             label(for='magentoRetryMax') Retry Max.
                             input.form-control(name='magentoRetryMax', ng-model="configuration['hermes.magento.api.retry.max']", placeholder='API Retry Max.', type='text')
+                .tab-pane(role='tabpanel', id='dhl', ng-class="{'active': tab=='dhl'}")
+                    form(role='form', name='dhlForm', novalidate='')
+                        .form-group
+                            label(for='dhlUsername') Dev. Username
+                            input.form-control(name='dhlUsername', ng-model="configuration['hermes.dhl.api.username']", placeholder='Dev. Username', type='text')
+                        .form-group
+                            label(for='dhlPassword') Dev. Password
+                            input.form-control(name='dhlPassword', ng-model="configuration['hermes.dhl.api.password']", placeholder='Dev. Password', type='password')
+                        .form-group
+                            label(for='dhlCisUsername') CIS Username
+                            input.form-control(name='dhlCisUsername', ng-model="configuration['hermes.dhl.cis.username']", placeholder='CIS Username', type='text')
+                        .form-group
+                            label(for='dhlCisPassword') CIS Password
+                            input.form-control(name='magentoRetryMax', ng-model="configuration['hermes.dhl.cis.password']", placeholder='CIS Password', type='password')
+                        .form-group
+                            label(for='dhlCisEkp') CIS EKP
+                            input.form-control(name='dhlCisEkp', ng-model="configuration['hermes.dhl.cis.ekp']", placeholder='CIS EKP', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hibernate.dhl.api.production']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hibernate.dhl.api.production'], 'fa-circle-o': !configuration['hibernate.dhl.api.production']}")
+                            label(for='', ng-show="configuration['hibernate.dhl.api.production']") Production
+                            label(for='', ng-hide="configuration['hibernate.dhl.api.production']") Sandbox
                         hr
                         .alert.alert-info(role='alert')
                             p Reminder: status patterns are defined as regular expressions.

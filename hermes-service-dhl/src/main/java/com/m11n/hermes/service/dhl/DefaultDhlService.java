@@ -40,6 +40,9 @@ public class DefaultDhlService extends AbstractDhlService {
     @Value("${hermes.dhl.api.password}")
     private String wsPassword;
 
+    @Value("${hermes.dhl.api.production}")
+    private Boolean wsProduction;
+
     @Value("${hermes.dhl.cis.username}")
     private String cisUsername;
 
@@ -77,6 +80,7 @@ public class DefaultDhlService extends AbstractDhlService {
 
     @PostConstruct
     public void init() throws Exception {
+        this.mode = wsProduction ? MODE.PRODUCTION : MODE.SANDBOX;
         // soap
         ISService_1_0_deLocator locator = new ISService_1_0_deLocator();
         ws = locator.getShipmentServiceSOAP11port0(new URL("https://cig.dhl.de/services/" + mode.name().toLowerCase() + "/soap"));
