@@ -74,18 +74,12 @@ block content
                     input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...', style='max-width: 100px')
                 button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
                     i.fa.fa-search
-        .col-md-3(style='padding: 0')
-            .btn-group(ng-show='bankStatements')
-                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
-                    i.fa.fa-check
-                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
-                    i.fa.fa-ban
-                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
-                    i.fa.fa-undo
-        .col-md-1(style='padding: 0')
+        .col-md-4(style='padding: 0')
             .btn-group.pull-right
                 button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
                     i.fa.fa-chevron-left
+                button.btn.btn-default(type='button', disabled='true')
+                    | # {{bankStatements.length}}
                 button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
                     i.fa.fa-chevron-right
     .row(ng-hide='loading')
@@ -106,10 +100,11 @@ block content
                             h4 Ebay
                         td.text-center
                             h4 Order
+                        td
                 tbody
                     tr
-                        td.text-center
-                            h4
+                        td.text-center(style='padding:0')
+                            h4(style='margin:0')
                                 span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
                                     i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                     i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
@@ -120,6 +115,14 @@ block content
                         td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                         td.text-right {{currentBankStatement.ebayName}}
                         td.text-center {{currentBankStatement.orderId}}
+                        td.text-center(style='min-width:100px; padding:0')
+                            .btn-group.btn-group-sm(ng-show='bankStatements')
+                                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
+                                    i.fa.fa-ban
+                                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                                    i.fa.fa-undo
     .row(ng-show='orders', ng-hide='loading')
         .col-md-12
             table.table.table-striped.table-condensed
