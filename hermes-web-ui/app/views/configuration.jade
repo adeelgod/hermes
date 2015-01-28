@@ -104,6 +104,10 @@ block content
                 .tab-pane(role='tabpanel', id='dhl', ng-class="{'active': tab=='dhl'}")
                     form(role='form', name='dhlForm', novalidate='')
                         .form-group
+                            .alert.alert-info(role='alert')
+                                p More infos here:&nbsp;
+                                    a(href='https://entwickler.dhl.de/group/ep/geschaeftskundenversand/authentifizierung', target='_blank') https://entwickler.dhl.de/group/ep/geschaeftskundenversand/authentifizierung
+                        .form-group
                             label(for='dhlUsername') Dev. Username
                             input.form-control(name='dhlUsername', ng-model="configuration['hermes.dhl.api.username']", placeholder='Dev. Username', type='text')
                         .form-group
