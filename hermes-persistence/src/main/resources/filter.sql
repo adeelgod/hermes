@@ -25,4 +25,6 @@ WHERE
     OR
     (a.typ='Shop_vorkasse' AND a.Status='pending')
   )
+ORDER BY
+  a.Datum_Kauf DESC, a.GesamtPreis_der_Bestellung_Brutto DESC
 LIMIT 250
