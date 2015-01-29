@@ -1,24 +1,31 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Maven template
-.idea/
 target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+### IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+atlassian-ide-plugin.xml
+### Eclipse
+.project
+.settings
+.classpath
+### Gulp
+.tmp/
+bower_components/
+dist/
+node_modules/
+*.log
+### Hermes
 hermes-rest-server/archive/
 hermes-rest-server/examples/
 hermes-rest-server/inbox/
 hermes-rest-server/result/
 hermes-rest-server/templates/
 hermes-rest-server/.splitcache
-.tmp/
-bower_components/
-dist/
-node_modules/
-*.log
-*.iml
-*.ipr
-*.iws
-atlassian-ide-plugin.xml
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
