@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>hermes-rest</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hermes :: REST</name>

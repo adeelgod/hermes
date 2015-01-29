@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>hermes-service-bank</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Hermes :: Service :: Bank</name>

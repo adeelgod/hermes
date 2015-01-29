@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>hermes-doc</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>Hermes :: Doc</name>
     <description>Hermes</description>

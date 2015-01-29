@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>hermes-service-print</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Hermes :: Service :: Print</name>

@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>hermes-web-ui</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hermes :: Web :: UI</name>
