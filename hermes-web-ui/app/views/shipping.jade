@@ -23,6 +23,7 @@ block content
                     .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.description}}
                         input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && (!field.lookup || field.lookup.length == 0)", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='NUMBER'", placeholder='{{field.name}}', type='number')
                         input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
                         .row(ng-if="field.fieldType=='DATETIME'")
                             .col-md-8
