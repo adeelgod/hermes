@@ -109,9 +109,9 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());
     }
 
-    public List<Map<String, Object>> findBankStatementOrderByMatch(String uuid) {
+    public List<Map<String, Object>> findBankStatementOrderByMatch(String uuid, int lookupPeriod) {
         try {
-            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("bank_statement_match.sql")).replaceAll(":uuid", "\"" + uuid + "\"");
+            String sql = IOUtils.toString(AuswertungRepository.class.getClassLoader().getResourceAsStream("bank_statement_match.sql")).replaceAll(":uuid", "\"" + uuid + "\"").replaceAll(":lookup", lookupPeriod + "");
 
             //return jdbcTemplate.query(sql, Collections.<String, Object>singletonMap("uuid", uuid), new DefaultMapper());
             return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());

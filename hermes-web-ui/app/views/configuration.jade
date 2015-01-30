@@ -101,6 +101,13 @@ block content
                         .form-group
                             label(for='magentoRetryMax') Retry Max.
                             input.form-control(name='magentoRetryMax', ng-model="configuration['hermes.magento.api.retry.max']", placeholder='API Retry Max.', type='text')
+                        hr
+                        .form-group
+                            label(for='bankLookupPeriod') Lookup period bank statements (in months)
+                            input.form-control(name='bankLookupPeriod', ng-model="configuration['hermes.bank.statement.lookup.period']", placeholder='Lookup period bank statements', type='text')
+                        .form-group
+                            label(for='bankAutoAssignThreshold') Automatic assignment of bank statements when match > X %
+                            input.form-control(name='bankAutoAssignThreshold', ng-model="configuration['hermes.bank.statement.auto.assignment.threshold']", placeholder='Match threshold in %', type='text')
                 .tab-pane(role='tabpanel', id='dhl', ng-class="{'active': tab=='dhl'}")
                     form(role='form', name='dhlForm', novalidate='')
                         .form-group

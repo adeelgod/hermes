@@ -13,6 +13,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +61,12 @@ public class DefaultBankService implements BankService {
             "orderId", "amount", "ebayName", "firstname", "lastname", "matching"
     };
 
+    @Value("${hermes.bank.statement.lookup.period:6}")
+    private int lookupPeriod = 6;
+
+    @Value("${hermes.bank.statement.auto.assignment.threshold:90}")
+    private int autoAssignmentThreshold = 90;
+
     @PostConstruct
     public void init() {
         reload();
@@ -96,7 +103,7 @@ public class DefaultBankService implements BankService {
     }
 
     private BankStatement extractFromMatch(BankStatement bs) {
-        List<Map<String, Object>> orders = auswertungRepository.findBankStatementOrderByMatch(bs.getId());
+        List<Map<String, Object>> orders = auswertungRepository.findBankStatementOrderByMatch(bs.getId(), lookupPeriod);
 
         if(orders!=null && !orders.isEmpty()) {
             Map<String, Object> order = orders.get(0); // NOTE: best match
@@ -185,7 +192,7 @@ public class DefaultBankService implements BankService {
     }
 
     public List<Map<String, Object>> match(String uuid) {
-        return auswertungRepository.findBankStatementOrderByMatch(uuid);
+        return auswertungRepository.findBankStatementOrderByMatch(uuid, lookupPeriod);
     }
 
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
