@@ -2,7 +2,6 @@ package com.m11n.hermes.service.report;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
-import com.m11n.hermes.core.service.ReportService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -36,7 +35,6 @@ public class DynamicReportServiceTest
         form.setName("dynamic");
         form.setDescription("Test Report Orders (limit 100)");
         form.setDb("auswertung");
-        //form.setSqlStatement("SELECT order_id AS \"unId\", invoice_id AS \"invoiceId\", Bestellung AS \"orderId\", shipping_lable AS \"shippingId\", Kunden_vorname AS \"firstname\", Kunden_name AS \"lastname\", Kunden_email AS \"email\" FROM mage_custom_order WHERE Status = \"complete\" AND Datum_Lieferung > :from AND Datum_Lieferung < :until");
         form.setSqlStatement("SELECT order_id AS \"unId\", invoice_id AS \"invoiceId\", Bestellung AS \"orderId\", shipping_lable AS \"shippingId\", Kunden_vorname AS \"firstname\", Kunden_name AS \"lastname\", Kunden_email AS \"email\" FROM mage_custom_order WHERE Status = \"complete\" LIMIT :limit");
 
         List<FormField> fields = new ArrayList<>();
