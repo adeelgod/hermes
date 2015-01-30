@@ -200,10 +200,13 @@ public class DefaultBankService implements BankService {
     }
 
     public List<Map<String, Object>> match(String uuid) {
-        String sql = bankStatementMatchForm.getSqlStatement().replaceAll(":uuid", "\"" + uuid + "\"").replaceAll(":lookup", lookupPeriod + "");
+        Map<String, Object> params = new HashMap<>();
+        params.put("uuid", uuid);
+        params.put("lookup", lookupPeriod);
 
-        //return auswertungRepository.findBankStatementOrderByMatch(uuid, lookupPeriod);
-        return auswertungRepository.query(sql, Collections.<String, Object>emptyMap(), new AuswertungRepository.DefaultMapper());
+        //String sql = bankStatementMatchForm.getSqlStatement().replaceAll(":uuid", "\"" + uuid + "\"").replaceAll(":lookup", lookupPeriod + "");
+
+        return auswertungRepository.query(bankStatementMatchForm.getSqlStatement(), params, new AuswertungRepository.DefaultMapper());
     }
 
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
