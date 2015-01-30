@@ -104,16 +104,13 @@ block content
                             h4 Match
                         td
                 tbody
-                    tr
-                        td.text-center(style='padding:0')
+                    tr.valign
+                        td.text-center(style='padding-top:2px')
                             .btn-group.btn-group-sm
                                 button.btn(type='button', disabled='true', ng-class="{'btn-default': currentBankStatement.status=='new', 'btn-success': currentBankStatement.status=='confirmed', 'btn-danger': currentBankStatement.status=='ignored'}")
                                     i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                     i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
                                     i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
-                            //
-                                h4(style='margin:0')
-                                    span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
                         td.text-left(style='width:600px') {{currentBankStatement.description}}
                         td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
@@ -121,7 +118,7 @@ block content
                         td.text-right {{currentBankStatement.ebayName}}
                         td.text-center {{currentBankStatement.orderId}}
                         td.text-center {{currentBankStatement.matching * 100}} &nbsp;%
-                        td.text-center(style='min-width:100px; padding:0')
+                        td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
                             .btn-group.btn-group-sm(ng-show='bankStatements')
                                 button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                                     i.fa.fa-check
@@ -149,10 +146,10 @@ block content
                             h4 Client
                         td.text-center
                             h4 Ebay
-                tbody
+                tbody.text-valign
                     tr(ng-repeat='entry in orders', ng-class="{'success': entry._selected}")
                         td
-                            button.btn.btn-default(type='button', ng-click='selectOrder(entry)')
+                            button.btn.btn-sm.btn-default(type='button', ng-click='selectOrder(entry)')
                                 i.fa(ng-class="{'fa-circle': entry._selected, 'fa-circle-o': !entry._selected}")
                         td.text-center {{entry.orderId}}
                         td.text-center {{entry.type}}
