@@ -71,7 +71,7 @@ block content
                         span(ng-show='search.or') OR
                         span(ng-hide='search.or') AND
                 .form-group
-                    input(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...', style='max-width: 100px')
+                    input.form-control(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...')
                 button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
                     i.fa.fa-search
         .col-md-4(style='padding: 0')
@@ -106,11 +106,14 @@ block content
                 tbody
                     tr
                         td.text-center(style='padding:0')
-                            h4(style='margin:0')
-                                span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
+                            .btn-group.btn-group-sm
+                                button.btn(type='button', disabled='true', ng-class="{'btn-default': currentBankStatement.status=='new', 'btn-success': currentBankStatement.status=='confirmed', 'btn-danger': currentBankStatement.status=='ignored'}")
                                     i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                     i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
                                     i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
+                            //
+                                h4(style='margin:0')
+                                    span.label(ng-class="{'label-default': currentBankStatement.status=='new', 'label-success': currentBankStatement.status=='confirmed', 'label-danger': currentBankStatement.status=='ignored'}")
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
                         td.text-left(style='width:600px') {{currentBankStatement.description}}
                         td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
