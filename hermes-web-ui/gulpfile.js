@@ -8,6 +8,11 @@ var $ = require('gulp-load-plugins')();
 var merge = require('merge-stream');
 var gettext = require('gulp-angular-gettext');
 
+gulp.task('bootlint', function() {
+    return gulp.src('.tmp/**/*.html')
+        .pipe($.bootlint());
+});
+
 gulp.task('i18n', function () {
 
     var compile = gulp.src('app/po/**/*.po')
