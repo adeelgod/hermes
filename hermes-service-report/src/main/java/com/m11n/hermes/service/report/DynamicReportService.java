@@ -91,7 +91,7 @@ public class DynamicReportService {
         }
     }
 
-    private DRIDataType<?, ?> getDataType(String fieldType) {
+    private DRIDataType getDataType(String fieldType) {
         switch(FormField.Type.valueOf(fieldType)) {
             case BOOLEAN:
                 return DataTypes.booleanType();
