@@ -31,7 +31,7 @@ public class BankStatementProcessor {
                 if(!bankService.exists(bs)) {
                     bs = bankService.save(bs); // NOTE: necessary to have a reference ID
                     // NOTE: ugly, but needed to flush the transaction...
-                    logger.debug("+++++++++++++++++++++++ Bank statements: {}", bankStatementRepository.count());
+                    bankStatementRepository.count();
                     bs = bankService.extract(bs);
                     bankService.save(bs);
                 } else {
