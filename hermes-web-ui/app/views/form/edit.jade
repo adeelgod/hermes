@@ -11,6 +11,8 @@ block content
                 .panel-heading
                     h3.panel-title Form: {{form.name}}
                 .panel-body
+                    .alert.alert-danger(role='alert', ng-show='form.systemForm')
+                        p Be careful! This form is used internally by the system.
                     form(role='form', name='fieldForm', novalidate='')
                         .form-group
                             label(for='db') Database

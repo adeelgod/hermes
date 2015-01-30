@@ -58,6 +58,11 @@ public class Form extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "system_form")
+    private Boolean systemForm;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "schedule")
     private String schedule;
 
@@ -219,6 +224,31 @@ public class Form extends DirectBean
      */
     public final Property<String> description() {
         return metaBean().description().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the systemForm.
+     * @return the value of the property
+     */
+    public Boolean getSystemForm() {
+        return systemForm;
+    }
+
+    /**
+     * Sets the systemForm.
+     * @param systemForm  the new value of the property
+     */
+    public void setSystemForm(Boolean systemForm) {
+        this.systemForm = systemForm;
+    }
+
+    /**
+     * Gets the the {@code systemForm} property.
+     * @return the property, not null
+     */
+    public final Property<Boolean> systemForm() {
+        return metaBean().systemForm().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -463,6 +493,7 @@ public class Form extends DirectBean
                     JodaBeanUtils.equal(getDb(), other.getDb()) &&
                     JodaBeanUtils.equal(getName(), other.getName()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
+                    JodaBeanUtils.equal(getSystemForm(), other.getSystemForm()) &&
                     JodaBeanUtils.equal(getSchedule(), other.getSchedule()) &&
                     JodaBeanUtils.equal(getMenu(), other.getMenu()) &&
                     JodaBeanUtils.equal(getExecuteOnStartup(), other.getExecuteOnStartup()) &&
@@ -483,6 +514,7 @@ public class Form extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getDb());
         hash = hash * 31 + JodaBeanUtils.hashCode(getName());
         hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getSystemForm());
         hash = hash * 31 + JodaBeanUtils.hashCode(getSchedule());
         hash = hash * 31 + JodaBeanUtils.hashCode(getMenu());
         hash = hash * 31 + JodaBeanUtils.hashCode(getExecuteOnStartup());
@@ -497,7 +529,7 @@ public class Form extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(448);
+        StringBuilder buf = new StringBuilder(480);
         buf.append("Form{");
         int len = buf.length();
         toString(buf);
@@ -513,6 +545,7 @@ public class Form extends DirectBean
         buf.append("db").append('=').append(JodaBeanUtils.toString(getDb())).append(',').append(' ');
         buf.append("name").append('=').append(JodaBeanUtils.toString(getName())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
+        buf.append("systemForm").append('=').append(JodaBeanUtils.toString(getSystemForm())).append(',').append(' ');
         buf.append("schedule").append('=').append(JodaBeanUtils.toString(getSchedule())).append(',').append(' ');
         buf.append("menu").append('=').append(JodaBeanUtils.toString(getMenu())).append(',').append(' ');
         buf.append("executeOnStartup").append('=').append(JodaBeanUtils.toString(getExecuteOnStartup())).append(',').append(' ');
@@ -554,6 +587,11 @@ public class Form extends DirectBean
          */
         private final MetaProperty<String> description = DirectMetaProperty.ofReadWrite(
                 this, "description", Form.class, String.class);
+        /**
+         * The meta-property for the {@code systemForm} property.
+         */
+        private final MetaProperty<Boolean> systemForm = DirectMetaProperty.ofReadWrite(
+                this, "systemForm", Form.class, Boolean.class);
         /**
          * The meta-property for the {@code schedule} property.
          */
@@ -609,6 +647,7 @@ public class Form extends DirectBean
                 "db",
                 "name",
                 "description",
+                "systemForm",
                 "schedule",
                 "menu",
                 "executeOnStartup",
@@ -636,6 +675,8 @@ public class Form extends DirectBean
                     return name;
                 case -1724546052:  // description
                     return description;
+                case 642466707:  // systemForm
+                    return systemForm;
                 case -697920873:  // schedule
                     return schedule;
                 case 3347807:  // menu
@@ -704,6 +745,14 @@ public class Form extends DirectBean
          */
         public final MetaProperty<String> description() {
             return description;
+        }
+
+        /**
+         * The meta-property for the {@code systemForm} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Boolean> systemForm() {
+            return systemForm;
         }
 
         /**
@@ -790,6 +839,8 @@ public class Form extends DirectBean
                     return ((Form) bean).getName();
                 case -1724546052:  // description
                     return ((Form) bean).getDescription();
+                case 642466707:  // systemForm
+                    return ((Form) bean).getSystemForm();
                 case -697920873:  // schedule
                     return ((Form) bean).getSchedule();
                 case 3347807:  // menu
@@ -827,6 +878,9 @@ public class Form extends DirectBean
                     return;
                 case -1724546052:  // description
                     ((Form) bean).setDescription((String) newValue);
+                    return;
+                case 642466707:  // systemForm
+                    ((Form) bean).setSystemForm((Boolean) newValue);
                     return;
                 case -697920873:  // schedule
                     ((Form) bean).setSchedule((String) newValue);

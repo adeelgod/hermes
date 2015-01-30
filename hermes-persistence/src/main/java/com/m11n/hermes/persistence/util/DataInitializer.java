@@ -35,6 +35,7 @@ public class DataInitializer {
             form.setDb("auswertung");
             form.setName("orders");
             form.setDescription("Orders");
+            form.setSystemForm(true);
             form.setPosition(1);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("orders.sql")));
             form.setPrintable(true);
@@ -69,6 +70,7 @@ public class DataInitializer {
             form.setDb("auswertung");
             form.setName("update");
             form.setDescription("Synchronisation");
+            form.setSystemForm(true);
             form.setPosition(2);
             form.setExecuteOnStartup(true);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("update.sql")));
@@ -84,6 +86,7 @@ public class DataInitializer {
             form.setDb("auswertung");
             form.setName("shipping");
             form.setDescription("Shipping");
+            form.setSystemForm(true);
             form.setPosition(3);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("shipping.sql")));
             form.setPrintable(true);
@@ -129,6 +132,7 @@ public class DataInitializer {
             form.setDb("auswertung");
             form.setName("bank");
             form.setDescription("Bank Zahlungen (normal)");
+            form.setSystemForm(true);
             form.setPosition(4);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank.sql")));
             form.setPrintable(false);
@@ -152,6 +156,7 @@ public class DataInitializer {
             form.setDb("auswertung");
             form.setName("bank_advanced");
             form.setDescription("Bank Zahlungen (advanced)");
+            form.setSystemForm(true);
             form.setPosition(4);
             form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank_advanced.sql")));
             form.setPrintable(false);
@@ -168,6 +173,30 @@ public class DataInitializer {
             fields.add(new FormField("orderId", FormField.Type.TEXT.name(), 4, "%", "Order ID", true, false));
             fields.add(new FormField("firstname", FormField.Type.TEXT.name(), 5, "%", "Firstname", true, false));
             fields.add(new FormField("lastname", FormField.Type.TEXT.name(), 6, "%", "Lastname", true, false));
+
+            form.setFields(fields);
+
+            formRepository.save(form);
+        }
+
+
+        // bank match
+        form = formRepository.findByName("bank_match");
+        if(form==null) {
+            form = new Form();
+            form.setDb("auswertung");
+            form.setName("bank_match");
+            form.setDescription("Bank Zahlungen (Bestellungen)");
+            form.setSystemForm(true);
+            form.setPosition(5);
+            form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank_statement_match.sql")));
+            form.setPrintable(false);
+            form.setAccessPublic(false);
+            form = formRepository.save(form);
+
+            List<FormField> fields = new ArrayList<>();
+            // parameters
+            fields.add(new FormField("uuid", FormField.Type.TEXT.name(), 1, "%", "Bank Statement ID", true, false));
 
             form.setFields(fields);
 

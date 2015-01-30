@@ -2,11 +2,13 @@ package com.m11n.hermes.service.bank;
 
 import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.model.BankStatementPattern;
+import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.core.service.MagentoService;
 import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.BankStatementPatternRepository;
 import com.m11n.hermes.persistence.BankStatementRepository;
+import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.similarity.StringSimilarityService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -49,6 +51,9 @@ public class DefaultBankService implements BankService {
     @Inject
     private MagentoService magentoService;
 
+    @Inject
+    private FormRepository formRepository;
+
     private Set<BankStatementPattern> patterns = new HashSet<>();
 
     private final static BigDecimal MATCH_THRESHOLD_0 = new BigDecimal(0.0d);
@@ -67,6 +72,8 @@ public class DefaultBankService implements BankService {
     @Value("${hermes.bank.statement.auto.assignment.threshold:90}")
     private int autoAssignmentThreshold = 90;
 
+    private Form bankStatementMatchForm;
+
     @PostConstruct
     public void init() {
         reload();
@@ -82,6 +89,7 @@ public class DefaultBankService implements BankService {
 
             patterns.add(bsp);
         }
+        bankStatementMatchForm = formRepository.findByName("bank_match");
     }
 
     public BankStatement save(BankStatement bs) {
@@ -103,7 +111,7 @@ public class DefaultBankService implements BankService {
     }
 
     private BankStatement extractFromMatch(BankStatement bs) {
-        List<Map<String, Object>> orders = auswertungRepository.findBankStatementOrderByMatch(bs.getId(), lookupPeriod);
+        List<Map<String, Object>> orders = match(bs.getId());
 
         if(orders!=null && !orders.isEmpty()) {
             Map<String, Object> order = orders.get(0); // NOTE: best match
@@ -192,7 +200,10 @@ public class DefaultBankService implements BankService {
     }
 
     public List<Map<String, Object>> match(String uuid) {
-        return auswertungRepository.findBankStatementOrderByMatch(uuid, lookupPeriod);
+        String sql = bankStatementMatchForm.getSqlStatement().replaceAll(":uuid", "\"" + uuid + "\"").replaceAll(":lookup", lookupPeriod + "");
+
+        //return auswertungRepository.findBankStatementOrderByMatch(uuid, lookupPeriod);
+        return auswertungRepository.query(sql, Collections.<String, Object>emptyMap(), new AuswertungRepository.DefaultMapper());
     }
 
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {

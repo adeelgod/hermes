@@ -4,7 +4,7 @@ SELECT
 FROM
   hermes_bank_statement b, mage_custom_order a
 WHERE
-  b.uuid = :uuid
+  b.uuid LIKE :uuid
   AND
   (
     b.description LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci

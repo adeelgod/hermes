@@ -19,6 +19,7 @@ block content
                         td Description
                         td Printable
                         td Public
+                        td System
                         td
                         td
                 tbody
@@ -29,6 +30,8 @@ block content
                             i.fa(ng-class="{'fa-print': form.printable, 'fa-minus': !form.printable}")
                         td
                             i.fa(ng-class="{'fa-unlock': form.accessPublic, 'fa-lock': !form.accessPublic}")
+                        td
+                            i.fa(ng-class="{'fa-exclamation-circle': form.systemForm}")
                         td
                             .btn-group.btn-group-sm
                                 button.btn.btn-primary(type='button', ui-sref='form_execute({id: form.id})')
