@@ -204,9 +204,13 @@ public class DefaultBankService implements BankService {
     }
 
     public BankStatement assign(BankStatement bs) {
-        // TODO: invoke webservices
+        if(bs.getMatching().doubleValue() > autoAssignmentThreshold) {
+            // TODO: invoke webservices
+        }
         bs.setStatus("confirmed");
         bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
+        // TODO: assign orders
+        //auswertungRepository.assignBankstatementOrders(bs.getId(), bs.getOrderIds());
         return bs;
     }
 
@@ -220,6 +224,8 @@ public class DefaultBankService implements BankService {
         // TODO: anything else to process here?
         bs.setStatus("new");
         bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
+        // TODO: unassign orders
+        //auswertungRepository.unassignBankstatementOrders(bs.getId());
         return bs;
     }
 }

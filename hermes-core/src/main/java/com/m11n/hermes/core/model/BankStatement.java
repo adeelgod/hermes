@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import org.joda.beans.Bean;
 import org.joda.beans.BeanBuilder;
@@ -50,6 +51,16 @@ public class BankStatement extends DirectBean
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "order_id")
     private String orderId;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Transient
+    private List<String> orderIds;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Transient
+    private Boolean skipWebservice;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -223,6 +234,56 @@ public class BankStatement extends DirectBean
      */
     public final Property<String> orderId() {
         return metaBean().orderId().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the orderIds.
+     * @return the value of the property
+     */
+    public List<String> getOrderIds() {
+        return orderIds;
+    }
+
+    /**
+     * Sets the orderIds.
+     * @param orderIds  the new value of the property
+     */
+    public void setOrderIds(List<String> orderIds) {
+        this.orderIds = orderIds;
+    }
+
+    /**
+     * Gets the the {@code orderIds} property.
+     * @return the property, not null
+     */
+    public final Property<List<String>> orderIds() {
+        return metaBean().orderIds().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the skipWebservice.
+     * @return the value of the property
+     */
+    public Boolean getSkipWebservice() {
+        return skipWebservice;
+    }
+
+    /**
+     * Sets the skipWebservice.
+     * @param skipWebservice  the new value of the property
+     */
+    public void setSkipWebservice(Boolean skipWebservice) {
+        this.skipWebservice = skipWebservice;
+    }
+
+    /**
+     * Gets the the {@code skipWebservice} property.
+     * @return the property, not null
+     */
+    public final Property<Boolean> skipWebservice() {
+        return metaBean().skipWebservice().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -641,6 +702,8 @@ public class BankStatement extends DirectBean
             return JodaBeanUtils.equal(getId(), other.getId()) &&
                     JodaBeanUtils.equal(getHash(), other.getHash()) &&
                     JodaBeanUtils.equal(getOrderId(), other.getOrderId()) &&
+                    JodaBeanUtils.equal(getOrderIds(), other.getOrderIds()) &&
+                    JodaBeanUtils.equal(getSkipWebservice(), other.getSkipWebservice()) &&
                     JodaBeanUtils.equal(getInvoiceId(), other.getInvoiceId()) &&
                     JodaBeanUtils.equal(getClientId(), other.getClientId()) &&
                     JodaBeanUtils.equal(getFirstname(), other.getFirstname()) &&
@@ -667,6 +730,8 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getHash());
         hash = hash * 31 + JodaBeanUtils.hashCode(getOrderId());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getOrderIds());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getSkipWebservice());
         hash = hash * 31 + JodaBeanUtils.hashCode(getInvoiceId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getClientId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getFirstname());
@@ -688,7 +753,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(640);
+        StringBuilder buf = new StringBuilder(704);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -703,6 +768,8 @@ public class BankStatement extends DirectBean
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("hash").append('=').append(JodaBeanUtils.toString(getHash())).append(',').append(' ');
         buf.append("orderId").append('=').append(JodaBeanUtils.toString(getOrderId())).append(',').append(' ');
+        buf.append("orderIds").append('=').append(JodaBeanUtils.toString(getOrderIds())).append(',').append(' ');
+        buf.append("skipWebservice").append('=').append(JodaBeanUtils.toString(getSkipWebservice())).append(',').append(' ');
         buf.append("invoiceId").append('=').append(JodaBeanUtils.toString(getInvoiceId())).append(',').append(' ');
         buf.append("clientId").append('=').append(JodaBeanUtils.toString(getClientId())).append(',').append(' ');
         buf.append("firstname").append('=').append(JodaBeanUtils.toString(getFirstname())).append(',').append(' ');
@@ -746,6 +813,17 @@ public class BankStatement extends DirectBean
          */
         private final MetaProperty<String> orderId = DirectMetaProperty.ofReadWrite(
                 this, "orderId", BankStatement.class, String.class);
+        /**
+         * The meta-property for the {@code orderIds} property.
+         */
+        @SuppressWarnings({"unchecked", "rawtypes" })
+        private final MetaProperty<List<String>> orderIds = DirectMetaProperty.ofReadWrite(
+                this, "orderIds", BankStatement.class, (Class) List.class);
+        /**
+         * The meta-property for the {@code skipWebservice} property.
+         */
+        private final MetaProperty<Boolean> skipWebservice = DirectMetaProperty.ofReadWrite(
+                this, "skipWebservice", BankStatement.class, Boolean.class);
         /**
          * The meta-property for the {@code invoiceId} property.
          */
@@ -834,6 +912,8 @@ public class BankStatement extends DirectBean
                 "id",
                 "hash",
                 "orderId",
+                "orderIds",
+                "skipWebservice",
                 "invoiceId",
                 "clientId",
                 "firstname",
@@ -866,6 +946,10 @@ public class BankStatement extends DirectBean
                     return hash;
                 case -1207110391:  // orderId
                     return orderId;
+                case 1234283658:  // orderIds
+                    return orderIds;
+                case 834438080:  // skipWebservice
+                    return skipWebservice;
                 case -1739442904:  // invoiceId
                     return invoiceId;
                 case 908408390:  // clientId
@@ -940,6 +1024,22 @@ public class BankStatement extends DirectBean
          */
         public final MetaProperty<String> orderId() {
             return orderId;
+        }
+
+        /**
+         * The meta-property for the {@code orderIds} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<List<String>> orderIds() {
+            return orderIds;
+        }
+
+        /**
+         * The meta-property for the {@code skipWebservice} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Boolean> skipWebservice() {
+            return skipWebservice;
         }
 
         /**
@@ -1080,6 +1180,10 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getHash();
                 case -1207110391:  // orderId
                     return ((BankStatement) bean).getOrderId();
+                case 1234283658:  // orderIds
+                    return ((BankStatement) bean).getOrderIds();
+                case 834438080:  // skipWebservice
+                    return ((BankStatement) bean).getSkipWebservice();
                 case -1739442904:  // invoiceId
                     return ((BankStatement) bean).getInvoiceId();
                 case 908408390:  // clientId
@@ -1116,6 +1220,7 @@ public class BankStatement extends DirectBean
             return super.propertyGet(bean, propertyName, quiet);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void propertySet(Bean bean, String propertyName, Object newValue, boolean quiet) {
             switch (propertyName.hashCode()) {
@@ -1127,6 +1232,12 @@ public class BankStatement extends DirectBean
                     return;
                 case -1207110391:  // orderId
                     ((BankStatement) bean).setOrderId((String) newValue);
+                    return;
+                case 1234283658:  // orderIds
+                    ((BankStatement) bean).setOrderIds((List<String>) newValue);
+                    return;
+                case 834438080:  // skipWebservice
+                    ((BankStatement) bean).setSkipWebservice((Boolean) newValue);
                     return;
                 case -1739442904:  // invoiceId
                     ((BankStatement) bean).setInvoiceId((String) newValue);

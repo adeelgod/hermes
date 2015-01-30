@@ -164,6 +164,19 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         return Collections.emptyList();
     }
 
+    public void assignBankstatementOrders(String uuid, List<String> orderIds) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("uuid", uuid);
+        params.put("orderIds", orderIds);
+        // TODO: test this, column still missing
+        jdbcTemplate.update("UPDATE mage_custom_order SET bank_statement_id = :uuid WHERE Bestellung IN (:orderIds)", params);
+    }
+
+    public void unassignBankstatementOrders(String uuid) {
+        // TODO: test this, column still missing
+        jdbcTemplate.update("UPDATE mage_custom_order SET bank_statement_id = NULL WHERE bank_statement_id = :uuid", Collections.singletonMap("uuid", uuid));
+    }
+
     public static class DefaultMapper extends BaseRowMapper {
         @Override
         public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {

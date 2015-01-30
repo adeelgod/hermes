@@ -116,7 +116,9 @@ block content
                         td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
                         td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                         td.text-right {{currentBankStatement.ebayName}}
-                        td.text-center {{currentBankStatement.orderId}}
+                        td.text-center
+                            | {{currentBankStatement.orderId}}
+                            span(ng-show='currentBankStatement.orderIds.length > 0') ({{currentBankStatement.orderIds}})
                         td.text-center {{currentBankStatement.matching * 100}} &nbsp;%
                         td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
                             .btn-group.btn-group-sm(ng-show='bankStatements')

@@ -65,12 +65,23 @@
         $scope.selectOrder = function(entry) {
             entry._selected = !entry._selected;
 
-            // TODO: actually the relationship should land in mage_custom_order
             if(entry._selected) {
-                $scope.currentBankStatement.orderId = entry.orderId;
+                $scope.currentBankStatement.orderId = entry.orderId; // TODO: actually the relationship should land in mage_custom_order
                 $scope.currentBankStatement.firstname = entry.firstname;
                 $scope.currentBankStatement.lastname = entry.lastname;
                 $scope.currentBankStatement.ebayName = entry.ebayName;
+                if(!$scope.currentBankStatement.orderIds) {
+                    $scope.currentBankStatement.orderIds = [];
+                }
+                $scope.currentBankStatement.orderIds.push(entry.orderId);
+            } else {
+                if($scope.currentBankStatement.orderIds) {
+                    for(var i=0; i<$scope.currentBankStatement.orderIds.length; i++) {
+                        if($scope.currentBankStatement.orderIds[i]===entry.orderId) {
+                            $scope.currentBankStatement.orderIds.splice(i, 1);
+                        }
+                    }
+                }
             }
         };
 
