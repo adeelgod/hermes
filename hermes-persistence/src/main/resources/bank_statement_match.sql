@@ -16,7 +16,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
 
 UNION
 
@@ -38,7 +38,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
 
 UNION
 
@@ -60,7 +60,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
 
 UNION
 
@@ -76,7 +76,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
 
 UNION
 
@@ -96,7 +96,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
 
 UNION
 
@@ -112,7 +112,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
 
 UNION
 
@@ -128,7 +128,7 @@ WHERE
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
-  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
   /**
   AND
   (
