@@ -87,6 +87,16 @@ public class QueryToFieldsUtil {
             case Types.TIME:
             case Types.TIMESTAMP:
                 return FormField.Type.DATETIME;
+            case Types.NUMERIC:
+            case Types.INTEGER:
+            case Types.BIGINT:
+            case Types.DECIMAL:
+            case Types.DOUBLE:
+            case Types.FLOAT:
+            case Types.SMALLINT:
+            case Types.TINYINT:
+            case Types.REAL:
+                return FormField.Type.NUMBER;
             default:
                 return FormField.Type.TEXT;
         }

@@ -197,7 +197,7 @@ public class DataInitializer {
             List<FormField> fields = new ArrayList<>();
             // parameters
             fields.add(new FormField("uuid", FormField.Type.TEXT.name(), 1, "%", "Bank Statement ID", true, false));
-            fields.add(new FormField("lookup", FormField.Type.TEXT.name(), 2, "6", "Lookup period (in months)", true, false));
+            fields.add(new FormField("lookup", FormField.Type.NUMBER.name(), 2, "6", "Lookup period (in months)", true, false));
 
             form.setFields(fields);
 

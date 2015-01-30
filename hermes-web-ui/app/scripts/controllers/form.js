@@ -24,6 +24,7 @@
             {'name': 'Date', 'code': 'DATE'},
             {'name': 'Datetime', 'code': 'DATETIME'},
             {'name': 'Text', 'code': 'TEXT'},
+            {'name': 'Text', 'code': 'NUMBER'},
             {'name': 'Boolean', 'code': 'BOOLEAN'}
         ];
 
@@ -35,6 +36,7 @@
         };
 
         $scope.refresh = function() {
+            // NOTE: trick, more details here http://stackoverflow.com/questions/22333953/how-to-refresh-codemirror-with-ui-codemirror-and-angularjs
             $scope.refreshCodemirror = true;
             $timeout(function () {
                 $scope.refreshCodemirror = false;
