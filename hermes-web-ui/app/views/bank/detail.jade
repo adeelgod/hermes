@@ -75,11 +75,11 @@ block content
                 button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
                     i.fa.fa-search
         .col-md-4(style='padding: 0')
-            .btn-group.pull-right
+            .btn-group.pull-right(ng-show='bankStatements.length > 0')
                 button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
                     i.fa.fa-chevron-left
-                button.btn.btn-default(type='button', disabled='true')
-                    | # {{bankStatements.length}}
+                button.btn.btn-default(type='button', disabled='true', style='width: 100px')
+                    | # {{currentBankStatementIndex+1}} of {{bankStatements.length}}
                 button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
                     i.fa.fa-chevron-right
     .row(ng-hide='loading')
@@ -101,7 +101,7 @@ block content
                         td.text-center
                             h4 Order
                         td.text-center
-                            h4 Match %
+                            h4 Match
                         td
                 tbody
                     tr
