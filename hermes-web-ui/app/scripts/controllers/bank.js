@@ -64,11 +64,14 @@
 
         $scope.selectOrder = function(entry) {
             entry._selected = !entry._selected;
-            /**
-             angular.forEach($scope.orders, function(order) {
-            order._selected = (entry.orderId===order.orderId);
-        });
-             */
+
+            // TODO: actually the relationship should land in mage_custom_order
+            if(entry._selected) {
+                $scope.currentBankStatement.orderId = entry.orderId;
+                $scope.currentBankStatement.firstname = entry.firstname;
+                $scope.currentBankStatement.lastname = entry.lastname;
+                $scope.currentBankStatement.ebayName = entry.ebayName;
+            }
         };
 
         $scope.edit = function(index) {
