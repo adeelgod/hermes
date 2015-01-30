@@ -32,7 +32,7 @@ import java.util.Map;
 public class FormField extends DirectBean
 {
     public static enum Type {
-        TEXT, NUMBER, BOOLEAN, DATE, TIME, DATETIME
+        TEXT, NUMBER, BOOLEAN, DATE, TIME, DATETIME, INTEGER
     }
 
     @PropertyDefinition
