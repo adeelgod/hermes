@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 
 @Service
 @DependsOn("dataInitializer")
+@Transactional
 public class DefaultBankService implements BankService {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultBankService.class);
@@ -90,15 +92,10 @@ public class DefaultBankService implements BankService {
             bs = extractFromDescription(bs);
         }
 
-        logger.debug("Matching: {}", bs.getMatching());
-
         return bs;
     }
 
     private BankStatement extractFromMatch(BankStatement bs) {
-        logger.debug("Matching (count): {}", bankStatementRepository.count());
-        logger.debug("Matching (count): {}", bankStatementRepository.findOne(bs.getId()));
-
         List<Map<String, Object>> orders = auswertungRepository.findBankStatementOrderByMatch(bs.getId());
 
         if(orders!=null && !orders.isEmpty()) {
@@ -112,28 +109,6 @@ public class DefaultBankService implements BankService {
 
                 bs.property(key).set(value);
             }
-
-            logger.debug("Matching (extract): {}", bs);
-
-            if(orders.size()>1) {
-                int weight = orders.size();
-                int count = 0;
-
-                double matching = 0.0;
-
-                for(Map<String, Object> o : orders) {
-                    matching = matching + ( (Double)o.get("matching") * weight);
-
-                    count += weight;
-                    weight--;
-                }
-
-                bs.setMatching(new BigDecimal(matching).divide(new BigDecimal(count)).setScale(2, BigDecimal.ROUND_HALF_EVEN));
-
-                logger.debug("Matching (weighted): {}", bs.getMatching());
-            }
-        } else {
-            logger.debug("Matching (not found): {}", bs.getId());
         }
 
         return bs;
