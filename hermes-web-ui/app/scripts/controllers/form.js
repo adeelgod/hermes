@@ -7,7 +7,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('FormCtrl', function ($rootScope, $scope, $stateParams, $alert, FormSvc) {
+    module.controller('FormCtrl', function ($rootScope, $scope, $stateParams, $alert, $timeout, FormSvc) {
         $scope.forms = [];
         $scope.field = {};
         $scope.lookup = '';
@@ -31,12 +31,14 @@
             lineNumbers: true,
             indentWithTabs: false,
             theme: 'twilight',
-            onLoad : function(_cm){
-                // HACK to have the codemirror instance in the scope...
-                $scope.modeChanged = function() {
-                    _cm.setOption("mode", $scope.mode.toLowerCase());
-                };
-            }
+            mode: 'sql'
+        };
+
+        $scope.refresh = function() {
+            $scope.refreshCodemirror = true;
+            $timeout(function () {
+                $scope.refreshCodemirror = false;
+            }, 100);
         };
 
         $scope.list = function() {
@@ -138,6 +140,7 @@
             angular.forEach($scope.forms, function(form) {
                 if(form.id===$stateParams.id) {
                     $scope.form = form;
+                    $scope.refresh();
                 }
             });
         });

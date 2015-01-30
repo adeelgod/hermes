@@ -13,6 +13,7 @@
     "angular-ui-codemirror": "~0.2.2",
     "angular-strap": "~2.1.6",
     "angular-audio": "~1.4.1",
+    "codemirror": "~4.12",
     "bootstrap": "~3.3.2",
     "bootstrap-additions": "~0.2.3",
     "font-awesome": "~4.3.0",
@@ -29,6 +30,7 @@
     "angular-scenario": "~1.3.11"
   },
   "resolutions": {
+    "codemirror": "~4.12",
     "angular": "~1.3.11"
   }
 }
