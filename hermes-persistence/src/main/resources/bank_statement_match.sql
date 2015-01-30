@@ -1,4 +1,4 @@
--- all
+-- order, name
 SELECT
   CAST(a.Bestellung as CHAR) as orderId, a.GesamtPreis_der_Bestellung_Brutto as amount, a.Datum_Kauf as orderDate, a.typ as type, a.Status as status, a.Kunden_ebay_name as ebayName, a.Kunden_vorname as firstname, a.Kunden_name as lastname, 1.0 as matching
 FROM
@@ -58,9 +58,31 @@ WHERE
 
 UNION
 
--- ebay
+-- name, ebay
 SELECT
   CAST(a.Bestellung as CHAR) as orderId, a.GesamtPreis_der_Bestellung_Brutto as amount, a.Datum_Kauf as orderDate, a.typ as type, a.Status as status, a.Kunden_ebay_name as ebayName, a.Kunden_vorname as firstname, a.Kunden_name as lastname, 0.96 as matching
+FROM
+  hermes_bank_statement b, mage_custom_order a
+WHERE
+  b.uuid = :uuid
+  AND
+  (
+    b.description LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
+    OR
+    b.description LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
+  )
+  AND
+  LOWER(b.description) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
+  AND
+  a.GesamtPreis_der_Bestellung_Brutto = b.amount
+  AND
+  a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL 2 MONTH)
+
+UNION
+
+-- ebay
+SELECT
+  CAST(a.Bestellung as CHAR) as orderId, a.GesamtPreis_der_Bestellung_Brutto as amount, a.Datum_Kauf as orderDate, a.typ as type, a.Status as status, a.Kunden_ebay_name as ebayName, a.Kunden_vorname as firstname, a.Kunden_name as lastname, 0.95 as matching
 FROM
   hermes_bank_statement b, mage_custom_order a
 WHERE
