@@ -204,8 +204,6 @@ public class DefaultBankService implements BankService {
         params.put("uuid", uuid);
         params.put("lookup", lookupPeriod);
 
-        //String sql = bankStatementMatchForm.getSqlStatement().replaceAll(":uuid", "\"" + uuid + "\"").replaceAll(":lookup", lookupPeriod + "");
-
         return auswertungRepository.query(bankStatementMatchForm.getSqlStatement(), params, new AuswertungRepository.DefaultMapper());
     }
 
