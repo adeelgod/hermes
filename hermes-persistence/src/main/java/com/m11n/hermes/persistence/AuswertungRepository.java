@@ -60,6 +60,13 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         jdbcTemplate.update("DELETE FROM mage_custom_shipments_DHL_status where tracking_no = :code", Collections.singletonMap("code", code));
     }
 
+    public void updateOrderLastStatus(String code, String status) {
+        Map<String, String> params = new HashMap<>();
+        params.put("code", code);
+        params.put("status", status);
+        jdbcTemplate.update("UPDATE mage_custom_shipments SET last_status = :status, Daytime_last_status_change = NOW() WHERE tracking_no = :code", params);
+    }
+
     public void createDhlStatus(String code, Date date, String status) {
         jdbcTemplate.update("INSERT  INTO mage_custom_shipments_DHL_status (tracking_no, Status_time, Status) VALUES ( :code, :date_status, :status )", new MapSqlParameterSource().addValue(
                 "date_status",

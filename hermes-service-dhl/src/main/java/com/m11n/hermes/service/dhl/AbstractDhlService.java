@@ -13,12 +13,15 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,6 +40,8 @@ public abstract class AbstractDhlService implements DhlService {
 
     protected String encoding = "UTF-8";
 
+    protected Map<String, String> statusMapping = new HashMap<>();
+
     protected ExecutorService executor = Executors.newFixedThreadPool(1);
 
     protected AtomicInteger running = new AtomicInteger(0);
@@ -45,6 +50,21 @@ public abstract class AbstractDhlService implements DhlService {
         JaxbAnnotationModule module = new JaxbAnnotationModule();
         mapper = new XmlMapper();
         mapper.registerModule(module);
+
+        loadStatusMappings();
+    }
+
+    private void loadStatusMappings() {
+        try {
+            List<String> lines = IOUtils.readLines(AbstractDhlService.class.getClassLoader().getResourceAsStream("status.csv"));
+
+            for(String line : lines) {
+                String[] pair = line.split("\\|");
+                statusMapping.put(pair[0].toLowerCase(), pair[1]);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected String get(String url, DhlRequest r) {
@@ -122,11 +142,9 @@ public abstract class AbstractDhlService implements DhlService {
 
                         DhlTrackingStatus status = getTrackingStatus(code);
 
-                        if(auswertungRepository.countDhlStatus(code)>0) {
-                            auswertungRepository.updateDhlStatus(code, status.getDate(), status.getMessage());
-                        } else {
-                            auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
-                        }
+                        auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
+                        auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
+                        logger.debug("########### Status: {} = {}", code, getStatus(status.getMessage()));
                     }
                 } catch (Throwable e) {
                     logger.error(e.toString(), e);
@@ -135,5 +153,17 @@ public abstract class AbstractDhlService implements DhlService {
                 }
             }
         });
+    }
+
+    private String getStatus(String message) {
+        for(Map.Entry<String, String> entry : statusMapping.entrySet()) {
+            if(message.toLowerCase().startsWith(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+
+        logger.error("Status not found for message: {}", message);
+
+        return "fehler";
     }
 }
