@@ -16,7 +16,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +113,8 @@ public class ConfigurationResource {
             p.setProperty(key, value);
         }
 
-        p.store(new FileOutputStream("hermes.properties"), "Hermes");
+        //p.store(new FileOutputStream("hermes.properties"), "Hermes");
+        PropertiesUtil.save(p);
 
         return Response.ok().build();
     }

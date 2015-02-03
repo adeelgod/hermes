@@ -15,8 +15,10 @@
         <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>
-                <value>file:../hermes-test/src/main/resources/hermes.properties</value>
                 <value>file:./hermes.properties</value>
+                <value>file:./common.properties</value>
+                <value>file:../hermes-test/src/main/resources/hermes.properties</value>
+                <value>file:../hermes-test/src/main/resources/common.properties</value>
             </list>
         </property>
         <property name="order" value="-1"/>
