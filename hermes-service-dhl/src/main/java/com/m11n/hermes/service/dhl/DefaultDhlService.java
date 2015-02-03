@@ -148,10 +148,12 @@ public class DefaultDhlService extends AbstractDhlService {
         super.checkTracking();
     }
 
+    /**
     @Scheduled(cron = "${hermes.dhl.test.cron}")
     public void testScheduler() {
         logger.debug("----- Scheduler: {}", new Date());
     }
+    */
 
     private DhlRequest createRequest(String name) {
         DhlRequest request = new DhlRequest(name);

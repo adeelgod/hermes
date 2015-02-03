@@ -144,7 +144,6 @@ public abstract class AbstractDhlService implements DhlService {
 
                         auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
                         auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
-                        logger.debug("########### Status: {} = {}", code, getStatus(status.getMessage()));
                     }
                 } catch (Throwable e) {
                     logger.error(e.toString(), e);
