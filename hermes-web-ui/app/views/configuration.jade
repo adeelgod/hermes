@@ -136,6 +136,55 @@ block content
                             label(for='', ng-hide="configuration['hibernate.dhl.api.production']") Sandbox
                         hr
                         .alert.alert-info(role='alert')
+                            p Some examples for cron expressions.
+                                a.btn.btn-link(href='', ng-click='trackingCronExamples=!trackingCronExamples')
+                                    span(ng-hide='trackingCronExamples') Show
+                                    span(ng-show='trackingCronExamples') Hide
+                            table.table.table-condensed(ng-show='trackingCronExamples', class='am-fade')
+                                thead
+                                    tr
+                                        td
+                                            h4 Example
+                                        td
+                                            h4 Description
+                                tbody
+                                    tr
+                                        td
+                                            b 0 0 12 * * ?
+                                        td Fire at 12pm (noon) every day
+                                    tr
+                                        td
+                                            b 0 15 10 ? * *
+                                        td Fire at 10:15am every day
+                                    tr
+                                        td
+                                            b 0 15 10 * * ?
+                                        td Fire at 10:15am every day
+                                    tr
+                                        td
+                                            b 0 15 10 * * ? *
+                                        td Fire at 10:15am every day
+                                    tr
+                                        td
+                                            b 0 15 10 * * ? 2005
+                                        td Fire at 10:15am every day during the year 2005
+                                    tr
+                                        td
+                                            b 0 0/5 14,18 * * ?
+                                        td Fire every 5 minutes starting at 2pm and ending at 2:55pm, AND fire every 5 minutes starting at 6pm and ending at 6:55pm, every day
+                                    tr
+                                        td
+                                            b 0 15 10 ? * MON-FRI
+                                        td Fire at 10:15am every Monday, Tuesday, Wednesday, Thursday and Friday
+                                    tr
+                                        td
+                                            b 0 15 10 ? * 6L 2002-2005
+                                        td Fire at 10:15am on every last friday of every month during the years 2002, 2003, 2004 and 2005
+                        .form-group
+                            label(for='dhlTrackingCron') Cron Expression
+                            input.form-control(name='dhlTrackingCron', ng-model="configuration['hermes.dhl.tracking.cron']", placeholder='Cron Expression', type='text')
+                        hr
+                        .alert.alert-info(role='alert')
                             p Reminder: status patterns are defined as regular expressions.
                                 a.btn.btn-link(href='', ng-click='intrashipRegexExamples=!intrashipRegexExamples')
                                     span(ng-hide='intrashipRegexExamples') Show Examples

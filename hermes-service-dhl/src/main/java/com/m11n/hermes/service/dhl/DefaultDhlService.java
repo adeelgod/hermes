@@ -9,12 +9,14 @@ import org.apache.axis.message.SOAPHeaderElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.Date;
 
 @Service
 public class DefaultDhlService extends AbstractDhlService {
@@ -138,6 +140,17 @@ public class DefaultDhlService extends AbstractDhlService {
         logger.debug(response);
 
         return status;
+    }
+
+
+    @Scheduled(cron = "${hermes.dhl.tracking.cron}")
+    public void checkTracking() {
+        super.checkTracking();
+    }
+
+    @Scheduled(cron = "${hermes.dhl.test.cron}")
+    public void testScheduler() {
+        logger.debug("----- Scheduler: {}", new Date());
     }
 
     private DhlRequest createRequest(String name) {
