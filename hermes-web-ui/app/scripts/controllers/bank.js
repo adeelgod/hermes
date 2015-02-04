@@ -18,6 +18,25 @@
 
         var editModal = $modal({scope: $scope, template: 'views/bank/edit.tpl.html', show: false});
 
+        $scope.selectStep = function(step) {
+            $scope.step = step;
+            $scope.stepTemplate = 'views/bank/' + step + '/detail.html';
+
+            if(step==='step1') {
+                $scope.params.status = 'new';
+                $scope.params.matching_start = 0.9;
+                $scope.params.matching_end = 1;
+                //$alert({content: 'Load step1 bank statements...', placement: 'top', type: 'warn', show: true, duration: 2});
+            } else {
+                $scope.params.status = 'new';
+                $scope.params.matching_start = 0;
+                $scope.params.matching_end = 0.89;
+                //$alert({content: 'Load step2 bank statements...', placement: 'top', type: 'warn', show: true, duration: 2});
+            }
+
+            $scope.query();
+        };
+
         $scope.getForm = function() {
             $scope.loading = true;
             FormSvc.get($scope.formName).success(function(data) {
@@ -48,7 +67,9 @@
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
-                    $scope.filter();
+                    if($scope.step==='step1') {
+                        $scope.filter();
+                    }
                 }
             }).error(function(data) {
                 $scope.busy = false;
@@ -199,5 +220,6 @@
         };
 
         $scope.getForm();
+        $scope.selectStep('step1');
     });
 })();

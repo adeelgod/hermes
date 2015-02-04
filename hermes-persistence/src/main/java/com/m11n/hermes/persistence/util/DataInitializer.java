@@ -142,6 +142,8 @@ public class DataInitializer {
             List<FormField> fields = new ArrayList<>();
             // parameters
             fields.add(new FormField("status", FormField.Type.TEXT.name(), 1, "new", "Status", true, false));
+            fields.add(new FormField("matching_start", FormField.Type.NUMBER.name(), 1, "0", "Matching range start", true, false));
+            fields.add(new FormField("matching_end", FormField.Type.NUMBER.name(), 2, "1", "Matching range end", true, false));
 
             form.setFields(fields);
 

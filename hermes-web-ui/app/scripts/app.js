@@ -52,6 +52,16 @@
                 templateUrl: 'views/bank/detail.html',
                 controller: 'BankCtrl'
             })
+            .state('bank_step1', {
+                abstract: false,
+                url: '/bank_step1',
+                templateUrl: 'views/bank/step1/detail.html'
+            })
+            .state('bank_step2', {
+                abstract: false,
+                url: '/bank_step2',
+                templateUrl: 'views/bank/step1/detail.html'
+            })
             .state('bank_pattern_edit', {
                 abstract: false,
                 url: '/pattern/edit/:id',

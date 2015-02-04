@@ -124,6 +124,11 @@ public class BankStatement extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "amount_order", precision = 8, scale = 2)
+    private BigDecimal amountOrder;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "amount_diff", precision = 8, scale = 2)
     private BigDecimal amountDiff;
 

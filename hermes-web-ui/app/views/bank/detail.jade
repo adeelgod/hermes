@@ -9,154 +9,29 @@ block content
         .col-md-12
             form(role='form', name='bankForm', novalidate='')
                 .form-group
-                    .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'", ng-show='advanced')
-                        label(for='{{field.name}}') {{field.description}}
-                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && (!field.lookup || field.lookup.length == 0)", placeholder='{{field.name}}', type='text')
-                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
-                        .row(ng-if="field.fieldType=='DATETIME'")
-                            .col-md-8
-                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}} date', bs-datepicker='', type='text')
-                            .col-md-4
-                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
-                        br
-                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && field.lookup.length > 0", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
-                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
-                            i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
+                    include /parts/form_search
                     .form-group
                         .row
                             .col-md-6
                                 .btn-group.btn-group-lg
-                                    button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
-                                        i.fa.fa-search
-                                        | &nbsp;
-                                        | Run
                                     button.btn.btn-default(type='button', ng-click='toggleAdvanced()', ng-disabled='busy')
                                         i.fa.fa-cogs
                                         | &nbsp;
                                         span(ng-show='advanced') Simple
                                         span(ng-hide='advanced') Advanced
                             .col-md-6
-                                //
-                                    .btn-group.btn-group-lg.pull-right(ng-show='bankStatements')
-                                        button.btn.btn-success(type='button', ng-click='assignSelected()', ng-disabled='busy')
-                                            i.fa.fa-check
-                                            | &nbsp;
-                                            | Assign
-                                        button.btn.btn-danger(type='button', ng-click='ignoreSelected()', ng-disabled='busy')
-                                            i.fa.fa-ban
-                                            | &nbsp;
-                                            | Ignore
-                                        button.btn.btn-default(type='button', ng-click='resetSelected()', ng-disabled='busy')
-                                            i.fa.fa-undo
-                                            | &nbsp;
-                                            | Reset
     .row
-        .col-md-8(style='padding-right: 0')
-            form.form-inline
-                .btn-group(ng-model='search', bs-checkbox-group='')
-                    label.btn.btn-default
-                        input(type='checkbox', value='amount')
-                        | Amnt. eq.
-                    label.btn.btn-default
-                        input(type='checkbox', value='amountDiff')
-                        | Amnt. < 1 EUR
-                    label.btn.btn-default
-                        input(type='checkbox', value='lastname')
-                        | 4 chars
-                    label.btn.btn-default
-                        input(type='checkbox', value='orderId')
-                        | Order
-                    label.btn.btn-default
-                        input(type='checkbox', value='or')
-                        span(ng-show='search.or') OR
-                        span(ng-hide='search.or') AND
-                .form-group
-                    input.form-control(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...')
-                button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
-                    i.fa.fa-search
-        .col-md-4(style='padding: 0')
-            .btn-group.pull-right(ng-show='bankStatements.length > 0')
-                button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
-                    i.fa.fa-chevron-left
-                button.btn.btn-default(type='button', disabled='true', style='width: 100px')
-                    | # {{currentBankStatementIndex+1}} of {{bankStatements.length}}
-                button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
-                    i.fa.fa-chevron-right
+        .col-md-12
+            ul.nav.nav-tabs.nav-justified
+                li(role='presentation', ng-class="{active: step=='step1'}")
+                    a(href='', ng-click="selectStep('step1')") Step 1
+                li(role='presentation', ng-class="{active: step=='step2'}")
+                    a(href='', ng-click="selectStep('step2')") Step 2
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
     .row(ng-hide='loading')
         .col-md-12
-            table.table.table-striped.table-condensed(ng-show='currentBankStatement')
-                thead
-                    tr
-                        td
-                        td.text-center
-                            h4 Date
-                        td.text-left(style='width:600px')
-                            h4 Description
-                        td.text-right
-                            h4 Amount
-                        td.text-right
-                            h4 Client
-                        td.text-center
-                            h4 Ebay
-                        td.text-center
-                            h4 Order
-                        td.text-center
-                            h4 Match
-                        td
-                tbody
-                    tr.valign
-                        td.text-center(style='padding-top:2px')
-                            .btn-group.btn-group-sm
-                                button.btn(type='button', disabled='true', ng-class="{'btn-default': currentBankStatement.status=='new', 'btn-success': currentBankStatement.status=='confirmed', 'btn-danger': currentBankStatement.status=='ignored'}")
-                                    i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
-                                    i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirmed'")
-                                    i.fa.fa-ban(ng-show="currentBankStatement.status=='ignored'")
-                        td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
-                        td.text-left(style='width:600px') {{currentBankStatement.description}}
-                        td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
-                        td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
-                        td.text-right {{currentBankStatement.ebayName}}
-                        td.text-center
-                            | {{currentBankStatement.orderId}}
-                            span(ng-show='currentBankStatement.orderIds.length > 0') ({{currentBankStatement.orderIds}})
-                        td.text-center {{currentBankStatement.matching * 100}} &nbsp;%
-                        td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
-                            .btn-group.btn-group-sm(ng-show='bankStatements')
-                                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
-                                    i.fa.fa-check
-                                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
-                                    i.fa.fa-ban
-                                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
-                                    i.fa.fa-undo
-    .row(ng-show='orders', ng-hide='loading')
-        .col-md-12
-            table.table.table-striped.table-condensed
-                thead
-                    tr
-                        td
-                        td.text-center
-                            h4 Order
-                        td.text-center
-                            h4 Type
-                        td.text-center
-                            h4 Status
-                        td.text-center
-                            h4 Date
-                        td.text-right
-                            h4 Amount
-                        td.text-center
-                            h4 Client
-                        td.text-center
-                            h4 Ebay
-                tbody.text-valign
-                    tr(ng-repeat='entry in orders', ng-class="{'success': entry._selected}")
-                        td
-                            button.btn.btn-sm.btn-default(type='button', ng-click='selectOrder(entry)')
-                                i.fa(ng-class="{'fa-circle': entry._selected, 'fa-circle-o': !entry._selected}")
-                        td.text-center {{entry.orderId}}
-                        td.text-center {{entry.type}}
-                        td.text-center {{entry.status}}
-                        td.text-center {{entry.orderDate | date:'dd.MM.yyyy'}}
-                        td.text-right {{entry.amount | currency:'':2}}&nbsp;EUR
-                        td.text-center {{entry.firstname}}&nbsp;{{entry.lastname}}
-                        td.text-right {{entry.ebayName}}
+            div(ng-include='stepTemplate')

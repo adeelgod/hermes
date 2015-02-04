@@ -1,0 +1,75 @@
+extends /layouts/_page
+block content
+    .row
+        .col-md-8(style='padding-right: 0')
+        .col-md-4(style='padding: 0')
+            .btn-group.pull-right(ng-show='bankStatements.length > 0')
+                button.btn.btn-default(type='button', disabled='true', style='width: 100px')
+                    | {{bankStatements.length}}
+    .row(ng-hide='loading')
+        .col-md-12
+            table.table.table-striped.table-condensed(ng-show='bankStatements')
+                thead
+                    tr
+                        td
+                        td.text-center
+                            h4 Date
+                        td.text-left(style='width:600px')
+                            h4 Description
+                        td.text-right
+                            h4 Amount Bank
+                        td.text-right
+                            h4 Amount Order
+                        td.text-right
+                            h4 Client
+                        td.text-center
+                            h4 Ebay
+                        td.text-center
+                            h4 Order
+                        td.text-center
+                            h4 Match
+                        td
+                    tr
+                        td
+                        td
+                        td
+                            input(type='text', ng-model='step1Filter.description')
+                        td
+                            input(type='text', ng-model='step1Filter.amount')
+                        td
+                            input(type='text', ng-model='step1Filter.amountOrder')
+                        td
+                            input(type='text', ng-model='step1Filter.name')
+                        td
+                            input(type='text', ng-model='step1Filter.ebayName')
+                        td
+                            input(type='text', ng-model='step1Filter.orderId')
+                        td
+                            input(type='text', ng-model='step1Filter.matching')
+                        td
+                tbody
+                    tr.valign(ng-repeat='entry in bankStatements')
+                        td.text-center(style='padding-top:2px')
+                            .btn-group.btn-group-sm
+                                button.btn(type='button', disabled='true', ng-class="{'btn-default': entry.status=='new', 'btn-success': entry.status=='confirmed', 'btn-danger': entry.status=='ignored'}")
+                                    i.fa.fa-exclamation-circle(ng-show="entry.status=='new'")
+                                    i.fa.fa-check-circle(ng-show="entry.status=='confirmed'")
+                                    i.fa.fa-ban(ng-show="entry.status=='ignored'")
+                        td.text-center {{entry.transferDate | date:'dd.MM.yyyy'}}
+                        td.text-left(style='width:600px') {{entry.description}}
+                        td.text-right {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}
+                        td.text-right {{entry.amountOrder | currency:'':2}}&nbsp;{{entry.currency}}
+                        td.text-center {{entry.firstname}}&nbsp;{{entry.lastname}}
+                        td.text-right {{entry.ebayName}}
+                        td.text-center
+                            | {{entry.orderId}}
+                            span(ng-show='entry.orderIds.length > 0') ({{entry.orderIds}})
+                        td.text-center {{entry.matching * 100}} &nbsp;%
+                        td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
+                            .btn-group.btn-group-sm(ng-show='bankStatements')
+                                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
+                                    i.fa.fa-ban
+                                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                                    i.fa.fa-undo
