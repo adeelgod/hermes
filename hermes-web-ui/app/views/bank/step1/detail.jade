@@ -1,8 +1,7 @@
 extends /layouts/_page
 block content
     .row
-        .col-md-4(style='padding-right: 0')
-            i.fa.fa-2x.fa-refresh.fa-spin(ng-hide='bankStatements')
+        .col-md-4
             .btn-group.btn-group-lg(ng-show='bankStatements')
                 button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
                     i.fa.fa-check
@@ -10,12 +9,12 @@ block content
                     i.fa.fa-ban
                 button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
                     i.fa.fa-undo
-        .col-md-4(style='padding-right: 0')
+            i.fa.fa-2x.fa-cog.fa-spin(ng-show='busy')
+        .col-md-4
             form.form-inline(ng-show='bankStatements')
                 .form-group
-                    label(for='filterAny') Filter Any
-                    input.form-control.input-sm(id='filterAny' type='text', ng-model='step1Filter.$')
-        .col-md-4(style='padding: 0')
+                    input.form-control.input-lg(id='filterAny' type='text', ng-model='step1Filter.$', placeholder='Filter any...')
+        .col-md-4
             .btn-group.pull-right(ng-show='bankStatements.length > 0')
                 button.btn.btn-default(type='button', disabled='true', style='width: 100px')
                     | {{bankStatements.length}}
@@ -55,9 +54,9 @@ block content
                         td.text-left
                             input.form-control.input-sm(type='text', ng-model='step1Filter.description', style='max-width: 160px')
                         td.text-right
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.amount', style='max-width: 80px')
+                            input.form-control.input-sm.pull-right(type='text', ng-model='step1Filter.amount', style='max-width: 80px')
                         td.text-right
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.amountOrder', style='max-width: 80px')
+                            input.form-control.input-sm.pull-right(type='text', ng-model='step1Filter.amountOrder', style='max-width: 80px')
                         td.text-left
                             input.form-control.input-sm(type='text', ng-model='step1Filter.name', style='max-width: 160px')
                         td.text-center

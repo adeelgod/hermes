@@ -63,7 +63,6 @@
             $scope.busy = true;
             $scope.bankStatements = null;
             FormSvc.query($scope.params).success(function(data) {
-                $scope.busy = false;
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
@@ -71,6 +70,7 @@
                         $scope.filter();
                     }
                 }
+                $scope.busy = false;
             }).error(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Query failed! Check input parameters.', placement: 'top', type: 'danger', show: true, duration: 5});
