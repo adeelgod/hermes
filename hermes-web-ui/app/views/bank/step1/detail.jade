@@ -1,7 +1,20 @@
 extends /layouts/_page
 block content
     .row
-        .col-md-8(style='padding-right: 0')
+        .col-md-4(style='padding-right: 0')
+            i.fa.fa-2x.fa-refresh.fa-spin(ng-hide='bankStatements')
+            .btn-group.btn-group-lg(ng-show='bankStatements')
+                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                    i.fa.fa-check
+                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
+                    i.fa.fa-ban
+                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                    i.fa.fa-undo
+        .col-md-4(style='padding-right: 0')
+            form.form-inline(ng-show='bankStatements')
+                .form-group
+                    label(for='filterAny') Filter Any
+                    input.form-control.input-sm(id='filterAny' type='text', ng-model='step1Filter.$')
         .col-md-4(style='padding: 0')
             .btn-group.pull-right(ng-show='bankStatements.length > 0')
                 button.btn.btn-default(type='button', disabled='true', style='width: 100px')
@@ -11,16 +24,22 @@ block content
             table.table.table-striped.table-condensed(ng-show='bankStatements')
                 thead
                     tr
+                        td(style='min-width: 100px')
+                            .btn-group.btn-group-sm
+                                button.btn.btn-default(type='button', ng-click='select(true)', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
+                                    i.fa.fa-minus
                         td
                         td.text-center
                             h4 Date
                         td.text-left(style='width:600px')
                             h4 Description
                         td.text-right
-                            h4 Amount Bank
+                            h4 Amount&nbsp;(B)
                         td.text-right
-                            h4 Amount Order
-                        td.text-right
+                            h4 Amount&nbsp;(O)
+                        td.text-center
                             h4 Client
                         td.text-center
                             h4 Ebay
@@ -28,27 +47,31 @@ block content
                             h4 Order
                         td.text-center
                             h4 Match
-                        td
+                        //td
                     tr
                         td
                         td
                         td
-                            input(type='text', ng-model='step1Filter.description')
+                        td.text-left
+                            input.form-control.input-sm(type='text', ng-model='step1Filter.description', style='max-width: 160px')
+                        td.text-right
+                            input.form-control.input-sm(type='text', ng-model='step1Filter.amount', style='max-width: 80px')
+                        td.text-right
+                            input.form-control.input-sm(type='text', ng-model='step1Filter.amountOrder', style='max-width: 80px')
+                        td.text-left
+                            input.form-control.input-sm(type='text', ng-model='step1Filter.name', style='max-width: 160px')
+                        td.text-center
+                            input.form-control.input-sm(type='text', ng-model='step1Filter.ebayName', style='max-width: 80px')
                         td
-                            input(type='text', ng-model='step1Filter.amount')
+                            input.form-control.input-sm(type='text', ng-model='step1Filter.orderId', style='max-width: 80px')
                         td
-                            input(type='text', ng-model='step1Filter.amountOrder')
-                        td
-                            input(type='text', ng-model='step1Filter.name')
-                        td
-                            input(type='text', ng-model='step1Filter.ebayName')
-                        td
-                            input(type='text', ng-model='step1Filter.orderId')
-                        td
-                            input(type='text', ng-model='step1Filter.matching')
-                        td
+                            input.form-control.input-sm(type='number', step='0.1' ng-model='step1Filter.matching', style='width: 60px')
+                        //td
                 tbody
-                    tr.valign(ng-repeat='entry in bankStatements')
+                    tr.valign(ng-repeat='entry in bankStatements | filter:step1Filter:strict')
+                        td
+                            button.btn.btn-sm.btn-default(type='button', ng-click="entry._selected=!entry._selected", ng-disabled='busy')
+                                i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td.text-center(style='padding-top:2px')
                             .btn-group.btn-group-sm
                                 button.btn(type='button', disabled='true', ng-class="{'btn-default': entry.status=='new', 'btn-success': entry.status=='confirmed', 'btn-danger': entry.status=='ignored'}")
@@ -59,17 +82,18 @@ block content
                         td.text-left(style='width:600px') {{entry.description}}
                         td.text-right {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}
                         td.text-right {{entry.amountOrder | currency:'':2}}&nbsp;{{entry.currency}}
-                        td.text-center {{entry.firstname}}&nbsp;{{entry.lastname}}
+                        td.text-left {{entry.firstname}}&nbsp;{{entry.lastname}}
                         td.text-right {{entry.ebayName}}
                         td.text-center
                             | {{entry.orderId}}
                             span(ng-show='entry.orderIds.length > 0') ({{entry.orderIds}})
                         td.text-center {{entry.matching * 100}} &nbsp;%
-                        td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
-                            .btn-group.btn-group-sm(ng-show='bankStatements')
-                                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
-                                    i.fa.fa-check
-                                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
-                                    i.fa.fa-ban
-                                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
-                                    i.fa.fa-undo
+                        //
+                            td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
+                                .btn-group.btn-group-sm(ng-show='bankStatements')
+                                    button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                                        i.fa.fa-check
+                                    button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
+                                        i.fa.fa-ban
+                                    button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                                        i.fa.fa-undo

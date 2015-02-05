@@ -593,6 +593,31 @@ public class BankStatement extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the amountOrder.
+     * @return the value of the property
+     */
+    public BigDecimal getAmountOrder() {
+        return amountOrder;
+    }
+
+    /**
+     * Sets the amountOrder.
+     * @param amountOrder  the new value of the property
+     */
+    public void setAmountOrder(BigDecimal amountOrder) {
+        this.amountOrder = amountOrder;
+    }
+
+    /**
+     * Gets the the {@code amountOrder} property.
+     * @return the property, not null
+     */
+    public final Property<BigDecimal> amountOrder() {
+        return metaBean().amountOrder().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the amountDiff.
      * @return the value of the property
      */
@@ -721,6 +746,7 @@ public class BankStatement extends DirectBean
                     JodaBeanUtils.equal(getReceiver2(), other.getReceiver2()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
                     JodaBeanUtils.equal(getAmount(), other.getAmount()) &&
+                    JodaBeanUtils.equal(getAmountOrder(), other.getAmountOrder()) &&
                     JodaBeanUtils.equal(getAmountDiff(), other.getAmountDiff()) &&
                     JodaBeanUtils.equal(getCurrency(), other.getCurrency()) &&
                     JodaBeanUtils.equal(getStatus(), other.getStatus()) &&
@@ -749,6 +775,7 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getReceiver2());
         hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAmount());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getAmountOrder());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAmountDiff());
         hash = hash * 31 + JodaBeanUtils.hashCode(getCurrency());
         hash = hash * 31 + JodaBeanUtils.hashCode(getStatus());
@@ -758,7 +785,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(704);
+        StringBuilder buf = new StringBuilder(736);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -787,6 +814,7 @@ public class BankStatement extends DirectBean
         buf.append("receiver2").append('=').append(JodaBeanUtils.toString(getReceiver2())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
         buf.append("amount").append('=').append(JodaBeanUtils.toString(getAmount())).append(',').append(' ');
+        buf.append("amountOrder").append('=').append(JodaBeanUtils.toString(getAmountOrder())).append(',').append(' ');
         buf.append("amountDiff").append('=').append(JodaBeanUtils.toString(getAmountDiff())).append(',').append(' ');
         buf.append("currency").append('=').append(JodaBeanUtils.toString(getCurrency())).append(',').append(' ');
         buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
@@ -890,6 +918,11 @@ public class BankStatement extends DirectBean
         private final MetaProperty<BigDecimal> amount = DirectMetaProperty.ofReadWrite(
                 this, "amount", BankStatement.class, BigDecimal.class);
         /**
+         * The meta-property for the {@code amountOrder} property.
+         */
+        private final MetaProperty<BigDecimal> amountOrder = DirectMetaProperty.ofReadWrite(
+                this, "amountOrder", BankStatement.class, BigDecimal.class);
+        /**
          * The meta-property for the {@code amountDiff} property.
          */
         private final MetaProperty<BigDecimal> amountDiff = DirectMetaProperty.ofReadWrite(
@@ -931,6 +964,7 @@ public class BankStatement extends DirectBean
                 "receiver2",
                 "description",
                 "amount",
+                "amountOrder",
                 "amountDiff",
                 "currency",
                 "status",
@@ -979,6 +1013,8 @@ public class BankStatement extends DirectBean
                     return description;
                 case -1413853096:  // amount
                     return amount;
+                case -1225736746:  // amountOrder
+                    return amountOrder;
                 case -1425349507:  // amountDiff
                     return amountDiff;
                 case 575402001:  // currency
@@ -1144,6 +1180,14 @@ public class BankStatement extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code amountOrder} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<BigDecimal> amountOrder() {
+            return amountOrder;
+        }
+
+        /**
          * The meta-property for the {@code amountDiff} property.
          * @return the meta-property, not null
          */
@@ -1213,6 +1257,8 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getDescription();
                 case -1413853096:  // amount
                     return ((BankStatement) bean).getAmount();
+                case -1225736746:  // amountOrder
+                    return ((BankStatement) bean).getAmountOrder();
                 case -1425349507:  // amountDiff
                     return ((BankStatement) bean).getAmountDiff();
                 case 575402001:  // currency
@@ -1279,6 +1325,9 @@ public class BankStatement extends DirectBean
                     return;
                 case -1413853096:  // amount
                     ((BankStatement) bean).setAmount((BigDecimal) newValue);
+                    return;
+                case -1225736746:  // amountOrder
+                    ((BankStatement) bean).setAmountOrder((BigDecimal) newValue);
                     return;
                 case -1425349507:  // amountDiff
                     ((BankStatement) bean).setAmountDiff((BigDecimal) newValue);
