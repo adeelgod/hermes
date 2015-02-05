@@ -3,27 +3,30 @@ block content
     .row
         .col-md-8(style='padding-right: 0')
             form.form-inline
-                .btn-group(ng-model='search', bs-checkbox-group='')
-                    label.btn.btn-default
-                        input(type='checkbox', value='amount')
-                        | Amnt. eq.
-                    label.btn.btn-default
-                        input(type='checkbox', value='amountDiff')
-                        | Amnt. < 1 EUR
-                    label.btn.btn-default
-                        input(type='checkbox', value='lastname')
-                        | 4 chars
-                    label.btn.btn-default
-                        input(type='checkbox', value='orderId')
-                        | Order
-                    label.btn.btn-default
-                        input(type='checkbox', value='or')
-                        span(ng-show='search.or') OR
-                        span(ng-hide='search.or') AND
                 .form-group
-                    input.form-control(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...')
-                button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
-                    i.fa.fa-search
+                    input.form-control.input-sm(type='text', ng-model='step2Filter.$', placeholder='Filter any...')
+                //
+                    .btn-group(ng-model='search', bs-checkbox-group='')
+                        label.btn.btn-default
+                            input(type='checkbox', value='amount')
+                            | Amnt. eq.
+                        label.btn.btn-default
+                            input(type='checkbox', value='amountDiff')
+                            | Amnt. < 1 EUR
+                        label.btn.btn-default
+                            input(type='checkbox', value='lastname')
+                            | 4 chars
+                        label.btn.btn-default
+                            input(type='checkbox', value='orderId')
+                            | Order
+                        label.btn.btn-default
+                            input(type='checkbox', value='or')
+                            span(ng-show='search.or') OR
+                            span(ng-hide='search.or') AND
+                    .form-group
+                        input.form-control(name='filter', type='text', ng-model='search.lastnameCriteria', placeholder='Lastname...')
+                    button.btn.btn-primary(type='button', ng-click='filter()', ng-disabled='busy')
+                        i.fa.fa-search
         .col-md-4(style='padding: 0')
             .btn-group.pull-right(ng-show='bankStatements.length > 0')
                 button.btn.btn-default(type='button', ng-click='previous()', ng-disabled='busy')
@@ -43,7 +46,9 @@ block content
                         td.text-left(style='width:600px')
                             h4 Description
                         td.text-right
-                            h4 Amount
+                            h4 Amount&nbsp;(B)
+                        td.text-right
+                            h4 Amount&nbsp;(O)
                         td.text-right
                             h4 Client
                         td.text-center
@@ -64,6 +69,7 @@ block content
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
                         td.text-left(style='width:600px') {{currentBankStatement.description}}
                         td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
+                        td.text-right {{currentBankStatement.amountOrder | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
                         td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
                         td.text-right {{currentBankStatement.ebayName}}
                         td.text-center
@@ -98,8 +104,24 @@ block content
                             h4 Client
                         td.text-center
                             h4 Ebay
+                    tr
+                        td
+                        td.text-center
+                            input.form-control.input-sm(type='text', ng-model='step2Filter.orderId', placeholder='Order ID...')
+                        td.text-center
+                            input.form-control.input-sm(type='text', ng-model='step2Filter.type', placeholder='Type...')
+                        td.text-center
+                            input.form-control.input-sm(type='text', ng-model='step2Filter.status', placeholder='Status...')
+                        td.text-center
+
+                        td.text-right
+                            input.form-control.input-sm(type='text', ng-model='step2Filter.amount', placeholder='Amount...')
+                        td.text-center
+                            input.form-control.input-sm(type='text', ng-model='step2Filter.lastname', placeholder='Lastname...')
+                        td.text-center
+                            input.form-control.input-sm(type='text', ng-model='step2Filter.ebayName', placeholder='Ebay Name...')
                 tbody.text-valign
-                    tr(ng-repeat='entry in orders', ng-class="{'success': entry._selected}")
+                    tr(ng-repeat='entry in orders | filter:step2Filter:strict', ng-class="{'success': entry._selected}")
                         td
                             button.btn.btn-sm.btn-default(type='button', ng-click='selectOrder(entry)')
                                 i.fa(ng-class="{'fa-circle': entry._selected, 'fa-circle-o': !entry._selected}")
