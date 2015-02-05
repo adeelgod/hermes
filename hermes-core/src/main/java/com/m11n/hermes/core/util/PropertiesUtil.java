@@ -14,7 +14,10 @@ public final class PropertiesUtil {
     public static Properties getProperties() throws Exception {
         Properties p = new Properties();
         String hermesPath = System.getProperty("hermes.config");
-        String commonPath = hermesPath.substring(0, hermesPath.lastIndexOf("/")) + "/common.properties";
+        String commonPath = "common.properties";
+        if(hermesPath.lastIndexOf("/")>-1) {
+            commonPath = hermesPath.substring(0, hermesPath.lastIndexOf("/")) + "/" + commonPath;
+        }
 
         hermesPath = hermesPath.replace("file:", "");
         commonPath = commonPath.replace("file:", "");
