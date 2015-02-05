@@ -37,7 +37,10 @@ public final class PropertiesUtil {
 
     public static Properties getCommonProperties() throws Exception {
         String hermesPath = System.getProperty("hermes.config");
-        String commonPath = hermesPath.substring(0, hermesPath.lastIndexOf("/")) + "/common.properties";
+        String commonPath = "common.properties";
+        if(hermesPath.lastIndexOf("/")>-1) {
+            commonPath = hermesPath.substring(0, hermesPath.lastIndexOf("/")) + "/" + commonPath;
+        }
 
         try {
             return load(commonPath);
