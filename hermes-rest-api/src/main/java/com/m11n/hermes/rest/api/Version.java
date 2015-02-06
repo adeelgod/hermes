@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server;
+package com.m11n.hermes.rest.api;
 
 
 import org.slf4j.Logger;
