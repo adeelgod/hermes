@@ -147,6 +147,7 @@ public class DefaultBankService implements BankService {
                     try {
                         // TODO: implement this
                         logger.debug("Trigger match statement here...");
+                        Thread.sleep(10000);
                     } catch (Throwable e) {
                         logger.error(e.toString(), e);
                     } finally {
@@ -218,7 +219,7 @@ public class DefaultBankService implements BankService {
 
     private void setStatus(String id, String status) {
         if("reset".equals(status)) {
-            bankStatementRepository.updateStatusAndOrderId(id, status, null);
+            bankStatementRepository.updateStatusAndOrderId(id, "new", null);
         } else {
             bankStatementRepository.updateStatus(id, status);
         }

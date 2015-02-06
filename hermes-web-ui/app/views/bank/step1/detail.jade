@@ -3,17 +3,23 @@ block content
     .row
         .col-md-4
             .btn-group.btn-group-lg(ng-show='bankStatements')
-                button.btn.btn-primary(type='button', ng-click='match()', ng-disabled='busy')
+                button.btn.btn-primary(type='button', ng-click='match()', ng-hide='matchRunning')
                     i.fa.fa-exchange
                     | &nbsp;Match
+                button.btn.btn-danger(type='button', ng-click='matchCancel()', ng-show='matchRunning')
+                    i.fa.fa-exchange
+                    | &nbsp;Cancel
             .btn-group.btn-group-lg(ng-show='bankStatements')
-                button.btn.btn-success(type='button', ng-click="process('confirm')", ng-disabled='busy')
+                button.btn.btn-success(type='button', ng-click="process('confirm')", ng-hide='processRunning')
                     i.fa.fa-check
-                button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-disabled='busy')
+                button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-hide='processRunning')
                     i.fa.fa-ban
-                button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
+                button.btn.btn-default(type='button', ng-click="process('reset')", ng-hide='processRunning')
                     i.fa.fa-undo
-            i.fa.fa-2x.fa-cog.fa-spin(ng-show='busy')
+                button.btn.btn-danger(type='button', ng-click='processCancel()', ng-show='processRunning')
+                    i.fa.fa-cog.fa-spin
+                    | &nbsp;Cancel
+            //i.fa.fa-2x.fa-cog.fa-spin(ng-show='busy')
         .col-md-4
             form.form-inline(ng-show='bankStatements')
                 .form-group
@@ -77,10 +83,10 @@ block content
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
                         td.text-center(style='padding-top:2px')
                             .btn-group.btn-group-sm
-                                button.btn(type='button', disabled='true', ng-class="{'btn-default': entry.status=='new', 'btn-success': entry.status=='confirmed', 'btn-danger': entry.status=='ignored'}")
+                                button.btn(type='button', disabled='true', ng-class="{'btn-default': entry.status=='new', 'btn-success': entry.status=='confirm', 'btn-danger': entry.status=='ignore'}")
                                     i.fa.fa-exclamation-circle(ng-show="entry.status=='new'")
-                                    i.fa.fa-check-circle(ng-show="entry.status=='confirmed'")
-                                    i.fa.fa-ban(ng-show="entry.status=='ignored'")
+                                    i.fa.fa-check-circle(ng-show="entry.status=='confirm'")
+                                    i.fa.fa-ban(ng-show="entry.status=='ignore'")
                         td.text-center {{entry.transferDate | date:'dd.MM.yyyy'}}
                         td.text-left(style='width:600px') {{entry.description}}
                         td.text-right {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}

@@ -7,7 +7,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('BankCtrl', function ($scope, $alert, $modal, FormSvc, BankSvc) {
+    module.controller('BankCtrl', function ($scope, $alert, $modal, $log, $interval, FormSvc, BankSvc) {
         $scope.busy = false;
         $scope.loading = true;
         $scope.params = {};
@@ -84,26 +84,17 @@
         };
 
         $scope.selectOrder = function(entry) {
-            entry._selected = !entry._selected;
-
-            if(entry._selected) {
-                $scope.currentBankStatement.orderId = entry.orderId; // TODO: actually the relationship should land in mage_custom_order
-                $scope.currentBankStatement.firstname = entry.firstname;
-                $scope.currentBankStatement.lastname = entry.lastname;
-                $scope.currentBankStatement.ebayName = entry.ebayName;
-                if(!$scope.currentBankStatement.orderIds) {
-                    $scope.currentBankStatement.orderIds = [];
-                }
-                $scope.currentBankStatement.orderIds.push(entry.orderId);
-            } else {
-                if($scope.currentBankStatement.orderIds) {
-                    for(var i=0; i<$scope.currentBankStatement.orderIds.length; i++) {
-                        if($scope.currentBankStatement.orderIds[i]===entry.orderId) {
-                            $scope.currentBankStatement.orderIds.splice(i, 1);
-                        }
-                    }
-                }
+            for(var i=0; i<$scope.orders.length; i++) {
+                $scope.orders[i]._selected = false;
             }
+
+            entry._selected = true;
+
+            $scope.currentBankStatement.orderId = entry.orderId;
+            $scope.currentBankStatement.firstname = entry.firstname;
+            $scope.currentBankStatement.lastname = entry.lastname;
+            $scope.currentBankStatement.ebayName = entry.ebayName;
+            $scope.currentBankStatement._modified = true;
         };
 
         $scope.edit = function(index) {
@@ -114,6 +105,7 @@
         };
 
         $scope.next = function() {
+            $scope.select(false);
             $scope.orders = null;
             $scope.currentBankStatementIndex++;
             if($scope.currentBankStatementIndex>=$scope.bankStatements.length) {
@@ -126,6 +118,7 @@
         };
 
         $scope.previous = function() {
+            $scope.select(false);
             $scope.orders = null;
             $scope.currentBankStatementIndex--;
             if($scope.currentBankStatementIndex<0) {
@@ -143,9 +136,31 @@
             BankSvc.match().success(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Bank statement are being matched.', placement: 'top', type: 'success', show: true, duration: 5});
+                $scope.matchStatusCheck();
             }).error(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Bank statement matching error.', placement: 'top', type: 'danger', show: true, duration: 5});
+            });
+        };
+
+        $scope.matchStatusCheck = function() {
+            if($scope.matchStatusJob) {
+                $interval.cancel($scope.matchStatusJob);
+            }
+            $scope.matchStatus();
+            $scope.matchStatusJob = $interval(function() {
+                $scope.matchStatus();
+            }, 2000);
+        };
+
+        $scope.matchStatus = function() {
+            BankSvc.matchStatus().success(function(data) {
+                $scope.matchRunning = Boolean(data);
+                $log.info(data);
+                if($scope.matchRunning===false && $scope.matchStatusJob) {
+                    $interval.cancel($scope.matchStatusJob);
+                }
+            }).error(function(data) {
             });
         };
 
@@ -166,16 +181,39 @@
 
             for(var i=0; i<$scope.bankStatements.length; i++) {
                 if($scope.bankStatements[i]._selected) {
-                    statementIds.push($scope.bankStatements[i].id);
+                    $scope.bankStatements[i].status = status;
+                    statementIds.push($scope.bankStatements[i].uuid);
                 }
             }
 
             BankSvc.process({status: status, ids: statementIds}).success(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 5});
+                $scope.processStatusCheck();
             }).error(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Bank statement processing error.', placement: 'top', type: 'danger', show: true, duration: 5});
+            });
+        };
+
+        $scope.processStatusCheck = function() {
+            if($scope.processStatusJob) {
+                $interval.cancel($scope.processStatusJob);
+            }
+            $scope.processStatus();
+            $scope.processStatusJob = $interval(function() {
+                $scope.processStatus();
+            }, 2000);
+        };
+
+        $scope.processStatus = function() {
+            BankSvc.processStatus().success(function(data) {
+                $scope.processRunning = Boolean(data);
+                $log.info(data);
+                if($scope.processRunning===false && $scope.processStatusJob) {
+                    $interval.cancel($scope.processStatusJob);
+                }
+            }).error(function(data) {
             });
         };
 
