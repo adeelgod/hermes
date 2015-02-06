@@ -7,12 +7,12 @@ WHERE
   b.uuid LIKE :uuid
   AND
   (
-    b.description LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
+    b.description_b LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
     OR
-    b.description LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
+    b.description_b LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
   )
   AND
-  b.description like CONCAT("%", a.Bestellung, "%")
+  b.description_b like CONCAT("%", a.Bestellung, "%")
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
@@ -29,12 +29,12 @@ WHERE
   b.uuid = :uuid
   AND
   (
-    LOWER(b.description) like CONCAT("%", LOWER(a.Kunden_name), "%") COLLATE utf8_general_ci
+    LOWER(b.description_b) like CONCAT("%", LOWER(a.Kunden_name), "%") COLLATE utf8_general_ci
     OR
-    LOWER(b.description) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
+    LOWER(b.description_b) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
   )
   AND
-  b.description like CONCAT("%", a.Bestellung, "%")
+  b.description_b like CONCAT("%", a.Bestellung, "%")
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
@@ -51,12 +51,12 @@ WHERE
   b.uuid = :uuid
   AND
   (
-    b.description LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
+    b.description_b LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
     OR
-    b.description LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
+    b.description_b LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
   )
   AND
-  LOWER(b.description) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
+  LOWER(b.description_b) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
@@ -72,7 +72,7 @@ FROM
 WHERE
   b.uuid = :uuid
   AND
-  LOWER(b.description) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
+  LOWER(b.description_b) like CONCAT("%", LOWER(a.Kunden_ebay_name), "%") COLLATE utf8_general_ci
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
@@ -89,9 +89,9 @@ WHERE
   b.uuid = :uuid
   AND
   (
-    b.description LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
+    b.description_b LIKE CONCAT("%", a.Kunden_name, "%", a.Kunden_vorname, "%") COLLATE utf8_general_ci
     OR
-    b.description LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
+    b.description_b LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
   )
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
@@ -108,7 +108,7 @@ FROM
 WHERE
   b.uuid = :uuid
   AND
-  b.description like CONCAT("%", a.Bestellung, "%")
+  b.description_b like CONCAT("%", a.Bestellung, "%")
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
@@ -124,7 +124,7 @@ FROM
 WHERE
   b.uuid = :uuid
   AND
-  LOWER(b.description) like CONCAT("%", LOWER(a.Kunden_name), "%") COLLATE utf8_general_ci
+  LOWER(b.description_b) like CONCAT("%", LOWER(a.Kunden_name), "%") COLLATE utf8_general_ci
   AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
