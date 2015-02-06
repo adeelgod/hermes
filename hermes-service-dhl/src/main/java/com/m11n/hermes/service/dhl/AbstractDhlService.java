@@ -115,8 +115,12 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     public synchronized void cancelTracking() throws Exception {
-        executor.shutdownNow();
-        executor = Executors.newSingleThreadExecutor();
+        try {
+            executor.shutdownNow();
+            executor = Executors.newSingleThreadExecutor();
+        } catch (Exception e) {
+            // ignore
+        }
         running.set(0);
 
         logger.warn("Track code checking cancelled.");
