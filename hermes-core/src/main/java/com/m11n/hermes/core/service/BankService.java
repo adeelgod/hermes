@@ -12,19 +12,25 @@ public interface BankService {
 
     boolean exists(BankStatement bs);
 
-    BankStatement extract(BankStatement bs);
+    void match();
 
-    List<Map<String, Object>> match(String uuid);
+    boolean matchRunning();
+
+    void matchCancel();
 
     List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or);
-
-    List<Map<String, Object>> getOrders(String orderId);
 
     boolean processStatusRunning();
 
     void processStatus(List<String> statementIds, String status);
 
-    void cancelProcessStatus() throws Exception;
+    void processStatusCancel();
 
     void reload();
+
+    @Deprecated
+    BankStatement extract(BankStatement bs);
+
+    @Deprecated
+    List<Map<String, Object>> getOrders(String orderId);
 }

@@ -84,7 +84,7 @@
         </route>
 
         <route>
-            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;filter=#csvFilter" />
+            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
             <unmarshal>
                 <csv skipFirstLine="true" autogenColumns="false" delimiter=";" configRef="csvConfig" strategyRef="excelStrategy" useMaps="true" />
             </unmarshal>

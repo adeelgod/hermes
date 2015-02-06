@@ -3,6 +3,10 @@ block content
     .row
         .col-md-4
             .btn-group.btn-group-lg(ng-show='bankStatements')
+                button.btn.btn-primary(type='button', ng-click='match()', ng-disabled='busy')
+                    i.fa.fa-exchange
+                    | &nbsp;Match
+            .btn-group.btn-group-lg(ng-show='bankStatements')
                 button.btn.btn-success(type='button', ng-click="process('confirm')", ng-disabled='busy')
                     i.fa.fa-check
                 button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-disabled='busy')

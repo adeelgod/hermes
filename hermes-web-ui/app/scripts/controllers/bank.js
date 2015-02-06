@@ -137,6 +137,28 @@
             $scope.filter();
         };
 
+        $scope.match = function() {
+            $scope.busy = true;
+
+            BankSvc.match().success(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement are being matched.', placement: 'top', type: 'success', show: true, duration: 5});
+            }).error(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement matching error.', placement: 'top', type: 'danger', show: true, duration: 5});
+            });
+        };
+
+        $scope.matchCancel = function() {
+            BankSvc.matchCancel().success(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement matching cancelled.', placement: 'top', type: 'success', show: true, duration: 5});
+            }).error(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement matching cancellation failed.', placement: 'top', type: 'danger', show: true, duration: 5});
+            });
+        };
+
         $scope.process = function(status) {
             $scope.busy = true;
 
@@ -148,7 +170,23 @@
                 }
             }
 
-            BankSvc.process({status: status, ids: statementIds});
+            BankSvc.process({status: status, ids: statementIds}).success(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 5});
+            }).error(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement processing error.', placement: 'top', type: 'danger', show: true, duration: 5});
+            });
+        };
+
+        $scope.processCancel = function() {
+            BankSvc.processCancel().success(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement processing cancelled.', placement: 'top', type: 'success', show: true, duration: 5});
+            }).error(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Bank statement processing cancellation failed.', placement: 'top', type: 'danger', show: true, duration: 5});
+            });
         };
 
         $scope.filter = function() {

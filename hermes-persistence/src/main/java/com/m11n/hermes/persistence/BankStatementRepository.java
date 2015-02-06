@@ -19,4 +19,8 @@ public interface BankStatementRepository extends PagingAndSortingRepository<Bank
     @Modifying(clearAutomatically = true)
     @Query("update BankStatement bs set bs.status =:status where bs.id =:id")
     void updateStatus(@Param("id") String id, @Param("status") String status);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update BankStatement bs set bs.status =:status, bs.orderId = :orderId where bs.id =:id")
+    void updateStatusAndOrderId(@Param("id") String id, @Param("status") String status, @Param("orderId") String orderId);
 }

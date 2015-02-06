@@ -9,7 +9,6 @@ import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.BankStatementPatternRepository;
 import com.m11n.hermes.persistence.BankStatementRepository;
 import com.m11n.hermes.persistence.FormRepository;
-import com.m11n.hermes.similarity.StringSimilarityService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +25,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,9 +46,6 @@ public class DefaultBankService implements BankService {
 
     @Inject
     private AuswertungRepository auswertungRepository;
-
-    @Inject
-    private StringSimilarityService similarityService;
 
     @Inject
     private MagentoService magentoService;
@@ -78,9 +73,13 @@ public class DefaultBankService implements BankService {
 
     private Form bankStatementMatchForm;
 
-    protected ExecutorService executor = Executors.newFixedThreadPool(1);
+    protected ExecutorService matchExecutor = Executors.newFixedThreadPool(1);
 
-    protected AtomicInteger running = new AtomicInteger(0);
+    protected AtomicInteger matchRunning = new AtomicInteger(0);
+
+    protected ExecutorService processExecutor = Executors.newFixedThreadPool(1);
+
+    protected AtomicInteger processRunning = new AtomicInteger(0);
 
     @PostConstruct
     public void init() {
@@ -108,6 +107,134 @@ public class DefaultBankService implements BankService {
         return (bankStatementRepository.findByHash(bs.getHash())!=null);
     }
 
+
+    public BankStatement convert(Map<String, String> entry) throws Exception {
+        NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+
+        // NOTE: leave out valuta date, b/c always the same as transfer date; minimizing data items
+        String tmp = entry.get("account")
+                + entry.get("transferDate")
+                + entry.get("receiver1")
+                + entry.get("receiver2")
+                + entry.get("description")
+                + entry.get("amount")
+                + entry.get("currency");
+
+        BankStatement bs = new BankStatement();
+        bs.setHash(DigestUtils.sha384Hex(tmp));
+        bs.setAccount(entry.get("account"));
+        bs.setTransferDate(df.parse(entry.get("transferDate")));
+        bs.setValutaDate(df.parse(entry.get("valutaDate")));
+        bs.setReceiver1(entry.get("receiver1"));
+        bs.setReceiver2(entry.get("receiver2"));
+        bs.setDescription(entry.get("description"));
+        bs.setDescriptionb(bs.getDescription().replaceAll(" ", ""));
+        bs.setAmount(new BigDecimal(nf.parse(entry.get("amount")).doubleValue()));
+        bs.setCurrency(entry.get("currency"));
+
+        return bs;
+    }
+
+    @Override
+    public void match() {
+        if(matchRunning.get()<=0) {
+            matchRunning.incrementAndGet();
+
+            matchExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // TODO: implement this
+                        logger.debug("Trigger match statement here...");
+                    } catch (Throwable e) {
+                        logger.error(e.toString(), e);
+                    } finally {
+                        matchRunning.set(0);
+                    }
+                }
+            });
+        } else {
+            logger.warn("Please cancel first all match jobs.");
+        }
+    }
+
+    @Override
+    public boolean matchRunning() {
+        return (matchRunning.get() > 0);
+    }
+
+    @Override
+    public void matchCancel() {
+        try {
+            matchExecutor.shutdownNow();
+            matchExecutor= Executors.newSingleThreadExecutor();
+        } catch (Exception e) {
+            // ignore
+        }
+        matchRunning.set(0);
+
+        logger.warn("Match cancelled.");
+    }
+
+    public boolean processStatusRunning() {
+        return (processRunning.get() > 0);
+    }
+
+    public void processStatus(final List<String> statementIds, final String status) {
+        if(processRunning.get()<=0) {
+            processRunning.incrementAndGet();
+
+            processExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (String id : statementIds) {
+                            setStatus(id, status);
+                        }
+                    } catch (Throwable e) {
+                        logger.error(e.toString(), e);
+                    } finally {
+                        processRunning.set(0);
+                    }
+                }
+            });
+        } else {
+            logger.warn("Please cancel first all bank statement jobs.");
+        }
+    }
+
+    public synchronized void processStatusCancel() {
+        try {
+            processExecutor.shutdownNow();
+            processExecutor = Executors.newSingleThreadExecutor();
+        } catch (Exception e) {
+            // ignore
+        }
+        processRunning.set(0);
+
+        logger.warn("Bank statement processing cancelled.");
+    }
+
+    private void setStatus(String id, String status) {
+        if("reset".equals(status)) {
+            bankStatementRepository.updateStatusAndOrderId(id, status, null);
+        } else {
+            bankStatementRepository.updateStatus(id, status);
+        }
+
+        if("confirm".equals(status)) {
+            // TODO: check for type/status in order to trigger webservices
+
+            // TODO: assign orders
+            //auswertungRepository.assignBankstatementOrders(bs.getId(), bs.getOrderIds());
+        }
+    }
+    public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
+        return auswertungRepository.findBankStatementOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
+    }
+
+    @Deprecated
     public BankStatement extract(BankStatement bs) {
         bs = extractFromMatch(bs);
 
@@ -120,6 +247,7 @@ public class DefaultBankService implements BankService {
         return bs;
     }
 
+    @Deprecated
     private BankStatement extractFromMatch(BankStatement bs) {
         List<Map<String, Object>> orders = match(bs.getId());
 
@@ -137,6 +265,15 @@ public class DefaultBankService implements BankService {
         }
 
         return bs;
+    }
+
+    @Deprecated
+    private List<Map<String, Object>> match(String uuid) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("uuid", uuid);
+        params.put("lookup", lookupPeriod);
+
+        return auswertungRepository.query(bankStatementMatchForm.getSqlStatement(), params, new AuswertungRepository.DefaultMapper());
     }
 
     @Deprecated
@@ -178,96 +315,8 @@ public class DefaultBankService implements BankService {
         return bs;
     }
 
-    public BankStatement convert(Map<String, String> entry) throws Exception {
-        NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
-        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-
-        // NOTE: leave out valuta date, b/c always the same as transfer date; minimizing data items
-        String tmp = entry.get("account")
-                + entry.get("transferDate")
-                + entry.get("receiver1")
-                + entry.get("receiver2")
-                + entry.get("description")
-                + entry.get("amount")
-                + entry.get("currency");
-
-        BankStatement bs = new BankStatement();
-        bs.setHash(DigestUtils.sha384Hex(tmp));
-        bs.setAccount(entry.get("account"));
-        bs.setTransferDate(df.parse(entry.get("transferDate")));
-        bs.setValutaDate(df.parse(entry.get("valutaDate")));
-        bs.setReceiver1(entry.get("receiver1"));
-        bs.setReceiver2(entry.get("receiver2"));
-        bs.setDescription(entry.get("description"));
-        bs.setDescriptionb(bs.getDescription().replaceAll(" ", ""));
-        bs.setAmount(new BigDecimal(nf.parse(entry.get("amount")).doubleValue()));
-        bs.setCurrency(entry.get("currency"));
-
-        return bs;
-    }
-
-    public List<Map<String, Object>> match(String uuid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("uuid", uuid);
-        params.put("lookup", lookupPeriod);
-
-        return auswertungRepository.query(bankStatementMatchForm.getSqlStatement(), params, new AuswertungRepository.DefaultMapper());
-    }
-
-    public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
-        return auswertungRepository.findBankStatementOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
-    }
-
+    @Deprecated
     public List<Map<String, Object>> getOrders(String orderId) {
         return auswertungRepository.findOrdersByOrderId(orderId);
-    }
-
-    public boolean processStatusRunning() {
-        return (running.get() > 0);
-    }
-
-    public void processStatus(final List<String> statementIds, final String status) {
-        if(running.get()<=0) {
-            running.incrementAndGet();
-
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        for (String id : statementIds) {
-                            setStatus(id, status);
-                        }
-                    } catch (Throwable e) {
-                        logger.error(e.toString(), e);
-                    } finally {
-                        running.set(0);
-                    }
-                }
-            });
-        } else {
-            logger.warn("Please cancel first all running bank statement jobs.");
-        }
-    }
-
-    public synchronized void cancelProcessStatus() throws Exception {
-        try {
-            executor.shutdownNow();
-            executor = Executors.newSingleThreadExecutor();
-        } catch (Exception e) {
-            // ignore
-        }
-        running.set(0);
-
-        logger.warn("Bank statement processing cancelled.");
-    }
-
-    private void setStatus(String id, String status) {
-        bankStatementRepository.updateStatus(id, status);
-        if("confirm".equals(status)) {
-            // TODO: check for type/status in order to trigger webservices
-
-            // TODO: assign orders
-            //auswertungRepository.assignBankstatementOrders(bs.getId(), bs.getOrderIds());
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.m11n.hermes.rest.api;
 
-import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.persistence.BankStatementRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
@@ -56,13 +55,52 @@ public class BankStatementResource {
         return Response.ok(bankService.filter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or)).cacheControl(cc).build();
     }
 
+    @GET
+    @Path("match")
+    @Produces(APPLICATION_JSON)
+    public Response match() {
+        bankService.match();
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("match/cancel")
+    @Produces(APPLICATION_JSON)
+    public Response matchCancel() {
+        bankService.matchCancel();
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("match/status")
+    @Produces(APPLICATION_JSON)
+    public Response matchRunning() {
+        return Response.ok(bankService.matchRunning()).build();
+    }
+
     @POST
     @Path("process")
     @Produces(APPLICATION_JSON)
     public Response process(Map<String, Object> data) {
         String status = data.get("status").toString();
+        logger.info("IDS: {}", data.get("ids"));
         List<String> statementIds = (List)data.get("ids");
         bankService.processStatus(statementIds, status);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("process/cancel")
+    @Produces(APPLICATION_JSON)
+    public Response processCancel() {
+        bankService.processStatusCancel();
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("process/status")
+    @Produces(APPLICATION_JSON)
+    public Response processRunning() {
+        return Response.ok(bankService.processStatusRunning()).build();
     }
 }
