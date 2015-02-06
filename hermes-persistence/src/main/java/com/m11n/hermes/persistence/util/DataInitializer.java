@@ -207,6 +207,24 @@ public class DataInitializer {
         }
 
 
+        // bank sync
+        form = formRepository.findByName("bank_sync");
+        if(form==null) {
+            form = new Form();
+            form.setDb("auswertung");
+            form.setName("bank_sync");
+            form.setDescription("Bank Zahlungen (Sync)");
+            form.setSystemForm(true);
+            form.setPosition(5);
+            form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank_statement_sync.sql")));
+            form.setPrintable(false);
+            form.setAccessPublic(false);
+            form = formRepository.save(form);
+
+            formRepository.save(form);
+        }
+
+
         BankStatementPattern bsp = bankStatementPatternRepository.findByName("default_order_id");
         if(bsp==null) {
             bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(b\\s?e?\\s?s?\\s?t?\\s?e?\\s?l?\\s?l?-?\\s*n?\\s?r?\\s?\\.?\\:?)?(30\\d{7}|3\\s?0\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 2, "orderId", true));
