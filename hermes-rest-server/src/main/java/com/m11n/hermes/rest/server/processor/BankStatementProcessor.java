@@ -2,7 +2,6 @@ package com.m11n.hermes.rest.server.processor;
 
 import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.service.BankService;
-import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.BankStatementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +28,11 @@ public class BankStatementProcessor {
             try {
                 BankStatement bs = bankService.convert(entry);
                 if(!bankService.exists(bs)) {
-                    bs = bankService.save(bs); // NOTE: necessary to have a reference ID
+                    bankService.save(bs); // NOTE: necessary to have a reference ID
                     // NOTE: ugly, but needed to flush the transaction...
-                    bankStatementRepository.count();
-                    bs = bankService.extract(bs);
-                    bankService.save(bs);
+                    //bankStatementRepository.count();
+                    //bs = bankService.extract(bs); // maybe not necessary with Daniels new approach...
+                    //bankService.save(bs);
                 } else {
                     logger.warn("Bank statement already imported: {}", bs);
                 }

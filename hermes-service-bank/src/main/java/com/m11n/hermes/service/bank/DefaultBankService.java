@@ -26,6 +26,10 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,6 +78,10 @@ public class DefaultBankService implements BankService {
 
     private Form bankStatementMatchForm;
 
+    protected ExecutorService executor = Executors.newFixedThreadPool(1);
+
+    protected AtomicInteger running = new AtomicInteger(0);
+
     @PostConstruct
     public void init() {
         reload();
@@ -103,9 +111,11 @@ public class DefaultBankService implements BankService {
     public BankStatement extract(BankStatement bs) {
         bs = extractFromMatch(bs);
 
+        /**
         if(MATCH_THRESHOLD_80.compareTo(bs.getMatching())==1) {
             bs = extractFromDescription(bs);
         }
+         */
 
         return bs;
     }
@@ -129,6 +139,7 @@ public class DefaultBankService implements BankService {
         return bs;
     }
 
+    @Deprecated
     private BankStatement extractFromDescription(BankStatement bs) {
         for(BankStatementPattern bsp : patterns) {
             Matcher m = bsp.getRegex().matcher(bs.getDescription());
@@ -146,11 +157,6 @@ public class DefaultBankService implements BankService {
                     // TODO: actually we would need type checks here if stuff is not string
                     bs.property(bsp.getAttribute()).set(value);
                 }
-                /**
-                 if(bsp.getStopOnFirstMatch()) {
-                 break;
-                 }
-                 */
             }
         }
 
@@ -193,6 +199,7 @@ public class DefaultBankService implements BankService {
         bs.setReceiver1(entry.get("receiver1"));
         bs.setReceiver2(entry.get("receiver2"));
         bs.setDescription(entry.get("description"));
+        bs.setDescriptionb(bs.getDescription().replaceAll(" ", ""));
         bs.setAmount(new BigDecimal(nf.parse(entry.get("amount")).doubleValue()));
         bs.setCurrency(entry.get("currency"));
 
@@ -215,29 +222,52 @@ public class DefaultBankService implements BankService {
         return auswertungRepository.findOrdersByOrderId(orderId);
     }
 
-    public BankStatement assign(BankStatement bs) {
-        if(bs.getMatching().doubleValue() > autoAssignmentThreshold) {
-            // TODO: invoke webservices
+    public boolean processStatusRunning() {
+        return (running.get() > 0);
+    }
+
+    public void processStatus(final List<String> statementIds, final String status) {
+        if(running.get()<=0) {
+            running.incrementAndGet();
+
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (String id : statementIds) {
+                            setStatus(id, status);
+                        }
+                    } catch (Throwable e) {
+                        logger.error(e.toString(), e);
+                    } finally {
+                        running.set(0);
+                    }
+                }
+            });
+        } else {
+            logger.warn("Please cancel first all running bank statement jobs.");
         }
-        bs.setStatus("confirmed");
-        bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
-        // TODO: assign orders
-        //auswertungRepository.assignBankstatementOrders(bs.getId(), bs.getOrderIds());
-        return bs;
     }
 
-    public BankStatement ignore(BankStatement bs) {
-        bs.setStatus("ignored");
-        bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
-        return bs;
+    public synchronized void cancelProcessStatus() throws Exception {
+        try {
+            executor.shutdownNow();
+            executor = Executors.newSingleThreadExecutor();
+        } catch (Exception e) {
+            // ignore
+        }
+        running.set(0);
+
+        logger.warn("Bank statement processing cancelled.");
     }
 
-    public BankStatement reset(BankStatement bs) {
-        // TODO: anything else to process here?
-        bs.setStatus("new");
-        bankStatementRepository.updateStatus(bs.getId(), bs.getStatus());
-        // TODO: unassign orders
-        //auswertungRepository.unassignBankstatementOrders(bs.getId());
-        return bs;
+    private void setStatus(String id, String status) {
+        bankStatementRepository.updateStatus(id, status);
+        if("confirm".equals(status)) {
+            // TODO: check for type/status in order to trigger webservices
+
+            // TODO: assign orders
+            //auswertungRepository.assignBankstatementOrders(bs.getId(), bs.getOrderIds());
+        }
     }
 }

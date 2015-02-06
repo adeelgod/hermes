@@ -3,11 +3,11 @@ block content
     .row
         .col-md-4
             .btn-group.btn-group-lg(ng-show='bankStatements')
-                button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
+                button.btn.btn-success(type='button', ng-click="process('confirm')", ng-disabled='busy')
                     i.fa.fa-check
-                button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
+                button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-disabled='busy')
                     i.fa.fa-ban
-                button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
+                button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
                     i.fa.fa-undo
             i.fa.fa-2x.fa-cog.fa-spin(ng-show='busy')
         .col-md-4
@@ -86,13 +86,4 @@ block content
                         td.text-center
                             | {{entry.orderId}}
                             span(ng-show='entry.orderIds.length > 0') ({{entry.orderIds}})
-                        td.text-center {{entry.matching * 100}} &nbsp;%
-                        //
-                            td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
-                                .btn-group.btn-group-sm(ng-show='bankStatements')
-                                    button.btn.btn-success(type='button', ng-click='assign()', ng-disabled='busy')
-                                        i.fa.fa-check
-                                    button.btn.btn-danger(type='button', ng-click='ignore()', ng-disabled='busy')
-                                        i.fa.fa-ban
-                                    button.btn.btn-default(type='button', ng-click='reset()', ng-disabled='busy')
-                                        i.fa.fa-undo
+                        td.text-center {{entry.matching * 100}}&nbsp;%

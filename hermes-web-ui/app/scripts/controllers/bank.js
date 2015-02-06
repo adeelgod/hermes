@@ -120,6 +120,7 @@
                 $scope.currentBankStatementIndex = 0;
             }
             $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+            $scope.currentBankStatement._selected = true;
             $scope.search = {};
             $scope.filter();
         };
@@ -131,65 +132,23 @@
                 $scope.currentBankStatementIndex = $scope.bankStatements.length-1;
             }
             $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
+            $scope.currentBankStatement._selected = true;
             $scope.search = {};
             $scope.filter();
         };
 
-        $scope.process = function(statusFn, statements) {
+        $scope.process = function(status) {
             $scope.busy = true;
 
-            statusFn(statements).success(function(data) {
-                angular.forEach(data, function(statement) {
-                    for(var j=0; j<$scope.bankStatements.length; j++) {
-                        if($scope.bankStatements[j].uuid===statement.uuid) {
-                            $scope.bankStatements[j].status = statement.status;
-                            break;
-                        }
-                    }
-                });
-                $scope.busy = false;
-            }).error(function(data) {
-                $scope.busy = false;
-                $alert({content: 'Could not process request.', placement: 'top', type: 'danger', show: true, duration: 5});
-            });
-        };
-
-        $scope.processSelected = function(statusFn) {
-            $scope.busy = true;
-            var statements = [];
+            var statementIds = [];
 
             for(var i=0; i<$scope.bankStatements.length; i++) {
                 if($scope.bankStatements[i]._selected) {
-                    $scope.bankStatements[i]._selected = null;
-                    delete $scope.bankStatements[i]._selected;
-                    statements.push($scope.bankStatements[i]);
+                    statementIds.push($scope.bankStatements[i].id);
                 }
             }
-            $scope.process(statusFn, statements);
-        };
 
-        $scope.assignSelected = function() {
-            $scope.processSelected(BankSvc.assign);
-        };
-
-        $scope.ignoreSelected = function() {
-            $scope.processSelected(BankSvc.ignore);
-        };
-
-        $scope.resetSelected = function() {
-            $scope.processSelected(BankSvc.reset);
-        };
-
-        $scope.assign = function() {
-            $scope.process(BankSvc.assign, [$scope.currentBankStatement]);
-        };
-
-        $scope.ignore = function() {
-            $scope.process(BankSvc.ignore, [$scope.currentBankStatement]);
-        };
-
-        $scope.reset = function() {
-            $scope.process(BankSvc.reset, [$scope.currentBankStatement]);
+            BankSvc.process({status: status, ids: statementIds});
         };
 
         $scope.filter = function() {

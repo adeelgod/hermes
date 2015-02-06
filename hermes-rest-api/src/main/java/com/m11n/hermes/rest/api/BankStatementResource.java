@@ -14,8 +14,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -57,35 +57,12 @@ public class BankStatementResource {
     }
 
     @POST
-    @Path("assign")
+    @Path("process")
     @Produces(APPLICATION_JSON)
-    public Response assign(List<BankStatement> statements) {
-        List<BankStatement> result = new ArrayList<>();
-        for(BankStatement bs : statements) {
-            result.add(bankService.assign(bs));
-        }
-        return Response.ok(result).build();
-    }
-
-    @POST
-    @Path("ignore")
-    @Produces(APPLICATION_JSON)
-    public Response ignore(List<BankStatement> statements) {
-        List<BankStatement> result = new ArrayList<>();
-        for(BankStatement bs : statements) {
-            result.add(bankService.ignore(bs));
-        }
-        return Response.ok(result).build();
-    }
-
-    @POST
-    @Path("reset")
-    @Produces(APPLICATION_JSON)
-    public Response reset(List<BankStatement> statements) {
-        List<BankStatement> result = new ArrayList<>();
-        for(BankStatement bs : statements) {
-            result.add(bankService.reset(bs));
-        }
-        return Response.ok(result).build();
+    public Response process(Map<String, Object> data) {
+        String status = data.get("status").toString();
+        List<String> statementIds = (List)data.get("ids");
+        bankService.processStatus(statementIds, status);
+        return Response.ok().build();
     }
 }

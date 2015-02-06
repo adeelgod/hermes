@@ -26,24 +26,10 @@
                     params: params
                 });
             },
-            assign: function(params) {
+            process: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/bank/statements/assign',
-                    data: params
-                });
-            },
-            ignore: function(params) {
-                return $http({
-                    method: 'POST',
-                    url: 'api/bank/statements/ignore',
-                    data: params
-                });
-            },
-            reset: function(params) {
-                return $http({
-                    method: 'POST',
-                    url: 'api/bank/statements/reset',
+                    url: 'api/bank/statements/process',
                     data: params
                 });
             }

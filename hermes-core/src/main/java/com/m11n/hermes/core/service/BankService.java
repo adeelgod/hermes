@@ -20,11 +20,11 @@ public interface BankService {
 
     List<Map<String, Object>> getOrders(String orderId);
 
-    BankStatement assign(BankStatement bs);
+    boolean processStatusRunning();
 
-    BankStatement ignore(BankStatement bs);
+    void processStatus(List<String> statementIds, String status);
 
-    BankStatement reset(BankStatement bs);
+    void cancelProcessStatus() throws Exception;
 
     void reload();
 }
