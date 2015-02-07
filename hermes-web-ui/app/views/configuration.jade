@@ -30,6 +30,8 @@ block content
                     a(href='', ng-click="tab='print'", role='tab') Printers
                 li(role='presentation', ng-class="{'active': tab=='ssh'}")
                     a(href='', ng-click="tab='ssh'", role='tab') SSH
+                li(role='presentation', ng-class="{'active': tab=='mail'}")
+                    a(href='', ng-click="tab='mail'", role='tab') Mail
             .tab-content
                 .tab-pane(role='tabpanel', id='database', ng-class="{'active': tab=='database'}")
                     form(role='form', name='databaseForm', novalidate='')
@@ -364,6 +366,48 @@ block content
                             label(for='') SSH Compression
                             p.alert.alert-warning
                                 | This is an experimental feature
+                .tab-pane(role='tabpanel', id='mail', ng-class="{'active': tab=='mail'}")
+                    form(role='form', name='mailForm', novalidate='')
+                        .form-group
+                            label(for='mailHost') Mail Host
+                            input.form-control(name='mailHost', ng-model="configuration['hermes.mail.host']", placeholder='Mail Host', type='text')
+                        .form-group
+                            label(for='mailPort') Mail Port
+                            input.form-control(name='mailPort', ng-model="configuration['hermes.mail.port']", placeholder='Mail Port', type='text')
+                        .form-group
+                            label(for='mailUsername') Username
+                            input.form-control(name='mailUsername', ng-model="configuration['hermes.mail.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='mailPassword') Password
+                            input.form-control(name='mailPassword', ng-model="configuration['hermes.mail.password']", placeholder='Password', type='password')
+                        .form-group
+                            label(for='mailProtocol') Protocol
+                            input.form-control(name='mailProtocol', ng-model="configuration['hermes.mail.transport.protocol']", placeholder='Protocol', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.smtp.auth']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.smtp.auth'], 'fa-circle-o': !configuration['hermes.mail.smtp.auth']}")
+                            label(for='mailAuth') SMTP Auth
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.smtp.ssl.enable']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.smtp.ssl.enable'], 'fa-circle-o': !configuration['hermes.mail.smtp.ssl.enable']}")
+                            label(for='mailSsl') SMTP SSL
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.smtp.starttls.enable']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.smtp.starttls.enable'], 'fa-circle-o': !configuration['hermes.mail.smtp.starttls.enable']}")
+                            label(for='mailStartTLS') StartTLS
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.debug']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.debug'], 'fa-circle-o': !configuration['hermes.mail.debug']}")
+                            label(for='mailDebug') Debug
+                        .form-group
+                            label(for='mailFrom') From
+                            input.form-control(name='mailFrom', ng-model="configuration['hermes.mail.from']", placeholder='From', type='text')
+                        .form-group
+                            label(for='mailTo') To
+                            input.form-control(name='mailTo', ng-model="configuration['hermes.mail.to']", placeholder='To', type='text')
+                        .form-group
+                            label(for='mailSubject') Subject
+                            input.form-control(name='mail', ng-model="configuration['hermes.mail.subject']", placeholder='Subject', type='text')
             button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
                 i.fa.fa-floppy-o
                 | &nbsp;
