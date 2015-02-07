@@ -94,6 +94,7 @@
             $scope.currentBankStatement.firstname = entry.firstname;
             $scope.currentBankStatement.lastname = entry.lastname;
             $scope.currentBankStatement.ebayName = entry.ebayName;
+            $scope.currentBankStatement.amountOrder = entry.amount;
             $scope.currentBankStatement._modified = true;
         };
 
@@ -182,6 +183,7 @@
             for(var i=0; i<$scope.bankStatements.length; i++) {
                 if($scope.bankStatements[i]._selected) {
                     $scope.bankStatements[i].status = status;
+                    $scope.bankStatements[i]._modified = undefined;
                     statementIds.push($scope.bankStatements[i].uuid);
                 }
             }

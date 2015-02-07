@@ -62,10 +62,22 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Jasypt -->
+        <!-- jasypt -->
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt-spring31</artifactId>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+        <!-- commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
         </dependency>
     </dependencies>
 

@@ -13,14 +13,8 @@ public final class PropertiesUtil {
 
     public static Properties getProperties() throws Exception {
         Properties p = new Properties();
-        String hermesPath = System.getProperty("hermes.config");
-        String commonPath = "common.properties";
-        if(hermesPath.lastIndexOf("/")>-1) {
-            commonPath = hermesPath.substring(0, hermesPath.lastIndexOf("/")) + "/" + commonPath;
-        }
-
-        hermesPath = hermesPath.replace("file:", "");
-        commonPath = commonPath.replace("file:", "");
+        String hermesPath = getHermesPropertiesPath();
+        String commonPath = getCommonPropertiesPath();
 
         if(new File(commonPath).exists()) {
             p.load(new FileInputStream(commonPath));
@@ -36,18 +30,31 @@ public final class PropertiesUtil {
     }
 
     public static Properties getCommonProperties() throws Exception {
+        try {
+            return load(getCommonPropertiesPath());
+        } catch (Exception e) {
+        }
+
+        return new Properties();
+    }
+
+    public static String getHermesPropertiesPath() {
+        String hermesPath = System.getProperty("hermes.config");
+        hermesPath = hermesPath.replace("file:", "");
+
+        return hermesPath;
+    }
+
+    public static String getCommonPropertiesPath() {
         String hermesPath = System.getProperty("hermes.config");
         String commonPath = "common.properties";
         if(hermesPath.lastIndexOf("/")>-1) {
             commonPath = hermesPath.substring(0, hermesPath.lastIndexOf("/")) + "/" + commonPath;
         }
 
-        try {
-            return load(commonPath);
-        } catch (Exception e) {
-        }
+        commonPath = commonPath.replace("file:", "");
 
-        return new Properties();
+        return commonPath;
     }
 
     public static void save(Properties properties) throws Exception {
