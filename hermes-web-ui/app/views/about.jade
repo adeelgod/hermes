@@ -26,21 +26,60 @@ block content
                 button.btn.btn-primary(type='button', ng-click='send()') Send
     .row
         .col-md-offset-3.col-md-6.col-xs-12
-            h4 Version
+
             table.table.table-condensed
-                tr
-                    td Version
-                    td {{version.description}}
-                tr
-                    td Commit Time
-                    td {{version.commitTime}}
-                tr
-                    td Build Time
-                    td {{version.buildTime}}
-                tr
-                    td Origin URL
-                    td {{version.originUrl}}
-                tr
-                    td Dirty
-                    td {{version.dirty}}
+                thead
+                    tr
+                        td(colspan="2")
+                            h4 Version
+                tbody
+                    tr
+                        td Version
+                        td {{version.description}}
+                    tr
+                        td Commit Time
+                        td {{version.commitTime}}
+                    tr
+                        td Build Time
+                        td {{version.buildTime}}
+                    tr
+                        td Origin URL
+                        td {{version.originUrl}}
+                    tr
+                        td Dirty
+                        td {{version.dirty}}
+                thead
+                    tr
+                        td(colspan="2")
+                            h4 SSH Connection
+                tbody
+                    tr
+                        td Server Version
+                        td {{version.serverVersion}}
+                    tr
+                        td Client Version
+                        td {{version.clientVersion}}
+                    tr
+                        td Connected
+                        td {{version.connected}}
+                    tr
+                        td Alive Interval (ms)
+                        td {{version.aliveInterval}}
+                    tr
+                        td Alive Count max.
+                        td {{version.aliveCountMax}}
+                    tr
+                        td Host
+                        td {{version.host}}
+                    tr
+                        td Local Port
+                        td {{version.localPort}}
+                thead
+                    tr
+                        td(colspan="2")
+                            h4 Magento
+                tbody
+                    tr
+                        td Magento Service Class
+                        td {{version.magentoServiceClass}}
             button.btn.btn-primary(type='button', ng-click='version()') Refresh

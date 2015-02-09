@@ -70,21 +70,9 @@ public class SshTunnel {
             Channel channel = session.openChannel("shell");
             channel.connect();
 
-            logger.info("######## COMPRESSION: {}", config.get("Compression"));
-            logger.info("######## CHANNEL    : {}", channel.isConnected());
-
             // NOTE: the second remoteHost parameter is the binding address of the MySQL server... which is listening only on localhost
             //assignedPort = session.setPortForwardingL("127.0.0.1", localPort, remoteHost, remotePort);
             assignedPort = session.setPortForwardingL(localPort, remoteBinding, remotePort);
-
-            logger.info("######## KEEP ALIVE : {}", session.getServerAliveInterval());
-            logger.info("######## ALIVE MAX. : {}", session.getServerAliveCountMax());
-            logger.info("######## SESSION    : {}", session.isConnected());
-            logger.info("######## VERSION    : {}", session.getServerVersion());
-            logger.info("######## SERVER     : {}", session.getHost());
-            logger.info("######## CLIENT     : {}", session.getClientVersion());
-            logger.info("######## FWD        : {}", session.getPortForwardingL());
-            logger.info("######## PORT       : {}", assignedPort);
         } catch (Exception e) {
             logger.error(e.toString(), e);
         }
@@ -92,6 +80,10 @@ public class SshTunnel {
         if (assignedPort == 0) {
             throw new RuntimeException("Port forwarding failed !");
         }
+    }
+
+    public Session getSession() {
+        return session;
     }
 
     @PreDestroy
@@ -105,31 +97,6 @@ public class SshTunnel {
     public void restart() {
         stop();
         start();
-    }
-
-    private void test() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            java.sql.Connection connection = java.sql.DriverManager.getConnection("jdbc:mysql://127.0.0.1:" + localPort + "/Auswertung?user=" + username + "&password=" + password);
-
-            java.sql.DatabaseMetaData metadata = connection.getMetaData();
-
-            // Get all the tables and views
-            String[] tableType = {"TABLE"};
-            java.sql.ResultSet tables = metadata.getTables(null, null, "%", tableType);
-            String tableName;
-            while (tables.next()) {
-                tableName = tables.getString(3);
-
-                logger.info("################################ TABLE: {}", tableName);
-            }
-
-        } catch (ClassNotFoundException
-                | IllegalAccessException
-                | InstantiationException
-                | java.sql.SQLException e) {
-            logger.error(e.toString(), e);
-        }
     }
 
     public int getSshPort() {
@@ -186,21 +153,5 @@ public class SshTunnel {
 
     public void setLocalPort(int localPort) {
         this.localPort = localPort;
-    }
-
-    @Deprecated
-    // TODO: remove this in production
-    public static void main(String... args) throws Exception {
-        SshTunnel tunnel = new SshTunnel();
-        tunnel.setSshPort(22);
-        tunnel.setUsername("print");
-        tunnel.setPassword("edgtds45");
-        tunnel.setLocalPort(13306);
-        tunnel.setRemoteBinding("localhost");
-        tunnel.setRemoteHost("188.138.99.252");
-        tunnel.setRemotePort(3306);
-        tunnel.start();
-        tunnel.test();
-        tunnel.stop();
     }
 }

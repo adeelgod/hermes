@@ -27,11 +27,6 @@ public class ShippingResource {
     @Inject
     private MagentoService magentoService;
 
-    @PostConstruct
-    public void init() {
-        logger.debug("############################ SHIPPING RESOURCE MAGENTO IMPLEMENTATION: {}", magentoService.getClass().getName());
-    }
-
     @GET
     @Path("/shipment")
     @Produces(APPLICATION_JSON)
