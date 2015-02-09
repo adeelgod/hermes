@@ -107,7 +107,6 @@ public class DefaultBankService implements BankService {
         return (bankStatementRepository.findByHash(bs.getHash())!=null);
     }
 
-
     public BankStatement convert(Map<String, String> entry) throws Exception {
         NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
@@ -145,6 +144,8 @@ public class DefaultBankService implements BankService {
                 @Override
                 public void run() {
                     try {
+                        sync();
+
                         // TODO: implement this
                         logger.debug("Trigger match statement here...");
                         Thread.sleep(10000);
@@ -190,6 +191,8 @@ public class DefaultBankService implements BankService {
                 @Override
                 public void run() {
                     try {
+                        sync();
+
                         for (String id : statementIds) {
                             setStatus(id, status);
                         }
@@ -233,6 +236,12 @@ public class DefaultBankService implements BankService {
     }
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
         return auswertungRepository.findBankStatementOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
+    }
+
+    private void sync() {
+        Form form = formRepository.findByName("bank_sync");
+
+        auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
     }
 
     @Deprecated
