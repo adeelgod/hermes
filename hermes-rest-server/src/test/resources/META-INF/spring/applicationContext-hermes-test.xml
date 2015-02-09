@@ -28,6 +28,7 @@
 
     <import resource="applicationContext-hermes-persistence.xml" />
     <import resource="applicationContext-hermes-camel-test.xml" />
+    <import resource="applicationContext-hermes-support.xml" />
 
     <bean class="com.m11n.hermes.similarity.StringSimilarityServiceImpl">
         <constructor-arg>
