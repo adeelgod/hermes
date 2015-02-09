@@ -14,7 +14,7 @@ block content
             form.form
                 .form-group
                     p Note
-                    textarea(id='note', ng-model='support.note')
+                    textarea.form-control(id='note', ng-model='support.note')
                 .form-group
                     button.btn.btn-default(type='button', ng-model='support.log', bs-checkbox='')
                         i.fa(ng-class="{'fa-circle': support.log, 'fa-circle-o': !support.log}")
