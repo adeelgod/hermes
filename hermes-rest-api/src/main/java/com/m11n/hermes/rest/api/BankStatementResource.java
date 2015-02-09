@@ -83,7 +83,6 @@ public class BankStatementResource {
     @Produces(APPLICATION_JSON)
     public Response process(Map<String, Object> data) {
         String status = data.get("status").toString();
-        logger.info("IDS: {}", data.get("ids"));
         List<String> statementIds = (List)data.get("ids");
         bankService.processStatus(statementIds, status);
         return Response.ok().build();
