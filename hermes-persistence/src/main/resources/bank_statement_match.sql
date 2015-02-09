@@ -94,6 +94,10 @@ WHERE
     b.description_b LIKE CONCAT("%", a.Kunden_vorname, "%", a.Kunden_name, "%") COLLATE utf8_general_ci
   )
   AND
+  length(a.Kunden_name) > 4
+  AND
+  length(a.Kunden_vorname) > 4
+  AND
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
   a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL :lookup MONTH)
@@ -129,23 +133,23 @@ WHERE
   a.GesamtPreis_der_Bestellung_Brutto = b.amount
   AND
   a.Datum_Kauf >= DATE_SUB(NOW(), INTERVAL :lookup MONTH)
-  /**
-  AND
-  (
-    (a.typ='ebay_vorkasse' AND a.Status='pending')
-    OR
-    (a.typ='Shop_Nachname' AND a.Status='complete')
-    OR
-    (a.typ='Shop_Rechnung' AND a.Status='paystat_pending')
-    OR
-    (a.typ='Shop_Rechnung' AND a.Status='paystat_reminder1')
-    OR
-    (a.typ='Shop_Rechnung' AND a.Status='paystat_reminder1')
-    OR
-    (a.typ='Shop_sofort' AND a.Status='complete')
-    OR
-    (a.typ='Shop_vorkasse' AND a.Status='pending')
-  )
-  */
+/**
+AND
+(
+  (a.typ='ebay_vorkasse' AND a.Status='pending')
+  OR
+  (a.typ='Shop_Nachname' AND a.Status='complete')
+  OR
+  (a.typ='Shop_Rechnung' AND a.Status='paystat_pending')
+  OR
+  (a.typ='Shop_Rechnung' AND a.Status='paystat_reminder1')
+  OR
+  (a.typ='Shop_Rechnung' AND a.Status='paystat_reminder1')
+  OR
+  (a.typ='Shop_sofort' AND a.Status='complete')
+  OR
+  (a.typ='Shop_vorkasse' AND a.Status='pending')
+)
+*/
 ORDER BY
   orderDate DESC, matching DESC
