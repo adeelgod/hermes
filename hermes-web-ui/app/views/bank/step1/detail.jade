@@ -89,7 +89,7 @@ block content
                                     i.fa.fa-ban(ng-show="entry.status=='ignore'")
                         td.text-center {{entry.transferDate | date:'dd.MM.yyyy'}}
                         td.text-left(style='width:600px') {{entry.description}}
-                        td.text-right {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}
+                        td.text-right(ng-class="{'danger': entry.amount!=entry.amountOrder}") {{entry.amount | currency:'':2}}&nbsp;{{entry.currency}}
                         td.text-right {{entry.amountOrder | currency:'':2}}&nbsp;{{entry.currency}}
                         td.text-left {{entry.firstname}}&nbsp;{{entry.lastname}}
                         td.text-right {{entry.ebayName}}
