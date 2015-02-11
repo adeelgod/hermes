@@ -62,6 +62,9 @@ block content
                                     i.fa.fa-ban
                                 button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
                                     i.fa.fa-undo
+                    tr
+                        td(colspan='10')
+                            textarea.form-control(ng-model='currentBankStatement.comments')
     .row(ng-show='orders', ng-hide='loading')
         .col-md-12
             table.table.table-striped.table-condensed

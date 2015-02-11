@@ -124,6 +124,11 @@ public class BankStatement extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "comments")
+    private String comments;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "amount", precision = 8, scale = 2)
     private BigDecimal amount;
 
@@ -598,6 +603,31 @@ public class BankStatement extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the comments.
+     * @return the value of the property
+     */
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * Sets the comments.
+     * @param comments  the new value of the property
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * Gets the the {@code comments} property.
+     * @return the property, not null
+     */
+    public final Property<String> comments() {
+        return metaBean().comments().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the amount.
      * @return the value of the property
      */
@@ -776,6 +806,7 @@ public class BankStatement extends DirectBean
                     JodaBeanUtils.equal(getReceiver2(), other.getReceiver2()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
                     JodaBeanUtils.equal(getDescriptionb(), other.getDescriptionb()) &&
+                    JodaBeanUtils.equal(getComments(), other.getComments()) &&
                     JodaBeanUtils.equal(getAmount(), other.getAmount()) &&
                     JodaBeanUtils.equal(getAmountOrder(), other.getAmountOrder()) &&
                     JodaBeanUtils.equal(getAmountDiff(), other.getAmountDiff()) &&
@@ -806,6 +837,7 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getReceiver2());
         hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
         hash = hash * 31 + JodaBeanUtils.hashCode(getDescriptionb());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getComments());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAmount());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAmountOrder());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAmountDiff());
@@ -817,7 +849,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(768);
+        StringBuilder buf = new StringBuilder(800);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -846,6 +878,7 @@ public class BankStatement extends DirectBean
         buf.append("receiver2").append('=').append(JodaBeanUtils.toString(getReceiver2())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
         buf.append("descriptionb").append('=').append(JodaBeanUtils.toString(getDescriptionb())).append(',').append(' ');
+        buf.append("comments").append('=').append(JodaBeanUtils.toString(getComments())).append(',').append(' ');
         buf.append("amount").append('=').append(JodaBeanUtils.toString(getAmount())).append(',').append(' ');
         buf.append("amountOrder").append('=').append(JodaBeanUtils.toString(getAmountOrder())).append(',').append(' ');
         buf.append("amountDiff").append('=').append(JodaBeanUtils.toString(getAmountDiff())).append(',').append(' ');
@@ -951,6 +984,11 @@ public class BankStatement extends DirectBean
         private final MetaProperty<String> descriptionb = DirectMetaProperty.ofReadWrite(
                 this, "descriptionb", BankStatement.class, String.class);
         /**
+         * The meta-property for the {@code comments} property.
+         */
+        private final MetaProperty<String> comments = DirectMetaProperty.ofReadWrite(
+                this, "comments", BankStatement.class, String.class);
+        /**
          * The meta-property for the {@code amount} property.
          */
         private final MetaProperty<BigDecimal> amount = DirectMetaProperty.ofReadWrite(
@@ -1002,6 +1040,7 @@ public class BankStatement extends DirectBean
                 "receiver2",
                 "description",
                 "descriptionb",
+                "comments",
                 "amount",
                 "amountOrder",
                 "amountDiff",
@@ -1052,6 +1091,8 @@ public class BankStatement extends DirectBean
                     return description;
                 case -1921319962:  // descriptionb
                     return descriptionb;
+                case -602415628:  // comments
+                    return comments;
                 case -1413853096:  // amount
                     return amount;
                 case -1225736746:  // amountOrder
@@ -1221,6 +1262,14 @@ public class BankStatement extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code comments} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> comments() {
+            return comments;
+        }
+
+        /**
          * The meta-property for the {@code amount} property.
          * @return the meta-property, not null
          */
@@ -1306,6 +1355,8 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getDescription();
                 case -1921319962:  // descriptionb
                     return ((BankStatement) bean).getDescriptionb();
+                case -602415628:  // comments
+                    return ((BankStatement) bean).getComments();
                 case -1413853096:  // amount
                     return ((BankStatement) bean).getAmount();
                 case -1225736746:  // amountOrder
@@ -1376,6 +1427,9 @@ public class BankStatement extends DirectBean
                     return;
                 case -1921319962:  // descriptionb
                     ((BankStatement) bean).setDescriptionb((String) newValue);
+                    return;
+                case -602415628:  // comments
+                    ((BankStatement) bean).setComments((String) newValue);
                     return;
                 case -1413853096:  // amount
                     ((BankStatement) bean).setAmount((BigDecimal) newValue);
