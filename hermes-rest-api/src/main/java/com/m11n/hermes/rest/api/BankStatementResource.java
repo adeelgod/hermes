@@ -1,5 +1,6 @@
 package com.m11n.hermes.rest.api;
 
+import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.persistence.BankStatementRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
@@ -85,6 +86,13 @@ public class BankStatementResource {
         String status = data.get("status").toString();
         List<String> statementIds = (List)data.get("ids");
         bankService.processStatus(statementIds, status);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Produces(APPLICATION_JSON)
+    public Response save(BankStatement bs) {
+        bankService.save(bs);
         return Response.ok().build();
     }
 

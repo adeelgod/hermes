@@ -175,6 +175,12 @@
             });
         };
 
+        $scope.save = function() {
+            if($scope.currentBankStatement) {
+                BankSvc.save($scope.currentBankStatement);
+            }
+        };
+
         $scope.process = function(status) {
             $scope.busy = true;
 

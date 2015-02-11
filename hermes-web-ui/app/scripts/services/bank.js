@@ -33,6 +33,13 @@
                     data: params
                 });
             },
+            save: function(params) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/bank/statements',
+                    data: params
+                });
+            },
             processStatus: function(params) {
                 return $http({
                     method: 'GET',
