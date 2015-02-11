@@ -5,10 +5,7 @@ import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.core.service.MagentoService;
-import com.m11n.hermes.persistence.AuswertungRepository;
-import com.m11n.hermes.persistence.BankStatementPatternRepository;
-import com.m11n.hermes.persistence.BankStatementRepository;
-import com.m11n.hermes.persistence.FormRepository;
+import com.m11n.hermes.persistence.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -16,12 +13,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -52,6 +54,10 @@ public class DefaultBankService implements BankService {
 
     @Inject
     private FormRepository formRepository;
+
+    @Inject
+    @Named("jdbcTemplateAuswertung")
+    protected NamedParameterJdbcTemplate jdbcTemplate;
 
     private Set<BankStatementPattern> patterns = new HashSet<>();
 
@@ -133,6 +139,18 @@ public class DefaultBankService implements BankService {
         bs.setCurrency(entry.get("currency"));
 
         return bs;
+    }
+
+    @Override
+    public List<BankStatement> listMatched() {
+        Form form = formRepository.findByName("bank_list_matched");
+
+        return jdbcTemplate.query(form.getSqlStatement(), Collections.<String, Object>emptyMap(), new BankStatementMapper());
+    }
+
+    @Override
+    public List<BankStatement> listUnmatched() {
+        return bankStatementRepository.findByStatusAndAmountGreaterThan("new", new BigDecimal(0.0));
     }
 
     @Override
@@ -328,5 +346,28 @@ public class DefaultBankService implements BankService {
     @Deprecated
     public List<Map<String, Object>> getOrders(String orderId) {
         return auswertungRepository.findOrdersByOrderId(orderId);
+    }
+
+    public static class BankStatementMapper extends BaseRowMapper<BankStatement> {
+        @Override
+        public BankStatement mapRow(ResultSet resultSet, int i) throws SQLException {
+            BankStatement bs = new BankStatement();
+            ResultSetMetaData metaData = resultSet.getMetaData();
+
+            for(int j=1; j<=metaData.getColumnCount(); j++) {
+                String name = getLabel(metaData, j);
+                Object value = getValue(resultSet, j);
+
+                if(value!=null && ("matching".equals(name)
+                        || "amount".equals(name)
+                        || "amountDiff".equals(name)
+                        || "amountOrder".equals(name))) {
+                    value = new BigDecimal(((Double)value));
+                }
+                bs.property(name).set(value);
+            }
+
+            return bs;
+        }
     }
 }

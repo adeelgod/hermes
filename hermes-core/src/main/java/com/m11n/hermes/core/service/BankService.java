@@ -12,6 +12,10 @@ public interface BankService {
 
     boolean exists(BankStatement bs);
 
+    List<BankStatement> listMatched();
+
+    List<BankStatement> listUnmatched();
+
     void match();
 
     boolean matchRunning();

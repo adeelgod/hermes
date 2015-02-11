@@ -185,7 +185,7 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         jdbcTemplate.update("UPDATE mage_custom_order SET bank_statement_id = NULL WHERE bank_statement_id = :uuid", Collections.singletonMap("uuid", uuid));
     }
 
-    public static class DefaultMapper extends BaseRowMapper {
+    public static class DefaultMapper extends BaseRowMapper<Map<String, Object>> {
         @Override
         public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
             Map<String, Object> row = new HashMap<>();

@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +37,23 @@ public class BankStatementResource {
     private String resultDir;
 
     @GET
+    @Path("matched")
     @Produces(APPLICATION_JSON)
-    public Response list() {
+    public Response listMatched() {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
 
-        return Response.ok(bankStatementRepository.findByStatusAndAmountGreaterThan("new", new BigDecimal(0.0))).cacheControl(cc).build();
+        return Response.ok(bankService.listMatched()).cacheControl(cc).build();
+    }
+
+    @GET
+    @Path("unmatched")
+    @Produces(APPLICATION_JSON)
+    public Response listUnmatched() {
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+
+        return Response.ok(bankService.listUnmatched()).cacheControl(cc).build();
     }
 
     @GET

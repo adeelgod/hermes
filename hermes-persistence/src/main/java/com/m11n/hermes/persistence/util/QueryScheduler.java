@@ -80,7 +80,7 @@ public class QueryScheduler {
         Object result = null;
 
         try {
-            RowMapper<Map<String, Object>> mapper = new BaseRowMapper() {
+            RowMapper<Map<String, Object>> mapper = new BaseRowMapper<Map<String, Object>>() {
                 @Override
                 public Map<String, Object> mapRow(ResultSet resultSet, int i) throws SQLException {
                     Map<String, Object> row = new HashMap<>();

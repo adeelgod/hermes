@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
 
-public abstract class BaseRowMapper implements RowMapper<Map<String, Object>> {
+public abstract class BaseRowMapper<T> implements RowMapper<T> {
     protected Object getValue(ResultSet resultSet, int i) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
 

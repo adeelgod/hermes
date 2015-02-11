@@ -225,6 +225,24 @@ public class DataInitializer {
         }
 
 
+        // bank list matched
+        form = formRepository.findByName("bank_list_matched");
+        if(form==null) {
+            form = new Form();
+            form.setDb("auswertung");
+            form.setName("bank_list_matched");
+            form.setDescription("Bank Zahlungen (Match List)");
+            form.setSystemForm(true);
+            form.setPosition(6);
+            form.setSqlStatement(IOUtils.toString(DataInitializer.class.getClassLoader().getResourceAsStream("bank_statement_list_matched.sql")));
+            form.setPrintable(false);
+            form.setAccessPublic(false);
+            form = formRepository.save(form);
+
+            formRepository.save(form);
+        }
+
+
         BankStatementPattern bsp = bankStatementPatternRepository.findByName("default_order_id");
         if(bsp==null) {
             bankStatementPatternRepository.save(new BankStatementPattern("default_order_id", 1, ".*(b\\s?e?\\s?s?\\s?t?\\s?e?\\s?l?\\s?l?-?\\s*n?\\s?r?\\s?\\.?\\:?)?(30\\d{7}|3\\s?0\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d\\s?\\d).*", true, 2, "orderId", true));

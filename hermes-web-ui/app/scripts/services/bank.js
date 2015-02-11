@@ -12,10 +12,17 @@
     module.factory('BankSvc', function ($http) {
         // Public API here
         return {
-            list: function(params) {
+            listMatched: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/bank/statements',
+                    url: 'api/bank/statements/matched',
+                    params: params
+                });
+            },
+            listUnmatched: function(params) {
+                return $http({
+                    method: 'GET',
+                    url: 'api/bank/statements/unmatched',
                     params: params
                 });
             },
