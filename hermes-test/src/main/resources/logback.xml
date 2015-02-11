@@ -30,7 +30,7 @@
     <logger name="org.hibernate" level="WARN" />
     <logger name="org.hibernate.engine.jdbc" level="ERROR" />
 
-    <root level="INFO">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
