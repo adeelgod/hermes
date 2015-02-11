@@ -25,6 +25,11 @@
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
 
+        $scope.$on('hermes.sound.off', function() {
+            //$log.info('Switch off sound...');
+            $scope.cancelSound();
+        });
+
         $scope.tooltips = {
             debugShowHide: {title: 'Show/Hide Debug Functions', placement: 'bottom', type: 'info'},
             shipmentSearch: {title: 'Run Query', placement: 'bottom', type: 'info'},

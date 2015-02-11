@@ -171,8 +171,14 @@
             //exception.message += ' (caused by "' + cause + '")';
             //throw exception;
         };
-    }).run(function(editableOptions, LanguageSvc) {
-        editableOptions.theme = 'bs3';
-        LanguageSvc.language('en');
-    });
+    }).run(function($rootScope, editableOptions, LanguageSvc) {
+            editableOptions.theme = 'bs3';
+            LanguageSvc.language('en');
+
+            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                if(toState && toState.name!=='shipping') {
+                    $rootScope.$broadcast('hermes.sound.off');
+                }
+            });
+        });
 })();
