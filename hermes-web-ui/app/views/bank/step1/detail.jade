@@ -2,13 +2,14 @@ extends /layouts/_page
 block content
     .row
         .col-md-4
-            .btn-group.btn-group-lg(ng-show='bankStatements')
-                button.btn.btn-primary(type='button', ng-click='match()', ng-hide='matchRunning')
-                    i.fa.fa-exchange
-                    | &nbsp;Match
-                button.btn.btn-danger(type='button', ng-click='matchCancel()', ng-show='matchRunning')
-                    i.fa.fa-exchange
-                    | &nbsp;Cancel
+            //
+                .btn-group.btn-group-lg(ng-show='bankStatements')
+                    button.btn.btn-primary(type='button', ng-click='match()', ng-hide='matchRunning')
+                        i.fa.fa-exchange
+                        | &nbsp;Match
+                    button.btn.btn-danger(type='button', ng-click='matchCancel()', ng-show='matchRunning')
+                        i.fa.fa-exchange
+                        | &nbsp;Cancel
             .btn-group.btn-group-lg(ng-show='bankStatements')
                 button.btn.btn-success(type='button', ng-click="process('confirm')", ng-hide='processRunning')
                     i.fa.fa-check
