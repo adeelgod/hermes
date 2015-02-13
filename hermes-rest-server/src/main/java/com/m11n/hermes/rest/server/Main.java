@@ -66,7 +66,7 @@ public class Main {
             HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(configuration);
 
             connector.setConnectionFactories(Arrays.<ConnectionFactory>asList(httpConnectionFactory));
-            connector.setIdleTimeout(180000);
+            //connector.setIdleTimeout(180000);
 
             server.setConnectors(new Connector[]{connector});
 
