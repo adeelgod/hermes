@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.service.BankService;
@@ -11,12 +11,11 @@ import org.springframework.stereotype.Controller;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @Path("/bank/patterns")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class BankStatementPatternResource {
     private static final Logger logger = LoggerFactory.getLogger(BankStatementPatternResource.class);
@@ -31,7 +30,7 @@ public class BankStatementPatternResource {
     private BankStatementPatternRepository bankStatementPatternRepository;
 
     @GET
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
@@ -40,13 +39,13 @@ public class BankStatementPatternResource {
     }
 
     @POST
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response assign(BankStatementPattern bsp) {
         return Response.ok(bankStatementPatternRepository.save(bsp)).build();
     }
 
     @DELETE
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@QueryParam("id") String id) {
         bankStatementPatternRepository.delete(id);
         return Response.ok().build();

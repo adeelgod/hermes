@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.model.PrintJob;
@@ -20,6 +20,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.util.*;
@@ -29,11 +30,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @Singleton
 @Path("/printers")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class PrinterResource {
     private static final Logger logger = LoggerFactory.getLogger(PrinterResource.class);
 
@@ -51,7 +50,7 @@ public class PrinterResource {
     private AtomicInteger running = new AtomicInteger(0);
 
     @GET
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
@@ -61,14 +60,14 @@ public class PrinterResource {
 
     @GET
     @Path("/print/status")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response status() {
         return Response.ok(running.get()>0).build();
     }
 
     @GET
     @Path("/print/cancel")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public synchronized Response cancel() throws Exception {
         executor.shutdownNow();
         executor = Executors.newSingleThreadExecutor();
@@ -80,7 +79,7 @@ public class PrinterResource {
 
     @POST
     @Path("/print/all")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public synchronized Response printAll(final PrintRequest req) throws Exception {
         try {
             if(running.get()<=0) {

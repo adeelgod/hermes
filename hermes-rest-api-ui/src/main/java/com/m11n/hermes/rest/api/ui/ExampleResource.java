@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.util.PropertiesUtil;
 import org.apache.commons.io.FileUtils;
@@ -10,22 +10,21 @@ import org.springframework.stereotype.Controller;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @Path("/examples")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class ExampleResource {
     private static final Logger logger = LoggerFactory.getLogger(ExampleResource.class);
 
     @GET
     @Path("/queue")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response queue() throws Exception {
         Properties p = PropertiesUtil.getProperties();
         p.getProperty("hermes.admin.password");

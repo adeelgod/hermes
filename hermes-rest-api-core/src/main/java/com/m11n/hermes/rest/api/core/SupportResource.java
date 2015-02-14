@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.core;
 
 import com.m11n.hermes.core.util.PropertiesUtil;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,10 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @Path("/support")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class SupportResource {
     private static final Logger logger = LoggerFactory.getLogger(SupportResource.class);
@@ -43,7 +42,7 @@ public class SupportResource {
     private SimpleMailMessage simpleMailMessage;
 
     @POST
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response sendLog(Map<String, Object> options) throws Exception {
         MimeMessage message = mailSender.createMimeMessage();
 

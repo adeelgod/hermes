@@ -10,10 +10,15 @@
     </parent>
 
     <artifactId>hermes-rest-api</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>Hermes :: REST :: API</name>
     <description>Hermes REST API</description>
+
+    <modules>
+        <module>../hermes-rest-api-core</module>
+        <module>../hermes-rest-api-ui</module>
+    </modules>
 
     <properties>
         <jetty.port>8081</jetty.port>
@@ -24,41 +29,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>hermes-persistence</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-pdf</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-print</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-report</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-ssh</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-magento</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-bank</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>hermes-service-dhl</artifactId>
             <version>${project.version}</version>
         </dependency>
 

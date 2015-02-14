@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
@@ -15,21 +15,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.CacheControl;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.*;
 import java.io.*;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @Path("/reports")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class ReportResource {
     private static final Logger logger = LoggerFactory.getLogger(ReportResource.class);
@@ -44,7 +38,7 @@ public class ReportResource {
     private String resultDir;
 
     @GET
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response list() throws Exception {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
@@ -66,7 +60,7 @@ public class ReportResource {
     }
 
     @POST
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response report(final Map<String, Object> parameters) throws Exception {
         final Form form = formRepository.findByName(parameters.get("_form").toString());
         parameters.remove("_form");

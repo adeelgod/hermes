@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.core;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

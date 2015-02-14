@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.core;
 
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -22,11 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
-
 @Path("/configuration")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ConfigurationResource {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
 
@@ -43,7 +41,7 @@ public class ConfigurationResource {
     private StringEncryptor encryptor;
 
     @GET
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response list() throws Exception {
         Properties p = PropertiesUtil.getProperties();
 
@@ -93,7 +91,7 @@ public class ConfigurationResource {
     }
 
     @POST
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response save(Map<String, String> properties) throws Exception {
         Properties p = new Properties();
 
@@ -132,8 +130,8 @@ public class ConfigurationResource {
 
     @POST
     @Path("/templates")
-    @Consumes(MULTIPART_FORM_DATA)
-    @Produces(APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
     //public Response upload(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail) throws Exception {
     public Response upload(FormDataMultiPart formParams) throws Exception {
 

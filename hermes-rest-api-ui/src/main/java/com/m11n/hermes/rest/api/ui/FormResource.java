@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.api;
+package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.util.Collections;
@@ -24,10 +25,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @Path("/forms")
-@Produces(APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class FormResource {
     private static final Logger logger = LoggerFactory.getLogger(FormResource.class);
@@ -53,7 +52,7 @@ public class FormResource {
     private ExecutorService executor = Executors.newFixedThreadPool(1);
 
     @GET
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
@@ -63,7 +62,7 @@ public class FormResource {
 
     @POST
     @Path("query")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response query(Map<String, Object> parameters) {
         Object result = Collections.emptyList();
         try {
@@ -108,7 +107,7 @@ public class FormResource {
 
     @POST
     @Path("download")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response download(final List<Map<String, Object>> items) {
         executor.submit(new Runnable() {
             @Override
@@ -146,13 +145,13 @@ public class FormResource {
 
     @GET
     @Path("{name}")
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response get(@PathParam("name") String name) {
         return Response.ok(formRepository.findByName(name)).build();
     }
 
     @POST
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response save(Form form) {
         if(form.getId()==null && (form.getFields()==null || form.getFields().isEmpty())) {
             List<FormField> fields = queryToFieldsUtil.toFields(form.getDb(), form.getSqlStatement());
@@ -166,7 +165,7 @@ public class FormResource {
     }
 
     @DELETE
-    @Produces(APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@QueryParam("id") String id) {
         formRepository.delete(id);
         return Response.ok().build();

@@ -22,6 +22,18 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>hermes-rest-api-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>hermes-rest-api-ui</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>hermes-rest-server-core</artifactId>
             <version>${project.version}</version>
         </dependency>
