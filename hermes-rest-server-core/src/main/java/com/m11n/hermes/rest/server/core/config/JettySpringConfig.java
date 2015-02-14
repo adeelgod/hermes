@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.config;
+package com.m11n.hermes.rest.server.core.config;
 
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;

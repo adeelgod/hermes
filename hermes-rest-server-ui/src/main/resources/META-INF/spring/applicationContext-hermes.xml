@@ -15,7 +15,7 @@
 
     <task:annotation-driven />
 
-    <bean id="properties" class="com.m11n.hermes.rest.server.config.EncryptableBridgePropertyPlaceholderConfigurer">
+    <bean id="properties" class="com.m11n.hermes.rest.server.core.config.EncryptableBridgePropertyPlaceholderConfigurer">
         <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>

@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.servlet;
+package com.m11n.hermes.rest.server.core.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

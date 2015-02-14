@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean id="properties" class="com.m11n.hermes.rest.server.config.EncryptableBridgePropertyPlaceholderConfigurer">
+    <bean id="properties" class="com.m11n.hermes.rest.server.core.config.EncryptableBridgePropertyPlaceholderConfigurer">
         <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>

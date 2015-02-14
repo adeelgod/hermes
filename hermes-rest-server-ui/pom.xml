@@ -15,10 +15,16 @@
     <name>Hermes :: REST :: Server :: UI</name>
 
     <properties>
-        <m11n.project.main>com.m11n.hermes.rest.server.Main</m11n.project.main>
+        <m11n.project.main>com.m11n.hermes.rest.server.core.Main</m11n.project.main>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>hermes-rest-server-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- UI -->
         <dependency>

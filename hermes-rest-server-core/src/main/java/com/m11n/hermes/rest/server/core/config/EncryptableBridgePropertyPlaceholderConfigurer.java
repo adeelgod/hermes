@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.config;
+package com.m11n.hermes.rest.server.core.config;
 
 import org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer;
 import org.jasypt.commons.CommonUtils;

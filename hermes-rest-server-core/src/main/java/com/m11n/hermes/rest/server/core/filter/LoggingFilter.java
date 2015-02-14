@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.filter;
+package com.m11n.hermes.rest.server.core.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

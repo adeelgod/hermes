@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.jersey;
+package com.m11n.hermes.rest.server.core.jersey;
 
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;

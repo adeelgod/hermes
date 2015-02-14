@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.resource;
+package com.m11n.hermes.rest.server.core.resource;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

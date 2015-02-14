@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.config;
+package com.m11n.hermes.rest.server.core.config;
 
 import org.slf4j.bridge.SLF4JBridgeHandler;
 

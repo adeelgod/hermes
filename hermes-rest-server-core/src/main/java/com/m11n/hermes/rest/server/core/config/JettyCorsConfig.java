@@ -1,6 +1,6 @@
-package com.m11n.hermes.rest.server.config;
+package com.m11n.hermes.rest.server.core.config;
 
-import com.m11n.hermes.rest.server.filter.CorsFilter;
+import com.m11n.hermes.rest.server.core.filter.CorsFilter;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;

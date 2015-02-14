@@ -1,6 +1,6 @@
-package com.m11n.hermes.rest.server.config;
+package com.m11n.hermes.rest.server.core.config;
 
-import com.m11n.hermes.rest.server.jersey.HermesApplication;
+import com.m11n.hermes.rest.server.core.jersey.HermesApplication;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;

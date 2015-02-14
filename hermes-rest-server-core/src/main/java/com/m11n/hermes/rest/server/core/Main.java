@@ -1,9 +1,9 @@
-package com.m11n.hermes.rest.server;
+package com.m11n.hermes.rest.server.core;
 
-import com.m11n.hermes.rest.server.config.JettyCorsConfig;
-import com.m11n.hermes.rest.server.config.JettyJerseyConfig;
-import com.m11n.hermes.rest.server.config.JettyShiroConfig;
-import com.m11n.hermes.rest.server.config.LogConfig;
+import com.m11n.hermes.rest.server.core.config.JettyCorsConfig;
+import com.m11n.hermes.rest.server.core.config.JettyJerseyConfig;
+import com.m11n.hermes.rest.server.core.config.JettyShiroConfig;
+import com.m11n.hermes.rest.server.core.config.LogConfig;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
