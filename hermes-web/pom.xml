@@ -16,6 +16,7 @@
 
     <modules>
         <module>../hermes-web-ui</module>
+        <module>../hermes-web-crm</module>
     </modules>
 
     <build>
