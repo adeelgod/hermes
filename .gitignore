@@ -23,9 +23,9 @@ dist/
 node_modules/
 *.log
 ### Hermes
-hermes-rest-server/archive/
-hermes-rest-server/examples/
-hermes-rest-server/inbox/
-hermes-rest-server/result/
-hermes-rest-server/templates/
-hermes-rest-server/.splitcache
+hermes-rest-server-ui/archive
+hermes-rest-server-ui/examples
+hermes-rest-server-ui/inbox
+hermes-rest-server-ui/result
+hermes-rest-server-ui/templates
+hermes-rest-server-ui/.splitcache
