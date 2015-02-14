@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <cache:annotation-driven />
+
+    <!-- cache definitions -->
+    <cache:advice id="cacheAdvice" cache-manager="cacheManager">
+        <cache:caching cache="forms">
+            <cache:cacheable method="findAll" />
+            <cache:cacheable method="findByName" />
+            <cache:cacheable method="findByExecuteOnStartup" />
+            <cache:cache-evict method="save" all-entries="true"/>
+            <cache:cache-evict method="delete" all-entries="true"/>
+        </cache:caching>
+    </cache:advice>
+
+    <!-- apply the cacheable behavior to all BookService interfaces -->
+    <aop:config>
+        <aop:advisor advice-ref="cacheAdvice" pointcut="execution(* com.m11n.hermes.persistence.FormRepository.*(..))"/>
+    </aop:config>
+
+    <!-- simple cache manager -->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="default" />
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="forms" />
+                </bean>
+            </set>
+        </property>
+    </bean>
+</beans>

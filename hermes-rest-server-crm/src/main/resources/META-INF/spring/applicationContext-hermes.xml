@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+    <context:annotation-config />
+
+    <tx:annotation-driven/>
+
+    <task:annotation-driven />
+
+    <bean id="properties" class="com.m11n.hermes.rest.server.core.config.EncryptableBridgePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
+        <property name="locations">
+            <list>
+                <value>classpath:git.properties</value>
+                <value>file:./hermes.properties</value>
+                <value>file:./common.properties</value>
+                <value>file:../hermes-test/src/main/resources/hermes.properties</value>
+                <value>file:../hermes-test/src/main/resources/common.properties</value>
+            </list>
+        </property>
+        <property name="order" value="-1"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <context:component-scan base-package="com.m11n.hermes">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+
+    <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
+
+    <import resource="applicationContext-hermes-persistence.xml" />
+    <import resource="applicationContext-hermes-cache.xml" />
+    <import resource="applicationContext-hermes-camel.xml" />
+    <import resource="applicationContext-hermes-support.xml" />
+
+    <bean class="com.m11n.hermes.similarity.StringSimilarityServiceImpl">
+        <constructor-arg>
+            <bean class="com.m11n.hermes.similarity.DiceCoefficientStrategy"/>
+        </constructor-arg>
+    </bean>
+
+</beans>
