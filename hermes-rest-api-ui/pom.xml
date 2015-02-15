@@ -15,11 +15,6 @@
     <name>Hermes :: REST :: API :: UI</name>
     <description>Hermes REST API - UI</description>
 
-    <properties>
-        <jetty.port>8081</jetty.port>
-        <jetty.webapps.dir>api</jetty.webapps.dir>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

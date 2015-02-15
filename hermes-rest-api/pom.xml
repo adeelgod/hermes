@@ -18,6 +18,7 @@
     <modules>
         <module>../hermes-rest-api-core</module>
         <module>../hermes-rest-api-ui</module>
+        <module>../hermes-rest-api-crm</module>
     </modules>
 
     <properties>
