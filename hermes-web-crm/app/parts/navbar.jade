@@ -17,5 +17,8 @@ header.navbar.navbar-inverse.navbar-fixed-top(role='navigation', ng-controller='
                         i.fa.fa-2x.fa-home
             ul.nav.navbar-nav.navbar-right
                 li
+                    a(href='', ui-sref='configuration', ng-show='authenticated')
+                        i.fa.fa-2x.fa-cog
+                li
                     button.btn.navbar-btn.btn-primary(type='button', ui-sref='signin', ng-hide='authenticated') Sign in
                     button.btn.navbar-btn.btn-danger(type='button', ng-click='logout()', ng-show='authenticated') Logout

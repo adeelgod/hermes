@@ -116,7 +116,7 @@
                             <phase>generate-resources</phase>
                             <configuration>
                                 <target>
-                                    <copy file="../hermes-doc/target/generated-docs/html5/index.html" tofile="${project.build.directory}/classes/hermes-web-ui/help.html" />
+                                    <copy file="../hermes-doc/target/generated-docs/html5/index.html" tofile="${project.build.directory}/classes/www/help.html" />
                                 </target>
                             </configuration>
                             <goals>

@@ -1,0 +1,414 @@
+extends /layouts/_page
+block content
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-show='authenticated && !loading')
+        .col-md-12
+            h2
+                i.fa.fa-cog
+                | &nbsp;
+                | Configuration
+            ul.nav.nav-tabs(role='tablist')
+                li(role='presentation', ng-class="{'active': tab=='database'}")
+                    a(href='', ng-click="tab='database'", role='tab') Database
+                li(role='presentation', ng-class="{'active': tab=='magento'}")
+                    a(href='', ng-click="tab='magento'", role='tab') Magento
+                li(role='presentation', ng-class="{'active': tab=='dhl'}")
+                    a(href='', ng-click="tab='dhl'", role='tab') DHL
+                li(role='presentation', ng-class="{'active': tab=='directory'}")
+                    a(href='', ng-click="tab='directory'", role='tab') Directories
+                li(role='presentation', ng-class="{'active': tab=='form'}")
+                    a(href='', ng-click="tab='form'", role='tab') Form
+                li(role='presentation', ng-class="{'active': tab=='parse'}")
+                    a(href='', ng-click="tab='parse'", role='tab') Parse
+                li(role='presentation', ng-class="{'active': tab=='reporting'}")
+                    a(href='', ng-click="tab='reporting'", role='tab') Reporting
+                li(role='presentation', ng-class="{'active': tab=='print'}")
+                    a(href='', ng-click="tab='print'", role='tab') Printers
+                li(role='presentation', ng-class="{'active': tab=='ssh'}")
+                    a(href='', ng-click="tab='ssh'", role='tab') SSH
+                li(role='presentation', ng-class="{'active': tab=='mail'}")
+                    a(href='', ng-click="tab='mail'", role='tab') Mail
+            .tab-content
+                .tab-pane(role='tabpanel', id='database', ng-class="{'active': tab=='database'}")
+                    form(role='form', name='databaseForm', novalidate='')
+                        .form-group
+                            label(for='db') Database Type
+                            button.btn.btn-default(type='button', ng-model="database", ng-change='updateDatebase()', ng-options='db.name for db in databases', bs-select='')
+                        .form-group
+                            h3 Auswertung DB
+                        .form-group
+                            label(for='dbAuswertungDriver') Database Driver
+                            input.form-control(name='dbAuswertungDriver', ng-model="configuration['hermes.db.auswertung.driver']", placeholder='Database Driver', type='text', disabled='')
+                        .form-group
+                            label(for='dbAuswertungUrl') Database URL
+                            input.form-control(name='dbAuswertungUrl', ng-model="configuration['hermes.db.auswertung.url']", placeholder='Database URL', type='text')
+                        .form-group
+                            label(for='dbAuswertungUsername') Database Username
+                            input.form-control(name='dbAuswertungUsername', ng-model="configuration['hermes.db.auswertung.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='dbAuswertungPassword') Database Password
+                            input.form-control(name='dbAuswertungPassword', ng-model="configuration['hermes.db.auswertung.password']", placeholder='Password', type='password')
+                        hr
+                        .form-group
+                            h3 LCarb DB
+                        .form-group
+                            label(for='dbLCarbDriver') Database Driver
+                            input.form-control(name='dbLCarbDriver', ng-model="configuration['hermes.db.lcarb.driver']", placeholder='Database Driver', type='text', disabled='')
+                        .form-group
+                            label(for='dbLCarbUrl') Database URL
+                            input.form-control(name='dbLCarbUrl', ng-model="configuration['hermes.db.lcarb.url']", placeholder='Database URL', type='text')
+                        .form-group
+                            label(for='dbLCarbUsername') Database Username
+                            input.form-control(name='dbLCarbUsername', ng-model="configuration['hermes.db.lcarb.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='dbLCarbPassword') Database Password
+                            input.form-control(name='dbLCarbPassword', ng-model="configuration['hermes.db.lcarb.password']", placeholder='Password', type='password')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.db.multiple.queries']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.db.multiple.queries'], 'fa-circle-o': !configuration['hermes.db.multiple.queries']}")
+                            label(for='') Query optimization
+                        hr
+                        .form-group
+                            label(for='') Hibernate Dialect
+                            input.form-control(name='hibernateDialect', ng-model="configuration['hibernate.dialect']", placeholder='Dialect', type='text', disabled='')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hibernate.show_sql']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hibernate.show_sql'], 'fa-circle-o': !configuration['hibernate.show_sql']}")
+                            label(for='') Hibernate Show SQL
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hibernate.format_sql']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hibernate.format_sql'], 'fa-circle-o': !configuration['hibernate.format_sql']}")
+                            label(for='') Hibernate Format SQL
+                        .form-group
+                            label(for='') Hibernate Naming Strategy
+                            input.form-control(name='hibernate', ng-model="configuration['hibernate.ejb.naming_strategy']", placeholder='Naming Strategy', type='text', disabled='')
+                        .form-group
+                            label(for='') Hibernate DDL Auto
+                            input.form-control(name='hibernateDdl', ng-model="configuration['hibernate.hbm2ddl.auto']", placeholder='DDL Auto', type='text', disabled='')
+                .tab-pane(role='tabpanel', id='magento', ng-class="{'active': tab=='magento'}")
+                    form(role='form', name='magentoForm', novalidate='')
+                        .form-group
+                            label(for='magentoUsername') API Username
+                            input.form-control(name='magentoUsername', ng-model="configuration['hermes.magento.api.username']", placeholder='API Username', type='text')
+                        .form-group
+                            label(for='magentoPassword') API Password
+                            input.form-control(name='magentoPassword', ng-model="configuration['hermes.magento.api.password']", placeholder='API Password', type='password')
+                        .form-group
+                            label(for='magentoRetryWait') Retry Wait (in ms)
+                            input.form-control(name='magentoRetryWait', ng-model="configuration['hermes.magento.api.retry.wait']", placeholder='API Retry Wait', type='text')
+                        .form-group
+                            label(for='magentoRetryMax') Retry Max.
+                            input.form-control(name='magentoRetryMax', ng-model="configuration['hermes.magento.api.retry.max']", placeholder='API Retry Max.', type='text')
+                        hr
+                        .form-group
+                            label(for='bankLookupPeriod') Lookup period bank statements (in months)
+                            input.form-control(name='bankLookupPeriod', ng-model="configuration['hermes.bank.statement.lookup.period']", placeholder='Lookup period bank statements', type='text')
+                        .form-group
+                            label(for='bankAutoAssignThreshold') Automatic assignment of bank statements when match > X %
+                            input.form-control(name='bankAutoAssignThreshold', ng-model="configuration['hermes.bank.statement.auto.assignment.threshold']", placeholder='Match threshold in %', type='text')
+                .tab-pane(role='tabpanel', id='dhl', ng-class="{'active': tab=='dhl'}")
+                    form(role='form', name='dhlForm', novalidate='')
+                        .form-group
+                            .alert.alert-info(role='alert')
+                                p More infos here:&nbsp;
+                                    a(href='https://entwickler.dhl.de/group/ep/geschaeftskundenversand/authentifizierung', target='_blank') https://entwickler.dhl.de/group/ep/geschaeftskundenversand/authentifizierung
+                        .form-group
+                            label(for='dhlUsername') Dev. Username
+                            input.form-control(name='dhlUsername', ng-model="configuration['hermes.dhl.api.username']", placeholder='Dev. Username', type='text')
+                        .form-group
+                            label(for='dhlPassword') Dev. Password
+                            input.form-control(name='dhlPassword', ng-model="configuration['hermes.dhl.api.password']", placeholder='Dev. Password', type='password')
+                        .form-group
+                            label(for='dhlCisUsername') CIS Username
+                            input.form-control(name='dhlCisUsername', ng-model="configuration['hermes.dhl.cis.username']", placeholder='CIS Username', type='text')
+                        .form-group
+                            label(for='dhlCisPassword') CIS Password
+                            input.form-control(name='magentoRetryMax', ng-model="configuration['hermes.dhl.cis.password']", placeholder='CIS Password', type='password')
+                        .form-group
+                            label(for='dhlCisEkp') CIS EKP
+                            input.form-control(name='dhlCisEkp', ng-model="configuration['hermes.dhl.cis.ekp']", placeholder='CIS EKP', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hibernate.dhl.api.production']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hibernate.dhl.api.production'], 'fa-circle-o': !configuration['hibernate.dhl.api.production']}")
+                            label(for='', ng-show="configuration['hibernate.dhl.api.production']") Production
+                            label(for='', ng-hide="configuration['hibernate.dhl.api.production']") Sandbox
+                        hr
+                        .alert.alert-info(role='alert')
+                            p Some examples for cron expressions.
+                                a.btn.btn-link(href='', ng-click='trackingCronExamples=!trackingCronExamples')
+                                    span(ng-hide='trackingCronExamples') Show
+                                    span(ng-show='trackingCronExamples') Hide
+                            table.table.table-condensed(ng-show='trackingCronExamples', class='am-fade')
+                                thead
+                                    tr
+                                        td
+                                            h4 Example
+                                        td
+                                            h4 Description
+                                tbody
+                                    tr
+                                        td
+                                            b 0 0 12 * * ?
+                                        td Fire at 12pm (noon) every day
+                                    tr
+                                        td
+                                            b 0 15 10 ? * *
+                                        td Fire at 10:15am every day
+                                    tr
+                                        td
+                                            b 0 15 10 * * ?
+                                        td Fire at 10:15am every day
+                                    tr
+                                        td
+                                            b 0 15 10 * * ? *
+                                        td Fire at 10:15am every day
+                                    tr
+                                        td
+                                            b 0 15 10 * * ? 2005
+                                        td Fire at 10:15am every day during the year 2005
+                                    tr
+                                        td
+                                            b 0 0/5 14,18 * * ?
+                                        td Fire every 5 minutes starting at 2pm and ending at 2:55pm, AND fire every 5 minutes starting at 6pm and ending at 6:55pm, every day
+                                    tr
+                                        td
+                                            b 0 15 10 ? * MON-FRI
+                                        td Fire at 10:15am every Monday, Tuesday, Wednesday, Thursday and Friday
+                                    tr
+                                        td
+                                            b 0 15 10 ? * 6L 2002-2005
+                                        td Fire at 10:15am on every last friday of every month during the years 2002, 2003, 2004 and 2005
+                        .form-group
+                            label(for='dhlTrackingCron') Tracking number check schedule (cron expression)
+                            input.form-control(name='dhlTrackingCron', ng-model="configuration['hermes.dhl.tracking.cron']", placeholder='Cron Expression', type='text')
+                        hr
+                        .alert.alert-info(role='alert')
+                            p Reminder: status patterns are defined as regular expressions.
+                                a.btn.btn-link(href='', ng-click='intrashipRegexExamples=!intrashipRegexExamples')
+                                    span(ng-hide='intrashipRegexExamples') Show Examples
+                                    span(ng-show='intrashipRegexExamples') Hide Examples
+                            table.table.table-condensed(ng-show='intrashipRegexExamples', class='am-fade')
+                                thead
+                                    tr
+                                        td
+                                            h4 Example
+                                        td
+                                            h4 Description
+                                tbody
+                                    tr
+                                        td
+                                            b (.+)
+                                        td Any character, one or more
+                                    tr
+                                        td
+                                            b (.*)
+                                        td Any character, zero or more
+                                    tr
+                                        td
+                                            b |
+                                        td "or" delimiter
+                                    tr
+                                        td
+                                            b \
+                                        td Escape character
+                                    tr
+                                        td
+                                            b \|
+                                        td Match character "|". Has to be escaped, because standalone "|" means "or"
+                        .form-group
+                            label(for='intrashipStatusSuccess') Intraship Status "success" Regex
+                            input.form-control(name='intrashipStatusSuccess', ng-model="configuration['hermes.magento.intraship.status.success']", placeholder='Intraship Status success', type='text')
+                        .form-group
+                            label(for='intrashipStatusWarning') Intraship Status "warning" Regex
+                            input.form-control(name='intrashipStatusWarning', ng-model="configuration['hermes.magento.intraship.status.warning']", placeholder='Intraship Status warning', type='text')
+                        .form-group
+                            label(for='intrashipStatusError') Intraship Status "error" Regex
+                            input.form-control(name='intrashipStatusError', ng-model="configuration['hermes.magento.intraship.status.error']", placeholder='Intraship Status error', type='text')
+                        .form-group
+                            label(for='intrashipStatusRetry') Intraship Status "retry" Regex
+                            input.form-control(name='intrashipStatusRetry', ng-model="configuration['hermes.magento.intraship.status.retry']", placeholder='Intraship Status retry', type='text')
+                        .form-group
+                            label(for='intrashipStatusRetryCount') Intraship Retry Attempts
+                            input.form-control(name='intrashipStatusRetryCount', ng-model="configuration['hermes.magento.intraship.status.retry.count']", placeholder='Retry Attempts', type='text')
+                        .form-group
+                            label(for='intrashipStatusRetryWait') Intraship Retry Timeout
+                            input.form-control(name='intrashipStatusRetryTimeout', ng-model="configuration['hermes.magento.intraship.status.retry.wait']", placeholder='Retry Timeout', type='text')
+                .tab-pane(role='tabpanel', id='directory', ng-class="{'active': tab=='directory'}")
+                    form(role='form', name='directoryForm', novalidate='')
+                        .form-group
+                            label(for='inboxDir') Inbox Directory
+                            input.form-control(name='inboxDir', ng-model="configuration['hermes.inbox.dir']", placeholder='Inbox Directory', type='text')
+                        .form-group
+                            label(for='resultDir') Result Directory
+                            input.form-control(name='resultDir', ng-model="configuration['hermes.result.dir']", placeholder='Result Directory', type='text')
+                        .form-group
+                            label(for='examplesDir') Examples Directory
+                            input.form-control(name='examplesDir', ng-model="configuration['hermes.examples.dir']", placeholder='Examples Directory', type='text')
+                        .form-group
+                            label(for='archiveDir') Archive Directory
+                            input.form-control(name='archiveDir', ng-model="configuration['hermes.archive.dir']", placeholder='Archive Directory', type='text')
+                .tab-pane(role='tabpanel', id='form', ng-class="{'active': tab=='form'}")
+                    form(role='form', name='formForm', novalidate='')
+                        .form-group
+                            label(for='ordersForm') Orders Form
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.orders.form']", ng-options='form.name as form.name for form in forms', bs-select='')
+                        .form-group
+                            label(for='shippingForm') Shipping Form
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.shipping.form']", ng-options='form.name as form.name for form in forms', bs-select='')
+                        .form-group
+                            label(for='chargeSize') Charge Size
+                            input.form-control(name='chargeSize', ng-model="configuration['hermes.charge.size']", placeholder='Charge Size', type='text')
+                .tab-pane(role='tabpanel', id='parse', ng-class="{'active': tab=='parse'}")
+                    form(role='form', name='parseForm', novalidate='')
+                        .form-group
+                            label(for='invoiceOrderField') Invoice Order ID Field(s)
+                            input.form-control(name='invoiceOrderField', ng-model="configuration['hermes.invoice.order.field']", placeholder='Invoice Order ID Field', type='text')
+                        .form-group
+                            label(for='invoiceIdField') Invoice ID Field(s)
+                            input.form-control(name='invoiceIdField', ng-model="configuration['hermes.invoice.id.field']", placeholder='Invoice ID Field', type='text')
+                        .form-group
+                            label(for='labelOrderField') Label Order ID Field(s)
+                            input.form-control(name='labelOrderField', ng-model="configuration['hermes.label.order.field']", placeholder='Label Order ID Field', type='text')
+                        .form-group
+                            label(for='labelIdField') Label Shipping ID Field(s)
+                            input.form-control(name='labelIdField', ng-model="configuration['hermes.label.id.field']", placeholder='Label Shipping ID Field', type='text')
+                .tab-pane(role='tabpanel', id='report', ng-class="{'active': tab=='reporting'}")
+                    form(role='form', name='reportForm', novalidate='')
+                        .form-group
+                            label(for='orderReportTemplate') Order Report Template(s)
+                            //br
+                            //button.btn.btn-default(type='button', ng-model="configuration['hermes.reporting.template.report']", ng-options='rep for rep in reports', bs-select='')
+                            input.form-control(name='templateDir', ng-model="configuration['hermes.reporting.template.report']", placeholder='Template Directory', type='text')
+                        .form-group
+                            label(for='templateDir') Template Directory
+                            input.form-control(name='templateDir', ng-model="configuration['hermes.reporting.template.dir']", placeholder='Template Directory', type='text')
+                        .form-group
+                            label(for='templateFile') Template File
+                            input(type='file', name='templateFile', nv-file-select='', uploader='uploader', multiple='')
+                            br
+                            ul
+                                li(ng-repeat='item in uploader.queue')
+                                    button.btn.btn-primary(type='button', ng-click='item.upload()')
+                                        i.fa.fa-cloud-upload
+                                    | &nbsp;
+                                    span(ng-bind='item.file.name')
+                        .form-group
+                            label(for='virtualizerDir') Virtualizer Directory
+                            input.form-control(name='virtualizerDir', ng-model="configuration['hermes.reporting.virtualizer.dir']", placeholder='Virtualizer Directory', type='text')
+                        .form-group
+                            label(for='virtualizerType') Virtualizer Type
+                            input.form-control(name='virtualizerType', ng-model="configuration['hermes.reporting.virtualizer.type']", placeholder='Virtualizer Type', type='text', disabled='')
+                .tab-pane(role='tabpanel', id='print', ng-class="{'active': tab=='print'}")
+                    form(role='form', name='printForm', novalidate='')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.fast']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.printer.fast'], 'fa-circle-o': !configuration['hermes.printer.fast']}")
+                            label(for='') Fast print
+                            p.alert.alert-warning
+                                | This is an experimental feature
+                        .form-group
+                            label(for='printMethod') Printing Method
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.method']", ng-options='method.name as method.name for method in printMethods', bs-select='')
+                        .form-group(ng-show="configuration['hermes.printer.method']=='ACROBAT'")
+                            label(for='printMethodAcrobat') Acrobat Command
+                            input.form-control(name='printMethodAcrobat', ng-model="configuration['hermes.printer.method.acrobat']", placeholder='Acrobat Command', type='text')
+                        .form-group(ng-show="configuration['hermes.printer.method']=='GHOSTSCRIPT'")
+                            label(for='printMethodGhostscript') Ghostscript Command
+                            input.form-control(name='printMethodGhostscript', ng-model="configuration['hermes.printer.method.ghostscript']", placeholder='Ghostscript Command', type='text')
+                        .form-group(ng-show="configuration['hermes.printer.method']=='IMAGE'")
+                            label(for='printMethodImageFormat') Image Format
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.method.image.format']", ng-options='format.name as format.name for format in imageFormats', bs-select='')
+                        .form-group
+                            label(for='invoicePrinter') Invoice Printer
+                            br
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.invoice']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
+                        .form-group
+                            label(for='labelPrinter') Label Printer
+                            br
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.label']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
+                        .form-group
+                            label(for='reportPrinter') Report Printer
+                            br
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.printer.report']", ng-options='printer.name as printer.name for printer in printers', bs-select='')
+                .tab-pane(role='tabpanel', id='ssh', ng-class="{'active': tab=='ssh'}")
+                    form(role='form', name='sshForm', novalidate='')
+                        .form-group
+                            label(for='adminPassword') Admin Password
+                            input.form-control(name='adminPassword', ng-model="configuration['hermes.admin.password']", placeholder='Admin Password', type='password')
+                        .form-group
+                            label(for='sshPort') SSH Port
+                            input.form-control(name='sshPort', ng-model="configuration['hermes.ssh.port']", placeholder='SSH Port', type='text')
+                        .form-group
+                            label(for='sshUsername') Username
+                            input.form-control(name='sshUsername', ng-model="configuration['hermes.ssh.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='sshPassword') Password
+                            input.form-control(name='sshPassword', ng-model="configuration['hermes.ssh.password']", placeholder='Password', type='password')
+                        .form-group
+                            label(for='sshLocalPort') Local Port
+                            input.form-control(name='sshLocalPort', ng-model="configuration['hermes.ssh.local.port']", placeholder='Local Port', type='text')
+                        .form-group
+                            label(for='sshRemoteHost') Remote Host
+                            input.form-control(name='sshRemoteHost', ng-model="configuration['hermes.ssh.remote.host']", placeholder='Remote Host', type='text')
+                        .form-group
+                            label(for='sshRemotePort') Remote Port
+                            input.form-control(name='sshRemotePort', ng-model="configuration['hermes.ssh.remote.port']", placeholder='Remote Port', type='text')
+                        .form-group
+                            label(for='sshRemoteBinding') Remote Binding
+                            input.form-control(name='sshRemoteBinding', ng-model="configuration['hermes.ssh.remote.binding']", placeholder='Remote Binding', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.ssh.compression']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.ssh.compression'], 'fa-circle-o': !configuration['hermes.ssh.compression']}")
+                            label(for='') SSH Compression
+                            p.alert.alert-warning
+                                | This is an experimental feature
+                .tab-pane(role='tabpanel', id='mail', ng-class="{'active': tab=='mail'}")
+                    form(role='form', name='mailForm', novalidate='')
+                        .form-group
+                            label(for='mailHost') Mail Host
+                            input.form-control(name='mailHost', ng-model="configuration['hermes.mail.host']", placeholder='Mail Host', type='text')
+                        .form-group
+                            label(for='mailPort') Mail Port
+                            input.form-control(name='mailPort', ng-model="configuration['hermes.mail.port']", placeholder='Mail Port', type='text')
+                        .form-group
+                            label(for='mailUsername') Username
+                            input.form-control(name='mailUsername', ng-model="configuration['hermes.mail.username']", placeholder='Username', type='text')
+                        .form-group
+                            label(for='mailPassword') Password
+                            input.form-control(name='mailPassword', ng-model="configuration['hermes.mail.password']", placeholder='Password', type='password')
+                        .form-group
+                            label(for='mailProtocol') Protocol
+                            input.form-control(name='mailProtocol', ng-model="configuration['hermes.mail.transport.protocol']", placeholder='Protocol', type='text')
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.smtp.auth']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.smtp.auth'], 'fa-circle-o': !configuration['hermes.mail.smtp.auth']}")
+                            label(for='mailAuth') SMTP Auth
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.smtp.ssl.enable']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.smtp.ssl.enable'], 'fa-circle-o': !configuration['hermes.mail.smtp.ssl.enable']}")
+                            label(for='mailSsl') SMTP SSL
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.smtp.starttls.enable']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.smtp.starttls.enable'], 'fa-circle-o': !configuration['hermes.mail.smtp.starttls.enable']}")
+                            label(for='mailStartTLS') StartTLS
+                        .form-group
+                            button.btn.btn-default(type='button', ng-model="configuration['hermes.mail.debug']", bs-checkbox='')
+                                i.fa(ng-class="{'fa-circle': configuration['hermes.mail.debug'], 'fa-circle-o': !configuration['hermes.mail.debug']}")
+                            label(for='mailDebug') Debug
+                        .form-group
+                            label(for='mailFrom') From
+                            input.form-control(name='mailFrom', ng-model="configuration['hermes.mail.from']", placeholder='From', type='text')
+                        .form-group
+                            label(for='mailTo') To
+                            input.form-control(name='mailTo', ng-model="configuration['hermes.mail.to']", placeholder='To', type='text')
+                        .form-group
+                            label(for='mailSubject') Subject
+                            input.form-control(name='mail', ng-model="configuration['hermes.mail.subject']", placeholder='Subject', type='text')
+            button.btn.btn-lg.btn-primary(type='button', ng-click='save()')
+                i.fa.fa-floppy-o
+                | &nbsp;
+                | Save

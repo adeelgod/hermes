@@ -4,7 +4,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: index.html:76
+#: index.html:77
 #: parts/footer.html:5
 msgid "About"
 msgstr ""

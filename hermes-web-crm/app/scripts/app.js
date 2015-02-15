@@ -45,6 +45,12 @@
                 templateUrl: 'views/about.html',
                 controller: 'AboutCtrl'
             })
+            .state('configuration', {
+                abstract: false,
+                url: '/configuration',
+                templateUrl: 'views/configuration.html',
+                controller: 'ConfigurationCtrl'
+            })
             .state('signin', {
                 abstract: false,
                 url: '/signin',

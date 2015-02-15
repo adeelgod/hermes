@@ -1,0 +1,37 @@
+extends /layouts/_page
+
+block content
+    .row
+        .col-md-offset-3.col-md-6.col-xs-12
+            form(role='form', name='loginForm', novalidate='')
+                fieldset
+                    h2 Please Sign In
+                    hr
+                    .form-group.has-feedback
+                        .input-group
+                            input#email.form-control.input-lg(type='text', name='username', placeholder='Username', required='', ng-model='login.username', autofocus='')
+                            .input-group-addon
+                                i.fa(ng-class='{"fa-exclamation": loginForm.username.$invalid && !loginForm.username.$pristine, "fa-check": loginForm.username.$valid && !loginForm.username.$pristine}')
+                        p.help-block(ng-show='loginForm.username.$invalid && !loginForm.username.$pristine', class='am-fade') You need to provide a valid username
+                    .form-group
+                        .input-group
+                            input#password.form-control.input-lg(type='password', name='password', placeholder='Password', required='', ng-model='login.password')
+                            .input-group-addon
+                                i.fa(ng-class='{"fa-exclamation": loginForm.password.$invalid && !loginForm.password.$pristine, "fa-check": loginForm.password.$valid && !loginForm.password.$pristine}')
+                        p.help-block(ng-show='loginForm.password.$invalid && !loginForm.password.$pristine', class='am-fade') You need to provide a password
+                    //
+                        .form-group
+                            .btn-group(bs-radio-group='', ng-model='login.rememberMe')
+                                label.btn.btn-default
+                                    input.btn.btn-default(type='radio', value='true')
+                                    | Yes
+                                label.btn.btn-default
+                                    input.btn.btn-default(type='radio', value='false')
+                                    | No
+                            label
+                                | Remember me
+                    .form-group
+                        button.btn.btn-lg.btn-primary(ng-click='signin()')
+                            i.fa.fa-unlock
+                            | &nbsp;
+                            | Sign In

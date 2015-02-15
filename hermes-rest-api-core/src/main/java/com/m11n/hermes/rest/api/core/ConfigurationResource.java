@@ -10,6 +10,7 @@ import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.jasypt.encryption.StringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -29,16 +30,16 @@ public class ConfigurationResource {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
 
     @Inject
-    private ReportService reportService;
-
-    @Inject
     private FormRepository formRepository;
 
     @Inject
-    private PrinterService printerService;
-
-    @Inject
     private StringEncryptor encryptor;
+
+    @Autowired(required = false)
+    private ReportService reportService;
+
+    @Autowired(required = false)
+    private PrinterService printerService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,22 +52,27 @@ public class ConfigurationResource {
 
         configuration.put("properties", p);
         configuration.put("forms", formRepository.findAll());
-        configuration.put("printers", printerService.printers());
 
-        File templateDir = new File(reportService.getTemplateDir());
-
-        String[] templates = null;
-
-        if(templateDir.exists()) {
-            templates = templateDir.list(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".jrxml");
-                }
-            });
+        if(printerService!=null) {
+            configuration.put("printers", printerService.printers());
         }
 
-        configuration.put("templates", templates);
+        if(reportService!=null) {
+            File td = new File(reportService.getTemplateDir());
+
+            String[] templates = null;
+
+            if(td.exists()) {
+                templates = td.list(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.endsWith(".jrxml");
+                    }
+                });
+            }
+
+            configuration.put("templates", templates);
+        }
 
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
@@ -111,7 +117,6 @@ public class ConfigurationResource {
             p.setProperty(key, value);
         }
 
-        //p.store(new FileOutputStream("hermes.properties"), "Hermes");
         PropertiesUtil.save(p);
 
         return Response.ok().build();
@@ -119,11 +124,9 @@ public class ConfigurationResource {
 
     private String encrypt(String value) {
         if(value.startsWith("ENC(") || StringUtils.isEmpty(value)) {
-            //logger.info("+++++++++++++++++++++++ SKIP ENCRYPTION: {} -> {}", name, value);
             return value;
         } else {
             String val = "ENC(" + encryptor.encrypt(value) + ")";
-            //logger.info("+++++++++++++++++++++++ ENCRYPTION: {} -> {} -> {}", name, value, val);
             return val;
         }
     }
@@ -132,13 +135,11 @@ public class ConfigurationResource {
     @Path("/templates")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    //public Response upload(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail) throws Exception {
     public Response upload(FormDataMultiPart formParams) throws Exception {
 
         // TODO: implement this
 
         for(Map.Entry<String, List<FormDataBodyPart>> entry : formParams.getFields().entrySet()) {
-            //FormDataBodyPart field = entry.getValue();
             for(FormDataBodyPart field : entry.getValue()) {
                 logger.info("########################### CONFIG UPLOAD... {} - {} ({})", entry.getKey(), field.getName(), field.getMediaType());
             }
