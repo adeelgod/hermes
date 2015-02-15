@@ -26,7 +26,7 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
 
-    <import resource="applicationContext-hermes-persistence.xml" />
+    <import resource="applicationContext-hermes-persistence-ssh.xml" />
     <import resource="applicationContext-hermes-camel-test.xml" />
     <import resource="applicationContext-hermes-support.xml" />
 

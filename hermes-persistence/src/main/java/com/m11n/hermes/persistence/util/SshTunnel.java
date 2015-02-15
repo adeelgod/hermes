@@ -6,12 +6,10 @@ import com.jcraft.jsch.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-@Component
 public class SshTunnel {
     private static final Logger logger = LoggerFactory.getLogger(SshTunnel.class);
 

@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@DependsOn("dataInitializer")
+@DependsOn("dataSourceJpa")
 public class QueryScheduler {
     private static final Logger logger = LoggerFactory.getLogger(QueryScheduler.class);
 

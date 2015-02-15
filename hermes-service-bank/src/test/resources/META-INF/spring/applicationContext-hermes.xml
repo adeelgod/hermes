@@ -23,7 +23,7 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
 
-    <import resource="applicationContext-hermes-persistence.xml" />
+    <import resource="applicationContext-hermes-persistence-ssh.xml" />
 
     <bean class="com.m11n.hermes.similarity.StringSimilarityServiceImpl">
         <constructor-arg>

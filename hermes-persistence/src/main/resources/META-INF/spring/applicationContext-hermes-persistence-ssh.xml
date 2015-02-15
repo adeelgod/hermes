@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="sshTunnel" class="com.m11n.hermes.persistence.util.SshTunnel" />
+
+    <bean id="dataSourceJpa" class="com.zaxxer.hikari.HikariDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.db.auswertung.username}" />
+        <property name="password" value="${hermes.db.auswertung.password}" />
+        <property name="driverClassName" value="${hermes.db.auswertung.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.auswertung.url}" />
+    </bean>
+
+    <bean id="dataSourceLCarb" class="com.zaxxer.hikari.HikariDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.db.lcarb.username}" />
+        <property name="password" value="${hermes.db.lcarb.password}" />
+        <property name="driverClassName" value="${hermes.db.lcarb.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.lcarb.url}" />
+    </bean>
+
+    <import resource="applicationContext-hermes-persistence-common.xml" />
+
+</beans>

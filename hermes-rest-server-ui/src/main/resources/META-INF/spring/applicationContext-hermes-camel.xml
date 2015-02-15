@@ -5,4 +5,101 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
+    <!-- pdf -->
+
+    <bean id="pdfFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*.pdf"/>
+    </bean>
+
+    <bean id="splitFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
+        <property name="fileStore">
+            <bean class="java.io.File">
+                <constructor-arg value="./.splitcache" />
+            </bean>
+        </property>
+    </bean>
+
+    <!-- csv -->
+
+    <bean id="csvFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*.csv"/>
+    </bean>
+
+    <bean id="csvConfig" class="org.apache.commons.csv.writer.CSVConfig">
+        <property name="fields">
+            <list>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="account" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="transferDate" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="valutaDate" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="receiver1" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="receiver2" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="description" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="amount" />
+                </bean>
+                <bean class="org.apache.commons.csv.writer.CSVField">
+                    <property name="name" value="currency" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="excelStrategy" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+        <property name="staticField" value="org.apache.commons.csv.CSVStrategy.EXCEL_STRATEGY" />
+    </bean>
+
+    <!-- zip -->
+
+    <bean id="zipFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*.zip"/>
+    </bean>
+
+    <bean id="zipSplitter" class="org.apache.camel.dataformat.zipfile.ZipSplitter" />
+
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route>
+            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
+            <to uri="bean:documentSplitProcessor"/>
+        </route>
+
+        <route>
+            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;filter=#zipFilter" />
+            <split streaming="true">
+                <ref>zipSplitter</ref>
+                <convertBodyTo type="java.lang.String" />
+                <to uri="file://./inbox/" />
+            </split>
+        </route>
+
+        <route>
+            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
+            <unmarshal>
+                <csv skipFirstLine="true" autogenColumns="false" delimiter=";" configRef="csvConfig" strategyRef="excelStrategy" useMaps="true" />
+            </unmarshal>
+            <to uri="bean:bankStatementProcessor"/>
+        </route>
+
+        <!--
+        <route>
+            <from uri="file://./extract/?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
+            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... ${file:name}" />
+            <to uri="bean:documentMetaDataProcessor"/>
+            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... type: ${headers.HERMES_DOCUMENT_TYPE} id: ${headers.HERMES_ORDER_ID}" />
+            <to uri="file://./result/" />
+        </route>
+        -->
+    </camelContext>
+
 </beans>

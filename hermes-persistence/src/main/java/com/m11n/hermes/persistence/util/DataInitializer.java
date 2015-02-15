@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Component
-@DependsOn("sshTunnel")
+@DependsOn("dataSourceJpa")
 public class DataInitializer {
 
     @Inject

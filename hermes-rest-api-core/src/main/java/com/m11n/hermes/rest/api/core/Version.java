@@ -7,11 +7,11 @@ import com.m11n.hermes.core.service.MagentoService;
 import com.m11n.hermes.persistence.util.SshTunnel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 @Component
 public class Version {
@@ -51,11 +51,11 @@ public class Version {
 
     private String magentoServiceClass;
 
-    @Inject
+    @Autowired(required = false)
     @JsonIgnore
     private SshTunnel sshTunnel;
 
-    @Inject
+    @Autowired(required = false)
     @JsonIgnore
     private MagentoService magentoService;
 
@@ -72,29 +72,33 @@ public class Version {
         logger.info("Dirty        : {}", dirty);
         logger.info("URL          : {}", originUrl);
 
-        Session session = sshTunnel.getSession();
+        if(sshTunnel!=null) {
+            Session session = sshTunnel.getSession();
 
-        aliveInterval = session.getServerAliveInterval();
-        aliveCountMax = session.getServerAliveCountMax();
-        connected = session.isConnected();
-        host = session.getHost();
-        localPort = sshTunnel.getLocalPort();
-        serverVersion = session.getServerVersion();
-        clientVersion = session.getClientVersion();
+            aliveInterval = session.getServerAliveInterval();
+            aliveCountMax = session.getServerAliveCountMax();
+            connected = session.isConnected();
+            host = session.getHost();
+            localPort = sshTunnel.getLocalPort();
+            serverVersion = session.getServerVersion();
+            clientVersion = session.getClientVersion();
 
-        logger.info("=====================================");
-        logger.info("Keepalive    : {}", aliveInterval);
-        logger.info("Alive max.   : {}", aliveCountMax);
-        logger.info("Session      : {}", connected);
-        logger.info("Server       : {}", host);
-        logger.info("Port         : {}", localPort);
-        logger.info("Version      : {}", serverVersion);
-        logger.info("Client       : {}", clientVersion);
+            logger.info("=====================================");
+            logger.info("Keepalive    : {}", aliveInterval);
+            logger.info("Alive max.   : {}", aliveCountMax);
+            logger.info("Session      : {}", connected);
+            logger.info("Server       : {}", host);
+            logger.info("Port         : {}", localPort);
+            logger.info("Version      : {}", serverVersion);
+            logger.info("Client       : {}", clientVersion);
+        }
 
-        magentoServiceClass = magentoService.getClass().getName();
+        if(magentoService!=null) {
+            magentoServiceClass = magentoService.getClass().getName();
 
-        logger.info("=====================================");
-        logger.info("Magento Class: {}", magentoServiceClass);
+            logger.info("=====================================");
+            logger.info("Magento Class: {}", magentoServiceClass);
+        }
     }
 
     public String getBranche() {
