@@ -112,7 +112,7 @@ gulp.task('jade', ['markdown', 'scripts', 'styles'], function () {
             quotes: true
         }))
         .pipe($.ngHtml2js({
-            moduleName: "hermes.ui.views",
+            moduleName: "hermes.crm.views",
             prefix: "views/"
         }))
         .pipe($.concat("views.tpl.js"))

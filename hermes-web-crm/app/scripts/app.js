@@ -3,7 +3,7 @@
 (function(module) {
     'use strict';
 
-    angular.module('hermes.ui', [
+    angular.module('hermes.crm', [
         'ngCookies',
         'ngAnimate',
         'ngTouch',
@@ -99,14 +99,7 @@
             //exception.message += ' (caused by "' + cause + '")';
             //throw exception;
         };
-    }).run(function($rootScope, editableOptions, LanguageSvc) {
+    }).run(function($rootScope, editableOptions) {
             editableOptions.theme = 'bs3';
-            LanguageSvc.language('en');
-
-            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-                if(toState && toState.name!=='shipping') {
-                    $rootScope.$broadcast('hermes.sound.off');
-                }
-            });
         });
 })();
