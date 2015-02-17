@@ -104,6 +104,11 @@ public class BankStatement extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "changed_at")
+    private Date changedAt = new Date();
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "receiver1")
     private String receiver1;
 
@@ -503,6 +508,31 @@ public class BankStatement extends DirectBean
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the changedAt.
+     * @return the value of the property
+     */
+    public Date getChangedAt() {
+        return changedAt;
+    }
+
+    /**
+     * Sets the changedAt.
+     * @param changedAt  the new value of the property
+     */
+    public void setChangedAt(Date changedAt) {
+        this.changedAt = changedAt;
+    }
+
+    /**
+     * Gets the the {@code changedAt} property.
+     * @return the property, not null
+     */
+    public final Property<Date> changedAt() {
+        return metaBean().changedAt().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the receiver1.
      * @return the value of the property
      */
@@ -802,6 +832,7 @@ public class BankStatement extends DirectBean
                     JodaBeanUtils.equal(getAccount(), other.getAccount()) &&
                     JodaBeanUtils.equal(getTransferDate(), other.getTransferDate()) &&
                     JodaBeanUtils.equal(getValutaDate(), other.getValutaDate()) &&
+                    JodaBeanUtils.equal(getChangedAt(), other.getChangedAt()) &&
                     JodaBeanUtils.equal(getReceiver1(), other.getReceiver1()) &&
                     JodaBeanUtils.equal(getReceiver2(), other.getReceiver2()) &&
                     JodaBeanUtils.equal(getDescription(), other.getDescription()) &&
@@ -833,6 +864,7 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getAccount());
         hash = hash * 31 + JodaBeanUtils.hashCode(getTransferDate());
         hash = hash * 31 + JodaBeanUtils.hashCode(getValutaDate());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getChangedAt());
         hash = hash * 31 + JodaBeanUtils.hashCode(getReceiver1());
         hash = hash * 31 + JodaBeanUtils.hashCode(getReceiver2());
         hash = hash * 31 + JodaBeanUtils.hashCode(getDescription());
@@ -849,7 +881,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(800);
+        StringBuilder buf = new StringBuilder(832);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -874,6 +906,7 @@ public class BankStatement extends DirectBean
         buf.append("account").append('=').append(JodaBeanUtils.toString(getAccount())).append(',').append(' ');
         buf.append("transferDate").append('=').append(JodaBeanUtils.toString(getTransferDate())).append(',').append(' ');
         buf.append("valutaDate").append('=').append(JodaBeanUtils.toString(getValutaDate())).append(',').append(' ');
+        buf.append("changedAt").append('=').append(JodaBeanUtils.toString(getChangedAt())).append(',').append(' ');
         buf.append("receiver1").append('=').append(JodaBeanUtils.toString(getReceiver1())).append(',').append(' ');
         buf.append("receiver2").append('=').append(JodaBeanUtils.toString(getReceiver2())).append(',').append(' ');
         buf.append("description").append('=').append(JodaBeanUtils.toString(getDescription())).append(',').append(' ');
@@ -964,6 +997,11 @@ public class BankStatement extends DirectBean
         private final MetaProperty<Date> valutaDate = DirectMetaProperty.ofReadWrite(
                 this, "valutaDate", BankStatement.class, Date.class);
         /**
+         * The meta-property for the {@code changedAt} property.
+         */
+        private final MetaProperty<Date> changedAt = DirectMetaProperty.ofReadWrite(
+                this, "changedAt", BankStatement.class, Date.class);
+        /**
          * The meta-property for the {@code receiver1} property.
          */
         private final MetaProperty<String> receiver1 = DirectMetaProperty.ofReadWrite(
@@ -1036,6 +1074,7 @@ public class BankStatement extends DirectBean
                 "account",
                 "transferDate",
                 "valutaDate",
+                "changedAt",
                 "receiver1",
                 "receiver2",
                 "description",
@@ -1083,6 +1122,8 @@ public class BankStatement extends DirectBean
                     return transferDate;
                 case -1821791697:  // valutaDate
                     return valutaDate;
+                case 1455263239:  // changedAt
+                    return changedAt;
                 case 699487266:  // receiver1
                     return receiver1;
                 case 699487267:  // receiver2
@@ -1230,6 +1271,14 @@ public class BankStatement extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code changedAt} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Date> changedAt() {
+            return changedAt;
+        }
+
+        /**
          * The meta-property for the {@code receiver1} property.
          * @return the meta-property, not null
          */
@@ -1347,6 +1396,8 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getTransferDate();
                 case -1821791697:  // valutaDate
                     return ((BankStatement) bean).getValutaDate();
+                case 1455263239:  // changedAt
+                    return ((BankStatement) bean).getChangedAt();
                 case 699487266:  // receiver1
                     return ((BankStatement) bean).getReceiver1();
                 case 699487267:  // receiver2
@@ -1415,6 +1466,9 @@ public class BankStatement extends DirectBean
                     return;
                 case -1821791697:  // valutaDate
                     ((BankStatement) bean).setValutaDate((Date) newValue);
+                    return;
+                case 1455263239:  // changedAt
+                    ((BankStatement) bean).setChangedAt((Date) newValue);
                     return;
                 case 699487266:  // receiver1
                     ((BankStatement) bean).setReceiver1((String) newValue);
