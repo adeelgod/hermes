@@ -13,10 +13,11 @@ block content
             .btn-group.btn-group-lg(ng-show='bankStatements')
                 button.btn.btn-success(type='button', ng-click="process('confirm')", ng-hide='processRunning')
                     i.fa.fa-check
-                button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-hide='processRunning')
-                    i.fa.fa-ban
-                button.btn.btn-default(type='button', ng-click="process('reset')", ng-hide='processRunning')
-                    i.fa.fa-undo
+                //
+                    button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-hide='processRunning')
+                        i.fa.fa-ban
+                    button.btn.btn-default(type='button', ng-click="process('reset')", ng-hide='processRunning')
+                        i.fa.fa-undo
                 button.btn.btn-danger(type='button', ng-click='processCancel()', ng-show='processRunning')
                     i.fa.fa-cog.fa-spin
                     | &nbsp;Cancel

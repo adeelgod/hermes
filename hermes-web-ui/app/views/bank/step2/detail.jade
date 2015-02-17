@@ -60,8 +60,9 @@ block content
                                     i.fa.fa-check
                                 button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-disabled='busy')
                                     i.fa.fa-ban
-                                button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
-                                    i.fa.fa-undo
+                                //
+                                    button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
+                                        i.fa.fa-undo
                     tr
                         td(colspan='9')
                             textarea.form-control(ng-model='currentBankStatement.comments')
