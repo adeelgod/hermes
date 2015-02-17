@@ -55,7 +55,7 @@ block content
                             span(ng-show='currentBankStatement.orderIds.length > 0') ({{currentBankStatement.orderIds}})
                         td.text-center {{currentBankStatement.matching * 100}}&nbsp;%
                         td.text-center(style='min-width:110px; padding-top:2px; padding-right: 0')
-                            .btn-group.btn-group-sm(ng-show='bankStatements')
+                            .btn-group.btn-group-sm(ng-show='bankStatements && currentBankStatement.orderId.length>0')
                                 button.btn.btn-success(type='button', ng-click="process('confirm')", ng-disabled='busy')
                                     i.fa.fa-check
                                 button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-disabled='busy')
