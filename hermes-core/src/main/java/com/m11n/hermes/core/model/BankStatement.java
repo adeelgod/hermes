@@ -84,6 +84,11 @@ public class BankStatement extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "customer_id")
+    private String customerId;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "ebay_name")
     private String ebayName;
 
@@ -409,6 +414,31 @@ public class BankStatement extends DirectBean
      */
     public final Property<String> lastname() {
         return metaBean().lastname().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the customerId.
+     * @return the value of the property
+     */
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    /**
+     * Sets the customerId.
+     * @param customerId  the new value of the property
+     */
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    /**
+     * Gets the the {@code customerId} property.
+     * @return the property, not null
+     */
+    public final Property<String> customerId() {
+        return metaBean().customerId().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -858,6 +888,7 @@ public class BankStatement extends DirectBean
                     JodaBeanUtils.equal(getClientId(), other.getClientId()) &&
                     JodaBeanUtils.equal(getFirstname(), other.getFirstname()) &&
                     JodaBeanUtils.equal(getLastname(), other.getLastname()) &&
+                    JodaBeanUtils.equal(getCustomerId(), other.getCustomerId()) &&
                     JodaBeanUtils.equal(getEbayName(), other.getEbayName()) &&
                     JodaBeanUtils.equal(getAccount(), other.getAccount()) &&
                     JodaBeanUtils.equal(getOrderDate(), other.getOrderDate()) &&
@@ -891,6 +922,7 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getClientId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getFirstname());
         hash = hash * 31 + JodaBeanUtils.hashCode(getLastname());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getCustomerId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getEbayName());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAccount());
         hash = hash * 31 + JodaBeanUtils.hashCode(getOrderDate());
@@ -913,7 +945,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(864);
+        StringBuilder buf = new StringBuilder(896);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -934,6 +966,7 @@ public class BankStatement extends DirectBean
         buf.append("clientId").append('=').append(JodaBeanUtils.toString(getClientId())).append(',').append(' ');
         buf.append("firstname").append('=').append(JodaBeanUtils.toString(getFirstname())).append(',').append(' ');
         buf.append("lastname").append('=').append(JodaBeanUtils.toString(getLastname())).append(',').append(' ');
+        buf.append("customerId").append('=').append(JodaBeanUtils.toString(getCustomerId())).append(',').append(' ');
         buf.append("ebayName").append('=').append(JodaBeanUtils.toString(getEbayName())).append(',').append(' ');
         buf.append("account").append('=').append(JodaBeanUtils.toString(getAccount())).append(',').append(' ');
         buf.append("orderDate").append('=').append(JodaBeanUtils.toString(getOrderDate())).append(',').append(' ');
@@ -1009,6 +1042,11 @@ public class BankStatement extends DirectBean
          */
         private final MetaProperty<String> lastname = DirectMetaProperty.ofReadWrite(
                 this, "lastname", BankStatement.class, String.class);
+        /**
+         * The meta-property for the {@code customerId} property.
+         */
+        private final MetaProperty<String> customerId = DirectMetaProperty.ofReadWrite(
+                this, "customerId", BankStatement.class, String.class);
         /**
          * The meta-property for the {@code ebayName} property.
          */
@@ -1108,6 +1146,7 @@ public class BankStatement extends DirectBean
                 "clientId",
                 "firstname",
                 "lastname",
+                "customerId",
                 "ebayName",
                 "account",
                 "orderDate",
@@ -1153,6 +1192,8 @@ public class BankStatement extends DirectBean
                     return firstname;
                 case -1458646495:  // lastname
                     return lastname;
+                case -1581184615:  // customerId
+                    return customerId;
                 case -397573696:  // ebayName
                     return ebayName;
                 case -1177318867:  // account
@@ -1277,6 +1318,14 @@ public class BankStatement extends DirectBean
          */
         public final MetaProperty<String> lastname() {
             return lastname;
+        }
+
+        /**
+         * The meta-property for the {@code customerId} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<String> customerId() {
+            return customerId;
         }
 
         /**
@@ -1437,6 +1486,8 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getFirstname();
                 case -1458646495:  // lastname
                     return ((BankStatement) bean).getLastname();
+                case -1581184615:  // customerId
+                    return ((BankStatement) bean).getCustomerId();
                 case -397573696:  // ebayName
                     return ((BankStatement) bean).getEbayName();
                 case -1177318867:  // account
@@ -1505,6 +1556,9 @@ public class BankStatement extends DirectBean
                     return;
                 case -1458646495:  // lastname
                     ((BankStatement) bean).setLastname((String) newValue);
+                    return;
+                case -1581184615:  // customerId
+                    ((BankStatement) bean).setCustomerId((String) newValue);
                     return;
                 case -397573696:  // ebayName
                     ((BankStatement) bean).setEbayName((String) newValue);
