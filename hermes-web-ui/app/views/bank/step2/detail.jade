@@ -50,7 +50,7 @@ block content
                                     i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                     i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirm'")
                                     i.fa.fa-ban(ng-show="currentBankStatement.status=='ignore'")
-                        td.text-left(style='width:600px') {{entry.description}}
+                        td.text-left(style='width:600px') {{currentBankStatement.description}}
                         td.text-right(ng-class="{'danger': entry.amount!=entry.amountOrder}") {{currentBankStatement.amount | currency:'':2}}
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
                         td.text-right {{currentBankStatement.amountOrder | currency:'':2}}
@@ -72,8 +72,6 @@ block content
                                 //
                                     button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
                                         i.fa.fa-undo
-                    tr
-                        td(colspan='10') {{currentBankStatement.description}}
                     tr
                         td(colspan='9')
                             textarea.form-control(ng-model='currentBankStatement.comments')
