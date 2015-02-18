@@ -50,6 +50,12 @@
                     $scope.edit(0);
                     if($scope.step==='step2') {
                         $scope.filter();
+                    } else {
+                        angular.forEach($scope.bankStatements, function(bs) {
+                            if(bs.matching > 0.8) {
+                                bs._selected = true;
+                            }
+                        });
                     }
                 }
                 $scope.busy = false;
