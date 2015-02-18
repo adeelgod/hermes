@@ -42,7 +42,7 @@ block content
                                 button.btn.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
                         td
-                        td.text-left(style='width:550px')
+                        td.text-left(style='width:600px')
                             h4 Desc.
                         td.text-right
                             h4 Amount&nbsp;(B)
@@ -70,10 +70,10 @@ block content
                         td.text-left
                             input.form-control.input-sm(type='text', ng-model='step1Filter.description', placeholder='Description...', style='max-width: 160px')
                         td.text-right
-                            input.form-control.input-sm.pull-right(type='text', ng-model='step1Filter.amount', placeholder='Amount Bank...', style='max-width: 80px')
+                            input.form-control.input-sm.pull-right(type='number', ng-model='step1Filter.amount', placeholder='Amount Bank...', style='max-width: 80px')
                         td
                         td.text-right
-                            input.form-control.input-sm.pull-right(type='text', ng-model='step1Filter.amountOrder', placeholder='Amount Order...', style='max-width: 80px')
+                            input.form-control.input-sm.pull-right(type='number', ng-model='step1Filter.amountOrder', placeholder='Amount Order...', style='max-width: 80px')
                         td
                         td.text-left
                             input.form-control.input-sm(type='text', ng-model='step1Filter.lastname', placeholder='Lastname...', style='max-width: 160px')
