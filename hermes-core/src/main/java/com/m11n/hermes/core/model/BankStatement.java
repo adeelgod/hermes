@@ -94,6 +94,11 @@ public class BankStatement extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Transient
+    private Date orderDate;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "transfer_date")
     private Date transferDate;
 
@@ -454,6 +459,31 @@ public class BankStatement extends DirectBean
      */
     public final Property<String> account() {
         return metaBean().account().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the orderDate.
+     * @return the value of the property
+     */
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    /**
+     * Sets the orderDate.
+     * @param orderDate  the new value of the property
+     */
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    /**
+     * Gets the the {@code orderDate} property.
+     * @return the property, not null
+     */
+    public final Property<Date> orderDate() {
+        return metaBean().orderDate().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -830,6 +860,7 @@ public class BankStatement extends DirectBean
                     JodaBeanUtils.equal(getLastname(), other.getLastname()) &&
                     JodaBeanUtils.equal(getEbayName(), other.getEbayName()) &&
                     JodaBeanUtils.equal(getAccount(), other.getAccount()) &&
+                    JodaBeanUtils.equal(getOrderDate(), other.getOrderDate()) &&
                     JodaBeanUtils.equal(getTransferDate(), other.getTransferDate()) &&
                     JodaBeanUtils.equal(getValutaDate(), other.getValutaDate()) &&
                     JodaBeanUtils.equal(getChangedAt(), other.getChangedAt()) &&
@@ -862,6 +893,7 @@ public class BankStatement extends DirectBean
         hash = hash * 31 + JodaBeanUtils.hashCode(getLastname());
         hash = hash * 31 + JodaBeanUtils.hashCode(getEbayName());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAccount());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getOrderDate());
         hash = hash * 31 + JodaBeanUtils.hashCode(getTransferDate());
         hash = hash * 31 + JodaBeanUtils.hashCode(getValutaDate());
         hash = hash * 31 + JodaBeanUtils.hashCode(getChangedAt());
@@ -881,7 +913,7 @@ public class BankStatement extends DirectBean
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(832);
+        StringBuilder buf = new StringBuilder(864);
         buf.append("BankStatement{");
         int len = buf.length();
         toString(buf);
@@ -904,6 +936,7 @@ public class BankStatement extends DirectBean
         buf.append("lastname").append('=').append(JodaBeanUtils.toString(getLastname())).append(',').append(' ');
         buf.append("ebayName").append('=').append(JodaBeanUtils.toString(getEbayName())).append(',').append(' ');
         buf.append("account").append('=').append(JodaBeanUtils.toString(getAccount())).append(',').append(' ');
+        buf.append("orderDate").append('=').append(JodaBeanUtils.toString(getOrderDate())).append(',').append(' ');
         buf.append("transferDate").append('=').append(JodaBeanUtils.toString(getTransferDate())).append(',').append(' ');
         buf.append("valutaDate").append('=').append(JodaBeanUtils.toString(getValutaDate())).append(',').append(' ');
         buf.append("changedAt").append('=').append(JodaBeanUtils.toString(getChangedAt())).append(',').append(' ');
@@ -986,6 +1019,11 @@ public class BankStatement extends DirectBean
          */
         private final MetaProperty<String> account = DirectMetaProperty.ofReadWrite(
                 this, "account", BankStatement.class, String.class);
+        /**
+         * The meta-property for the {@code orderDate} property.
+         */
+        private final MetaProperty<Date> orderDate = DirectMetaProperty.ofReadWrite(
+                this, "orderDate", BankStatement.class, Date.class);
         /**
          * The meta-property for the {@code transferDate} property.
          */
@@ -1072,6 +1110,7 @@ public class BankStatement extends DirectBean
                 "lastname",
                 "ebayName",
                 "account",
+                "orderDate",
                 "transferDate",
                 "valutaDate",
                 "changedAt",
@@ -1118,6 +1157,8 @@ public class BankStatement extends DirectBean
                     return ebayName;
                 case -1177318867:  // account
                     return account;
+                case -392063972:  // orderDate
+                    return orderDate;
                 case -2143998407:  // transferDate
                     return transferDate;
                 case -1821791697:  // valutaDate
@@ -1252,6 +1293,14 @@ public class BankStatement extends DirectBean
          */
         public final MetaProperty<String> account() {
             return account;
+        }
+
+        /**
+         * The meta-property for the {@code orderDate} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Date> orderDate() {
+            return orderDate;
         }
 
         /**
@@ -1392,6 +1441,8 @@ public class BankStatement extends DirectBean
                     return ((BankStatement) bean).getEbayName();
                 case -1177318867:  // account
                     return ((BankStatement) bean).getAccount();
+                case -392063972:  // orderDate
+                    return ((BankStatement) bean).getOrderDate();
                 case -2143998407:  // transferDate
                     return ((BankStatement) bean).getTransferDate();
                 case -1821791697:  // valutaDate
@@ -1460,6 +1511,9 @@ public class BankStatement extends DirectBean
                     return;
                 case -1177318867:  // account
                     ((BankStatement) bean).setAccount((String) newValue);
+                    return;
+                case -392063972:  // orderDate
+                    ((BankStatement) bean).setOrderDate((Date) newValue);
                     return;
                 case -2143998407:  // transferDate
                     ((BankStatement) bean).setTransferDate((Date) newValue);
