@@ -13,24 +13,30 @@ block content
                     | # {{currentBankStatementIndex+1}} of {{bankStatements.length}}
                 button.btn.btn-default(type='button', ng-click='next()', ng-disabled='busy')
                     i.fa.fa-chevron-right
-    .row(ng-hide='loading')
+    .row.bank(ng-hide='loading')
         .col-md-12
             table.table.table-striped.table-condensed(ng-show='currentBankStatement')
                 thead
                     tr
                         td
-                        td.text-center
-                            h4 Date
                         td.text-left(style='width:600px')
-                            h4 Description
+                            h4 Desc.
                         td.text-right
                             h4 Amount&nbsp;(B)
+                        td.text-center
+                            h4 Date&nbsp;(B)
                         td.text-right
                             h4 Amount&nbsp;(O)
-                        td.text-right
-                            h4 Client
+                        td.text-center
+                            h4 Date&nbsp;(O)
+                        td.text-center
+                            h4 Cust.
+                        td.text-center
+                            h4 Cust.&nbsp;ID
                         td.text-center
                             h4 Ebay
+                        td.text-center
+                            h4 Inv.
                         td.text-center
                             h4 Order
                         td.text-center
@@ -44,12 +50,15 @@ block content
                                     i.fa.fa-exclamation-circle(ng-show="currentBankStatement.status=='new'")
                                     i.fa.fa-check-circle(ng-show="currentBankStatement.status=='confirm'")
                                     i.fa.fa-ban(ng-show="currentBankStatement.status=='ignore'")
+                        td.text-left(style='width:600px') {{entry.description}}
+                        td.text-right(ng-class="{'danger': entry.amount!=entry.amountOrder}") {{currentBankStatement.amount | currency:'':2}}
                         td.text-center {{currentBankStatement.transferDate | date:'dd.MM.yyyy'}}
-                        td.text-left(style='width:600px') {{currentBankStatement.description}}
-                        td.text-right {{currentBankStatement.amount | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
-                        td.text-right {{currentBankStatement.amountOrder | currency:'':2}}&nbsp;{{currentBankStatement.currency}}
-                        td.text-center {{currentBankStatement.firstname}}&nbsp;{{currentBankStatement.lastname}}
+                        td.text-right {{currentBankStatement.amountOrder | currency:'':2}}
+                        td.text-center {{currentBankStatement.orderDate | date:'dd.MM.yyyy'}}
+                        td.text-left {{currentBankStatement.firstname}}&nbsp;{{entry.lastname}}
+                        td.text-left {{currentBankStatement.customerId}}
                         td.text-right {{currentBankStatement.ebayName}}
+                        td.text-right {{currentBankStatement.invoiceId}}
                         td.text-center
                             | {{currentBankStatement.orderId}}
                             span(ng-show='currentBankStatement.orderIds.length > 0') ({{currentBankStatement.orderIds}})
@@ -64,12 +73,14 @@ block content
                                     button.btn.btn-default(type='button', ng-click="process('reset')", ng-disabled='busy')
                                         i.fa.fa-undo
                     tr
+                        td(colspan='10') {{currentBankStatement.description}}
+                    tr
                         td(colspan='9')
                             textarea.form-control(ng-model='currentBankStatement.comments')
                         td
                             button.btn.btn-primary(type='button', ng-click='save()')
                                 i.fa.fa-save
-    .row(ng-show='orders', ng-hide='loading')
+    .row.bank(ng-show='orders', ng-hide='loading')
         .col-md-12
             table.table.table-striped.table-condensed
                 thead
@@ -100,7 +111,7 @@ block content
                         td.text-center
 
                         td.text-right
-                            input.form-control.input-sm(type='text', ng-model='step2Filter.amount', placeholder='Amount...')
+                            input.form-control.input-sm(type='number', ng-model='step2Filter.amount', placeholder='Amount...')
                         td.text-center
                             input.form-control.input-sm(type='text', ng-model='step2Filter.lastname', placeholder='Lastname...')
                         td.text-center
