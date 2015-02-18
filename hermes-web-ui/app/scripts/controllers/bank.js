@@ -48,7 +48,7 @@
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
-                    if($scope.step==='step1') {
+                    if($scope.step==='step2') {
                         $scope.filter();
                     }
                 }
