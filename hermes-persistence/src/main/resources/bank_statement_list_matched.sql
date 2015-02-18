@@ -4,11 +4,13 @@ SELECT
   id,
   amountOrder,
   amount,
-  valutaDate,
+  transferDate,
+  orderDate,
   status,
   ebayName,
   firstname,
   lastname,
+  customerId,
   description,
   MAX(matching) AS matching
 FROM (
@@ -19,11 +21,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          1.0                                 AS matching
        FROM
@@ -62,11 +65,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.99                                AS matching
        FROM
@@ -99,11 +103,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.98                                AS matching
        FROM
@@ -136,11 +141,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.95                                AS matching
        FROM
@@ -168,11 +174,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.92                                AS matching
        FROM
@@ -212,11 +219,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.90                                AS matching
        FROM
@@ -250,11 +258,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.80                                AS matching
        FROM
@@ -290,11 +299,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.95                                AS matching
        FROM
@@ -333,11 +343,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.88                                AS matching
        FROM
@@ -374,11 +385,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.89                                AS matching
        FROM
@@ -415,11 +427,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.99                                AS matching
        FROM
@@ -456,11 +469,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.77                                AS matching
        FROM
@@ -497,11 +511,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          1.0                                 AS matching
        FROM
@@ -541,11 +556,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          1.0                                 AS matching
        FROM
@@ -576,11 +592,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.5                                 AS matching
        FROM
@@ -618,11 +635,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.77                                AS matching
        FROM
@@ -647,7 +665,7 @@ FROM (
            OR
            (a.typ = 'Shop_vorkasse')
          )
-         AND abs(a.Datum_Kauf - b.valuta_date) < 10
+         AND abs(a.Datum_Kauf - b.transfer_date) < 10
 
          AND a.Status != 'canceled' AND a.Status != 'closed'
 
@@ -661,11 +679,12 @@ FROM (
          a.GesamtPreis_der_Bestellung_Brutto AS amountOrder,
          b.amount                            AS amount,
          a.Datum_Kauf                        AS orderDate,
-         b.valuta_date                       AS valutaDate,
+         b.transfer_date                     AS transferDate,
          b.status                            AS status,
          a.Kunden_ebay_name                  AS ebayName,
          a.Kunden_vorname                    AS firstname,
          a.Kunden_name                       AS lastname,
+         CAST(a.Kundenummer AS CHAR)         AS customerId,
          b.description,
          0.95                                AS matching
        FROM
@@ -687,11 +706,13 @@ GROUP BY
   id,
   amountOrder,
   amount,
-  valutaDate,
+  transferDate,
+  orderDate,
   status,
   ebayName,
   firstname,
   lastname,
+  customerId,
   description
 ORDER BY
-  id, matching DESC
+  matching DESC
