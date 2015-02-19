@@ -197,11 +197,11 @@ public class DefaultBankService implements BankService {
         logger.warn("Match cancelled.");
     }
 
-    public boolean processStatusRunning() {
+    public boolean processRunning() {
         return (processRunning.get() > 0);
     }
 
-    public void processStatus(final List<String> statementIds, final String status) {
+    public void process(final List<BankStatement> bankStatements) {
         if(processRunning.get()<=0) {
             processRunning.incrementAndGet();
 
@@ -211,8 +211,36 @@ public class DefaultBankService implements BankService {
                     try {
                         sync();
 
-                        for (String id : statementIds) {
-                            setStatus(id, status);
+                        for (BankStatement bankStatement : bankStatements) {
+                            BankStatement orig = bankStatementRepository.findOne(bankStatement.getId());
+
+                            orig.setInvoiceId(bankStatement.getInvoiceId());
+                            orig.setCustomerId(bankStatement.getCustomerId());
+                            orig.setStatus(bankStatement.getStatus());
+                            orig.setOrderId(bankStatement.getOrderId());
+                            orig.setEbayName(bankStatement.getEbayName());
+                            orig.setFirstname(bankStatement.getFirstname());
+                            orig.setLastname(bankStatement.getLastname());
+
+                            bankStatementRepository.save(orig);
+
+                            auswertungRepository.updateOrderPaymentId(bankStatement.getOrderId(), bankStatement.getId());
+
+                            if("confirm".equals(bankStatement.getStatus())) {
+                                List<Map<String, Object>> orders = auswertungRepository.findOrdersByOrderId(bankStatement.getOrderId());
+
+                                if(orders!=null && !orders.isEmpty()) {
+                                    Map<String, Object> order = orders.get(0);
+
+                                    String status = order.get("status").toString();
+                                    String type = order.get("type").toString();
+
+                                    // TODO: invoke webservices here
+                                    logger.debug("Invoke webservice for (disabled): {} - {} - {}", order.get("orderId"), type, status);
+
+                                    // TODO: maybe set flag that webservice was executed
+                                }
+                            }
                         }
                     } catch (Throwable e) {
                         logger.error(e.toString(), e);
@@ -226,7 +254,7 @@ public class DefaultBankService implements BankService {
         }
     }
 
-    public synchronized void processStatusCancel() {
+    public synchronized void processCancel() {
         try {
             processExecutor.shutdownNow();
             processExecutor = Executors.newSingleThreadExecutor();
@@ -238,20 +266,6 @@ public class DefaultBankService implements BankService {
         logger.warn("Bank statement processing cancelled.");
     }
 
-    private void setStatus(String id, String status) {
-        if("reset".equals(status)) {
-            bankStatementRepository.updateStatusAndOrderId(id, "new", null);
-        } else {
-            bankStatementRepository.updateStatus(id, status);
-        }
-
-        if("confirm".equals(status)) {
-            // TODO: check for type/status in order to trigger webservices
-
-            // TODO: assign orders
-            //auswertungRepository.assignBankstatementOrders(bs.getId(), bs.getOrderIds());
-        }
-    }
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
         return auswertungRepository.findBankStatementOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
     }

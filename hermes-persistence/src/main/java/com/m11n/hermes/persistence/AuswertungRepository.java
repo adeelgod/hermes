@@ -116,6 +116,14 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         return jdbcTemplate.query(sql, Collections.<String, Object>emptyMap(), new DefaultMapper());
     }
 
+    public void updateOrderPaymentId(String orderId, String bankStatementId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("bankStatementId", bankStatementId);
+        params.put("orderId", orderId);
+
+        jdbcTemplate.update("UPDATE mage_custom_order SET payment_id = :bankStatementId WHERE Bestellung = :orderId", params);
+    }
+
     @Deprecated
     public List<Map<String, Object>> findBankStatementOrderByMatch(String uuid, int lookupPeriod) {
         try {

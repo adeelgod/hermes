@@ -24,11 +24,11 @@ public interface BankService {
 
     List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or);
 
-    boolean processStatusRunning();
+    boolean processRunning();
 
-    void processStatus(List<String> statementIds, String status);
+    void process(List<BankStatement> bankStatements);
 
-    void processStatusCancel();
+    void processCancel();
 
     void reload();
 

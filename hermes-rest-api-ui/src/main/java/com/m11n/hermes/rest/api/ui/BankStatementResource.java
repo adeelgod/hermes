@@ -15,7 +15,6 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
 
 @Path("/bank/statements")
 @Produces(MediaType.APPLICATION_JSON)
@@ -65,36 +64,11 @@ public class BankStatementResource {
         return Response.ok(bankService.filter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or)).cacheControl(cc).build();
     }
 
-    @GET
-    @Path("match")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response match() {
-        bankService.match();
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path("match/cancel")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response matchCancel() {
-        bankService.matchCancel();
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path("match/status")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response matchRunning() {
-        return Response.ok(bankService.matchRunning()).build();
-    }
-
     @POST
     @Path("process")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response process(Map<String, Object> data) {
-        String status = data.get("status").toString();
-        List<String> statementIds = (List)data.get("ids");
-        bankService.processStatus(statementIds, status);
+    public Response process(List<BankStatement> bankStatements) {
+        bankService.process(bankStatements);
         return Response.ok().build();
     }
 
@@ -109,7 +83,7 @@ public class BankStatementResource {
     @Path("process/cancel")
     @Produces(MediaType.APPLICATION_JSON)
     public Response processCancel() {
-        bankService.processStatusCancel();
+        bankService.processCancel();
         return Response.ok().build();
     }
 
@@ -117,6 +91,6 @@ public class BankStatementResource {
     @Path("process/status")
     @Produces(MediaType.APPLICATION_JSON)
     public Response processRunning() {
-        return Response.ok(bankService.processStatusRunning()).build();
+        return Response.ok(bankService.processRunning()).build();
     }
 }
