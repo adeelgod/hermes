@@ -1,8 +1,11 @@
 package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.model.BankStatement;
+import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.BankService;
+import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.BankStatementRepository;
+import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 
 @Path("/bank/statements")
@@ -31,6 +35,12 @@ public class BankStatementResource {
     @Inject
     private BankStatementRepository bankStatementRepository;
 
+    @Inject
+    private AuswertungRepository auswertungRepository;
+
+    @Inject
+    private FormRepository formRepository;
+
     @Value("${hermes.result.dir}")
     private String resultDir;
 
@@ -41,6 +51,8 @@ public class BankStatementResource {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
 
+        sync();
+
         return Response.ok(bankService.listMatched()).cacheControl(cc).build();
     }
 
@@ -50,6 +62,8 @@ public class BankStatementResource {
     public Response listUnmatched() {
         CacheControl cc = new CacheControl();
         cc.setNoCache(true);
+
+        sync();
 
         return Response.ok(bankService.listUnmatched()).cacheControl(cc).build();
     }
@@ -92,5 +106,10 @@ public class BankStatementResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response processRunning() {
         return Response.ok(bankService.processRunning()).build();
+    }
+
+    private void sync() {
+        Form form = formRepository.findByName("update");
+        auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
     }
 }

@@ -271,8 +271,10 @@ public class DefaultBankService implements BankService {
     }
 
     private void sync() {
-        Form form = formRepository.findByName("bank_sync");
+        Form form = formRepository.findByName("update");
+        auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
 
+        form = formRepository.findByName("bank_sync");
         auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
     }
 
