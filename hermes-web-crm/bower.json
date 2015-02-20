@@ -11,7 +11,7 @@
     "angular-ui-router": "~0.2.13",
     "angular-ui-utils": "~0.2.1",
     "angular-ui-codemirror": "~0.2.2",
-    "angular-strap": "~2.1.6",
+    "angular-strap": "~2.2.0",
     "angular-audio": "~1.4.1",
     "codemirror": "~4.12",
     "bootstrap": "~3.3.2",
