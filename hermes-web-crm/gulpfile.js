@@ -94,11 +94,11 @@ gulp.task('jade', ['markdown', 'scripts', 'styles'], function () {
         .pipe($.replace('@@iTunesId', 'TODO_ITUNES_ID'))
         .pipe($.replace('@@googleSiteVerification', 'TODO_GOOGLE_SITE_VERIFICATION'))
         .pipe($.inject(
-            gulp.src(bowerFiles(), {read: false}),
+            gulp.src(bowerFiles()),
             {name: 'vendor', relative: true, addRootSlash: false}
         ))
         .pipe($.inject(
-            gulp.src('.tmp/**/*.js', {read: false}).pipe($.angularFilesort()),
+            gulp.src('.tmp/**/*.js').pipe($.angularFilesort()),
             {name: 'angular', addRootSlash: false, ignorePath: '.tmp'}
         ))
         .pipe(wiredep({
