@@ -174,6 +174,10 @@
                 $scope.busy = false;
                 $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 5});
                 $scope.processStatusCheck();
+
+                if($scope.step==='step2') {
+                    $scope.next();
+                }
             }).error(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Bank statement processing error.', placement: 'top', type: 'danger', show: true, duration: 5});
