@@ -20,10 +20,8 @@
         <property name="locations">
             <list>
                 <value>classpath:git.properties</value>
-                <value>file:./hermes.properties</value>
-                <value>file:./common.properties</value>
-                <value>file:../hermes-test/src/main/resources/hermes.properties</value>
-                <value>file:../hermes-test/src/main/resources/common.properties</value>
+                <value>${hermes.config}</value>
+                <value>${common.config}</value>
             </list>
         </property>
         <property name="order" value="-1"/>
