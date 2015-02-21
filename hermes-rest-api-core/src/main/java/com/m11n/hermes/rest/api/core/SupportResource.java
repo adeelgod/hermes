@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +57,19 @@ public class SupportResource {
             helper.setSubject(simpleMailMessage.getSubject());
             helper.setText(String.format(simpleMailMessage.getText(), note));
 
-            List<String> files = new ArrayList<>();
+            final List<String> files = new ArrayList<>();
 
             if(Boolean.TRUE.equals(options.get("log"))) {
-                files.add("hermes.log");
+                String[] result = new File(".").list(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.endsWith(".log");
+                    }
+                });
+
+                for(String f : result) {
+                    files.add(f);
+                }
             }
 
             if(Boolean.TRUE.equals(options.get("properties"))) {
