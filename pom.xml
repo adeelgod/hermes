@@ -200,6 +200,32 @@
         </profile>
 
         <profile>
+            <id>hermes.rest.ui</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-rest-api-core</module>
+                <module>hermes-rest-api-ui</module>
+                <module>hermes-rest-server-core</module>
+                <module>hermes-rest-server-ui</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.rest.crm</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-rest-api-core</module>
+                <module>hermes-rest-api-crm</module>
+                <module>hermes-rest-server-core</module>
+                <module>hermes-rest-server-crm</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>hermes.web</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
