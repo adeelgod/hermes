@@ -15,6 +15,7 @@ block content
                                         span(ng-show='advanced') Simple
                                         span(ng-hide='advanced') Advanced
                             .col-md-6
+                                p(ng-show='stopWatch', ng-click='stopWatch=undefined').alert.alert-info {{stopWatch}}
     .row
         .col-md-12
             ul.nav.nav-tabs.nav-justified

@@ -33,10 +33,14 @@
                 queryFn = BankSvc.listUnmatched;
             }
 
+            $scope.stopWatch = undefined;
+            var start = new Date().getTime();
+
             queryFn().success(function(data) {
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
+                    $scope.stopWatch = moment(new Date().getTime()-start).format('HH:mm:ss');
                     if($scope.step==='step2') {
                         $scope.filter();
                     } else {
@@ -164,8 +168,13 @@
 
             for(var i=0; i<$scope.bankStatements.length; i++) {
                 if($scope.bankStatements[i]._selected) {
+                    //var bs = angular.copy($scope.bankStatements[i])
                     $scope.bankStatements[i].status = status;
+                    $scope.bankStatements[i]._selected = undefined;
                     $scope.bankStatements[i]._modified = undefined;
+                    //bs.status = status;
+                    //bs._selected = undefined;
+                    //bs._modified = undefined;
                     bankStatements.push($scope.bankStatements[i]);
                 }
             }
