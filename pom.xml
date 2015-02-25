@@ -236,6 +236,26 @@
         </profile>
 
         <profile>
+            <id>hermes.web.ui</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-web-ui</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.web.crm</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-web-crm</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>hermes.doc</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
