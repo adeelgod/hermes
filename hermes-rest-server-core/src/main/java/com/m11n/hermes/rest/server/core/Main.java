@@ -42,7 +42,7 @@ public class Main {
             System.setProperty("file.encoding", optHelper.getEncoding());
             System.setProperty("org.apache.camel.default.charset", optHelper.getEncoding());
 
-            logger.info("=== Encoding set to: {}", optHelper.getEncoding());
+            logger.info("Encoding set to: {}", optHelper.getEncoding());
 
             JettyJerseyConfig.checkAgentArg(args, optHelper.hasComsat());
 
