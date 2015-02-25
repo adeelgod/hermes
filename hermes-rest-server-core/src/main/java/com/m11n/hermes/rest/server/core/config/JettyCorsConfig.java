@@ -18,7 +18,7 @@ public class JettyCorsConfig {
     @SuppressWarnings("unchecked")
     public static void addFilter(ServletContextHandler context, String mapping) throws Exception {
 
-        logger.info("=================================== Adding CORS filter with context {}", mapping);
+        logger.info("Adding CORS filter with context {}", mapping);
 
         FilterHolder filter = new FilterHolder((Class<? extends Filter>) Class.forName(CorsFilter.class.getName()));
         filter.setAsyncSupported(false);

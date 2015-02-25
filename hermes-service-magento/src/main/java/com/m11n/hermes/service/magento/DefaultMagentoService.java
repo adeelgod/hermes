@@ -24,7 +24,7 @@ public class DefaultMagentoService extends AbstractMagentoService {
     @PostConstruct
     public void init() throws Exception {
         super.init();
-        logger.debug("################ PRODUCTION - MAGENTO SERVICE INITIALIZED");
+        logger.debug("PRODUCTION - MAGENTO SERVICE INITIALIZED");
     }
 
     @Override

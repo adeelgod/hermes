@@ -57,10 +57,7 @@ public class QueryScheduler {
             query(form, false, false, Collections.<String, Object>emptyMap());
         }
 
-        if(multipleQueries) {
-            logger.warn("EXPERIMENTAL FEATURE: query optimization (enabled)");
-
-        }
+        logger.info("Query optimization enabled: {}", multipleQueries);
     }
 
     public void schedule(Form form) {

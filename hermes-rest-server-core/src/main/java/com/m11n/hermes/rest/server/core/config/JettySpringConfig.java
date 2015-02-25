@@ -27,7 +27,7 @@ public class JettySpringConfig {
 
         for(EventListener info : context.getEventListeners()) {
             if(info.getClass().equals(contextLoaderListener)) {
-                logger.warn("=================================== Spring context loader listener already added.");
+                logger.warn("Spring context loader listener already added.");
                 contextListerFound = true;
                 break;
             }
@@ -35,20 +35,20 @@ public class JettySpringConfig {
 
         for(EventListener info : context.getEventListeners()) {
             if(info.getClass().equals(requestContextListener)) {
-                logger.warn("=================================== Spring request context listener already added.");
+                logger.warn("Spring request context listener already added.");
                 requestListerFound = true;
                 break;
             }
         }
 
         if(!contextListerFound) {
-            logger.info("=================================== Adding Spring context loader listener");
+            logger.info("Adding Spring context loader listener");
             context.setInitParameter(PARAM_CONTEXT_CONFIG_LOCATION, "classpath:META-INF/spring/applicationContext-hermes.xml");
             context.addEventListener(contextLoaderListener.newInstance());
         }
 
         if(!requestListerFound) {
-            logger.info("=================================== Adding Spring request context listener");
+            logger.info("Adding Spring request context listener");
             context.addEventListener(requestContextListener.newInstance());
         }
     }

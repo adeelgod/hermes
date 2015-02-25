@@ -27,7 +27,7 @@ public class DebugMagentoService extends AbstractMagentoService {
     public void init() {
         try {
             super.init();
-            logger.debug("################ DEBUG - MAGENTO SERVICE INITIALIZED");
+            logger.debug("DEBUG - MAGENTO SERVICE INITIALIZED");
 
             LineIterator iterator = IOUtils.lineIterator(DebugMagentoService.class.getClassLoader().getResourceAsStream("debug_label_status_messages.txt"), "UTF-8");
 

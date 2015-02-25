@@ -122,7 +122,7 @@ public class Main {
                 try {
                     String url = "http://" + optHelper.getHost() + ":" + optHelper.getPort();
 
-                    logger.info("=================================== Opening default browser at: {}", url);
+                    logger.info("Opening default browser at: {}", url);
 
                     desktop.browse(new URI(url));
                 } catch (Exception e) {
