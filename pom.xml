@@ -158,6 +158,40 @@
         </profile>
 
         <profile>
+            <id>hermes.java.ui</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-core</module>
+                <module>hermes-test</module>
+                <module>hermes-persistence</module>
+                <module>hermes-service</module>
+                <module>hermes-rest-api-core</module>
+                <module>hermes-rest-api-ui</module>
+                <module>hermes-rest-server-core</module>
+                <module>hermes-rest-server-ui</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>hermes.java.crm</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>hermes-core</module>
+                <module>hermes-test</module>
+                <module>hermes-persistence</module>
+                <module>hermes-service</module>
+                <module>hermes-rest-api-core</module>
+                <module>hermes-rest-api-crm</module>
+                <module>hermes-rest-server-core</module>
+                <module>hermes-rest-server-crm</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>hermes.core</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
