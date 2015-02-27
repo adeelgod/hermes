@@ -9,39 +9,39 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('PrinterSvc', function ($http) {
+    module.factory('PrinterSvc', function ($http, HermesApi) {
         // Public API here
         return {
             printers: function() {
                 return $http({
                     method: 'GET',
-                    url: 'api/printers'
+                    url: HermesApi.baseUrl + 'api/printers'
                 });
             },
             print: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/printers/print',
+                    url: HermesApi.baseUrl + 'api/printers/print',
                     data: params
                 });
             },
             printAll: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/printers/print/all',
+                    url: HermesApi.baseUrl + 'api/printers/print/all',
                     data: params
                 });
             },
             cancel: function() {
                 return $http({
                     method: 'GET',
-                    url: 'api/printers/print/cancel'
+                    url: HermesApi.baseUrl + 'api/printers/print/cancel'
                 });
             },
             status: function() {
                 return $http({
                     method: 'GET',
-                    url: 'api/printers/print/status'
+                    url: HermesApi.baseUrl + 'api/printers/print/status'
                 });
             }
         };

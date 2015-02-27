@@ -9,7 +9,7 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('SecuritySvc', function ($rootScope, $http, $state, $alert) {
+    module.factory('SecuritySvc', function ($rootScope, $http, $state, $alert, HermesApi) {
         // Public API here
         var authenticated = false;
 
@@ -17,7 +17,7 @@
             login: function(login) {
                 return $http({
                     method: 'POST',
-                    url: 'api/security/login',
+                    url: HermesApi.baseUrl + 'api/security/login',
                     data: login
                 }).success(function(data) {
                     authenticated = true;

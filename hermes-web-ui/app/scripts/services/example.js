@@ -9,13 +9,13 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('ExampleSvc', function ($http) {
+    module.factory('ExampleSvc', function ($http, HermesApi) {
         // Public API here
         return {
             queue: function() {
                 return $http({
                     method: 'GET',
-                    url: 'api/examples/queue'
+                    url: HermesApi.baseUrl + 'api/examples/queue'
                 });
             }
         };

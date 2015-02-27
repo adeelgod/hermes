@@ -9,13 +9,13 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('SupportSvc', function ($http) {
+    module.factory('SupportSvc', function ($http, HermesApi) {
         // Public API here
         return {
             send: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/support',
+                    url: HermesApi.baseUrl + 'api/support',
                     data: params
                 });
             }

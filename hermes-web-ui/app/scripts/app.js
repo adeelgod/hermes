@@ -18,7 +18,11 @@
         'ui.codemirror',
         'xeditable',
         'angularFileUpload'
-    ]).config(function ($locationProvider, $stateProvider, $urlRouterProvider, $modalProvider, $asideProvider, $sceDelegateProvider) {
+    ]).constant('HermesApi', {
+            baseUrl: ''
+            //baseUrl: 'http://localhost:8081/'
+        }
+    ).config(function ($locationProvider, $stateProvider, $urlRouterProvider, $modalProvider, $asideProvider, $sceDelegateProvider) {
         // TODO: remove this in production; just to avoid CORS problems
         // see here more: https://docs.angularjs.org/api/ng/provider/$sceDelegateProvider#resourceUrlWhitelist
         $sceDelegateProvider.resourceUrlWhitelist([

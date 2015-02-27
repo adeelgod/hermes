@@ -9,55 +9,55 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('BankSvc', function ($http) {
+    module.factory('BankSvc', function ($http, HermesApi) {
         // Public API here
         return {
             listMatched: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/bank/statements/matched',
+                    url: HermesApi.baseUrl + 'api/bank/statements/matched',
                     params: params
                 });
             },
             listUnmatched: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/bank/statements/unmatched',
+                    url: HermesApi.baseUrl + 'api/bank/statements/unmatched',
                     params: params
                 });
             },
             filter: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/bank/statements/filter',
+                    url: HermesApi.baseUrl + 'api/bank/statements/filter',
                     params: params
                 });
             },
             process: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/bank/statements/process',
+                    url: HermesApi.baseUrl + 'api/bank/statements/process',
                     data: params
                 });
             },
             save: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/bank/statements',
+                    url: HermesApi.baseUrl + 'api/bank/statements',
                     data: params
                 });
             },
             processStatus: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/bank/statements/process/status',
+                    url: HermesApi.baseUrl + 'api/bank/statements/process/status',
                     params: params
                 });
             },
             processCancel: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/bank/statements/process/cancel',
+                    url: HermesApi.baseUrl + 'api/bank/statements/process/cancel',
                     params: params
                 });
             }

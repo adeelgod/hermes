@@ -9,60 +9,60 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('FormSvc', function ($http, $alert) {
+    module.factory('FormSvc', function ($http, $alert, HermesApi) {
         // Public API here
         return {
             list: function() {
                 return $http({
                     method: 'GET',
-                    url: 'api/forms'
+                    url: HermesApi.baseUrl + 'api/forms'
                 });
             },
             get: function(name) {
                 return $http({
                     method: 'GET',
-                    url: 'api/forms/' + name
+                    url: HermesApi.baseUrl + 'api/forms/' + name
                 });
             },
             query: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/forms/query',
+                    url: HermesApi.baseUrl + 'api/forms/query',
                     data: params
                 });
             },
             download: function(params) {
                 return $http({
                     method: 'POST',
-                    url: 'api/forms/download',
+                    url: HermesApi.baseUrl + 'api/forms/download',
                     data: params
                 });
             },
             save: function(form) {
                 return $http({
                     method: 'POST',
-                    url: 'api/forms',
+                    url: HermesApi.baseUrl + 'api/forms',
                     data: form
                 });
             },
             saveField: function(field) {
                 return $http({
                     method: 'POST',
-                    url: 'api/forms/fields',
+                    url: HermesApi.baseUrl + 'api/forms/fields',
                     data: field
                 });
             },
             remove: function(params) {
                 return $http({
                     method: 'DELETE',
-                    url: 'api/forms',
+                    url: HermesApi.baseUrl + 'api/forms',
                     params: params
                 });
             },
             removeField: function(params) {
                 return $http({
                     method: 'DELETE',
-                    url: 'api/forms/fields',
+                    url: HermesApi.baseUrl + 'api/forms/fields',
                     params: params
                 });
             },

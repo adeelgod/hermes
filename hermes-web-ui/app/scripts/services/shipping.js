@@ -9,27 +9,27 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('ShippingSvc', function ($http) {
+    module.factory('ShippingSvc', function ($http, HermesApi) {
         // Public API here
         return {
             label: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/shipping/label',
+                    url: HermesApi.baseUrl + 'api/shipping/label',
                     params: params
                 });
             },
             shipment: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/shipping/shipment',
+                    url: HermesApi.baseUrl + 'api/shipping/shipment',
                     params: params
                 });
             },
             status: function(params) {
                 return $http({
                     method: 'GET',
-                    url: 'api/shipping/status',
+                    url: HermesApi.baseUrl + 'api/shipping/status',
                     params: params
                 });
             }

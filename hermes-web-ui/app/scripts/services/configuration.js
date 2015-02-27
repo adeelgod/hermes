@@ -9,19 +9,19 @@
         module = angular.module('hermes.ui.service', []);
     }
 
-    module.factory('ConfigurationSvc', function ($http) {
+    module.factory('ConfigurationSvc', function ($http, HermesApi) {
         // Public API here
         return {
             list: function() {
                 return $http({
                     method: 'GET',
-                    url: 'api/configuration'
+                    url: HermesApi.baseUrl + 'api/configuration'
                 });
             },
             save: function(config) {
                 return $http({
                     method: 'POST',
-                    url: 'api/configuration',
+                    url: HermesApi.baseUrl + 'api/configuration',
                     data: config
                 });
             }
