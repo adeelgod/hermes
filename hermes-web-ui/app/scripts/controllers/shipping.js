@@ -119,7 +119,7 @@
                 $scope.checks[shipping.orderId].lastname = ( !name || name.length <= 30);
                 $scope.checks[shipping.orderId].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
                 $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight <= 25);
-                $scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+[a-z]*)$/g)) );
+                $scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+)$/g)) );
                 $scope.checks[shipping.orderId].street2 = (!shipping.street2 || shipping.street2.length <= 30);
                 $scope.checks[shipping.orderId].city = (!shipping.city || shipping.city.length <= 30);
 
