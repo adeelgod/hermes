@@ -25,6 +25,47 @@
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
 
+        var confirmModal = $modal({title: 'Errors in shipping data', content: 'Are you sure you want to proceed? Make sure you only select entries that are completely GREEN.', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
+        confirmModal.$scope.confirm = function() {
+            confirmModal.hide();
+            $scope.runStateToggle();
+        };
+        confirmModal.$scope.close = function() {
+            confirmModal.hide();
+        };
+
+        $scope.doCheckBeforeRun = function() {
+            var execute = true;
+
+            var ids = Object.keys($scope.checks);
+            for(var i=0; i<ids.length; i++) {
+                var properties = Object.keys($scope.checks[ids[i]]);
+                for(var j=0; j<properties.length; j++) {
+                    var property = $scope.checks[ids[i]][properties[j]];
+                    if(!property) {
+                        confirmModal.$promise.then(confirmModal.show);
+                        execute = false;
+                        break;
+                    }
+                }
+            }
+
+            if(execute) {
+                confirmModal.$scope.confirm();
+            }
+        };
+
+        $scope.checkBeforeRun = function() {
+            switch($scope.runState) {
+                case 'paused':
+                case 'stopped':
+                    $scope.doCheckBeforeRun();
+                    break;
+                default:
+                    confirmModal.$scope.confirm();
+            }
+        };
+
         $scope.$on('hermes.sound.off', function() {
             //$log.info('Switch off sound...');
             $scope.cancelSound();
