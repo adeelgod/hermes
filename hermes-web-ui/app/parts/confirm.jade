@@ -1,0 +1,12 @@
+.modal(tabindex='-1', role='dialog', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header(ng-show='title')
+                button.close(type='button', aria-label='Close', ng-click='close()')
+                    span(aria-hidden='true') ×
+                h4.modal-title(ng-bind='title')
+            .modal-body(ng-bind='content')
+            .modal-footer
+                .btn-group
+                    button.btn.btn-default(type='button', ng-click='confirm()') Yes
+                    button.btn.btn-danger(type='button', ng-click='close()') NO

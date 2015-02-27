@@ -7,7 +7,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('OrderCtrl', function ($scope, $interval, $log, $alert, ConfigurationSvc, FormSvc, PrinterSvc) {
+    module.controller('OrderCtrl', function ($scope, $interval, $log, $alert, $modal, ConfigurationSvc, FormSvc, PrinterSvc) {
         $scope.params = {_order_ids: []};
 
         $scope.busy = false;
@@ -19,6 +19,32 @@
         $scope.currentOrder = {};
 
         $scope.currentOrder = {};
+
+        var confirmModal = $modal({title: 'Order print files missing', content: 'Are you sure you want to proceed?', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
+        confirmModal.$scope.confirm = function() {
+            confirmModal.hide();
+            $scope.print();
+        };
+        confirmModal.$scope.close = function() {
+            confirmModal.hide();
+        };
+
+        $scope.checkBeforePrint = function() {
+            var execute = true;
+
+            for(var i=0; i<$scope.orders.length; i++) {
+                var order = $scope.orders[i];
+                if(order._selected && (!order._invoiceExists || !order._labelExists)) {
+                    confirmModal.$promise.then(confirmModal.show);
+                    execute = false;
+                    break;
+                }
+            }
+
+            if(execute) {
+                confirmModal.$scope.confirm();
+            }
+        };
 
         $scope.getForm = function(name) {
             FormSvc.get(name).success(function(data) {
@@ -45,6 +71,7 @@
         };
 
         $scope.query = function() {
+
             $scope.selectedOrders = [];
 
             $scope.params['_form'] = $scope.configuration['hermes.orders.form'];

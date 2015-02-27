@@ -9,7 +9,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('ShippingCtrl', function ($scope, $alert, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
+    module.controller('ShippingCtrl', function ($scope, $alert, $modal, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
         $scope.debugging = false;
         $scope.busy = false;
         $scope.params = {};
