@@ -1,13 +1,11 @@
-Update mage_custom_order set typ = "ebay_paypal" where method =  "m2epropayment" and length(Paypal_id_ebay) > 4;
-Update mage_custom_order set typ = "ebay_vorkasse" where method =  "m2epropayment" and length(Paypal_id_ebay) < 4;
-Update mage_custom_order set typ = "Shop_paypal" where method =  "paypal_express" and length(Paypal_id_shop) > 4;
-Update mage_custom_order set typ = "Shop_vorkasse" where method =  "banktransfer";
-Update mage_custom_order set typ = "Shop_Nachnahme" where method =  "cashondelivery";
-Update mage_custom_order set typ = "Shop_Nachnahme" where method =  "phoenix_cashondelivery";
-Update mage_custom_order set typ = "Shop_Rechnung" where method =  "invoice";
-Update mage_custom_order set typ = "ebay_paypal" where method =  "m2epropayment" and length(Paypal_id_ebay) > 4;
-Update mage_custom_order set typ = "Shop_sofort" where method =  "pnsofort" ;
-Update mage_custom_order set typ = "ebay_vorkasse" where method =  "m2epropayment" and ebay_order_id is not null and Paypal_id_ebay is null;
-Update mage_custom_order set typ = "Amazon" where method =  "m2epropayment" and Kunden_email LIKE "%amazon.de";
-Update mage_custom_order as a left join l_carb_shop_de.mage_sales_flat_order_payment  as b on a.order_id =b.parent_id set typ = "ebay_paypal" where a.method =  "m2epropayment" and b.additional_data LIKE "%PayPal%" and a.typ IS NULL ;
-Update mage_custom_order set typ = "ebay_vorkasse" where method =  "m2epropayment" and typ is null and Status = "complete";
+Update `hermes_bank_statement` set status = "ignore" where description like"%ABBUCHUNG VOM PAYPAL-KONTO %";
+Update `hermes_bank_statement` set status = "ignore" where description_b like"%Amazon.Mktplce%";
+Update `hermes_bank_statement` set status = "ignore" where description like"%PayPal Europe%";
+Update `hermes_bank_statement` set status = "ignore" where description like"SEPA-GUTSCHRIFT PayPal Europe%";
+Update `hermes_bank_statement` set status = "ignore" where description_b like"%AmazonMicropayment%";
+Update `hermes_bank_statement` set status = "ignore" where description_b like"%AmazonMicropayment%";
+Update `hermes_bank_statement` set status = "ignore" where amount < 0;
+Update `hermes_bank_statement` set status = "ignore" where amount > 500;
+
+TRUNCATE TABLE  `mage_custom_order_temp`; insert into mage_custom_order_temp SELECT * FROM `mage_custom_order` WHERE `payment_id` is null and Status != "canceled" and (method = "banktransfer" or method = "cashondelivery" or method = "invoice" or method = "pnsofort" or method = "phoenix_cashondelivery" or ( method = "m2epropayment" and typ = "ebay_vorkasse"));
+TRUNCATE TABLE  `hermes_bank_statement_temp`; insert into hermes_bank_statement_temp SELECT * FROM `hermes_bank_statement` WHERE  Status != "confirm" and  Status  != "ignore"
