@@ -52,8 +52,12 @@ public abstract class AbstractMagentoService implements MagentoService {
     protected Mage_Api_Model_Server_V2_HandlerPortType magentoService;
 
     protected void init() throws Exception {
-        MagentoServiceLocator locator = new MagentoServiceLocator();
-        magentoService = locator.getMage_Api_Model_Server_V2_HandlerPort();
+        try {
+            MagentoServiceLocator locator = new MagentoServiceLocator();
+            magentoService = locator.getMage_Api_Model_Server_V2_HandlerPort();
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+        }
     }
 
     protected boolean checkSession() {

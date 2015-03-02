@@ -65,9 +65,13 @@ public class DefaultDhlService extends AbstractDhlService {
     public DefaultDhlService(final String cisUsername, final String cisPassword, String wsUsername, String wsPassword, String languageCode, String encoding, MODE mode) {
         super();
 
-        wsVersion = new Version();
-        wsVersion.setMajorRelease("1");
-        wsVersion.setMinorRelease("0");
+        try {
+            wsVersion = new Version();
+            wsVersion.setMajorRelease("1");
+            wsVersion.setMinorRelease("0");
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+        }
 
         this.cisUsername = cisUsername;
         this.cisPassword = cisPassword;
@@ -83,42 +87,46 @@ public class DefaultDhlService extends AbstractDhlService {
     @PostConstruct
     public void init() throws Exception {
         this.mode = wsProduction ? MODE.PRODUCTION : MODE.SANDBOX;
-        // soap
-        ISService_1_0_deLocator locator = new ISService_1_0_deLocator();
-        ws = locator.getShipmentServiceSOAP11port0(new URL("https://cig.dhl.de/services/" + mode.name().toLowerCase() + "/soap"));
-        Stub stub = (Stub) ws;
-        stub.setUsername(wsUsername);
-        stub.setPassword(wsPassword);
+        try {
+            // soap
+            ISService_1_0_deLocator locator = new ISService_1_0_deLocator();
+            ws = locator.getShipmentServiceSOAP11port0(new URL("https://cig.dhl.de/services/" + mode.name().toLowerCase() + "/soap"));
+            Stub stub = (Stub) ws;
+            stub.setUsername(wsUsername);
+            stub.setPassword(wsPassword);
 
-        // soap authentication header
-        SOAPHeaderElement authentication = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","Authentification");
-        SOAPHeaderElement user = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","user", cisUsername);
-        SOAPHeaderElement password = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","signature", cisPassword);
-        SOAPHeaderElement type = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","type", "0");
-        authentication.addChild(user);
-        authentication.addChild(password);
-        authentication.addChild(type);
-        stub.setHeader(authentication);
+            // soap authentication header
+            SOAPHeaderElement authentication = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","Authentification");
+            SOAPHeaderElement user = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","user", cisUsername);
+            SOAPHeaderElement password = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","signature", cisPassword);
+            SOAPHeaderElement type = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","type", "0");
+            authentication.addChild(user);
+            authentication.addChild(password);
+            authentication.addChild(type);
+            stub.setHeader(authentication);
 
-        // rest
-        client.setAuthenticator(new Authenticator() {
-            @Override
-            public Request authenticate(Proxy proxy, Response response) throws IOException {
-                logger.debug("Authenticating for response: " + response);
-                logger.debug("Challenges: " + response.challenges());
+            // rest
+            client.setAuthenticator(new Authenticator() {
+                @Override
+                public Request authenticate(Proxy proxy, Response response) throws IOException {
+                    logger.debug("Authenticating for response: " + response);
+                    logger.debug("Challenges: " + response.challenges());
 
-                String credential = Credentials.basic(cisUsername, cisPassword);
+                    String credential = Credentials.basic(cisUsername, cisPassword);
 
-                return response.request().newBuilder()
-                        .header(HttpHeaders.AUTHORIZATION, credential)
-                        .build();
-            }
+                    return response.request().newBuilder()
+                            .header(HttpHeaders.AUTHORIZATION, credential)
+                            .build();
+                }
 
-            @Override
-            public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-                return null;
-            }
-        });
+                @Override
+                public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+        }
     }
 
     public String getVersion() throws Exception {
