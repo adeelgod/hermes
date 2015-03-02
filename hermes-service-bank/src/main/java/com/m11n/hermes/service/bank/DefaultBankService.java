@@ -143,6 +143,8 @@ public class DefaultBankService implements BankService {
 
     @Override
     public List<BankStatement> listMatched() {
+        sync();
+
         Form form = formRepository.findByName("bank_list_matched");
 
         return jdbcTemplate.query(form.getSqlStatement(), Collections.<String, Object>emptyMap(), new BankStatementMapper());
@@ -153,6 +155,7 @@ public class DefaultBankService implements BankService {
         return bankStatementRepository.findByStatusAndAmountGreaterThan("new", new BigDecimal(0.0));
     }
 
+    @Deprecated
     @Override
     public void match() {
         if(matchRunning.get()<=0) {
