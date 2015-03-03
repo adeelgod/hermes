@@ -14,7 +14,7 @@
     <bean id="splitFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
         <property name="fileStore">
             <bean class="java.io.File">
-                <constructor-arg value="./.splitcache" />
+                <constructor-arg value="{{java.io.tmpdir}}/.splitcache" />
             </bean>
         </property>
     </bean>
@@ -70,21 +70,21 @@
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route>
-            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
             <to uri="bean:documentSplitProcessor"/>
         </route>
 
         <route>
-            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;filter=#zipFilter" />
+            <from uri="file://{{hermes.inbox.dir}}/?move={{hermes.archive.dir}}&amp;filter=#zipFilter" />
             <split streaming="true">
                 <ref>zipSplitter</ref>
                 <convertBodyTo type="java.lang.String" />
-                <to uri="file://./inbox/" />
+                <to uri="file://{{hermes.inbox.dir}}" />
             </split>
         </route>
 
         <route>
-            <from uri="file://./inbox/?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
             <unmarshal>
                 <csv skipFirstLine="true" autogenColumns="false" delimiter=";" configRef="csvConfig" strategyRef="excelStrategy" useMaps="true" />
             </unmarshal>
@@ -93,7 +93,7 @@
 
         <!--
         <route>
-            <from uri="file://./extract/?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
+            <from uri="file://{{hermes.extract.dir}}?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
             <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... ${file:name}" />
             <to uri="bean:documentMetaDataProcessor"/>
             <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... type: ${headers.HERMES_DOCUMENT_TYPE} id: ${headers.HERMES_ORDER_ID}" />
