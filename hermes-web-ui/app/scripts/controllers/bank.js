@@ -40,7 +40,7 @@
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
-                    $scope.stopWatch = moment(new Date().getTime()-start).format('HH:mm:ss');
+                    $scope.stopWatch = moment(new Date().getTime()-start).format('mm:ss');
                     if($scope.step==='step2') {
                         $scope.filter();
                     } else {
@@ -167,7 +167,7 @@
             var bankStatements = [];
 
             for(var i=0; i<$scope.bankStatements.length; i++) {
-                if($scope.bankStatements[i]._selected) {
+                if($scope.bankStatements[i]._selected===true) {
                     //var bs = angular.copy($scope.bankStatements[i])
                     $scope.bankStatements[i].status = status;
                     $scope.bankStatements[i]._selected = undefined;
