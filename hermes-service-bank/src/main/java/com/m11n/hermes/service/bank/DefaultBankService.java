@@ -122,7 +122,7 @@ public class DefaultBankService implements BankService {
                 + entry.get("transferDate")
                 + entry.get("receiver1")
                 + entry.get("receiver2")
-                + entry.get("description")
+                + entry.get("description".replaceAll(" ", "").replaceAll("\\.", ""))
                 + entry.get("amount")
                 + entry.get("currency");
 
@@ -134,7 +134,7 @@ public class DefaultBankService implements BankService {
         bs.setReceiver1(entry.get("receiver1"));
         bs.setReceiver2(entry.get("receiver2"));
         bs.setDescription(entry.get("description"));
-        bs.setDescriptionb(bs.getDescription().replaceAll(" ", ""));
+        bs.setDescriptionb(bs.getDescription().replaceAll(" ", "").replaceAll("\\.", ""));
         bs.setAmount(new BigDecimal(nf.parse(entry.get("amount")).doubleValue()));
         bs.setCurrency(entry.get("currency"));
 
