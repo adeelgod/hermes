@@ -42,7 +42,7 @@
     "gulp-useref": "^1.1.1",
     "gulp-util": "^3.0.4",
     "jshint-stylish": "^1.0.1",
-    "main-bower-files": "^2.5.0",
+    "main-bower-files": "2.5.0",
     "merge-stream": "^0.1.7",
     "opn": "^1.0.1",
     "readable-stream": "^1.0.33",
