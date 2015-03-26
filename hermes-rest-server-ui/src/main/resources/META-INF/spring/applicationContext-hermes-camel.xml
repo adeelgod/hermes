@@ -25,6 +25,7 @@
         <property name="includes" value="*.csv"/>
     </bean>
 
+    <!--
     <bean id="csvConfig" class="org.apache.commons.csv.writer.CSVConfig">
         <property name="fields">
             <list>
@@ -55,9 +56,10 @@
             </list>
         </property>
     </bean>
+    -->
 
-    <bean id="excelStrategy" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-        <property name="staticField" value="org.apache.commons.csv.CSVStrategy.EXCEL_STRATEGY" />
+    <bean id="excelFormat" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+        <property name="staticField" value="org.apache.commons.csv.CSVFormat.EXCEL" />
     </bean>
 
     <!-- zip -->
@@ -86,7 +88,19 @@
         <route>
             <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
             <unmarshal>
+                <!--
                 <csv skipFirstLine="true" autogenColumns="false" delimiter=";" configRef="csvConfig" strategyRef="excelStrategy" useMaps="true" />
+                -->
+                <csv skipHeaderRecord="true" allowMissingColumnNames="false" formatName="EXCEL" delimiter=";" useMaps="true">
+                    <header>account</header>
+                    <header>transferDate</header>
+                    <header>valutaDate</header>
+                    <header>receiver1</header>
+                    <header>receiver2</header>
+                    <header>description</header>
+                    <header>amount</header>
+                    <header>currency</header>
+                </csv>
             </unmarshal>
             <to uri="bean:bankStatementProcessor"/>
         </route>
