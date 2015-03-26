@@ -78,10 +78,25 @@ public class DebugMagentoService extends AbstractMagentoService {
 
     @Override
     public String createShipment(String orderId) throws Exception {
-        logger.debug("################ DEBUG - CREATE SHIPMENT: {} - {}", orderId);
+        logger.debug("################ DEBUG - CREATE SHIPMENT: {}", orderId);
         checkSession();
         Thread.sleep(500L);
         return new Date().getTime()+"";
+    }
+
+    @Override
+    public String createSalesOrderInvoice(String orderId) throws Exception {
+        logger.debug("################ DEBUG - CREATE SALES ORDER INVOICE: {}", orderId);
+        checkSession();
+        Thread.sleep(500L);
+        return new Date().getTime()+"";
+    }
+
+    @Override
+    public void completeInvoice(String orderId) throws Exception {
+        logger.debug("################ DEBUG - COMPLETE INVOICE: {}", orderId);
+        checkSession();
+        Thread.sleep(500L);
     }
 
     @Override

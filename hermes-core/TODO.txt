@@ -1,5 +1,5 @@
-- bank modul
-- webservice: www.l-carb-shop.de/rechnung?login=LOGIN&password=PASSWORD&id=ORDER_INCREMENT_ID
+x bank modul
+x webservice: www.l-carb-shop.de/rechnung?login=LOGIN&password=PASSWORD&id=ORDER_INCREMENT_ID
 
 - DHL tracker
 We have often Problems with DHL. We want to track their statues. For this I asked a specialist, to programm a scrabbing php class, which recieves the Tracking Numner of a dhl Sending and gives back a daytime and a status.
@@ -27,8 +27,8 @@ Update mage_custom_shipments as a left join mage_custom_shipments_DHL_status as 
 - x print fast
 - x cancel print
 - x reports löschen geht nicht
-- fields report automatisch
-- sound 2x hört nix
+- x fields report automatisch
+- x sound 2x hört nix
 
 - x persistence repository to check intraship status
 - x REST service to check intraship status (via SQL queries for each order ID)

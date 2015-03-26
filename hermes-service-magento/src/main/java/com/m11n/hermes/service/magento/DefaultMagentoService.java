@@ -54,6 +54,21 @@ public class DefaultMagentoService extends AbstractMagentoService {
     }
 
     @Override
+    public String createSalesOrderInvoice(String orderId) throws Exception {
+        String invoiceId = magentoService.salesOrderInvoiceCreate(sessionId, orderId, new OrderItemIdQty[0], "", "", "");
+
+        return invoiceId;
+    }
+
+    @Override
+    public void completeInvoice(String orderId) throws Exception {
+        logger.debug("********* COMPLETE INVOICE: {}", orderId);
+        Request req = new Request.Builder().url(url + "/rechnung/?login=" + username + "&password=" + password + "&id=" + orderId).build();
+        Response res = client.newCall(req).execute();
+        logger.debug("********* COMPLETE INVOICE: {}", res.body().string());
+    }
+
+    @Override
     protected List<String> doCreateIntrashipLabel(String orderId) throws Exception {
         logger.debug("********* DO CREATE INTRASHIP LABEL: {}", orderId);
         Request req = new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
