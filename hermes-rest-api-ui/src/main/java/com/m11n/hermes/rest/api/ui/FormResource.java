@@ -49,6 +49,9 @@ public class FormResource {
     @Value("${hermes.result.dir}")
     private String resultDir;
 
+    @Value("${hermes.server.result.dir}")
+    private String serverResultDir;
+
     private ExecutorService executor = Executors.newFixedThreadPool(1);
 
     @GET
@@ -76,29 +79,41 @@ public class FormResource {
 
             final boolean downloadFiles = parameters.get("_downloadFiles")==null ? false : (Boolean)parameters.get("_downloadFiles");
 
-            for(Map<String, Object> row : r) {
-                if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                    String orderId = row.get("orderId").toString();
-                    String shippingId = row.get("shippingId").toString();
+            try {
+                sshService.connect();
 
-                    if(row.get("_labelPath")!=null) {
-                        String path = row.get("_labelPath").toString();
+                for(Map<String, Object> row : r) {
+                    if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
+                        String orderId = row.get("orderId").toString();
+                        String shippingId = row.get("shippingId").toString();
 
-                        try {
-                            File f = new File(resultDir + "/" + row.get("orderId"));
-                            if(!f.exists()) {
-                                f.mkdirs();
+                        if(row.get("_labelPath")!=null) {
+                            String path = row.get("_labelPath").toString();
+
+                            try {
+                                /**
+                                File f = new File(resultDir + "/" + row.get("orderId"));
+                                if(!f.exists()) {
+                                    f.mkdirs();
+                                }
+                                logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
+                                sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
+                                 */
+                                logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                row.put("_labelExists", status==0);
+                            } catch (Exception e) {
+                                logger.error(e.toString(), e);
                             }
-                            logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
-                            sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
-                            row.put("_labelExists", true);
-                        } catch (Exception e) {
-                            logger.error(e.toString(), e);
+                        } else {
+                            logger.info("FILE NOT FOUND: {} -> {}", orderId, shippingId);
                         }
-                    } else {
-                        logger.info("FILE NOT FOUND: {} -> {}", orderId, shippingId);
                     }
                 }
+
+                sshService.disconnect();
+            } catch (Exception e) {
+                logger.error(e.toString(), e);
             }
         }
 
@@ -112,30 +127,42 @@ public class FormResource {
         executor.submit(new Runnable() {
             @Override
             public void run() {
-                for(Map<String, Object> item : items) {
-                    String orderId = item.get("orderId")==null ? null : item.get("orderId").toString();
-                    String shippingId = item.get("shippingId")==null ? null : item.get("shippingId").toString();
+                try {
+                    sshService.connect();
 
-                    if(!StringUtils.isEmpty(orderId) && !StringUtils.isEmpty(shippingId)) {
-                        logger.debug("DOWNLOAD: {} - {}", orderId, shippingId);
+                    for(Map<String, Object> item : items) {
+                        String orderId = item.get("orderId")==null ? null : item.get("orderId").toString();
+                        String shippingId = item.get("shippingId")==null ? null : item.get("shippingId").toString();
 
-                        boolean labelExists = new File(resultDir + "/" + orderId + "/label.pdf").exists();
+                        if(!StringUtils.isEmpty(orderId) && !StringUtils.isEmpty(shippingId)) {
+                            logger.debug("DOWNLOAD: {} - {}", orderId, shippingId);
 
-                        if(!labelExists) {
-                            String labelPath = intrashipDocumentRepository.findFilePath(shippingId);
+                            boolean labelExists = new File(resultDir + "/" + orderId + "/label.pdf").exists();
 
-                            try {
-                                File f = new File(resultDir + "/" + orderId);
-                                if (!f.exists()) {
-                                    f.mkdirs();
+                            if(!labelExists) {
+                                String labelPath = intrashipDocumentRepository.findFilePath(shippingId);
+
+                                try {
+                                    /**
+                                    File f = new File(resultDir + "/" + orderId);
+                                    if (!f.exists()) {
+                                        f.mkdirs();
+                                    }
+                                    logger.debug("#################### COPY: {} -> {}", labelPath, resultDir + "/" + orderId + "/label.pdf");
+                                    sshService.copy(labelPath, resultDir + "/" + orderId + "/label.pdf");
+                                     */
+                                    logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                    sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                } catch (Exception e) {
+                                    logger.error(e.toString(), e);
                                 }
-                                logger.debug("#################### COPY: {} -> {}", labelPath, resultDir + "/" + orderId + "/label.pdf");
-                                sshService.copy(labelPath, resultDir + "/" + orderId + "/label.pdf");
-                            } catch (Exception e) {
-                                logger.error(e.toString(), e);
                             }
                         }
                     }
+
+                    sshService.disconnect();
+                } catch (Exception e) {
+                    logger.error(e.toString(), e);
                 }
             }
         });
