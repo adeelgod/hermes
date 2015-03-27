@@ -238,14 +238,14 @@ public class DefaultBankService implements BankService {
                                     String status = order.get("status").toString();
                                     String type = order.get("type").toString();
 
-                                    logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-
                                     if("ebay_vorkasse".equalsIgnoreCase(type) || "shop_vorkasse".equalsIgnoreCase(type)) {
+                                        logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
                                         // TODO: check this!
                                         magentoService.createSalesOrderInvoice(bankStatement.getOrderId());
                                         // TODO: maybe set flag that webservice was executed
                                         //bankStatementRepository.save(orig);
                                     } else if("shop_rechnung".equalsIgnoreCase(type)) {
+                                        logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
                                         // TODO: check this!
                                         magentoService.completeInvoice(bankStatement.getOrderId());
                                         // TODO: maybe set flag that webservice was executed
