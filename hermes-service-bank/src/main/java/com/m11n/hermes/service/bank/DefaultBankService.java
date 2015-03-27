@@ -122,7 +122,7 @@ public class DefaultBankService implements BankService {
                 + entry.get("transferDate")
                 + entry.get("receiver1")
                 + entry.get("receiver2")
-                + entry.get("description".replaceAll(" ", "").replaceAll("\\.", ""))
+                + entry.get("description").replaceAll(" ", "").replaceAll("\\.", "")
                 + entry.get("amount")
                 + entry.get("currency");
 

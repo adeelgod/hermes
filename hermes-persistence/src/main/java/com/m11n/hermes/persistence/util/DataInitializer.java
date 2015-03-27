@@ -1,16 +1,22 @@
 package com.m11n.hermes.persistence.util;
 
+import com.m11n.hermes.core.model.BankStatement;
 import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.persistence.BankStatementPatternRepository;
+import com.m11n.hermes.persistence.BankStatementRepository;
 import com.m11n.hermes.persistence.FormRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,12 +25,16 @@ import java.util.List;
 @Component
 @DependsOn("dataSourceJpa")
 public class DataInitializer {
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Inject
     private FormRepository formRepository;
 
     @Inject
     private BankStatementPatternRepository bankStatementPatternRepository;
+
+    @Inject
+    private BankStatementRepository bankStatementRepository;
 
     @PostConstruct
     public void init() throws Exception {
@@ -282,5 +292,23 @@ public class DataInitializer {
         if(bsp==null) {
             bankStatementPatternRepository.save(new BankStatementPattern("default_client_ebay_name", 6, ".*e\\s?b\\s?a\\s?y\\s?n\\s?a\\s?m\\s?e\\s*([a-zA-Z0-9]*).*", true, 1, "ebayName", true));
         }
+
+        /**
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy"); // 26.03.2015
+        long count = bankStatementRepository.count();
+        for(BankStatement bs : bankStatementRepository.findAll()) {
+            String tmp = bs.getAccount()
+                    + df.format(bs.getTransferDate())
+                    + bs.getReceiver1()
+                    + bs.getReceiver2()
+                    + bs.getDescription().replaceAll(" ", "").replaceAll("\\.", "")
+                    + bs.getAmount()
+                    + bs.getCurrency();
+
+            bs.setHash(DigestUtils.sha384Hex(tmp));
+            bankStatementRepository.save(bs);
+            logger.info("# {}", count--);
+        }
+         */
     }
 }
