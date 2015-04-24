@@ -99,8 +99,8 @@ public class FormResource {
                                 logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
                                 sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
                                  */
-                                logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf");
-                                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
+                                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
                                 row.put("_labelExists", status==0);
                             } catch (Exception e) {
                                 logger.error(e.toString(), e);
@@ -151,8 +151,8 @@ public class FormResource {
                                     logger.debug("#################### COPY: {} -> {}", labelPath, resultDir + "/" + orderId + "/label.pdf");
                                     sshService.copy(labelPath, resultDir + "/" + orderId + "/label.pdf");
                                      */
-                                    logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf");
-                                    sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                    logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
+                                    sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
                                 } catch (Exception e) {
                                     logger.error(e.toString(), e);
                                 }
