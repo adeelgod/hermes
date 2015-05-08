@@ -155,12 +155,14 @@
                 // TODO: make this configurable?!?
                 var name = (shipping.firstname || '') + (shipping.lastname || '');
                 $scope.checks[shipping.orderId].company = (!shipping.company || shipping.company.length <= 30);
-                $scope.checks[shipping.orderId].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
-                $scope.checks[shipping.orderId].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
-                $scope.checks[shipping.orderId].lastname = ( !name || name.length <= 30);
+                //$scope.checks[shipping.orderId].firstname = (!shipping.firstname || shipping.firstname.length <= 30);
+                //$scope.checks[shipping.orderId].lastname = (!shipping.lastname || shipping.lastname.length <= 30);
+                $scope.checks[shipping.orderId].firstname = name.length <= 30;
+                $scope.checks[shipping.orderId].lastname = name.length <= 30;
                 $scope.checks[shipping.orderId].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
                 $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight <= 25);
-                $scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+)$/g)) );
+                //$scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+)$/g)) );
+                $scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+\s*)([a-z]*)((\s*-\s*\d+\s*)([a-z]*))?/g)) );
                 $scope.checks[shipping.orderId].street2 = (!shipping.street2 || shipping.street2.length <= 30);
                 $scope.checks[shipping.orderId].city = (!shipping.city || shipping.city.length <= 30);
 
