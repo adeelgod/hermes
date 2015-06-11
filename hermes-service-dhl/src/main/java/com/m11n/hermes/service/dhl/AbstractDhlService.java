@@ -160,7 +160,7 @@ public abstract class AbstractDhlService implements DhlService {
 
     private String getStatus(String message) {
         for(Map.Entry<String, String> entry : statusMapping.entrySet()) {
-            if(message.toLowerCase().startsWith(entry.getKey())) {
+            if(message!=null && message.toLowerCase().startsWith(entry.getKey())) {
                 return entry.getValue();
             }
         }
