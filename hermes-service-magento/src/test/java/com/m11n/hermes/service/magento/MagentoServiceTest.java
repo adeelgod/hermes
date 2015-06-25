@@ -44,4 +44,11 @@ public class MagentoServiceTest {
         magentoService.getShipmentInfo("30000001");
         logger.info("+++++++++++++++++ TEST RETRY: END.");
     }
+
+    //@Test
+    public void testCreateInvoice() throws Exception {
+        // 300028767
+        //String result = defaultMagentoService.createSalesOrderInvoice("300028767");
+        //logger.info("############################################################################ {}", result);
+    }
 }
