@@ -55,6 +55,7 @@ public class DefaultMagentoService extends AbstractMagentoService {
 
     @Override
     public String createSalesOrderInvoice(String orderId) throws Exception {
+        checkSession();
         String invoiceId = magentoService.salesOrderInvoiceCreate(sessionId, orderId, new OrderItemIdQty[0], "", "", "");
 
         return invoiceId;
