@@ -87,6 +87,12 @@ public class DefaultBankService implements BankService {
 
     protected AtomicInteger processRunning = new AtomicInteger(0);
 
+    @Value("${hermes.bank.statement.invoice.create:true}")
+    private boolean createInvoiceEnabled = true;
+
+    @Value("${hermes.bank.statement.invoice.complete:true}")
+    private boolean completeInvoiceEnabled = true;
+
     @PostConstruct
     public void init() {
         reload();
@@ -239,17 +245,21 @@ public class DefaultBankService implements BankService {
                                     String type = order.get("type").toString();
 
                                     if("ebay_vorkasse".equalsIgnoreCase(type) || "shop_vorkasse".equalsIgnoreCase(type)) {
-                                        logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                        // TODO: check this!
-                                        magentoService.createSalesOrderInvoice(bankStatement.getOrderId());
-                                        // TODO: maybe set flag that webservice was executed
-                                        //bankStatementRepository.save(orig);
+                                        if(createInvoiceEnabled) {
+                                            logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                            magentoService.createSalesOrderInvoice(bankStatement.getOrderId());
+                                            // TODO: maybe set flag that webservice was executed
+                                        } else {
+                                            logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                        }
                                     } else if("shop_rechnung".equalsIgnoreCase(type)) {
-                                        logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                        // TODO: check this!
-                                        magentoService.completeInvoice(bankStatement.getOrderId());
-                                        // TODO: maybe set flag that webservice was executed
-                                        //bankStatementRepository.save(orig);
+                                        if(completeInvoiceEnabled) {
+                                            logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                            magentoService.completeInvoice(bankStatement.getOrderId());
+                                            // TODO: maybe set flag that webservice was executed
+                                        } else {
+                                            logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                        }
                                     }
                                 }
                             }
