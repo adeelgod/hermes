@@ -235,33 +235,37 @@ public class DefaultBankService implements BankService {
 
                             auswertungRepository.updateOrderPaymentId(bankStatement.getOrderId(), bankStatement.getId());
 
-                            if("confirm".equals(bankStatement.getStatus())) {
-                                List<Map<String, Object>> orders = auswertungRepository.findOrdersByOrderId(bankStatement.getOrderId());
+                            try {
+                                if("confirm".equals(bankStatement.getStatus())) {
+                                    List<Map<String, Object>> orders = auswertungRepository.findOrdersByOrderId(bankStatement.getOrderId());
 
-                                if(orders!=null && !orders.isEmpty()) {
-                                    Map<String, Object> order = orders.get(0);
+                                    if(orders!=null && !orders.isEmpty()) {
+                                        Map<String, Object> order = orders.get(0);
 
-                                    String status = order.get("status").toString();
-                                    String type = order.get("type").toString();
+                                        String status = order.get("status").toString();
+                                        String type = order.get("type").toString();
 
-                                    if("ebay_vorkasse".equalsIgnoreCase(type) || "shop_vorkasse".equalsIgnoreCase(type)) {
-                                        if(createInvoiceEnabled) {
-                                            logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                            magentoService.createSalesOrderInvoice(bankStatement.getOrderId());
-                                            // TODO: maybe set flag that webservice was executed
-                                        } else {
-                                            logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                        }
-                                    } else if("shop_rechnung".equalsIgnoreCase(type)) {
-                                        if(completeInvoiceEnabled) {
-                                            logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                            magentoService.completeInvoice(bankStatement.getOrderId());
-                                            // TODO: maybe set flag that webservice was executed
-                                        } else {
-                                            logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                        if("ebay_vorkasse".equalsIgnoreCase(type) || "shop_vorkasse".equalsIgnoreCase(type)) {
+                                            if(createInvoiceEnabled) {
+                                                logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                                magentoService.createSalesOrderInvoice(bankStatement.getOrderId());
+                                                // TODO: maybe set flag that webservice was executed
+                                            } else {
+                                                logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                            }
+                                        } else if("shop_rechnung".equalsIgnoreCase(type)) {
+                                            if(completeInvoiceEnabled) {
+                                                logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                                magentoService.completeInvoice(bankStatement.getOrderId());
+                                                // TODO: maybe set flag that webservice was executed
+                                            } else {
+                                                logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
+                                            }
                                         }
                                     }
                                 }
+                            } catch (Throwable t) {
+                                logger.warn("Magento service call failed: {}", t.getMessage());
                             }
                         }
                     } catch (Throwable e) {
