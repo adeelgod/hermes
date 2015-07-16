@@ -72,7 +72,7 @@
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route>
-            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
+            <from uri="file://{{hermes.inbox.dir}}?readLock=rename&amp;move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
             <to uri="bean:documentSplitProcessor"/>
         </route>
 
