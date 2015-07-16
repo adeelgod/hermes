@@ -32,6 +32,12 @@
                     url: HermesApi.baseUrl + 'api/shipping/status',
                     params: params
                 });
+            },
+            flush: function() {
+                return $http({
+                    method: 'GET',
+                    url: HermesApi.baseUrl + 'api/shipping/flush'
+                });
             }
         };
     });

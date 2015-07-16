@@ -7,7 +7,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('NavbarCtrl', function ($scope, $interval, $alert, FormSvc, DhlSvc) {
+    module.controller('NavbarCtrl', function ($scope, $interval, $alert, FormSvc, DhlSvc, ShippingSvc) {
         $scope.loading = true;
         $scope.forms = [];
         $scope.updateForm = {};
@@ -34,6 +34,10 @@
             configuration: {title: 'Change configuration...', placement: 'bottom', type: 'info'},
             signin: {title: 'Login...', placement: 'bottom', type: 'info'},
             logout: {title: 'Logout...', placement: 'bottom', type: 'info'}
+        };
+
+        $scope.flush = function() {
+            ShippingSvc.flush();
         };
 
         $scope.trackingCheck = function () {
