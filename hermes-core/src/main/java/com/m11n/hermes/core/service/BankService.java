@@ -31,10 +31,4 @@ public interface BankService {
     void processCancel();
 
     void reload();
-
-    @Deprecated
-    BankStatement extract(BankStatement bs);
-
-    @Deprecated
-    List<Map<String, Object>> getOrders(String orderId);
 }
