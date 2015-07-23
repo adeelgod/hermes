@@ -56,7 +56,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/lib</directory>
+                                    <directory>${project.basedir}/lib</directory>
                                 </resource>
                             </resources>
                         </configuration>
