@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
@@ -56,6 +57,16 @@ public class DefaultSshService implements SshService {
         channel.setPty(true);
         channel.connect();
         channel.get(remotePath, new FileOutputStream(localPath));
+        channel.disconnect();
+    }
+
+    @Override
+    public void upload(String localPath, String remotePath) throws Exception {
+        ChannelSftp channel = (ChannelSftp)session.openChannel("sftp");
+        channel.setOutputStream(new LoggingOutputStream(logger, false));
+        channel.setPty(true);
+        channel.connect();
+        channel.put(new FileInputStream(localPath), remotePath);
         channel.disconnect();
     }
 

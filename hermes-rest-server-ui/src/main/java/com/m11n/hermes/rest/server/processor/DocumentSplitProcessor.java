@@ -3,6 +3,7 @@ package com.m11n.hermes.rest.server.processor;
 import com.m11n.hermes.core.model.DocumentLog;
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.service.PdfService;
+import com.m11n.hermes.core.service.SshService;
 import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.commons.lang.StringUtils;
@@ -26,10 +27,16 @@ public class DocumentSplitProcessor {
     private PdfService pdfService;
 
     @Inject
+    private SshService sshService;
+
+    @Inject
     private DocumentLogRepository documentLogRepository;
 
     @Value("${hermes.result.dir}")
     private String dir;
+
+    @Value("${hermes.server.result.dir}")
+    private String serverResultDir;
 
     @Value("${hermes.invoice.order.field}")
     private String invoiceOrderIdField;
@@ -96,7 +103,16 @@ public class DocumentSplitProcessor {
                     String fileNameResult = resultDir + "/" + documentLog.getType().toLowerCase() + ".pdf";
                     document.save(fileNameResult);
 
-                    // TODO: copy to server
+                    // copy to server
+                    try {
+                        sshService.connect();
+                        int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + " && chmod 774 " + serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + " -R");
+                        sshService.upload(fileNameResult, serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()));
+                    } catch (Exception e) {
+                        logger.error(e.toString(), e);
+                    } finally {
+                        sshService.disconnect();
+                    }
 
                     documentLog.setProcessedAt(new Date());
                     documentLogRepository.save(documentLog);
