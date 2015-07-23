@@ -30,12 +30,6 @@ public class ShippingResource {
     @Inject
     private SshService sshService;
 
-    @Value("${hermes.server.inbox.dir}")
-    private String serverInboxDir;
-
-    @Value("${hermes.server.intern.inbox.dir}")
-    private String serverInternInboxDir;
-
     @GET
     @Path("/shipment")
     @Produces(MediaType.APPLICATION_JSON)
@@ -56,22 +50,5 @@ public class ShippingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response status(@QueryParam("orderId") String orderId) {
         return Response.ok(magentoService.getIntrashipStatuses(orderId)).build();
-    }
-
-    @GET
-    @Path("/flush")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response flush() throws Exception{
-        try {
-            sshService.connect();
-            sshService.exec("mv " + serverInboxDir + "/* " + serverInternInboxDir);
-            sshService.disconnect();
-
-            return Response.ok().build();
-        } catch (Exception e) {
-            logger.error(e.toString(), e);
-        }
-
-        return Response.serverError().build();
     }
 }

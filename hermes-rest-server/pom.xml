@@ -116,7 +116,7 @@
                             <phase>generate-resources</phase>
                             <configuration>
                                 <target>
-                                    <copy file="../hermes-doc/target/generated-docs/html5/index.html" tofile="${project.build.directory}/classes/www/help.html" />
+                                    <copy file="${project.basedir}/../hermes-doc/target/generated-docs/html5/index.html" tofile="${project.build.directory}/classes/www/help.html" />
                                 </target>
                             </configuration>
                             <goals>
@@ -152,7 +152,7 @@
                                     <addDependencies>false</addDependencies>
                                     <preCp>anything</preCp>
                                 </classPath>
-                                <icon>src/main/resources/icon/application.ico</icon>
+                                <icon>${project.basedir}/src/main/resources/icon/application.ico</icon>
                                 <singleInstance>
                                     <mutexName>${project.artifactId}</mutexName>
                                     <windowTitle>${project.name}</windowTitle>

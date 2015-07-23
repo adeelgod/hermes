@@ -9,7 +9,6 @@ import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
@@ -40,9 +39,6 @@ public class BankStatementResource {
 
     @Inject
     private FormRepository formRepository;
-
-    @Value("${hermes.result.dir}")
-    private String resultDir;
 
     @GET
     @Path("matched")

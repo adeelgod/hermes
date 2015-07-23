@@ -6,6 +6,7 @@ import com.m11n.hermes.core.model.PrintRequest;
 import com.m11n.hermes.core.model.PrintRequestCharge;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
+import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.AuswertungRepository;
 import org.apache.commons.io.FileUtils;
@@ -130,7 +131,7 @@ public class PrinterResource {
                     }
                     Properties p = PropertiesUtil.getProperties();
 
-                    String dir = p.getProperty("hermes.result.dir");
+                    String dir = p.getProperty("hermes.print.dir");
                     boolean fast = StringUtils.isEmpty(p.getProperty("hermes.printer.fast")) ? false : Boolean.valueOf(p.getProperty("hermes.printer.fast"));
 
                     if (StringUtils.isEmpty(req.getTemplates())) {
@@ -150,7 +151,7 @@ public class PrinterResource {
                     }
 
                     if (documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
-                        print(documentType, printer, dir + "/" + req.getOrderId() + "/" + req.getType().toLowerCase() + ".pdf", fast);
+                        print(documentType, printer, dir + "/" + PathUtil.segment(req.getOrderId()) + "/" + req.getType().toLowerCase() + ".pdf", fast);
                         success = true;
                     } else if (documentType.equals(DocumentType.REPORT)) {
                         String[] templates = StringUtils.trimToEmpty(req.getTemplates()).split("\\|");

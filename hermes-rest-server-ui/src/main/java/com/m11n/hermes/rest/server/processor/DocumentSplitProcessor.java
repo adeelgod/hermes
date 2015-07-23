@@ -3,6 +3,7 @@ package com.m11n.hermes.rest.server.processor;
 import com.m11n.hermes.core.model.DocumentLog;
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.service.PdfService;
+import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.persistence.DocumentLogRepository;
 import org.apache.commons.lang.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -87,13 +88,15 @@ public class DocumentSplitProcessor {
                 //logger.debug("!!!!!!!!!!!!!!!!!!!!!!!! PROCESSING: {} - {}", fileName, documentLog);
 
                 if(documentLog !=null && documentLog.getOrderId()!=null) {
-                    String resultDir = dir + "/" + getPathSegments(documentLog.getOrderId());
+                    String resultDir = dir + "/" + PathUtil.segment(documentLog.getOrderId());
                     File t = new File(resultDir);
                     if(!t.exists()) {
                         t.mkdirs();
                     }
                     String fileNameResult = resultDir + "/" + documentLog.getType().toLowerCase() + ".pdf";
                     document.save(fileNameResult);
+
+                    // TODO: copy to server
 
                     documentLog.setProcessedAt(new Date());
                     documentLogRepository.save(documentLog);
@@ -125,13 +128,5 @@ public class DocumentSplitProcessor {
         }
 
         return documentLog;
-    }
-
-    private String getPathSegments(String orderId) {
-        String result = StringUtils.rightPad(orderId.substring(0, 5), orderId.length(), "0");
-        result = result + "/" + StringUtils.rightPad(orderId.substring(0, 7), orderId.length(), "0");
-        result = result + "/" + orderId;
-
-        return result;
     }
 }

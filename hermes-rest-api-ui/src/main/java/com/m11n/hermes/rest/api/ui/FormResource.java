@@ -3,6 +3,7 @@ package com.m11n.hermes.rest.api.ui;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
 import com.m11n.hermes.core.service.SshService;
+import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.persistence.IntrashipDocumentRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
@@ -91,16 +92,8 @@ public class FormResource {
                             String path = row.get("_labelPath").toString();
 
                             try {
-                                /**
-                                File f = new File(resultDir + "/" + row.get("orderId"));
-                                if(!f.exists()) {
-                                    f.mkdirs();
-                                }
-                                logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
-                                sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
-                                 */
-                                logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
-                                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + path + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
+                                logger.info("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
+                                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + PathUtil.segment(orderId) + " -R");
                                 row.put("_labelExists", status==0);
                             } catch (Exception e) {
                                 logger.error(e.toString(), e);

@@ -2,6 +2,7 @@ package com.m11n.hermes.persistence.util;
 
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
+import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.persistence.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
@@ -91,8 +92,8 @@ public class QueryScheduler {
                     }
 
                     if(row.containsKey("orderId") && checkFiles) {
-                        row.put("_invoiceExists", new File(resultDir + "/" + row.get("orderId") + "/invoice.pdf").exists());
-                        row.put("_labelExists", new File(resultDir + "/" + row.get("orderId") + "/label.pdf").exists());
+                        row.put("_invoiceExists", new File(resultDir + "/" + PathUtil.segment(row.get("orderId")+"") + "/invoice.pdf").exists());
+                        row.put("_labelExists", new File(resultDir + "/" + PathUtil.segment(row.get("orderId")+"") + "/label.pdf").exists());
 
                         if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
                             if(row.get("shippingId")!=null) {
@@ -100,7 +101,7 @@ public class QueryScheduler {
 
                                 row.put("_labelPath", intrashipDocumentRepository.findFilePath(shippingId));
                             } else {
-                                logger.warn("FILE NOT FOUND: {}", resultDir + "/" + row.get("orderId") + "/label.pdf");
+                                logger.warn("FILE NOT FOUND: {}", resultDir + "/" + PathUtil.segment(row.get("orderId")+"") + "/label.pdf");
                                 row.put("shippingId", "");
                             }
                         }
