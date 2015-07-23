@@ -55,6 +55,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
 
+            <!--
             <plugin>
                 <groupId>com.googlecode.addjars-maven-plugin</groupId>
                 <artifactId>addjars-maven-plugin</artifactId>
@@ -73,6 +74,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
