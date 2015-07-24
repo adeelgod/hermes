@@ -107,7 +107,7 @@ public class DocumentSplitProcessor {
                     try {
                         sshService.connect();
                         int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + " && chmod 774 " + serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + " -R");
-                        sshService.upload(fileNameResult, serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()));
+                        sshService.upload(fileNameResult, serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + "/" + documentLog.getType().toLowerCase() + ".pdf");
                     } catch (Exception e) {
                         logger.error(e.toString(), e);
                     } finally {
