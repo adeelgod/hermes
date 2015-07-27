@@ -144,8 +144,8 @@ public class FormResource {
                                     logger.debug("#################### COPY: {} -> {}", labelPath, resultDir + "/" + orderId + "/label.pdf");
                                     sshService.copy(labelPath, resultDir + "/" + orderId + "/label.pdf");
                                      */
-                                    logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
-                                    sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
+                                    logger.info("mkdir -p " + serverResultDir + "/" + orderId + " && chmod 774  " + serverResultDir + "/" + orderId + " -R && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf");
+                                    sshService.exec("mkdir -p " + serverResultDir + "/" + orderId + " && chmod 774 " + serverResultDir + "/" + orderId + " -R && cp " + labelPath + " " + serverResultDir + "/" + orderId + "/label.pdf");
                                 } catch (Exception e) {
                                     logger.error(e.toString(), e);
                                 }
