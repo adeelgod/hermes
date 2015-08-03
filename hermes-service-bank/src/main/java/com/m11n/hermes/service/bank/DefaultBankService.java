@@ -113,7 +113,7 @@ public class DefaultBankService implements BankService {
     }
 
     public boolean exists(BankStatement bs) {
-        return (bankStatementRepository.findByHash(bs.getHash())!=null);
+        return (bankStatementRepository.exists(bs.getAccount(), bs.getTransferDate(), bs.getDescriptionb(), bs.getAmount(), bs.getCurrency())>0L);
     }
 
     public BankStatement convert(Map<String, String> entry) throws Exception {
