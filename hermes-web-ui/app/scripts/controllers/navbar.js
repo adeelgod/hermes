@@ -7,7 +7,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('NavbarCtrl', function ($scope, $interval, $alert, FormSvc, DhlSvc, ShippingSvc) {
+    module.controller('NavbarCtrl', function ($scope, $interval, $alert, FormSvc, DhlSvc, ShippingSvc, UtilSvc) {
         $scope.loading = true;
         $scope.forms = [];
         $scope.updateForm = {};
@@ -38,6 +38,10 @@
 
         $scope.flush = function() {
             ShippingSvc.flush();
+        };
+
+        $scope.netdrive = function() {
+            UtilSvc.netdrive();
         };
 
         $scope.trackingCheck = function () {
