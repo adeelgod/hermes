@@ -17,7 +17,7 @@ public interface BankStatementRepository extends PagingAndSortingRepository<Bank
 
     List<BankStatement> findByStatusAndAmountGreaterThan(String status, BigDecimal amount);
 
-    @Query("SELECT COUNT(*) FROM Auswertung.hermes_bank_statement bs where bs.account = :account AND bs.transfer_date = :transfer_date AND bs.description_b = :description_b AND bs.amount = :amount AND bs.currency = :currency")
+    @Query("SELECT COUNT(*) FROM BankStatement bs where bs.account = :account AND bs.transferDate = :transfer_date AND bs.descriptionb = :description_b AND bs.amount = :amount AND bs.currency = :currency")
     long exists(@Param("account") String account, @Param("transfer_date") Date transferDate, @Param("description_b") String descriptionB, @Param("amount") BigDecimal amount, @Param("currency") String currency);
 
     @Modifying(clearAutomatically = true)
