@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +66,25 @@ public class DefaultBankService implements BankService {
 
     private final static String[] ORDER_ATTRIBUTES = new String[] {
             "orderId", "amount", "ebayName", "firstname", "lastname", "matching"
+    };
+
+    private final static String[] REPLACEMENTS = new String[] {
+            " ", "\\.", ",", ";", "-", "\\?", ":",
+            "SEPABASISLASTSCHRIFTIMAUFTRV",
+            "SEPAGUTSCHRIFT",
+            "SEPABASISLASTSCHRIFT",
+            "ZAHLUNGSGRUND",
+            "AUFTRAGGEBER",
+            "MANDATSREF",
+            "IMAUFTRV",
+            "SEPAONLINEÜBERWEISUNG",
+            "EUSTANDARDÜBERWEISUNGELEEUStandardüberweisungelektronischerteilt",
+            "SEPACASHMANAGEMENTGUTSCH",
+            "SEPAONLINEBERWEISUNGEMPFNGER",
+            "EMPFNGER",
+            "AUFTRAGGEBER",
+            "SEPAONLINEBERWEISUNGEMPFNGER",
+            "SEPACASHMANAGEMENTGUTSCHIMAUFTRV"
     };
 
     @Value("${hermes.bank.statement.lookup.period:6}")
@@ -113,19 +132,35 @@ public class DefaultBankService implements BankService {
     }
 
     public boolean exists(BankStatement bs) {
-        return (bankStatementRepository.exists(bs.getAccount(), bs.getTransferDate(), bs.getDescriptionb(), bs.getAmount(), bs.getCurrency())>0L);
+        long count = bankStatementRepository.exists(bs.getAccount(), bs.getTransferDate(), bs.getDescriptionb(), bs.getAmount(), bs.getCurrency());
+        logger.info("Bank statement exists: {} - {}", count, bs);
+        return (count>0L);
     }
 
     public BankStatement convert(Map<String, String> entry) throws Exception {
-        NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
+        DecimalFormat nf = (DecimalFormat)DecimalFormat.getInstance(Locale.GERMAN);
+        nf.setMaximumFractionDigits(3);
+        nf.setParseBigDecimal(true);
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+
+        String descriptionb = entry.get("description").toUpperCase();
+
+        for(String replacement : REPLACEMENTS) {
+            descriptionb = descriptionb.replaceAll(replacement, "");
+        }
+
+        descriptionb = descriptionb.replaceAll("Ä", "AE").replaceAll("Ö", "OE").replaceAll("Ü", "UE").replaceAll("ß", "SS");
+
+        if(descriptionb.length()>255) {
+            descriptionb = descriptionb.substring(0, 255);
+        }
 
         // NOTE: leave out valuta date, b/c always the same as transfer date; minimizing data items
         String tmp = entry.get("account")
                 + entry.get("transferDate")
                 + entry.get("receiver1")
                 + entry.get("receiver2")
-                + entry.get("description").replaceAll(" ", "").replaceAll("\\.", "")
+                + descriptionb
                 + entry.get("amount")
                 + entry.get("currency");
 
@@ -137,8 +172,8 @@ public class DefaultBankService implements BankService {
         bs.setReceiver1(entry.get("receiver1"));
         bs.setReceiver2(entry.get("receiver2"));
         bs.setDescription(entry.get("description"));
-        bs.setDescriptionb(bs.getDescription().replaceAll(" ", "").replaceAll("\\.", ""));
-        bs.setAmount(new BigDecimal(nf.parse(entry.get("amount")).doubleValue()));
+        bs.setDescriptionb(descriptionb);
+        bs.setAmount((BigDecimal)nf.parse(entry.get("amount")));
         bs.setCurrency(entry.get("currency"));
 
         return bs;

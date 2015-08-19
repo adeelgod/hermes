@@ -17,8 +17,8 @@ public interface BankStatementRepository extends PagingAndSortingRepository<Bank
 
     List<BankStatement> findByStatusAndAmountGreaterThan(String status, BigDecimal amount);
 
-    @Query("SELECT COUNT(*) FROM BankStatement bs where bs.account = :account AND bs.transferDate = :transfer_date AND bs.descriptionb = :description_b AND bs.amount = :amount AND bs.currency = :currency")
-    long exists(@Param("account") String account, @Param("transfer_date") Date transferDate, @Param("description_b") String descriptionB, @Param("amount") BigDecimal amount, @Param("currency") String currency);
+    @Query("SELECT COUNT(*) FROM BankStatement bs where bs.account = :account AND bs.transferDate = :transfer_date AND bs.descriptionb = :descriptionb AND bs.amount = :amount AND bs.currency = :currency")
+    long exists(@Param("account") String account, @Param("transfer_date") Date transferDate, @Param("descriptionb") String descriptionB, @Param("amount") BigDecimal amount, @Param("currency") String currency);
 
     @Modifying(clearAutomatically = true)
     @Query("update BankStatement bs set bs.status =:status where bs.id =:id")
