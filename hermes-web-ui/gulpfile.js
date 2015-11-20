@@ -32,17 +32,17 @@ gulp.task('i18n', function () {
 });
 
 gulp.task('html', ['jade'], function () {
-    var assets = $.useref.assets();
+    //var assets = $.useref.assets();
 
     var html = gulp.src(['.tmp/**/*.html'])
-        .pipe(assets)
+        //.pipe(assets)
         .pipe($.if('*.js', $.sourcemaps.init()))
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.js', $.sourcemaps.write()))
         .pipe($.if('*.css', $.sourcemaps.init()))
         .pipe($.if('*.css', $.csso()))
         .pipe($.if('*.css', $.sourcemaps.write()))
-        .pipe(assets.restore())
+        //.pipe(assets.restore())
         .pipe($.if('*.js', $.rev()))
         .pipe($.if('*.css', $.rev()))
         .pipe($.useref())
