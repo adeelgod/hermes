@@ -11,9 +11,15 @@
 
     <artifactId>hermes-persistence</artifactId>
     <packaging>jar</packaging>
+    
+    <repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+    </repositories>
 
     <name>Hermes :: Persistence</name>
-
     <dependencies>
 
         <dependency>
@@ -91,6 +97,7 @@
         <dependency>
             <groupId>com.github.monkeysintown</groupId>
             <artifactId>jdbc-ssh</artifactId>
+            <version>1.0.11-SNAPSHOT</version>
         </dependency>
 
         <!-- Datasource -->
