@@ -48,11 +48,15 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <!--
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
@@ -97,7 +101,7 @@
         <dependency>
             <groupId>com.github.monkeysintown</groupId>
             <artifactId>jdbc-ssh</artifactId>
-            <version>1.0.11-SNAPSHOT</version>
+            <version>1.0.10</version>
         </dependency>
 
         <!-- Datasource -->
@@ -138,6 +142,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
         </dependency>
 
     </dependencies>

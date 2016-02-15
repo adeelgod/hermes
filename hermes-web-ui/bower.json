@@ -22,7 +22,7 @@
     "angular-file-upload": "~2.2.0",
     "stacktrace-js": "~1.0.1",
     "angular-xeditable": "~0.1.9",
-    "angular-gettext": "~2.1.2",
+    "angular-gettext": "~2.1.0",
     "moment": "~2.10.6",
     "angular-mocks": "~1.4.8",
     "angular-scenario": "~1.4.8"

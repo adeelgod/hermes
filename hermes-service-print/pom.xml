@@ -30,9 +30,9 @@
         <dependency>
             <groupId>org.swinglabs</groupId>
             <artifactId>pdf-renderer</artifactId>
-            <version>1.0.5</version>
         </dependency>
 
+		<!-- added as lib
         <dependency>
             <groupId>org.icepdf.os</groupId>
             <artifactId>icepdf-core</artifactId>
@@ -41,6 +41,7 @@
             <groupId>org.icepdf.os</groupId>
             <artifactId>icepdf-viewer</artifactId>
         </dependency>
+		 -->
     </dependencies>
 
     <build>
