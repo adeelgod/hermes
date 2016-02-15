@@ -1,0 +1,19 @@
+# Install node and npm
+sudo apt-get install npm
+sudo apt-get install node
+
+# Update
+sudo npm update npm -g
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+
+# Dependencies
+sudo npm install -g bower
+sudo npm install -g gulp
+
+### Troubleshooting ###
+# Deleting incompletely downloaded dependencies
+rm -rf hermes-web-ui/bower_components/
+rm -rf hermes-web-ui/node_modules/
+
