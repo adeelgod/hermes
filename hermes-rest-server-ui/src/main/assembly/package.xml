@@ -60,6 +60,7 @@
                 <include>**/*</include>
             </includes>
         </fileSet>
+        <!-- 
         <fileSet>
             <directory>${basedir}/../hermes-doc/target/generated-docs</directory>
             <outputDirectory>${project.artifactId}/doc</outputDirectory>
@@ -68,5 +69,6 @@
                 <include>**/*.html</include>
             </includes>
         </fileSet>
+         -->
     </fileSets>
 </assembly>
