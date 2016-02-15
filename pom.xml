@@ -32,13 +32,8 @@
 			<name>bintray</name>
 			<url>http://jcenter.bintray.com</url>
 		</repository>
-		<!-- 
-	    <repository>
-	      <id>ice-maven-release</id>
-	      <name>Ice Maven Release Repository</name>
-	      <url>http://anonsvn.icesoft.org/repo/maven2/releases</url>
-	    </repository>
-		 -->
+		<!-- <repository> <id>ice-maven-release</id> <name>Ice Maven Release Repository</name> 
+			<url>http://anonsvn.icesoft.org/repo/maven2/releases</url> </repository> -->
 	</repositories>
 
 	<dependencyManagement>
@@ -176,18 +171,9 @@
 				<artifactId>pdf-renderer</artifactId>
 				<version>1.0.5</version>
 			</dependency>
-			<!-- 
-			<dependency>
-				<groupId>org.icepdf.os</groupId>
-				<artifactId>icepdf-core</artifactId>
-				<version>5.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.icepdf.os</groupId>
-				<artifactId>icepdf-viewer</artifactId>
-				<version>5.1.0</version>
-			</dependency>
-			 -->
+			<!-- <dependency> <groupId>org.icepdf.os</groupId> <artifactId>icepdf-core</artifactId> 
+				<version>5.1.0</version> </dependency> <dependency> <groupId>org.icepdf.os</groupId> 
+				<artifactId>icepdf-viewer</artifactId> <version>5.1.0</version> </dependency> -->
 
 			<dependency>
 				<groupId>org.json</groupId>
@@ -602,6 +588,38 @@
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>2.4.2</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+							<configuration>
+								<!--
+								<output-file>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</output-file>
+								-->
+								<finalName>${project.artifactId}-${project.version}-shaded</finalName>
+								<outputDirectory>${project.build.directory}/</outputDirectory>
+								<!-- 
+								<transformers>
+									<transformer
+										implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+										<manifestEntries>
+											<Main-Class>${app.main.class}</Main-Class>
+											<X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+											<X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+										</manifestEntries>
+									</transformer>
+								</transformers>
+								 -->
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.6</version>
 					<configuration>
@@ -629,7 +647,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.6</version>
+				<version>2.4</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -675,9 +693,7 @@
 				<module>hermes-persistence</module>
 				<module>hermes-service</module>
 				<module>hermes-web</module>
-				<!-- 
-				<module>hermes-doc</module>
-				 -->
+				<!-- <module>hermes-doc</module> -->
 				<module>hermes-rest</module>
 			</modules>
 		</profile>
