@@ -23,6 +23,8 @@ bower_components/
 dist/
 node_modules/
 *.log
+*~
+{{java.io.tmpdir}}
 ### Hermes
 hermes-rest-server-ui/archive
 hermes-rest-server-ui/examples
