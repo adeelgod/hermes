@@ -1,5 +1,6 @@
 package com.m11n.hermes.rest.server.core.jersey;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
@@ -18,6 +19,7 @@ public class HermesApplication extends ResourceConfig {
         .register(RequestContextFilter.class)
         //.register(CsrfProtectionFilter.class) // TODO: enable this in production
         .register(MultiPartFeature.class)
+        .register(JacksonFeature.class)
         // Now you can expect validation errors to be sent to the client.
         .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
         // @ValidateOnExecution annotations on subclasses won't cause errors.
