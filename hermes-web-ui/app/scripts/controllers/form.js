@@ -224,6 +224,6 @@
             });
         });
 
-        FormSvc.synchronize($scope);
+        //FormSvc.synchronize($scope);
     });
 })();

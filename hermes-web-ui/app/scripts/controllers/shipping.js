@@ -395,6 +395,6 @@
             $scope.getForm($scope.configuration['hermes.shipping.form']);
         });
 
-        FormSvc.synchronize($scope);
+        //FormSvc.synchronize($scope);
     });
 })();
