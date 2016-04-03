@@ -89,7 +89,10 @@ public class DefaultPrinterService implements PrinterService {
         try {
             Properties p = PropertiesUtil.getProperties();
 
-            PrintMethod m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
+            PrintMethod m = PrintMethod.SMARTJ;
+            try {
+            	m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
+			} catch (Exception e) {}
 
             if(PrintMethod.GHOSTSCRIPT.equals(m)) {
                 GhostscriptRevision revision = Ghostscript.getRevision();
@@ -146,7 +149,16 @@ public class DefaultPrinterService implements PrinterService {
     public JobStatus print(String file, String printer) throws Exception {
         Properties p = PropertiesUtil.getProperties();
 
-        PrintMethod m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
+        PrintMethod m;
+		try {
+        	m = PrintMethod.valueOf(p.getProperty("hermes.printer.method"));
+		} catch (Exception e) {
+			m = PrintMethod.SMARTJ;
+			if (p.getProperty("hermes.printer.method") == null) {
+				logger.warn("Method hermes.printer.method not found. Using SMARTJ");
+			}
+			logger.warn("Unknown value for hermes.printer.method: '{}'. Using SMARTJ", p.getProperty("hermes.printer.method"));
+		}
 
         JobStatus status = JobStatus.UNKNOWN;
 
