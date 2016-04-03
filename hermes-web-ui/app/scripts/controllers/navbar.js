@@ -26,6 +26,7 @@
         $scope.tooltips = {
             help: {title: 'Help', placement: 'bottom', type: 'info'},
             orders: {title: 'Search orders...', placement: 'bottom', type: 'info'},
+            documents: {title: 'Search documents...', placement: 'bottom', type: 'info'},
             shipping: {title: 'Search shippings...', placement: 'bottom', type: 'info'},
             execute: {title: 'Print reports...', placement: 'bottom', type: 'info'},
             examples: {title: 'Copy example PDFs...', placement: 'bottom', type: 'info'},

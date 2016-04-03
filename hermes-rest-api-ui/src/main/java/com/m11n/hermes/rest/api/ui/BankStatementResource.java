@@ -104,6 +104,7 @@ public class BankStatementResource {
         return Response.ok(bankService.processRunning()).build();
     }
 
+    // TODO check if need for deactivating
     private void sync() {
         Form form = formRepository.findByName("update");
         auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());

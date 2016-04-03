@@ -120,6 +120,12 @@
                 templateUrl: 'views/orders.html',
                 controller: 'OrderCtrl'
             })
+            .state('documents', {
+            	abstract: false,
+            	url: '/documents',
+            	templateUrl: 'views/documents.html',
+            	controller: 'DocumentsCtrl'
+            })
             .state('signin', {
                 abstract: false,
                 url: '/signin',

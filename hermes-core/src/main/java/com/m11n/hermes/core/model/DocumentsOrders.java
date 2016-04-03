@@ -13,6 +13,8 @@ import org.joda.beans.impl.direct.DirectBean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.math.BigDecimal;
 import java.util.Map;
 import org.joda.beans.Bean;
 import org.joda.beans.BeanBuilder;
@@ -48,8 +50,8 @@ public class DocumentsOrders extends DirectBean {
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "group")
-    private Integer group;
+    @Column(name = "group_no")
+    private Integer groupNo;
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -69,7 +71,7 @@ public class DocumentsOrders extends DirectBean {
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "volume_count")
-    private Integer volumeCount;
+    private BigDecimal volumeCount;
 
     @PropertyDefinition
     @JsonSerialize
@@ -173,27 +175,27 @@ public class DocumentsOrders extends DirectBean {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the group.
+     * Gets the groupNo.
      * @return the value of the property
      */
-    public Integer getGroup() {
-        return group;
+    public Integer getGroupNo() {
+        return groupNo;
     }
 
     /**
-     * Sets the group.
-     * @param group  the new value of the property
+     * Sets the groupNo.
+     * @param groupNo  the new value of the property
      */
-    public void setGroup(Integer group) {
-        this.group = group;
+    public void setGroupNo(Integer groupNo) {
+        this.groupNo = groupNo;
     }
 
     /**
-     * Gets the the {@code group} property.
+     * Gets the the {@code groupNo} property.
      * @return the property, not null
      */
-    public final Property<Integer> group() {
-        return metaBean().group().createProperty(this);
+    public final Property<Integer> groupNo() {
+        return metaBean().groupNo().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -276,7 +278,7 @@ public class DocumentsOrders extends DirectBean {
      * Gets the volumeCount.
      * @return the value of the property
      */
-    public Integer getVolumeCount() {
+    public BigDecimal getVolumeCount() {
         return volumeCount;
     }
 
@@ -284,7 +286,7 @@ public class DocumentsOrders extends DirectBean {
      * Sets the volumeCount.
      * @param volumeCount  the new value of the property
      */
-    public void setVolumeCount(Integer volumeCount) {
+    public void setVolumeCount(BigDecimal volumeCount) {
         this.volumeCount = volumeCount;
     }
 
@@ -292,7 +294,7 @@ public class DocumentsOrders extends DirectBean {
      * Gets the the {@code volumeCount} property.
      * @return the property, not null
      */
-    public final Property<Integer> volumeCount() {
+    public final Property<BigDecimal> volumeCount() {
         return metaBean().volumeCount().createProperty(this);
     }
 
@@ -337,7 +339,7 @@ public class DocumentsOrders extends DirectBean {
             return JodaBeanUtils.equal(getId(), other.getId()) &&
                     JodaBeanUtils.equal(getPrintjobId(), other.getPrintjobId()) &&
                     JodaBeanUtils.equal(getOrderId(), other.getOrderId()) &&
-                    JodaBeanUtils.equal(getGroup(), other.getGroup()) &&
+                    JodaBeanUtils.equal(getGroupNo(), other.getGroupNo()) &&
                     JodaBeanUtils.equal(getStatus(), other.getStatus()) &&
                     JodaBeanUtils.equal(getProductCount(), other.getProductCount()) &&
                     JodaBeanUtils.equal(getAProductCount(), other.getAProductCount()) &&
@@ -353,7 +355,7 @@ public class DocumentsOrders extends DirectBean {
         hash = hash * 31 + JodaBeanUtils.hashCode(getId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getPrintjobId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getOrderId());
-        hash = hash * 31 + JodaBeanUtils.hashCode(getGroup());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getGroupNo());
         hash = hash * 31 + JodaBeanUtils.hashCode(getStatus());
         hash = hash * 31 + JodaBeanUtils.hashCode(getProductCount());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAProductCount());
@@ -379,7 +381,7 @@ public class DocumentsOrders extends DirectBean {
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("printjobId").append('=').append(JodaBeanUtils.toString(getPrintjobId())).append(',').append(' ');
         buf.append("orderId").append('=').append(JodaBeanUtils.toString(getOrderId())).append(',').append(' ');
-        buf.append("group").append('=').append(JodaBeanUtils.toString(getGroup())).append(',').append(' ');
+        buf.append("groupNo").append('=').append(JodaBeanUtils.toString(getGroupNo())).append(',').append(' ');
         buf.append("status").append('=').append(JodaBeanUtils.toString(getStatus())).append(',').append(' ');
         buf.append("productCount").append('=').append(JodaBeanUtils.toString(getProductCount())).append(',').append(' ');
         buf.append("aProductCount").append('=').append(JodaBeanUtils.toString(getAProductCount())).append(',').append(' ');
@@ -413,10 +415,10 @@ public class DocumentsOrders extends DirectBean {
         private final MetaProperty<String> orderId = DirectMetaProperty.ofReadWrite(
                 this, "orderId", DocumentsOrders.class, String.class);
         /**
-         * The meta-property for the {@code group} property.
+         * The meta-property for the {@code groupNo} property.
          */
-        private final MetaProperty<Integer> group = DirectMetaProperty.ofReadWrite(
-                this, "group", DocumentsOrders.class, Integer.class);
+        private final MetaProperty<Integer> groupNo = DirectMetaProperty.ofReadWrite(
+                this, "groupNo", DocumentsOrders.class, Integer.class);
         /**
          * The meta-property for the {@code status} property.
          */
@@ -435,8 +437,8 @@ public class DocumentsOrders extends DirectBean {
         /**
          * The meta-property for the {@code volumeCount} property.
          */
-        private final MetaProperty<Integer> volumeCount = DirectMetaProperty.ofReadWrite(
-                this, "volumeCount", DocumentsOrders.class, Integer.class);
+        private final MetaProperty<BigDecimal> volumeCount = DirectMetaProperty.ofReadWrite(
+                this, "volumeCount", DocumentsOrders.class, BigDecimal.class);
         /**
          * The meta-property for the {@code type} property.
          */
@@ -450,7 +452,7 @@ public class DocumentsOrders extends DirectBean {
                 "id",
                 "printjobId",
                 "orderId",
-                "group",
+                "groupNo",
                 "status",
                 "productCount",
                 "aProductCount",
@@ -472,8 +474,8 @@ public class DocumentsOrders extends DirectBean {
                     return printjobId;
                 case -1207110391:  // orderId
                     return orderId;
-                case 98629247:  // group
-                    return group;
+                case 293428384:  // groupNo
+                    return groupNo;
                 case -892481550:  // status
                     return status;
                 case 988565856:  // productCount
@@ -529,11 +531,11 @@ public class DocumentsOrders extends DirectBean {
         }
 
         /**
-         * The meta-property for the {@code group} property.
+         * The meta-property for the {@code groupNo} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<Integer> group() {
-            return group;
+        public final MetaProperty<Integer> groupNo() {
+            return groupNo;
         }
 
         /**
@@ -564,7 +566,7 @@ public class DocumentsOrders extends DirectBean {
          * The meta-property for the {@code volumeCount} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<Integer> volumeCount() {
+        public final MetaProperty<BigDecimal> volumeCount() {
             return volumeCount;
         }
 
@@ -586,8 +588,8 @@ public class DocumentsOrders extends DirectBean {
                     return ((DocumentsOrders) bean).getPrintjobId();
                 case -1207110391:  // orderId
                     return ((DocumentsOrders) bean).getOrderId();
-                case 98629247:  // group
-                    return ((DocumentsOrders) bean).getGroup();
+                case 293428384:  // groupNo
+                    return ((DocumentsOrders) bean).getGroupNo();
                 case -892481550:  // status
                     return ((DocumentsOrders) bean).getStatus();
                 case 988565856:  // productCount
@@ -614,8 +616,8 @@ public class DocumentsOrders extends DirectBean {
                 case -1207110391:  // orderId
                     ((DocumentsOrders) bean).setOrderId((String) newValue);
                     return;
-                case 98629247:  // group
-                    ((DocumentsOrders) bean).setGroup((Integer) newValue);
+                case 293428384:  // groupNo
+                    ((DocumentsOrders) bean).setGroupNo((Integer) newValue);
                     return;
                 case -892481550:  // status
                     ((DocumentsOrders) bean).setStatus((String) newValue);
@@ -627,7 +629,7 @@ public class DocumentsOrders extends DirectBean {
                     ((DocumentsOrders) bean).setAProductCount((Integer) newValue);
                     return;
                 case -900736491:  // volumeCount
-                    ((DocumentsOrders) bean).setVolumeCount((Integer) newValue);
+                    ((DocumentsOrders) bean).setVolumeCount((BigDecimal) newValue);
                     return;
                 case 3575610:  // type
                     ((DocumentsOrders) bean).setType((String) newValue);

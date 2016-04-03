@@ -115,11 +115,17 @@ public class QueryScheduler {
                 if(field.getFieldType() == null) {
                     logger.error("*************************************** ORPHAN FIELD: {}", field);
                 }
+                //if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
                 if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
-                    String value = parameters.get(field.getName()).toString();
-                    DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
-                    DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                    parameters.put(field.getName(), df.print(dt));
+                	String value = "";
+                	try {
+                		value = parameters.get(field.getName()).toString();
+                		DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
+                		DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                		parameters.put(field.getName(), df.print(dt));
+					} catch (Exception e) {
+						logger.error("Missing Parameter '" + field.getName() + "'. Got " + parameters);
+					}
                 }
             }
 
@@ -174,7 +180,7 @@ public class QueryScheduler {
         String[] statements = form.getSqlStatement().split(";");
 
         for(String statement : statements) {
-            statement = statement.trim().replaceAll("\n", "").replaceAll("\r", "");
+            statement = statement.trim().replaceAll("\n", " ").replaceAll("\r", "");
 
             if(!StringUtils.isEmpty(statement)) {
                 if(statement.toLowerCase().startsWith("select")) {
@@ -199,7 +205,7 @@ public class QueryScheduler {
     private Object executeBatch(Form form, Map<String, Object> parameters) {
         int result;
 
-        String statement = form.getSqlStatement().replaceAll("\n", "").replaceAll("\r", "");
+        String statement = form.getSqlStatement().replaceAll("\n", " ").replaceAll("\r", "");
 
         if("auswertung".equalsIgnoreCase(form.getDb())) {
             result = auswertungRepository.update(statement, parameters);

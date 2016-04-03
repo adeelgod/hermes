@@ -1,0 +1,175 @@
+extends /layouts/_page
+block content
+    .row(ng-show='loading')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-hide='loading')
+        .col-md-6
+            form(role='form', name='orderForm', novalidate='')
+                .form-group
+                    .row
+                        .col-md-12
+                            h2
+                                i.fa.fa-calendar
+                                | &nbsp;
+                                | Documents Search
+                    hr
+                    .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
+                        label(for='{{field.name}}') {{field.description}}
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && (!field.lookup || field.lookup.length == 0)", placeholder='{{field.name}}', type='text')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='NUMBER'", placeholder='{{field.name}}', type='number')
+                        input.form-control(name='{{field.name}}', ng-model='params[field.name]', ng-if="field.fieldType=='DATE'", data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}}', bs-datepicker='', type='text')
+                        .row(ng-if="field.fieldType=='DATETIME'")
+                            .col-md-8
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-date-format='dd-MM-yyyy', data-autoclose='1', placeholder='{{field.name}} date', bs-datepicker='', type='text')
+                            .col-md-4
+                                input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
+                        br
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && field.lookup.length > 0", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
+                            i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
+                    .form-group
+                        .row
+                            .col-md-12
+                                .btn-group.btn-group-lg
+                                    button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
+                                        i.fa.fa-search
+                                        | &nbsp;
+                                        | New
+                                    button.btn.btn-default(type='button', ng-click='listPrintjobs()', ng-disabled='busy')
+                                        i.fa.fa-print
+                                        | &nbsp;
+                                        | Printjobs
+                                    button.btn.btn-default(type='button', ng-click='checkBeforePrint()', ng-disabled='busy')
+                                        i.fa.fa-print
+                                        | &nbsp;
+                                        | Print
+                                    button.btn.btn-default(type='button', ng-click='printCancel()', ng-show='printStatusLoop')
+                                        i.fa.fa-close
+                                        | &nbsp;
+                                        | Cancel
+        .col-md-6
+            //
+                nav
+                    ul.pagination
+                        li(ng-repeat='page in pages()', ng-class="{'active': isCurrentPage(page)}")
+                            a(href='', ng-click='go(page)') {{page}}
+    .row(ng-show='busy')
+        .col-md-12
+            .progress
+                .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='100', aria-valuemin='0', aria-valuemax='100', style='width: 100%')
+                    span.sr-only &nbsp;
+    .row(ng-show='printjobs')
+        .col-md-12
+            table.table.table-striped.table-condensed.table-hover
+                thead
+                    tr
+                        td
+                            h4 Printjob
+                        td
+                            h4 Status
+                        td
+                            h4 Date Created
+                        td
+                            h4 Date Printed
+                tbody
+                    tr(ng-repeat='entry in printjobs', ng-class="{'info': currentPrintjob.printjobId==entry.printjobId}")
+                        td
+                            h4(ng-click='listPrintjobItems(entry.id)' style='cursor: pointer') {{entry.id}}
+                        td
+                            h4(ng-click='listPrintjobItems(entry.id)' style='cursor: pointer') {{entry.status}}
+                        td
+                            h4(ng-click='listPrintjobItems(entry.id)' style='cursor: pointer') {{entry.created_at}}
+                        td
+                            h4(ng-click='listPrintjobItems(entry.id)' style='cursor: pointer') {{entry.printed_at}}
+    .row(ng-show='printjobItems')
+        .col-md-12
+            table.table.table-striped.table-condensed.table-hover
+                thead
+                    tr
+                        td
+                            h4 Group
+                        td
+                            h4 Status
+                        td
+                            h4 Printed
+                        td
+                            h4 Type
+                        td
+                            h4 Created
+                        td
+                            h4 Path Live
+                        td
+                            h4 Path Print
+                        td
+                            h4
+                                i.fa.fa-print
+                        td
+                            .btn-group
+                                button.btn.btn-sm.btn-default(type='button', ng-click='selectPrintjobItems(true)', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-sm.btn-default(type='button', ng-click='selectPrintjobItems(false)', ng-disabled='busy')
+                                    i.fa.fa-minus
+                tbody
+                    tr(ng-repeat='entry in printjobItems', ng-class="{'info': currentPrintjob.printjobId==entry.printjobId}")
+                        td
+                            {{entry.group_no}}
+                        td
+                            {{entry.status}}
+                        td
+                            {{entry.printed_at}}
+                        td
+                            {{entry.type}}
+                        td
+                            {{entry.created_at}}
+                        td
+                            {{entry.path_live}}
+                        td
+                            {{entry.path_print}}
+                        td.text-center
+                            button.btn.btn-sm.btn-default(type='button', ng-click='selectEntry(entry)', ng-disabled='busy')
+                                i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
+                        td
+                            {{entry.num_printed}}
+                            
+    .row(ng-show='orders')
+        .col-md-12
+            table.table.table-striped.table-condensed.table-hover
+                thead
+                    tr
+                        td
+                            h4 Charge
+                        td.text-center
+                            .btn-group
+                                button.btn.btn-sm.btn-default(type='button', ng-click='select(true)', ng-disabled='busy')
+                                    i.fa.fa-check
+                                button.btn.btn-sm.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
+                                    i.fa.fa-minus
+                        td.text-left
+                            h4 ID
+                        td.text-left
+                            h4 Order ID
+                        td.text-left
+                            h4 Invoice Ident
+                        td.text-left
+                            h4 Shipping Ident
+                        td.text-left
+                            h4 Customer
+                tbody
+                    tr(ng-repeat='entry in orders', ng-class="{'info': currentOrder.orderId==entry.orderId}")
+                        td
+                            h4 {{charge($index)}}
+                        td.text-center
+                            button.btn.btn-sm.btn-default(type='button', ng-click='selectEntry(entry)', ng-disabled='busy')
+                                i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
+                        td {{entry.unId}}
+                        td {{entry.orderId}}
+                        td(ng-class="{ 'success': entry._invoiceExists, 'danger': !entry._invoiceExists }")
+                            | {{entry.invoiceId}}&nbsp;
+                            i.fa.fa-spin(ng-class="{'fa-circle-o-notch': currentOrder.invoiceId==entry.invoiceId}")
+                        td(ng-class="{ 'success': entry._labelExists, 'danger': !entry._labelExists }")
+                            | {{entry.shippingId}}&nbsp;
+                            i.fa.fa-spin(ng-class="{'fa-circle-o-notch': currentOrder.shippingId==entry.shippingId}")
+                        td {{entry.lastname}}, {{entry.firstname}}

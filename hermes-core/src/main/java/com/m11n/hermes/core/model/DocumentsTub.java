@@ -26,12 +26,13 @@ import org.joda.beans.impl.direct.DirectMetaPropertyMap;
 @JsonIgnoreProperties({"meta", "metaBean"})
 @XmlRootElement(name = "documents_printjob")
 @Entity
-@Table(name = "hermes_documents_printjob")
+@Table(name = "hermes_documents_tub")
 public class DocumentsTub extends DirectBean {
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Id
     @Column(name = "id", unique = true)
+    @GeneratedValue
     private Integer id;
     
     @PropertyDefinition
@@ -41,8 +42,13 @@ public class DocumentsTub extends DirectBean {
     
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    @Column(name = "group")
-    private Integer group;
+    @Column(name = "type")
+    private String type;
+    
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    @Column(name = "group_no")
+    private Integer groupNo;
     
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -52,7 +58,7 @@ public class DocumentsTub extends DirectBean {
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     @Column(name = "order_id")
-    private Integer order_id;
+    private String orderId;
     
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -136,27 +142,52 @@ public class DocumentsTub extends DirectBean {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the group.
+     * Gets the type.
      * @return the value of the property
      */
-    public Integer getGroup() {
-        return group;
+    public String getType() {
+        return type;
     }
 
     /**
-     * Sets the group.
-     * @param group  the new value of the property
+     * Sets the type.
+     * @param type  the new value of the property
      */
-    public void setGroup(Integer group) {
-        this.group = group;
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
-     * Gets the the {@code group} property.
+     * Gets the the {@code type} property.
      * @return the property, not null
      */
-    public final Property<Integer> group() {
-        return metaBean().group().createProperty(this);
+    public final Property<String> type() {
+        return metaBean().type().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the groupNo.
+     * @return the value of the property
+     */
+    public Integer getGroupNo() {
+        return groupNo;
+    }
+
+    /**
+     * Sets the groupNo.
+     * @param groupNo  the new value of the property
+     */
+    public void setGroupNo(Integer groupNo) {
+        this.groupNo = groupNo;
+    }
+
+    /**
+     * Gets the the {@code groupNo} property.
+     * @return the property, not null
+     */
+    public final Property<Integer> groupNo() {
+        return metaBean().groupNo().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -186,27 +217,27 @@ public class DocumentsTub extends DirectBean {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the order_id.
+     * Gets the orderId.
      * @return the value of the property
      */
-    public Integer getOrder_id() {
-        return order_id;
+    public String getOrderId() {
+        return orderId;
     }
 
     /**
-     * Sets the order_id.
-     * @param order_id  the new value of the property
+     * Sets the orderId.
+     * @param orderId  the new value of the property
      */
-    public void setOrder_id(Integer order_id) {
-        this.order_id = order_id;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     /**
-     * Gets the the {@code order_id} property.
+     * Gets the the {@code orderId} property.
      * @return the property, not null
      */
-    public final Property<Integer> order_id() {
-        return metaBean().order_id().createProperty(this);
+    public final Property<String> orderId() {
+        return metaBean().orderId().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -274,9 +305,10 @@ public class DocumentsTub extends DirectBean {
             DocumentsTub other = (DocumentsTub) obj;
             return JodaBeanUtils.equal(getId(), other.getId()) &&
                     JodaBeanUtils.equal(getPrintjobId(), other.getPrintjobId()) &&
-                    JodaBeanUtils.equal(getGroup(), other.getGroup()) &&
+                    JodaBeanUtils.equal(getType(), other.getType()) &&
+                    JodaBeanUtils.equal(getGroupNo(), other.getGroupNo()) &&
                     JodaBeanUtils.equal(getTubNo(), other.getTubNo()) &&
-                    JodaBeanUtils.equal(getOrder_id(), other.getOrder_id()) &&
+                    JodaBeanUtils.equal(getOrderId(), other.getOrderId()) &&
                     JodaBeanUtils.equal(getProductId(), other.getProductId()) &&
                     JodaBeanUtils.equal(getAmount(), other.getAmount());
         }
@@ -288,9 +320,10 @@ public class DocumentsTub extends DirectBean {
         int hash = getClass().hashCode();
         hash = hash * 31 + JodaBeanUtils.hashCode(getId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getPrintjobId());
-        hash = hash * 31 + JodaBeanUtils.hashCode(getGroup());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getType());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getGroupNo());
         hash = hash * 31 + JodaBeanUtils.hashCode(getTubNo());
-        hash = hash * 31 + JodaBeanUtils.hashCode(getOrder_id());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getOrderId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getProductId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getAmount());
         return hash;
@@ -298,7 +331,7 @@ public class DocumentsTub extends DirectBean {
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(256);
+        StringBuilder buf = new StringBuilder(288);
         buf.append("DocumentsTub{");
         int len = buf.length();
         toString(buf);
@@ -312,9 +345,10 @@ public class DocumentsTub extends DirectBean {
     protected void toString(StringBuilder buf) {
         buf.append("id").append('=').append(JodaBeanUtils.toString(getId())).append(',').append(' ');
         buf.append("printjobId").append('=').append(JodaBeanUtils.toString(getPrintjobId())).append(',').append(' ');
-        buf.append("group").append('=').append(JodaBeanUtils.toString(getGroup())).append(',').append(' ');
+        buf.append("type").append('=').append(JodaBeanUtils.toString(getType())).append(',').append(' ');
+        buf.append("groupNo").append('=').append(JodaBeanUtils.toString(getGroupNo())).append(',').append(' ');
         buf.append("tubNo").append('=').append(JodaBeanUtils.toString(getTubNo())).append(',').append(' ');
-        buf.append("order_id").append('=').append(JodaBeanUtils.toString(getOrder_id())).append(',').append(' ');
+        buf.append("orderId").append('=').append(JodaBeanUtils.toString(getOrderId())).append(',').append(' ');
         buf.append("productId").append('=').append(JodaBeanUtils.toString(getProductId())).append(',').append(' ');
         buf.append("amount").append('=').append(JodaBeanUtils.toString(getAmount())).append(',').append(' ');
     }
@@ -340,20 +374,25 @@ public class DocumentsTub extends DirectBean {
         private final MetaProperty<Integer> printjobId = DirectMetaProperty.ofReadWrite(
                 this, "printjobId", DocumentsTub.class, Integer.class);
         /**
-         * The meta-property for the {@code group} property.
+         * The meta-property for the {@code type} property.
          */
-        private final MetaProperty<Integer> group = DirectMetaProperty.ofReadWrite(
-                this, "group", DocumentsTub.class, Integer.class);
+        private final MetaProperty<String> type = DirectMetaProperty.ofReadWrite(
+                this, "type", DocumentsTub.class, String.class);
+        /**
+         * The meta-property for the {@code groupNo} property.
+         */
+        private final MetaProperty<Integer> groupNo = DirectMetaProperty.ofReadWrite(
+                this, "groupNo", DocumentsTub.class, Integer.class);
         /**
          * The meta-property for the {@code tubNo} property.
          */
         private final MetaProperty<Integer> tubNo = DirectMetaProperty.ofReadWrite(
                 this, "tubNo", DocumentsTub.class, Integer.class);
         /**
-         * The meta-property for the {@code order_id} property.
+         * The meta-property for the {@code orderId} property.
          */
-        private final MetaProperty<Integer> order_id = DirectMetaProperty.ofReadWrite(
-                this, "order_id", DocumentsTub.class, Integer.class);
+        private final MetaProperty<String> orderId = DirectMetaProperty.ofReadWrite(
+                this, "orderId", DocumentsTub.class, String.class);
         /**
          * The meta-property for the {@code productId} property.
          */
@@ -371,9 +410,10 @@ public class DocumentsTub extends DirectBean {
                 this, null,
                 "id",
                 "printjobId",
-                "group",
+                "type",
+                "groupNo",
                 "tubNo",
-                "order_id",
+                "orderId",
                 "productId",
                 "amount");
 
@@ -390,12 +430,14 @@ public class DocumentsTub extends DirectBean {
                     return id;
                 case 148871979:  // printjobId
                     return printjobId;
-                case 98629247:  // group
-                    return group;
+                case 3575610:  // type
+                    return type;
+                case 293428384:  // groupNo
+                    return groupNo;
                 case 110710690:  // tubNo
                     return tubNo;
-                case 1234304940:  // order_id
-                    return order_id;
+                case -1207110391:  // orderId
+                    return orderId;
                 case -1051830678:  // productId
                     return productId;
                 case -1413853096:  // amount
@@ -437,11 +479,19 @@ public class DocumentsTub extends DirectBean {
         }
 
         /**
-         * The meta-property for the {@code group} property.
+         * The meta-property for the {@code type} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<Integer> group() {
-            return group;
+        public final MetaProperty<String> type() {
+            return type;
+        }
+
+        /**
+         * The meta-property for the {@code groupNo} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Integer> groupNo() {
+            return groupNo;
         }
 
         /**
@@ -453,11 +503,11 @@ public class DocumentsTub extends DirectBean {
         }
 
         /**
-         * The meta-property for the {@code order_id} property.
+         * The meta-property for the {@code orderId} property.
          * @return the meta-property, not null
          */
-        public final MetaProperty<Integer> order_id() {
-            return order_id;
+        public final MetaProperty<String> orderId() {
+            return orderId;
         }
 
         /**
@@ -484,12 +534,14 @@ public class DocumentsTub extends DirectBean {
                     return ((DocumentsTub) bean).getId();
                 case 148871979:  // printjobId
                     return ((DocumentsTub) bean).getPrintjobId();
-                case 98629247:  // group
-                    return ((DocumentsTub) bean).getGroup();
+                case 3575610:  // type
+                    return ((DocumentsTub) bean).getType();
+                case 293428384:  // groupNo
+                    return ((DocumentsTub) bean).getGroupNo();
                 case 110710690:  // tubNo
                     return ((DocumentsTub) bean).getTubNo();
-                case 1234304940:  // order_id
-                    return ((DocumentsTub) bean).getOrder_id();
+                case -1207110391:  // orderId
+                    return ((DocumentsTub) bean).getOrderId();
                 case -1051830678:  // productId
                     return ((DocumentsTub) bean).getProductId();
                 case -1413853096:  // amount
@@ -507,14 +559,17 @@ public class DocumentsTub extends DirectBean {
                 case 148871979:  // printjobId
                     ((DocumentsTub) bean).setPrintjobId((Integer) newValue);
                     return;
-                case 98629247:  // group
-                    ((DocumentsTub) bean).setGroup((Integer) newValue);
+                case 3575610:  // type
+                    ((DocumentsTub) bean).setType((String) newValue);
+                    return;
+                case 293428384:  // groupNo
+                    ((DocumentsTub) bean).setGroupNo((Integer) newValue);
                     return;
                 case 110710690:  // tubNo
                     ((DocumentsTub) bean).setTubNo((Integer) newValue);
                     return;
-                case 1234304940:  // order_id
-                    ((DocumentsTub) bean).setOrder_id((Integer) newValue);
+                case -1207110391:  // orderId
+                    ((DocumentsTub) bean).setOrderId((String) newValue);
                     return;
                 case -1051830678:  // productId
                     ((DocumentsTub) bean).setProductId((Integer) newValue);

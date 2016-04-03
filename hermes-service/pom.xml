@@ -17,6 +17,7 @@
     <modules>
         <module>../hermes-service-pdf</module>
         <module>../hermes-service-print</module>
+        <module>../hermes-service-documents</module>
         <module>../hermes-service-report</module>
         <module>../hermes-service-ssh</module>
         <module>../hermes-service-magento</module>

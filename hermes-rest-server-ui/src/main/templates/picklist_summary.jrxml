@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 5.5.2  -->
+<!-- 2016-04-01T18:06:58 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="picklist_a_summary" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="84847c68-cd65-4a10-bf4f-69807d466160">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Auswertung"/>
+	<parameter name="GROUP_NO" class="java.lang.Integer"/>
+	<parameter name="PRINTJOB_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT a.tub_no, a.order_id, CONCAT(c.Kunden_vorname, ' ',c.Kunden_name,' ',IF(c.Firma IS NOT NULL, c.Firma, '')) customer_name, SUM(a.amount * b.product_weight + a.amount * b.packing_weight) weight, IF(d.id IS NULL, 0, 1) sep
+FROM hermes_documents_tub AS a 
+LEFT JOIN l_carb_shop_de.mage_custom_product_type AS b ON a.product_id = b.product_id
+LEFT JOIN mage_custom_order as c ON a.order_id = c.Bestellung
+LEFT JOIN hermes_documents_tub_group AS d ON d.printjob_id = a.printjob_id AND d.type = a.type AND d.group_no = a.group_no AND d.tub_no = a.tub_no
+WHERE a.printjob_id = $P{PRINTJOB_ID}
+AND a.group_no = $P{GROUP_NO}
+GROUP BY a.tub_no, order_id
+ORDER BY a.tub_no ASC]]>
+	</queryString>
+	<field name="tub_no" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customer_name" class="java.lang.String"/>
+	<field name="weight" class="java.math.BigDecimal"/>
+	<field name="sep" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="280" height="30" uuid="970e8b57-c3b5-4e11-bc0b-0f7e72e7590a"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Picklist Bestellübersicht]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="20" uuid="a39bf847-a4f5-46b5-bfad-83ce05a5b124"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fach]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="0" width="60" height="20" uuid="1a2b8113-89bf-4709-bc61-b28f9f4800aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Gewicht]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="60" height="20" uuid="bca453b7-26f8-4946-9418-4e7598a890f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Bestellung]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="280" height="20" uuid="920e8b42-dd92-4aa9-89f7-18bed4b57799"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="1" width="30" height="20" uuid="aab50087-76cb-4bba-ba46-4e2673551fb6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tub_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="1" width="60" height="20" uuid="ce144ecb-d58d-4938-bea5-b5ec89b38fb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{weight}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="1" width="60" height="20" uuid="5f16b755-3973-4c93-8977-404dc1f09b7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{order_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="1" width="280" height="20" uuid="018dc46c-14a3-41fa-a318-7728635138f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{customer_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="480" height="1" uuid="11000802-c2eb-4322-a311-415a2a737ad8">
+					<printWhenExpression><![CDATA[$F{sep}==true]]></printWhenExpression>
+				</reportElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

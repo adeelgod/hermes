@@ -134,7 +134,7 @@
 			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
-				<version>6.0.4</version>
+				<version>6.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jdt.core.compiler</groupId>
@@ -599,7 +599,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
-					<version>2.4.2</version>
+					<version>2.4.3</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
