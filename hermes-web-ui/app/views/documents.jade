@@ -38,11 +38,15 @@ block content
                                         i.fa.fa-search
                                         | &nbsp;
                                         | New
+                                    button.btn.btn-default(type='button', ng-click='checkBeforeCreate()', ng-disabled='busy')
+                                        i.fa.fa-search
+                                        | &nbsp;
+                                        | Create
                                     button.btn.btn-default(type='button', ng-click='listPrintjobs()', ng-disabled='busy')
                                         i.fa.fa-print
                                         | &nbsp;
                                         | Printjobs
-                                    button.btn.btn-default(type='button', ng-click='checkBeforePrint()', ng-disabled='busy')
+                                    button.btn.btn-default(type='button', ng-click='print()', ng-disabled='busy')
                                         i.fa.fa-print
                                         | &nbsp;
                                         | Print

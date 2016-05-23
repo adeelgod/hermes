@@ -2,9 +2,13 @@ package com.m11n.hermes.rest.api.ui;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -13,6 +17,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,10 +30,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import com.google.common.collect.ImmutableMap;
+import com.m11n.hermes.core.model.CreateDocumentsRequest;
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.model.DocumentsDocuments;
+import com.m11n.hermes.core.model.DocumentsPrintjob;
 import com.m11n.hermes.core.model.DocumentsPrintjobItem;
+import com.m11n.hermes.core.model.Form;
+import com.m11n.hermes.core.model.GetInvoiceRequest;
 import com.m11n.hermes.core.model.PrintDocumentsRequest;
 import com.m11n.hermes.core.model.PrintJob;
 import com.m11n.hermes.core.model.PrintRequest;
@@ -40,8 +51,10 @@ import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentsDocumentsRepository;
 import com.m11n.hermes.persistence.DocumentsOrdersRepository;
 import com.m11n.hermes.persistence.DocumentsPrintjobItemRepository;
+import com.m11n.hermes.persistence.DocumentsPrintjobRepository;
 import com.m11n.hermes.persistence.DocumentsTubGroupRepository;
 import com.m11n.hermes.persistence.DocumentsTubRepository;
+import com.m11n.hermes.persistence.FormRepository;
 
 @Singleton
 @Path("/documents")
@@ -72,15 +85,68 @@ public class DocumentsResource {
 	private DocumentsPrintjobItemRepository documentsPrintjobItemRepository;
 	
 	@Inject
+	private DocumentsPrintjobRepository documentsPrintjobRepository;
+	
+	@Inject
 	private DocumentsTubGroupRepository documentsTubGroupRepository;
 	
 	@Inject
 	private DocumentsTubRepository documentsTubRepository;
 	
+	@Inject
+	private FormRepository formRepository;
+
+	private static int batchSize = 100;
+	
+    @Inject
+    @Named("jdbcTemplateAuswertung")
+    protected NamedParameterJdbcTemplate jdbcTemplate;
+    
 	@GET
-	@Path("/generate")
-	public synchronized Response generate() {
+	@Path("/generate/initial")
+	public synchronized Response generateInitial() {
 		documentsService.createPicklist(1);
+		return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/get_invoice")
+	public Response getInvoice(final GetInvoiceRequest req) {
+		return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/create")
+	public synchronized Response create(final CreateDocumentsRequest req) {
+		logger.debug("Creating Printjob");
+		try {
+			DocumentsPrintjob printjob = new DocumentsPrintjob();
+			printjob.setStatus("creating");
+			documentsPrintjobRepository.save(printjob);
+			// fill orders
+			List<String> orderIds = req.getOrderIds();
+			for (int i = 0; i < orderIds.size(); i+=batchSize) {
+				logger.debug("Creating Orders {} to {}", i, i + batchSize);
+				Form form = formRepository.findByName("create_documents_orders");
+				Map<String, Object> params = ImmutableMap.<String, Object>builder()
+						.put("printjobId", printjob.getId())
+						.put("ids", orderIds.subList(i, Math.min(orderIds.size(), i + batchSize)))
+						.build();
+				jdbcTemplate.update(form.getSqlStatement(), params);
+			}
+			Form form = formRepository.findByName("update_order_type");
+			Map<String, Object> params = ImmutableMap.<String, Object>builder()
+					.put("printjobId", printjob.getId())
+					.build();
+			jdbcTemplate.update(form.getSqlStatement(), params);
+			
+			documentsService.createPicklist(printjob.getId());
+			printjob.setStatus("planned");
+			documentsPrintjobRepository.save(printjob);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		return Response.ok().build();
 	}
 	
@@ -88,21 +154,49 @@ public class DocumentsResource {
 	@Path("/print")
 	public synchronized Response print(final PrintDocumentsRequest req) {
 		try {
-			logger.debug("Printing Printjob " +req.getPrintjobId() + ": " + req.getPrintjobItems().size() + " items");
+			Integer printjobId = req.getPrintjobId();
+			logger.debug("Printing Printjob " + printjobId + ": " + req.getPrintjobItems().size() + " items");
 			if (req.getPrintjobItems().size() > 0) {
-				documentsPrintjobItemRepository.resetPrintjobItems(req.getPrintjobId(), req.getPrintjobItems());
-				List<DocumentsPrintjobItem> printjobItems = documentsPrintjobItemRepository.findPrintjobItems(req.getPrintjobId(), req.getPrintjobItems());
-				List<Integer> documentIds = new LinkedList<>();
-				for (DocumentsPrintjobItem printjobItem : printjobItems) {
-					documentIds.add(printjobItem.getDocumentId());
-				}
-				List<DocumentsDocuments> documents = documentsDocumentsRepository.findByIds(documentIds);
-				for (DocumentsPrintjobItem printjobItem : printjobItems) {
-					printjobItem.setStatus("printed");
-					printjobItem.setPrintedAt(new Date());
-					documentsPrintjobItemRepository.save(printjobItem);
-					//Future<Boolean> invoiceSuccess = print(new PrintJob(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
-					//Future<Boolean> labelSuccess = print(new PrintJob(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
+				long maxGroup = documentsPrintjobItemRepository.countGroups(printjobId);
+				Set<Integer> printjobItemIds = new HashSet<>(req.getPrintjobItems());
+				for (int groupNo = 0; groupNo <= maxGroup; groupNo++) {
+					logger.debug("Processing Group " + groupNo);
+					Set<Integer> currentIds = documentsPrintjobItemRepository.findPrintjobItemIds(printjobId, groupNo);
+					currentIds.retainAll(printjobItemIds);
+					
+					documentsPrintjobItemRepository.resetPrintjobItems(printjobId, currentIds);;
+					List<DocumentsPrintjobItem> printjobItems = documentsPrintjobItemRepository.findPrintjobItems(printjobId, groupNo);
+					
+					List<Integer> documentIds = new LinkedList<>();
+					for (DocumentsPrintjobItem printjobItem : printjobItems) {
+						documentIds.add(printjobItem.getDocumentId());
+					}
+					logger.debug("Get Documents " + documentIds);
+					List<DocumentsDocuments> documents = documentsDocumentsRepository.findByIds(documentIds);
+					Map<Integer, DocumentsDocuments> documentsById = new HashMap<>();
+					for (DocumentsDocuments document : documents) {
+						documentsById.put(document.getId(), document);
+					}
+					for (DocumentsPrintjobItem printjobItem : printjobItems) {
+						DocumentsDocuments document = documentsById.get(printjobItem.getDocumentId());
+						
+						boolean success = false;
+						// TODO correct method for future<boolean>?
+						success = print(document.getType().toUpperCase(), document.getPathPrint()).get();
+						if (success) {
+							printjobItem.setStatus("printed");
+							if (printjobItem.getPrintedAt() == null) {
+								printjobItem.setPrintedAt(new Date());
+							}
+							document.setNumPrinted(document.getNumPrinted() + 1);
+							logger.debug("Saving document " + document);
+							documentsDocumentsRepository.save(document);
+						} else {
+							printjobItem.setStatus("error");
+						}
+						logger.debug("Saving printjob " + printjobItem);
+						documentsPrintjobItemRepository.save(printjobItem);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -135,7 +229,7 @@ public class DocumentsResource {
 		return Response.ok(message).build();
 	}
 	
-    private Future<Boolean> print(final PrintJob req) {
+    private Future<Boolean> print(String type, String filename) {
         running.incrementAndGet();
 
         return executor.submit(new Callable<Boolean>() {
@@ -144,7 +238,7 @@ public class DocumentsResource {
             public Boolean call() {
                 try {
                     if (Thread.interrupted()) {
-                        logger.warn("Skipping print request: {}", req);
+                        logger.warn("Skipping print request");
                         return false;
                     }
                     Properties p = PropertiesUtil.getProperties();
@@ -152,11 +246,7 @@ public class DocumentsResource {
                     String dir = p.getProperty("hermes.print.dir");
                     boolean fast = StringUtils.isEmpty(p.getProperty("hermes.printer.fast")) ? false : Boolean.valueOf(p.getProperty("hermes.printer.fast"));
 
-                    if (StringUtils.isEmpty(req.getTemplates())) {
-                        req.setTemplates(p.getProperty("hermes.reporting.template.report"));
-                    }
-
-                    DocumentType documentType = DocumentType.valueOf(req.getType());
+                    DocumentType documentType = DocumentType.valueOf(type);
 
                     String printer = null;
 
@@ -166,34 +256,12 @@ public class DocumentsResource {
                         printer = p.getProperty("hermes.printer.label");
                     } else if (documentType.equals(DocumentType.REPORT)) {
                         printer = p.getProperty("hermes.printer.report");
+                    } else if (documentType.equals(DocumentType.PICKLIST)) {
+                    	printer = p.getProperty("hermes.printer.picklist");
                     }
 
-                    if (documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
-                        print(documentType, printer, dir + "/" + PathUtil.segment(req.getOrderId()) + "/" + req.getType().toLowerCase() + ".pdf", fast);
-                        success = true;
-                    } else if (documentType.equals(DocumentType.REPORT)) {
-                        String[] templates = StringUtils.trimToEmpty(req.getTemplates()).split("\\|");
-
-                        for (String template : templates) {
-                            if (Thread.interrupted()) {
-                                logger.warn("Skipping print request: {}", req);
-                                return false;
-                            }
-
-                            logger.info("PRINT: REPORT PARAMS {} - {}", req.getParams(), template);
-
-                            String reportOutput = dir + "/reports/" + UUID.randomUUID().toString() + ".pdf";
-
-                            reportService.generate(template, req.getParams(), "pdf", reportOutput);
-
-                            print(documentType, printer, reportOutput, fast);
-
-                            success = true;
-
-                            // cleanup
-                            FileUtils.deleteQuietly(new File(reportOutput));
-                        }
-                    }
+                    print(documentType, printer, filename, fast);
+                    success = true;
                 } catch (Exception e) {
                     logger.error(e.toString(), e);
                 } finally {

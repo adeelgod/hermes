@@ -1,5 +1,6 @@
 package com.m11n.hermes.service.documents;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -47,6 +49,8 @@ import com.m11n.hermes.core.model.DocumentsTubGroup;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.DocumentsService;
 import com.m11n.hermes.core.service.ReportService;
+import com.m11n.hermes.core.service.SshService;
+import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.DocumentsDocumentsRepository;
 import com.m11n.hermes.persistence.DocumentsOrdersRepository;
@@ -54,11 +58,17 @@ import com.m11n.hermes.persistence.DocumentsPrintjobItemRepository;
 import com.m11n.hermes.persistence.DocumentsTubGroupRepository;
 import com.m11n.hermes.persistence.DocumentsTubRepository;
 import com.m11n.hermes.persistence.FormRepository;
+import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 
 @Service
 public class DefaultDocumentsService implements DocumentsService {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultDocumentsService.class);
 	
+    @Inject
+    private SshService sshService;
+
 	@Inject
 	private DocumentsOrdersRepository documentsOrdersRepository;
 	
@@ -80,12 +90,32 @@ public class DefaultDocumentsService implements DocumentsService {
     @Inject
     private ReportService reportService;
     
+    @Value("${hermes.result.dir}")
+    private String resultDir;
+
+    @Value("${hermes.server.result.dir}")
+    private String serverResultDir;
+
+    @Value("${hermes.remote.enabled:false}")
+    private boolean remoteEnabled;
+
+    @Value("${hermes.invoice.api.url}")
+    protected String url;
+
+    @Value("${hermes.invoice.api.username}")
+    protected String username;
+
+    @Value("${hermes.invoice.api.password}")
+    protected String password;
+    
     @Inject
     @Named("jdbcTemplateAuswertung")
     protected NamedParameterJdbcTemplate jdbcTemplate;
     
     @Value("${hibernate.jdbc.batch_size:10000}")
     private int batchSize;
+
+    protected OkHttpClient client = new OkHttpClient();
 
 	private Integer currentGroupNo;
 
@@ -426,4 +456,146 @@ public class DefaultDocumentsService implements DocumentsService {
 		logger.debug(item.toString());
 		documentsPrintjobItemRepository.save(item);
 	}
+
+	@Override
+	public Set<String> getInvoices(List<String> orderIds) {
+		Set<String> invoiceExists = new HashSet<>();
+		try {
+			sshService.connect();
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+            return invoiceExists;
+        }
+		for (String orderId : orderIds) {
+			try {
+    			String pathRemote = serverResultDir + "/" + PathUtil.segment(orderId) + "/invoice.pdf";
+    			String pathLocal = resultDir + "/" + PathUtil.segment(orderId) + "/invoice.pdf";
+    			if (!new File(pathRemote).exists() && false) {
+    				try {
+    					HttpUrl httpUrl = HttpUrl.parse(this.url)
+    							.newBuilder()
+    							.addQueryParameter("login", this.username)
+    							.addQueryParameter("password", this.password)
+    							.addQueryParameter("id", orderId)
+    							.addQueryParameter("path", pathRemote)
+    							.build();
+    					logger.debug("opening url " + httpUrl);
+    					Request request = new Request.Builder()
+    							.url(httpUrl)
+    							.build();
+    					com.squareup.okhttp.Response response = client.newCall(request).execute();
+    				} catch (Exception e) {
+    					logger.error("Could not create invoice: " + e.getMessage());
+    				}
+    				if (new File(pathRemote).exists()) {
+    					if (!remoteEnabled) {
+    						File f = new File(resultDir + "/" + orderId);
+    						if(!f.exists()) {
+    							f.mkdirs();
+    						}
+    						logger.info("COPY: {} -> {}", pathRemote, pathLocal);
+    						sshService.copy(pathRemote, pathLocal);
+    					}
+    					invoiceExists.add(orderId);
+    				}
+    			}
+			} catch (Exception e) {
+				logger.error(e.toString(), e);
+			}
+		}
+		try {
+			sshService.disconnect();
+		} catch (Exception e) {
+			logger.error(e.toString(), e);
+		}
+    	return invoiceExists;
+	}
+
+	@Override
+	public Set<String> getLabels(List<String> orderIds, List<String> paths) {
+		Set<String> labelExists = new HashSet<>();
+		if(orderIds.size() != paths.size()) {
+			logger.error("Incorrect Array Size. orderIds: {}, paths: {}", orderIds.size(), paths.size());
+		}
+		try {
+			sshService.connect();
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+            return labelExists;
+        }
+
+		for (int i = 0; i < orderIds.size(); i++) {
+	        try {
+	        	String orderId = orderIds.get(i);
+	        	String path = paths.get(i);
+	        	DocumentsDocuments documents = new DocumentsDocuments();
+	        	documents.setOrderId(orderId);
+	        	documents.setPathLive(path);
+	        	documents.setType("LABEL");
+	        	// TODO _labelExists aus DB auslesen
+	        	// TODO evtl. problem: Datei existiert, aber nicht db eintrag
+	        	boolean doSave = false;
+	            if(remoteEnabled) {
+	                logger.info("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
+	                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + PathUtil.segment(orderId) + " -R");
+	                if(status == 0) {
+	                	labelExists.add(orderId);
+	                	doSave = true;
+	                }
+	                documents.setPathLive(serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf");
+	            } else {
+	                File f = new File(resultDir + "/" + orderId);
+	                if(!f.exists()) {
+	                    f.mkdirs();
+	                }
+	                logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
+	                sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
+	                labelExists.add(orderId);
+	                doSave = true;
+	                documents.setPathLive(serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf");
+	                documents.setPathPrint(resultDir + "/" + orderId + "/label.pdf");
+	            }
+	            try {
+	            	if (doSave) {
+	            		documentsDocumentsRepository.save(documents);
+	            	}
+	            } catch(DataIntegrityViolationException e) {
+	            	logger.warn("Could not create DB entry for order {}. Label probably already existent.", orderId);
+	            }
+	        } catch (Exception e) {
+	            logger.error(e.toString(), e);
+	        }
+        }
+		
+		try {
+			sshService.disconnect();
+		} catch (Exception e) {
+			logger.error(e.toString(), e);
+		}
+
+        return labelExists;
+	}
+
+	@Override
+	public Set<String> getMissingFiles(List<String> orderIds, String type) {
+		Set<String> missingFiles = new HashSet<>();
+		for (String orderId : orderIds) {
+			if (!new File(this.getPath(true, type, orderId)).exists()) {
+				missingFiles.add(orderId);
+			}
+		}
+		return missingFiles;
+	}
+	
+	private String getPath(boolean remote, String type, String orderId) {
+		String path = "";
+		if (remote) {
+			path += serverResultDir + "/";
+		} else {
+			path += resultDir + "/";
+		}
+		path += PathUtil.segment(orderId) + "/" + type.toLowerCase() + ".pdf";
+		return path;
+	}
+	
 }

@@ -9,7 +9,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('ShippingCtrl', function ($scope, $alert, $modal, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc) {
+    module.controller('ShippingCtrl', function ($scope, $alert, $modal, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc, DocumentsSvc) {
         $scope.debugging = false;
         $scope.busy = false;
         $scope.params = {};
@@ -223,6 +223,11 @@
 
                 if ($scope.runState === 'playing') {
                     if(entry._selected) {
+                    	DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(shipmentData) {
+                    		// Do nothing
+                    	}.error(function(labelData) {
+                    		// Do nothing
+                        });
                         ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
                             entry._updatedAt = moment();
                             entry.shipmentId = shipmentData.shipmentId;

@@ -29,10 +29,6 @@ public class PrintDocumentsRequest extends DirectBean {
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-    private String templates;
-    
-    @PropertyDefinition
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Integer printjobId;
 
     @PropertyDefinition
@@ -56,31 +52,6 @@ public class PrintDocumentsRequest extends DirectBean {
     @Override
     public PrintDocumentsRequest.Meta metaBean() {
         return PrintDocumentsRequest.Meta.INSTANCE;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the templates.
-     * @return the value of the property
-     */
-    public String getTemplates() {
-        return templates;
-    }
-
-    /**
-     * Sets the templates.
-     * @param templates  the new value of the property
-     */
-    public void setTemplates(String templates) {
-        this.templates = templates;
-    }
-
-    /**
-     * Gets the the {@code templates} property.
-     * @return the property, not null
-     */
-    public final Property<String> templates() {
-        return metaBean().templates().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -146,8 +117,7 @@ public class PrintDocumentsRequest extends DirectBean {
         }
         if (obj != null && obj.getClass() == this.getClass()) {
             PrintDocumentsRequest other = (PrintDocumentsRequest) obj;
-            return JodaBeanUtils.equal(getTemplates(), other.getTemplates()) &&
-                    JodaBeanUtils.equal(getPrintjobId(), other.getPrintjobId()) &&
+            return JodaBeanUtils.equal(getPrintjobId(), other.getPrintjobId()) &&
                     JodaBeanUtils.equal(getPrintjobItems(), other.getPrintjobItems());
         }
         return false;
@@ -156,7 +126,6 @@ public class PrintDocumentsRequest extends DirectBean {
     @Override
     public int hashCode() {
         int hash = getClass().hashCode();
-        hash = hash * 31 + JodaBeanUtils.hashCode(getTemplates());
         hash = hash * 31 + JodaBeanUtils.hashCode(getPrintjobId());
         hash = hash * 31 + JodaBeanUtils.hashCode(getPrintjobItems());
         return hash;
@@ -164,7 +133,7 @@ public class PrintDocumentsRequest extends DirectBean {
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder(128);
+        StringBuilder buf = new StringBuilder(96);
         buf.append("PrintDocumentsRequest{");
         int len = buf.length();
         toString(buf);
@@ -176,7 +145,6 @@ public class PrintDocumentsRequest extends DirectBean {
     }
 
     protected void toString(StringBuilder buf) {
-        buf.append("templates").append('=').append(JodaBeanUtils.toString(getTemplates())).append(',').append(' ');
         buf.append("printjobId").append('=').append(JodaBeanUtils.toString(getPrintjobId())).append(',').append(' ');
         buf.append("printjobItems").append('=').append(JodaBeanUtils.toString(getPrintjobItems())).append(',').append(' ');
     }
@@ -191,11 +159,6 @@ public class PrintDocumentsRequest extends DirectBean {
          */
         static final Meta INSTANCE = new Meta();
 
-        /**
-         * The meta-property for the {@code templates} property.
-         */
-        private final MetaProperty<String> templates = DirectMetaProperty.ofReadWrite(
-                this, "templates", PrintDocumentsRequest.class, String.class);
         /**
          * The meta-property for the {@code printjobId} property.
          */
@@ -212,7 +175,6 @@ public class PrintDocumentsRequest extends DirectBean {
          */
         private final Map<String, MetaProperty<?>> metaPropertyMap$ = new DirectMetaPropertyMap(
                 this, null,
-                "templates",
                 "printjobId",
                 "printjobItems");
 
@@ -225,8 +187,6 @@ public class PrintDocumentsRequest extends DirectBean {
         @Override
         protected MetaProperty<?> metaPropertyGet(String propertyName) {
             switch (propertyName.hashCode()) {
-                case 1981727545:  // templates
-                    return templates;
                 case 148871979:  // printjobId
                     return printjobId;
                 case -1655513168:  // printjobItems
@@ -252,14 +212,6 @@ public class PrintDocumentsRequest extends DirectBean {
 
         //-----------------------------------------------------------------------
         /**
-         * The meta-property for the {@code templates} property.
-         * @return the meta-property, not null
-         */
-        public final MetaProperty<String> templates() {
-            return templates;
-        }
-
-        /**
          * The meta-property for the {@code printjobId} property.
          * @return the meta-property, not null
          */
@@ -279,8 +231,6 @@ public class PrintDocumentsRequest extends DirectBean {
         @Override
         protected Object propertyGet(Bean bean, String propertyName, boolean quiet) {
             switch (propertyName.hashCode()) {
-                case 1981727545:  // templates
-                    return ((PrintDocumentsRequest) bean).getTemplates();
                 case 148871979:  // printjobId
                     return ((PrintDocumentsRequest) bean).getPrintjobId();
                 case -1655513168:  // printjobItems
@@ -293,9 +243,6 @@ public class PrintDocumentsRequest extends DirectBean {
         @Override
         protected void propertySet(Bean bean, String propertyName, Object newValue, boolean quiet) {
             switch (propertyName.hashCode()) {
-                case 1981727545:  // templates
-                    ((PrintDocumentsRequest) bean).setTemplates((String) newValue);
-                    return;
                 case 148871979:  // printjobId
                     ((PrintDocumentsRequest) bean).setPrintjobId((Integer) newValue);
                     return;

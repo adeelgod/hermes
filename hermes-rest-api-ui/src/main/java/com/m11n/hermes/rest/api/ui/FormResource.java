@@ -1,17 +1,27 @@
 package com.m11n.hermes.rest.api.ui;
 
+import com.google.common.net.HttpHeaders;
+import com.m11n.hermes.core.model.DocumentsDocuments;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.model.FormField;
+import com.m11n.hermes.core.service.DocumentsService;
 import com.m11n.hermes.core.service.SshService;
 import com.m11n.hermes.core.util.PathUtil;
+import com.m11n.hermes.persistence.DocumentsDocumentsRepository;
 import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.persistence.IntrashipDocumentRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
 import com.m11n.hermes.persistence.util.QueryToFieldsUtil;
+import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.HttpUrl.Builder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
@@ -20,9 +30,12 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,10 +49,16 @@ public class FormResource {
     private SshService sshService;
 
     @Inject
+    private DocumentsService documentsService;
+    
+    @Inject
     private QueryScheduler queryScheduler;
 
     @Inject
     private FormRepository formRepository;
+    
+    @Inject
+    private DocumentsDocumentsRepository documentsDocumentsRepository;
 
     @Inject
     private IntrashipDocumentRepository intrashipDocumentRepository;
@@ -56,7 +75,18 @@ public class FormResource {
     @Value("${hermes.remote.enabled:false}")
     private boolean remoteEnabled;
 
+    @Value("${hermes.invoice.api.url}")
+    protected String url;
+
+    @Value("${hermes.invoice.api.username}")
+    protected String username;
+
+    @Value("${hermes.invoice.api.password}")
+    protected String password;
+
     private ExecutorService executor = Executors.newFixedThreadPool(1);
+
+    protected OkHttpClient client = new OkHttpClient();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,40 +114,42 @@ public class FormResource {
             final boolean downloadFiles = parameters.get("_downloadFiles")==null ? false : (Boolean)parameters.get("_downloadFiles");
 
             try {
-                sshService.connect();
-
+                List<String> orderIdsLabel = new LinkedList<>();
+                List<String> orderIdsInvoice = new LinkedList<>();
+                List<String> labelPaths = new LinkedList<>();
                 for(Map<String, Object> row : r) {
-                    if(Boolean.FALSE.equals(row.get("_labelExists")) && downloadFiles) {
-                        String orderId = row.get("orderId").toString();
-                        String shippingId = row.get("shippingId").toString();
-
-                        if(row.get("_labelPath")!=null) {
-                            String path = row.get("_labelPath").toString();
-
-                            try {
-                                if(remoteEnabled) {
-                                    logger.info("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
-                                    int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + PathUtil.segment(orderId) + " -R");
-                                    row.put("_labelExists", status==0);
-                                } else {
-                                    File f = new File(resultDir + "/" + row.get("orderId"));
-                                    if(!f.exists()) {
-                                        f.mkdirs();
-                                    }
-                                    logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
-                                    sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
-                                    row.put("_labelExists", true);
-                                }
-                            } catch (Exception e) {
-                                logger.error(e.toString(), e);
-                            }
-                        } else {
+                	if (downloadFiles) {
+                		String orderId = row.get("orderId").toString();
+                		String shippingId = row.get("shippingId").toString();
+                		if(Boolean.FALSE.equals(row.get("_labelExists"))) {
+                			String labelPath = null;
+                			if (row.get("_labelPath") != null) {
+                				labelPath = row.get("_labelPath").toString();
+                				orderIdsLabel.add(orderId);
+                				labelPaths.add(labelPath);
+                			}
+                		} else {
                             logger.info("FILE NOT FOUND: {} -> {}", orderId, shippingId);
                         }
-                    }
-                }
 
-                sshService.disconnect();
+                        if(Boolean.FALSE.equals(row.get("_invoiceExists"))) {
+                        	orderIdsInvoice.add(orderId);
+                        }
+                	}
+                }
+                
+                Set<String> labelExists = documentsService.getLabels(orderIdsLabel, labelPaths);
+                Set<String> invoiceExists = documentsService.getInvoices(orderIdsInvoice);
+                
+                for(Map<String, Object> row : r) {
+            		String orderId = row.get("orderId").toString();
+                	if(labelExists.contains(orderId)) {
+                		row.put("_labelExists", labelExists);
+                	}
+                	if(invoiceExists.contains(orderId)) {
+                		row.put("_invoiceExists", labelExists);
+                	}
+                }
             } catch (Exception e) {
                 logger.error(e.toString(), e);
             }

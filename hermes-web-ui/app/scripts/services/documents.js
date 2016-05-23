@@ -19,6 +19,20 @@
                     data: params
                 });
             },
+            create: function(params) {
+            	return $http({
+            		method: 'POST',
+            		url: HermesApi.baseUrl + 'api/documents/create',
+            		data: params
+            	});
+            },
+            get_invoice: function(params) {
+            	return $http({
+            		method: 'POST',
+            		url: HermesApi.baseUrl + 'api/documents/get_invoice',
+            		data: params
+            	});
+            },
         };
     });
 })();

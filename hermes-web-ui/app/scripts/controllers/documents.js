@@ -23,15 +23,17 @@
         var confirmModal = $modal({title: 'Order print files missing', content: 'Are you sure you want to proceed?', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
         confirmModal.$scope.confirm = function() {
             confirmModal.hide();
-            $scope.print();
+            $scope.create();
         };
         confirmModal.$scope.close = function() {
             confirmModal.hide();
         };
 
-        $scope.checkBeforePrint = function() {
-        	$scope.print();
+        $scope.checkBeforeCreate = function() {
+        	// TODO remove
+        	$scope.create();
         	return;
+        	
             var execute = true;
 
             for(var i=0; i<$scope.orders.length; i++) {
@@ -55,7 +57,7 @@
                     if(field && field.parameter) {
                         var val = field.fieldType==='BOOLEAN' ? (field.defValue==='true') : field.defValue;
                         $scope.params[field.name] = val;
-
+                        
                         if(field.name==='from') {
                             $scope.params['from'] = moment().startOf('day');
                         } else if(field.name==='until') {
@@ -96,6 +98,8 @@
         $scope.listPrintjobs = function() {
         	// TODO to config
         	$scope.params['_form'] = 'printjobs';
+            $scope.params['_checkFiles'] = false;
+            $scope.params['_downloadFiles'] = false;
         	$scope.busy = true;
             $scope.orders = null;
         	$scope.printjobs = null;
@@ -113,6 +117,8 @@
         $scope.listPrintjobItems = function(printjobId) {
         	// TODO to config
         	$scope.params['_form'] = 'printjob_items';
+            $scope.params['_checkFiles'] = false;
+            $scope.params['_downloadFiles'] = false;
         	$scope.params['printjobId'] = printjobId;
         	$scope.busy = true;
             $scope.orders = null;
@@ -164,6 +170,28 @@
                 //$alert({content: 'Error while printing documents', placement: 'top', type: 'danger', show: true, duration: 5});
             });
         };
+        
+        $scope.create = function() {
+            var req = {orderIds: []};
+
+            for(var i=0; i<$scope.orders.length; i++) {
+                if($scope.orders[i] && $scope.orders[i]._selected) {
+                	req.orderIds.push($scope.orders[i].orderId);
+                }
+            }
+            
+        	$scope.busy = true;
+        	
+            DocumentsSvc.create(req).success(function(data) {
+            	$scope.busy = false;
+            	$scope.listPrintjobs();
+            	$alert({content: 'Printjob created', placement: 'top', type: 'success', show: true, duration: 5});
+        	}).error(function(data) {
+                $scope.busy = false;
+                $alert({content: 'Error while creating printjob', placement: 'top', type: 'danger', show: true, duration: 5});
+        	});
+        	
+        }
         
         $scope.print = function() {
         	if ($scope.printjobItems == null) {
