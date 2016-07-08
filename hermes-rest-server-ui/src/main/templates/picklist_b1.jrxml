@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 5.5.2  -->
-<!-- 2016-03-24T08:58:37 -->
+<!-- 2016-07-08T09:00:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="picklist_b1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c3f14002-6e57-4e37-81b9-9832f755a4ac">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Auswertung"/>
 	<parameter name="PRINTJOB_ID" class="java.lang.Integer"/>
 	<parameter name="GROUP_NO" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT a.tub_no, c.shelf_no, c.product_name, SUM(b.Anzahl) AS amount, SUM(b.Anzahl + c.product_weight + c.packing_weight) AS weight
+		<![CDATA[SELECT a.tub_no, c.shelf_no, c.product_name, SUM(b.Anzahl) AS amount, SUM(b.Anzahl + c.product_weight + c.packing_weight) AS weight, '' charge
 FROM hermes_documents_tub AS a 
 LEFT JOIN mage_custom_order AS f ON a.order_id = f.Bestellung 
 LEFT JOIN mage_custom_order_single_item AS b ON f.order_id = b.order_id  
@@ -25,6 +25,9 @@ ORDER BY a.tub_no ASC]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="product_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="amount" class="java.math.BigDecimal"/>
@@ -64,19 +67,24 @@ ORDER BY a.tub_no ASC]]>
 				<text><![CDATA[Produkt]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="260" y="0" width="40" height="20" uuid="ec832a28-5626-4984-bfae-4c303fcf0c0b"/>
+				<reportElement x="440" y="0" width="40" height="20" uuid="ec832a28-5626-4984-bfae-4c303fcf0c0b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Anzahl]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="50" height="20" uuid="6ff1c134-c159-4547-991f-d192eb298ee3"/>
+				<reportElement x="480" y="0" width="50" height="20" uuid="6ff1c134-c159-4547-991f-d192eb298ee3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Gewicht]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="180" height="20" uuid="65cd3926-ece5-41c9-ba80-05104b6891c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Charge]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="40" height="20" uuid="b612bcde-ee44-4935-a609-162a1ff0cd38"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -93,18 +101,23 @@ ORDER BY a.tub_no ASC]]>
 				<textFieldExpression><![CDATA[$F{product_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="260" y="0" width="40" height="20" uuid="4b31589c-d277-4f3f-bb6c-98b003a6aa5f"/>
+				<reportElement x="440" y="0" width="40" height="20" uuid="4b31589c-d277-4f3f-bb6c-98b003a6aa5f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="0" width="50" height="20" uuid="c8740519-c98e-4b49-8354-e9dad80dc311"/>
+				<reportElement x="480" y="0" width="50" height="20" uuid="c8740519-c98e-4b49-8354-e9dad80dc311"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{weight}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="0" width="350" height="1" uuid="e5d65462-1420-4772-a24f-543dffb24f16"/>
+				<reportElement x="0" y="0" width="530" height="1" uuid="e5d65462-1420-4772-a24f-543dffb24f16"/>
 			</line>
+			<textField>
+				<reportElement x="260" y="0" width="180" height="20" uuid="a0964eaf-5c55-48a1-a29f-0f7e7758d2ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{charge}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

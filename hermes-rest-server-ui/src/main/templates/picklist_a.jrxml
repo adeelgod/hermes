@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 5.5.2  -->
-<!-- 2016-03-24T08:31:43 -->
+<!-- 2016-07-08T08:57:57 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="picklist_a" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="196637a4-8fc6-4051-9c84-6ac860e7803b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="GROUP_NO" class="java.lang.Integer"/>
 	<parameter name="PRINTJOB_ID" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT a.product_id, b.shelf_no, b.product_name, SUM(a.amount) amount,
+		<![CDATA[SELECT a.product_id, b.shelf_no, b.product_name, SUM(a.amount) amount, '' charge
 SUM( IF(tub_no=1, amount,0)) AS t1,
 SUM( IF(tub_no=2, amount,0)) AS t2,
 SUM( IF(tub_no=3, amount,0)) AS t3,
@@ -34,6 +34,9 @@ ORDER BY b.shelf_no ASC]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="product_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="amount" class="java.lang.Integer"/>
@@ -94,7 +97,7 @@ ORDER BY b.shelf_no ASC]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="71" splitType="Stretch">
+		<band height="77" splitType="Stretch">
 			<rectangle>
 				<reportElement x="440" y="5" width="59" height="19" forecolor="#000000" backcolor="#EEEEEE" uuid="b4a0a695-2d2d-44ee-9250-8cd5a6774631">
 					<printWhenExpression><![CDATA[$F{t4}>0]]></printWhenExpression>
@@ -404,6 +407,11 @@ ORDER BY b.shelf_no ASC]]>
 			<line>
 				<reportElement x="259" y="4" width="241" height="1" uuid="60c71b68-4140-41d9-befe-1bce8ea8d913"/>
 			</line>
+			<textField>
+				<reportElement x="40" y="50" width="170" height="20" uuid="d89b1523-1ad8-4615-a1b1-149abf587fea"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{charge}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
