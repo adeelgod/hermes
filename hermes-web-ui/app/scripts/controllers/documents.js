@@ -19,6 +19,8 @@
         $scope.currentOrder = {};
 
         $scope.currentOrder = {};
+        
+        $scope.substate = 'new';
 
         var confirmModal = $modal({title: 'Order print files missing', content: 'Are you sure you want to proceed?', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
         confirmModal.$scope.confirm = function() {
@@ -30,9 +32,10 @@
         };
 
         $scope.checkBeforeCreate = function() {
+        	$scope.substate = 'create';
         	// TODO remove
-        	$scope.create();
-        	return;
+        	//$scope.create();
+        	//return;
         	
             var execute = true;
 
@@ -75,6 +78,7 @@
         };
 
         $scope.query = function() {
+        	$scope.substate = 'new';
             $scope.params['_form'] = 'printjob_new_date';
             $scope.params['_checkFiles'] = true;
             $scope.params['_downloadFiles'] = true;
@@ -96,6 +100,7 @@
         };
         
         $scope.listPrintjobs = function() {
+        	$scope.substate = 'listPrintjobs';
         	// TODO to config
         	$scope.params['_form'] = 'printjobs';
             $scope.params['_checkFiles'] = false;
@@ -129,7 +134,7 @@
         		$scope.busy = false;
         		$scope.printjobItems = data;
                 angular.forEach($scope.printjobItems, function(p) {
-                	if (p.status == "planned") {
+                	if (p.status != "printed") {
                 		p._selected = true;
                 	}
                 });
@@ -194,6 +199,7 @@
         }
         
         $scope.print = function() {
+        	$scope.substate = 'print';
         	if ($scope.printjobItems == null) {
                 $alert({content: 'Please select a printjob first', placement: 'top', type: 'danger', show: true, duration: 5});
                 return;

@@ -96,4 +96,11 @@ public class DefaultSshService implements SshService {
 
         return status;
     }
+
+	@Override
+	public boolean fileExists(String remotePath) throws Exception {
+		// check if documents exists
+		String cmd = "test -f " + remotePath;
+		return this.exec(cmd) == 0;
+	}
 }

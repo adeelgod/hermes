@@ -7,11 +7,12 @@
 	<parameter name="PRINTJOB_ID" class="java.lang.Integer"/>
 	<parameter name="GROUP_NO" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT a.tub_no, c.shelf_no, c.product_name, SUM(b.Anzahl) AS amount, SUM(b.Anzahl + c.product_weight + c.packing_weight) AS weight, '' charge
+		<![CDATA[SELECT a.tub_no, c.shelf_no, c.product_name, SUM(b.Anzahl) AS amount, SUM(b.Anzahl + c.product_weight + c.packing_weight) AS weight, b.charge_variant charge
 FROM hermes_documents_tub AS a 
 LEFT JOIN mage_custom_order AS f ON a.order_id = f.Bestellung 
 LEFT JOIN mage_custom_order_single_item AS b ON f.order_id = b.order_id  
-LEFT JOIN l_carb_shop_de.mage_custom_product_type AS c ON b.Produkt_id = c.product_id  
+LEFT JOIN l_carb_shop_de.mage_custom_product_type AS c ON b.Produkt_id = c.product_id
+LEFT JOIN warehouse_inventory d ON d.charge = b.charge AND d.charge_variant = b.charge_variant
 WHERE a.printjob_id = $P{PRINTJOB_ID}
 AND group_no = $P{GROUP_NO}
 AND a.type = "B1"

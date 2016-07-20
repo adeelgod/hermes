@@ -223,16 +223,16 @@
 
                 if ($scope.runState === 'playing') {
                     if(entry._selected) {
-                    	DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(shipmentData) {
-                    		// Do nothing
-                    	}.error(function(labelData) {
-                    		// Do nothing
-                        });
                         ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
                             entry._updatedAt = moment();
                             entry.shipmentId = shipmentData.shipmentId;
 
                             ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
+                            	DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(invoiceData) {
+                            		// Do nothing
+                            	}).error(function(invoiceData) {
+                            		// Do nothing
+                            	});
                                 entry._selected = false;
 
                                 var proceed = false;

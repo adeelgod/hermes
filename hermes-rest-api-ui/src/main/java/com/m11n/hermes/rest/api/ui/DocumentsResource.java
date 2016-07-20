@@ -33,13 +33,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.google.common.collect.ImmutableMap;
-import com.m11n.hermes.core.model.CreateDocumentsRequest;
 import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.model.DocumentsDocuments;
 import com.m11n.hermes.core.model.DocumentsPrintjob;
 import com.m11n.hermes.core.model.DocumentsPrintjobItem;
 import com.m11n.hermes.core.model.Form;
-import com.m11n.hermes.core.model.GetInvoiceRequest;
 import com.m11n.hermes.core.model.PrintDocumentsRequest;
 import com.m11n.hermes.core.model.PrintJob;
 import com.m11n.hermes.core.model.PrintRequest;
@@ -48,6 +46,7 @@ import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
 import com.m11n.hermes.core.util.PathUtil;
 import com.m11n.hermes.core.util.PropertiesUtil;
+import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.DocumentsDocumentsRepository;
 import com.m11n.hermes.persistence.DocumentsOrdersRepository;
 import com.m11n.hermes.persistence.DocumentsPrintjobItemRepository;
@@ -96,6 +95,9 @@ public class DocumentsResource {
 	@Inject
 	private FormRepository formRepository;
 
+	@Inject
+	private AuswertungRepository auswertungRepository;
+	
 	private static int batchSize = 100;
 	
     @Inject
@@ -111,20 +113,29 @@ public class DocumentsResource {
 	
 	@POST
 	@Path("/get_invoice")
-	public Response getInvoice(final GetInvoiceRequest req) {
+	public Response getInvoice(final Map<String, Object> req) {
+		try {
+			List<String> orderIds = new LinkedList<>();
+			orderIds.add((String) req.get("orderId"));
+			documentsService.getInvoices(orderIds, null);
+			logger.info("Added order {}", orderIds);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		return Response.ok().build();
 	}
 	
 	@POST
 	@Path("/create")
-	public synchronized Response create(final CreateDocumentsRequest req) {
+	public synchronized Response create(final Map<String, Object> req) {
 		logger.debug("Creating Printjob");
 		try {
 			DocumentsPrintjob printjob = new DocumentsPrintjob();
 			printjob.setStatus("creating");
 			documentsPrintjobRepository.save(printjob);
 			// fill orders
-			List<String> orderIds = req.getOrderIds();
+			List<String> orderIds = (List<String>) req.get("orderIds");
 			for (int i = 0; i < orderIds.size(); i+=batchSize) {
 				logger.debug("Creating Orders {} to {}", i, i + batchSize);
 				Form form = formRepository.findByName("create_documents_orders");
@@ -133,6 +144,8 @@ public class DocumentsResource {
 						.put("ids", orderIds.subList(i, Math.min(orderIds.size(), i + batchSize)))
 						.build();
 				jdbcTemplate.update(form.getSqlStatement(), params);
+				logger.debug(form.getSqlStatement());
+				logger.debug(params.toString());
 			}
 			Form form = formRepository.findByName("update_order_type");
 			Map<String, Object> params = ImmutableMap.<String, Object>builder()
@@ -190,6 +203,9 @@ public class DocumentsResource {
 							}
 							document.setNumPrinted(document.getNumPrinted() + 1);
 							logger.debug("Saving document " + document);
+							if (document.orderId() != null) {
+								auswertungRepository.timestampPrint(document.getOrderId());
+							}
 							documentsDocumentsRepository.save(document);
 						} else {
 							printjobItem.setStatus("error");
@@ -199,6 +215,10 @@ public class DocumentsResource {
 					}
 				}
 			}
+			DocumentsPrintjob printjob = documentsPrintjobRepository.findOne(printjobId);
+			printjob.setStatus("finished");
+			printjob.setPrintedAt(new Date());
+			documentsPrintjobRepository.save(printjob);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

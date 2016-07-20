@@ -13,5 +13,6 @@ public interface DocumentsDocumentsRepository extends PagingAndSortingRepository
     @Query("SELECT dd FROM DocumentsDocuments dd WHERE id IN (:ids)")
    	List<DocumentsDocuments> findByIds(@Param("ids") List<Integer> ids);
 	
-
+    @Query("SELECT dd FROM DocumentsDocuments dd WHERE type=:type and order_id=:orderId")
+    DocumentsDocuments findOneByTypeAndOrderId(@Param("type") String type, @Param("orderId") String orderId);
 }

@@ -1,23 +1,27 @@
 package com.m11n.hermes.rest.server.processor;
 
-import com.m11n.hermes.core.model.DocumentLog;
-import com.m11n.hermes.core.model.DocumentType;
-import com.m11n.hermes.core.service.PdfService;
-import com.m11n.hermes.core.service.SshService;
-import com.m11n.hermes.core.util.PathUtil;
-import com.m11n.hermes.persistence.DocumentLogRepository;
-import org.apache.commons.lang.StringUtils;
+import java.io.File;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Date;
-import java.util.List;
+import com.m11n.hermes.core.model.DocumentLog;
+import com.m11n.hermes.core.model.DocumentType;
+import com.m11n.hermes.core.service.DocumentsService;
+import com.m11n.hermes.core.service.PdfService;
+import com.m11n.hermes.core.service.SshService;
+import com.m11n.hermes.core.util.PathUtil;
+import com.m11n.hermes.persistence.DocumentLogRepository;
 
 @Component
 public class DocumentSplitProcessor {
@@ -28,6 +32,9 @@ public class DocumentSplitProcessor {
 
     @Inject
     private SshService sshService;
+    
+    @Inject
+    private DocumentsService documentsService;
 
     @Inject
     private DocumentLogRepository documentLogRepository;
@@ -63,10 +70,52 @@ public class DocumentSplitProcessor {
         }
     }
 
+    private synchronized void processSingle(String filePath, String type, String orderId) {
+        String remoteFilename = documentsService.getFilenameRemote(type, orderId);
+        String remotePath = documentsService.getPathRemote(orderId);
+        try {
+        	try {
+	            sshService.connect();
+				int status = sshService.exec("mkdir -p " + remotePath + " && chmod 774 " + remotePath + " -R");
+	            sshService.upload(filePath, remoteFilename);
+	            boolean success = documentsService.create(type, orderId, remoteFilename, sshService, true);
+	            if (!(status == 0)) {
+	            	logger.error("Could not copy PDF to server: {}", remoteFilename);
+	            }
+	            if (!success) {
+	            	logger.error("Could not add Document: {}", remoteFilename);
+	            }
+	        } catch (Exception e) {
+	            logger.error(e.toString(), e);
+	        } finally {
+	            sshService.disconnect();
+	        }
+	    } catch(Throwable t) {
+	        logger.error("XXXXX: {} ({})", t.getMessage(), filePath);
+	        logger.error(t.toString(), t);
+	    }
+
+    }
+    
     public synchronized void process(File f) {
         String fileName = f.getName();
         String filePath = f.getAbsolutePath();
-
+        
+        logger.debug("Name, Path: {}, {}", fileName, filePath);
+        Pattern p = Pattern.compile("^([\\d-]+)_(.+)\\.pdf$");
+        Matcher m = p.matcher(fileName);
+        if (m.find()) {
+        	String orderId = m.group(1);
+        	String type = m.group(2);
+        	logger.debug("Process single file, orderId: {}, type: {}", orderId, type);
+        	processSingle(filePath, type, orderId);
+        	return;
+        } else {
+        	this.processMultiple(fileName, filePath);
+        }
+    }
+    
+    private void processMultiple(String fileName, String filePath) {
         try {
             PDDocument parent = PDDocument.load(filePath);
 
@@ -103,11 +152,22 @@ public class DocumentSplitProcessor {
                     String fileNameResult = resultDir + "/" + documentLog.getType().toLowerCase() + ".pdf";
                     document.save(fileNameResult);
 
+                    String orderId = documentLog.getOrderId();
+                    String type = documentLog.getType().toLowerCase();
+                    String remoteFilename = documentsService.getFilenameRemote(type, orderId);
+                    String remotePath = documentsService.getPathRemote(orderId);
                     // copy to server
                     try {
                         sshService.connect();
-                        int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + " && chmod 774 " + serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + " -R");
-                        sshService.upload(fileNameResult, serverResultDir + "/" + PathUtil.segment(documentLog.getOrderId()) + "/" + documentLog.getType().toLowerCase() + ".pdf");
+                        int status = sshService.exec("mkdir -p " + remotePath + " && chmod 774 " + remotePath + " -R");
+                        sshService.upload(fileNameResult, remoteFilename);
+                        boolean success = documentsService.create(type, orderId, remoteFilename, sshService, true);
+                        if (!(status == 0)) {
+                        	logger.error("Could not copy PDF to server: {}", remoteFilename);
+                        }
+                        if (!success) {
+                        	logger.error("Could not add Document: {}", remoteFilename);
+                        }
                     } catch (Exception e) {
                         logger.error(e.toString(), e);
                     } finally {

@@ -1,8 +1,6 @@
 package com.m11n.hermes.service.documents;
 
 import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,36 +11,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
-import java.util.stream.Collector;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import org.apache.pdfbox.filter.DCTFilter;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
 
 import com.google.common.collect.ImmutableMap;
+import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.model.DocumentsDocuments;
-import com.m11n.hermes.core.model.DocumentsOrders;
 import com.m11n.hermes.core.model.DocumentsPrintjobItem;
 import com.m11n.hermes.core.model.DocumentsTub;
 import com.m11n.hermes.core.model.DocumentsTubGroup;
@@ -137,7 +123,7 @@ public class DefaultDocumentsService implements DocumentsService {
 			Arrays.asList("A3", "A2", "A1");
 
 	private static final List<String> TYPES_B =
-			Arrays.asList("B1");
+			Arrays.asList("B1", "B2");
 	
 	public class Trolley {
 		private int groupNo;
@@ -458,7 +444,81 @@ public class DefaultDocumentsService implements DocumentsService {
 	}
 
 	@Override
-	public Set<String> getInvoices(List<String> orderIds) {
+	public String getPathRemote(String orderId) {
+		return serverResultDir + "/" + PathUtil.segment(orderId) + "/";
+	}
+	
+	@Override
+	public String getFilenameRemote(String type, String orderId) {
+		return getPathRemote(orderId) + type.toLowerCase() + ".pdf";
+	}
+	
+	private String getPathLocal(String orderId) {
+		return resultDir + "/" + PathUtil.segment(orderId) + "/";
+	}
+	
+	private String getFilenameLocal(String type, String orderId) {
+		return getPathLocal(orderId) + type.toLowerCase() + ".pdf";
+	}
+	
+	@Override
+	public boolean create(String type, String orderId, String sourceFilename, SshService sshService, boolean override) {
+		// TODO replace old code
+		boolean success = true;
+		try {
+			success = sshService.fileExists(sourceFilename);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		DocumentsDocuments doc = this.documentsDocumentsRepository.findOneByTypeAndOrderId(type, orderId);
+		if (doc == null) {
+			doc = new DocumentsDocuments();
+		}
+    	doc.setOrderId(orderId);
+    	doc.setType(type.toUpperCase());
+		doc.setPathLive(this.getFilenameRemote(type, orderId));
+		doc.setPathPrint(this.getFilenameLocal(type, orderId));
+		// copy if necessary
+    	if (!getFilenameRemote(type, orderId).equals(sourceFilename)) {
+    		success = false;
+    		String cmd = "mkdir -p " + this.getPathRemote(orderId) + " && cp " + sourceFilename + " " + this.getFilenameRemote(type, orderId);
+    		logger.info(cmd);
+    		int status = -1;
+			try {
+				status = sshService.exec(cmd);
+				success = status == 0;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	}
+    	doc.setPathLive(this.getFilenameRemote(type, orderId));
+        if (!remoteEnabled) {
+        	// copy to local instance
+            File f = new File(this.getPathLocal(orderId));
+            if(!f.exists()) {
+                f.mkdirs();
+            }
+            logger.info("COPY: {} -> {}", getFilenameRemote(type, orderId), getFilenameLocal(type, orderId));
+            try {
+            	sshService.copy(getFilenameRemote(type, orderId), getFilenameLocal(type, orderId));
+            } catch (Exception e) {
+            	
+            }
+        }
+    	if (success) {
+    		if (!override) {
+    			documentsDocumentsRepository.save(doc);
+    		}
+    	} else {
+    		logger.debug("No success");
+    	}
+    	return success;
+	}
+	
+	@Override
+	public Set<String> getInvoices(List<String> orderIds, List<String> invoiceIds) {
+		logger.debug("Entering getInvoices {}, {}", orderIds, invoiceIds);
 		Set<String> invoiceExists = new HashSet<>();
 		try {
 			sshService.connect();
@@ -466,38 +526,54 @@ public class DefaultDocumentsService implements DocumentsService {
             logger.error(e.toString(), e);
             return invoiceExists;
         }
-		for (String orderId : orderIds) {
+		for (int i = 0; i < orderIds.size(); i++) {
+			String orderId = orderIds.get(i);
+			String invoiceId;
+
 			try {
-    			String pathRemote = serverResultDir + "/" + PathUtil.segment(orderId) + "/invoice.pdf";
-    			String pathLocal = resultDir + "/" + PathUtil.segment(orderId) + "/invoice.pdf";
-    			if (!new File(pathRemote).exists() && false) {
-    				try {
+				if (invoiceIds == null) {
+					String stmt = "SELECT Rechnung as `invoiceId` FROM mage_custom_order WHERE Bestellung = :orderId";
+					Map<String, Object> params = ImmutableMap.<String, Object>builder()
+							.put("orderId", orderId)
+							.build();
+					List<Map<String, Object>> res = jdbcTemplate.queryForList(stmt, params);
+					invoiceId = (String) res.get(0).get("invoiceId");
+				} else {
+					invoiceId = invoiceIds.get(i);
+				}
+    			String pathRemote = this.getPathRemote(orderId);
+    			String filenameSource = serverResultDir + "/invoices/" + invoiceId + ".pdf";
+    			try {
+    				if (!sshService.fileExists(filenameSource)) {
+    					client.setConnectTimeout(15, TimeUnit.SECONDS);
+    					client.setReadTimeout(15, TimeUnit.SECONDS);
+    		    		String cmd = "mkdir -p " + pathRemote + " && chmod 777 " + pathRemote;
+    		    		logger.info(cmd);
+    		    		sshService.exec(cmd);
+    		    		String pathRemote2 = serverResultDir + "/invoices";
+    		    	    if (pathRemote2 != null && pathRemote2.length() > 0 && pathRemote2.charAt(pathRemote2.length()-1)=='/') {
+    		    	    	pathRemote2 = pathRemote2.substring(0, pathRemote2.length()-1);
+    		    	      }
     					HttpUrl httpUrl = HttpUrl.parse(this.url)
     							.newBuilder()
     							.addQueryParameter("login", this.username)
     							.addQueryParameter("password", this.password)
     							.addQueryParameter("id", orderId)
-    							.addQueryParameter("path", pathRemote)
+    							.addQueryParameter("path", pathRemote2)
     							.build();
     					logger.debug("opening url " + httpUrl);
     					Request request = new Request.Builder()
     							.url(httpUrl)
     							.build();
     					com.squareup.okhttp.Response response = client.newCall(request).execute();
-    				} catch (Exception e) {
-    					logger.error("Could not create invoice: " + e.getMessage());
     				}
-    				if (new File(pathRemote).exists()) {
-    					if (!remoteEnabled) {
-    						File f = new File(resultDir + "/" + orderId);
-    						if(!f.exists()) {
-    							f.mkdirs();
-    						}
-    						logger.info("COPY: {} -> {}", pathRemote, pathLocal);
-    						sshService.copy(pathRemote, pathLocal);
-    					}
-    					invoiceExists.add(orderId);
-    				}
+    			} catch (Exception e) {
+    				logger.error("Could not create invoice: " + e.getMessage());
+    			}
+    			boolean success = this.create(DocumentType.INVOICE.name(), orderId, filenameSource, sshService, false);
+    			logger.debug("Success: {}", success);
+    			if (success) {
+    				invoiceExists.add(orderId);
     			}
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
@@ -512,10 +588,10 @@ public class DefaultDocumentsService implements DocumentsService {
 	}
 
 	@Override
-	public Set<String> getLabels(List<String> orderIds, List<String> paths) {
+	public Set<String> getLabels(List<String> orderIds, List<String> filenames) {
 		Set<String> labelExists = new HashSet<>();
-		if(orderIds.size() != paths.size()) {
-			logger.error("Incorrect Array Size. orderIds: {}, paths: {}", orderIds.size(), paths.size());
+		if(orderIds.size() != filenames.size()) {
+			logger.error("Incorrect Array Size. orderIds: {}, paths: {}", orderIds.size(), filenames.size());
 		}
 		try {
 			sshService.connect();
@@ -525,46 +601,12 @@ public class DefaultDocumentsService implements DocumentsService {
         }
 
 		for (int i = 0; i < orderIds.size(); i++) {
-	        try {
-	        	String orderId = orderIds.get(i);
-	        	String path = paths.get(i);
-	        	DocumentsDocuments documents = new DocumentsDocuments();
-	        	documents.setOrderId(orderId);
-	        	documents.setPathLive(path);
-	        	documents.setType("LABEL");
-	        	// TODO _labelExists aus DB auslesen
-	        	// TODO evtl. problem: Datei existiert, aber nicht db eintrag
-	        	boolean doSave = false;
-	            if(remoteEnabled) {
-	                logger.info("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + orderId + " -R");
-	                int status = sshService.exec("mkdir -p " + serverResultDir + "/" + PathUtil.segment(orderId) + " && cp " + path + " " + serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf && chmod 774 " + serverResultDir + "/" + PathUtil.segment(orderId) + " -R");
-	                if(status == 0) {
-	                	labelExists.add(orderId);
-	                	doSave = true;
-	                }
-	                documents.setPathLive(serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf");
-	            } else {
-	                File f = new File(resultDir + "/" + orderId);
-	                if(!f.exists()) {
-	                    f.mkdirs();
-	                }
-	                logger.info("COPY: {} -> {}", path, resultDir + "/" + orderId + "/label.pdf");
-	                sshService.copy(path, resultDir + "/" + orderId + "/label.pdf");
-	                labelExists.add(orderId);
-	                doSave = true;
-	                documents.setPathLive(serverResultDir + "/" + PathUtil.segment(orderId) + "/label.pdf");
-	                documents.setPathPrint(resultDir + "/" + orderId + "/label.pdf");
-	            }
-	            try {
-	            	if (doSave) {
-	            		documentsDocumentsRepository.save(documents);
-	            	}
-	            } catch(DataIntegrityViolationException e) {
-	            	logger.warn("Could not create DB entry for order {}. Label probably already existent.", orderId);
-	            }
-	        } catch (Exception e) {
-	            logger.error(e.toString(), e);
-	        }
+			String orderId = orderIds.get(i);
+			String filename = filenames.get(i);
+			boolean success = this.create(DocumentType.LABEL.name(), orderId, filename, sshService, false);
+			if (success) {
+				labelExists.add(orderId);
+			}
         }
 		
 		try {
@@ -574,28 +616,6 @@ public class DefaultDocumentsService implements DocumentsService {
 		}
 
         return labelExists;
-	}
-
-	@Override
-	public Set<String> getMissingFiles(List<String> orderIds, String type) {
-		Set<String> missingFiles = new HashSet<>();
-		for (String orderId : orderIds) {
-			if (!new File(this.getPath(true, type, orderId)).exists()) {
-				missingFiles.add(orderId);
-			}
-		}
-		return missingFiles;
-	}
-	
-	private String getPath(boolean remote, String type, String orderId) {
-		String path = "";
-		if (remote) {
-			path += serverResultDir + "/";
-		} else {
-			path += resultDir + "/";
-		}
-		path += PathUtil.segment(orderId) + "/" + type.toLowerCase() + ".pdf";
-		return path;
 	}
 	
 }

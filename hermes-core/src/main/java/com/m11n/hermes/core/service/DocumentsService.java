@@ -6,10 +6,15 @@ import java.util.Set;
 public interface DocumentsService {
 
 	public void createPicklist(int printjobId);
-
-	public Set<String> getInvoices(List<String> orderIds);
+	
+	public Set<String> getInvoices(List<String> orderIds, List<String> invoiceIds);
 
 	public Set<String> getLabels(List<String> orderIds, List<String> labelPaths);
-	
-	public Set<String> getMissingFiles(List<String> orderIds, String type);
+
+	boolean create(String type, String orderId, String sourceFilename, SshService sshService, boolean override);
+
+	String getPathRemote(String orderId);
+
+	String getFilenameRemote(String type, String orderId);
+
 }

@@ -107,51 +107,53 @@ public class FormResource {
         } catch(Exception e) {
             logger.error(e.toString(), e);
         }
-
         if(result instanceof List) {
             List<Map<String, Object>> r = (List<Map<String, Object>>)result;
 
             final boolean downloadFiles = parameters.get("_downloadFiles")==null ? false : (Boolean)parameters.get("_downloadFiles");
 
-            try {
-                List<String> orderIdsLabel = new LinkedList<>();
-                List<String> orderIdsInvoice = new LinkedList<>();
-                List<String> labelPaths = new LinkedList<>();
-                for(Map<String, Object> row : r) {
-                	if (downloadFiles) {
-                		String orderId = row.get("orderId").toString();
-                		String shippingId = row.get("shippingId").toString();
-                		if(Boolean.FALSE.equals(row.get("_labelExists"))) {
-                			String labelPath = null;
-                			if (row.get("_labelPath") != null) {
-                				labelPath = row.get("_labelPath").toString();
-                				orderIdsLabel.add(orderId);
-                				labelPaths.add(labelPath);
-                			}
-                		} else {
-                            logger.info("FILE NOT FOUND: {} -> {}", orderId, shippingId);
-                        }
-
-                        if(Boolean.FALSE.equals(row.get("_invoiceExists"))) {
-                        	orderIdsInvoice.add(orderId);
-                        }
-                	}
-                }
-                
-                Set<String> labelExists = documentsService.getLabels(orderIdsLabel, labelPaths);
-                Set<String> invoiceExists = documentsService.getInvoices(orderIdsInvoice);
-                
-                for(Map<String, Object> row : r) {
-            		String orderId = row.get("orderId").toString();
-                	if(labelExists.contains(orderId)) {
-                		row.put("_labelExists", labelExists);
-                	}
-                	if(invoiceExists.contains(orderId)) {
-                		row.put("_invoiceExists", labelExists);
-                	}
-                }
-            } catch (Exception e) {
-                logger.error(e.toString(), e);
+            if(downloadFiles) {
+            	try {
+            		List<String> orderIdsLabel = new LinkedList<>();
+            		List<String> orderIdsInvoice = new LinkedList<>();
+            		List<String> invoiceIds = new LinkedList<>();
+            		List<String> labelPaths = new LinkedList<>();
+            		for(Map<String, Object> row : r) {
+            			logger.debug(row.toString());
+        				String orderId = row.get("orderId").toString();
+        				String shippingId = row.get("shippingId").toString();
+        				String invoiceId = row.get("invoiceId").toString();
+        				if(Boolean.FALSE.equals(row.get("_labelExists"))) {
+        					String labelPath = null;
+        					if (row.get("_labelPath") != null) {
+        						labelPath = row.get("_labelPath").toString();
+        						orderIdsLabel.add(orderId);
+        						labelPaths.add(labelPath);
+        					}
+        				}
+        				
+        				if(Boolean.FALSE.equals(row.get("_invoiceExists"))) {
+        					orderIdsInvoice.add(orderId);
+        					invoiceIds.add(invoiceId);
+        				}
+            		}
+            		
+            		Set<String> labelExists = documentsService.getLabels(orderIdsLabel, labelPaths);
+            		Set<String> invoiceExists = documentsService.getInvoices(orderIdsInvoice, invoiceIds);
+            		logger.debug("label exists: {}", labelExists);
+            		logger.debug("invoice exists: {}", invoiceExists);
+            		for(Map<String, Object> row : r) {
+            			String orderId = row.get("orderId").toString();
+            			if(labelExists.contains(orderId)) {
+            				row.put("_labelExists", labelExists);
+            			}
+            			if(invoiceExists.contains(orderId)) {
+            				row.put("_invoiceExists", labelExists);
+            			}
+            		}
+            	} catch (Exception e) {
+            		logger.error(e.toString(), e);
+            	}
             }
         }
 

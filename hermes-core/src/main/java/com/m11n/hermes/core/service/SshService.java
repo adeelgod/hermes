@@ -9,6 +9,8 @@ public interface SshService {
     void copy(String remotePath, String localPath) throws Exception;
 
     void upload(String localPath, String remotePath) throws Exception;
+    
+    boolean fileExists(String remotePath) throws Exception;
 
     int exec(String command) throws Exception;
 }

@@ -34,19 +34,19 @@ block content
                         .row
                             .col-md-12
                                 .btn-group.btn-group-lg
-                                    button.btn.btn-primary(type='button', ng-click='query()', ng-disabled='busy')
+                                    button.btn(type='button', ng-click='query()', ng-disabled='busy' ng-class="{'btn-default': substate!='new', 'btn-primary': substate=='new'}")
                                         i.fa.fa-search
                                         | &nbsp;
                                         | New
-                                    button.btn.btn-default(type='button', ng-click='checkBeforeCreate()', ng-disabled='busy')
+                                    button.btn(type='button', ng-click='checkBeforeCreate()', ng-disabled='busy' ng-class="{'btn-default': substate!='create', 'btn-primary': substate=='create'}")
                                         i.fa.fa-search
                                         | &nbsp;
                                         | Create
-                                    button.btn.btn-default(type='button', ng-click='listPrintjobs()', ng-disabled='busy')
+                                    button.btn(type='button', ng-click='listPrintjobs()', ng-disabled='busy' ng-class="{'btn-default': substate!='listPrintjobs', 'btn-primary': substate=='listPrintjobs'}")
                                         i.fa.fa-print
                                         | &nbsp;
                                         | Printjobs
-                                    button.btn.btn-default(type='button', ng-click='print()', ng-disabled='busy')
+                                    button.btn(type='button', ng-click='print()', ng-disabled='busy' ng-class="{'btn-default': substate!='print', 'btn-primary': substate=='print'}")
                                         i.fa.fa-print
                                         | &nbsp;
                                         | Print
@@ -107,10 +107,7 @@ block content
                             h4 Path Live
                         td
                             h4 Path Print
-                        td
-                            h4
-                                i.fa.fa-print
-                        td
+                        td(colspan='2')
                             .btn-group
                                 button.btn.btn-sm.btn-default(type='button', ng-click='selectPrintjobItems(true)', ng-disabled='busy')
                                     i.fa.fa-check
