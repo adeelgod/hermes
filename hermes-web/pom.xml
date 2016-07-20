@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.m11n.hermes</groupId>
         <artifactId>hermes</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.5-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 
@@ -16,7 +16,9 @@
 
     <modules>
         <module>../hermes-web-ui</module>
+        <!-- 
         <module>../hermes-web-crm</module>
+         -->
     </modules>
 
     <build>

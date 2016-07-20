@@ -3,7 +3,7 @@
   <parent>
     <artifactId>hermes-rest-server</artifactId>
     <groupId>com.m11n.hermes</groupId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.5-SNAPSHOT</version>
     <relativePath>../hermes-rest-server/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.m11n.hermes</groupId>
       <artifactId>hermes-test</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <version>1.0.5-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
