@@ -6,19 +6,19 @@
 	<parameter name="GROUP_NO" class="java.lang.Integer"/>
 	<parameter name="PRINTJOB_ID" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT a.product_id, d.shelf_no, c.product_name, SUM(a.amount) amount, d.charge_variant charge,
-SUM( IF(tub_no=1, amount,0)) AS t1,
-SUM( IF(tub_no=2, amount,0)) AS t2,
-SUM( IF(tub_no=3, amount,0)) AS t3,
-SUM( IF(tub_no=4, amount,0)) AS t4,
-SUM( IF(tub_no=5, amount,0)) AS t5,
-SUM( IF(tub_no=6, amount,0)) AS t6,
-SUM( IF(tub_no=7, amount,0)) AS t7,
-SUM( IF(tub_no=8, amount,0)) AS t8,
-SUM( IF(tub_no=9, amount,0)) AS t9,
-SUM( IF(tub_no=10, amount,0)) AS t10,
-SUM( IF(tub_no=11, amount,0)) AS t11,
-SUM( IF(tub_no=12, amount,0)) AS t12
+		<![CDATA[SELECT a.product_id, d.shelf shelf_no, c.product_name, SUM(a.amount) amount, d.charge_variant charge,
+SUM( IF(tub_no=1, a.amount,0)) AS t1,
+SUM( IF(tub_no=2, a.amount,0)) AS t2,
+SUM( IF(tub_no=3, a.amount,0)) AS t3,
+SUM( IF(tub_no=4, a.amount,0)) AS t4,
+SUM( IF(tub_no=5, a.amount,0)) AS t5,
+SUM( IF(tub_no=6, a.amount,0)) AS t6,
+SUM( IF(tub_no=7, a.amount,0)) AS t7,
+SUM( IF(tub_no=8, a.amount,0)) AS t8,
+SUM( IF(tub_no=9, a.amount,0)) AS t9,
+SUM( IF(tub_no=10, a.amount,0)) AS t10,
+SUM( IF(tub_no=11, a.amount,0)) AS t11,
+SUM( IF(tub_no=12, a.amount,0)) AS t12
 FROM hermes_documents_tub AS a
 LEFT JOIN mage_custom_order AS f ON a.order_id = f.Bestellung 
 LEFT JOIN mage_custom_order_single_item AS b ON f.order_id = b.order_id  
@@ -28,7 +28,7 @@ WHERE a.printjob_id = $P{PRINTJOB_ID}
 AND a.group_no = $P{GROUP_NO}
 AND a.type IN ('A3', 'A2', 'A1')
 GROUP BY a.product_id
-ORDER BY b.shelf_no ASC]]>
+ORDER BY d.shelf ASC]]>
 	</queryString>
 	<field name="product_id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
