@@ -67,6 +67,7 @@ block content
                     span.sr-only &nbsp;
     .row(ng-show='printjobs')
         .col-md-12
+            .text-right(ng-show='printjobs') Number of Entries {{printjobs.length}}
             table.table.table-striped.table-condensed.table-hover
                 thead
                     tr
@@ -90,6 +91,7 @@ block content
                             h4(ng-click='listPrintjobItems(entry.id)' style='cursor: pointer') {{entry.printed_at}}
     .row(ng-show='printjobItems')
         .col-md-12
+            .text-right(ng-show='printjobItems') Number of Entries {{printjobItems.length}}
             table.table.table-striped.table-condensed.table-hover
                 thead
                     tr
@@ -137,6 +139,7 @@ block content
                             
     .row(ng-show='orders')
         .col-md-12
+            .text-right(ng-show='orders') Number of Entries {{orders.length}}
             table.table.table-striped.table-condensed.table-hover
                 thead
                     tr

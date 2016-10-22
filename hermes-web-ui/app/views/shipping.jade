@@ -87,6 +87,7 @@ block content
                     span.sr-only &nbsp;
     .row(ng-hide='busy')
         .col-md-12
+            .text-right(ng-show='shippings') Number of Entries {{shippings.length}}
             table.table.table-striped.table-condensed.table-hover(ng-show='shippings')
                 thead
                     tr
@@ -138,7 +139,7 @@ block content
                         td.text-right(ng-class="{ 'success': checks[entry.orderId].weight, 'danger': !checks[entry.orderId].weight }")
                             | {{entry.weight}}
                         td(ng-class="{ 'success': checks[entry.orderId].company, 'danger': !checks[entry.orderId].company }")
-                            | {{entry.Company}}
+                            | {{entry.company}}
                         td(ng-class="{ 'success': checks[entry.orderId].firstname, 'danger': !checks[entry.orderId].firstname }")
                             | {{entry.firstname}}
                         td(ng-class="{ 'success': checks[entry.orderId].lastname, 'danger': !checks[entry.orderId].lastname }")
@@ -153,7 +154,7 @@ block content
                             | {{entry.zip}}
                         td(ng-class="{ 'success': checks[entry.orderId].city, 'danger': !checks[entry.orderId].city }")
                             | {{entry.city}}
-                        td
+                        td(ng-class="{ 'success': checks[entry.orderId].country, 'danger': !checks[entry.orderId].country }")
                             | {{entry.country}}
                         td(ng-class="{ 'success': checks[entry.orderId].dhlAccount, 'danger': !checks[entry.orderId].dhlAccount }")
                             | {{entry.dhlAccount}}
