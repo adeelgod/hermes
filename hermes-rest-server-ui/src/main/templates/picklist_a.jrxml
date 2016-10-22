@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 5.5.2  -->
-<!-- 2016-07-08T08:57:57 -->
+<!-- 2016-10-22T15:23:01 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="picklist_a" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="196637a4-8fc6-4051-9c84-6ac860e7803b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="GROUP_NO" class="java.lang.Integer"/>
@@ -27,7 +27,7 @@ LEFT JOIN warehouse_inventory d ON d.charge = b.charge AND d.charge_variant = b.
 WHERE a.printjob_id = $P{PRINTJOB_ID}
 AND a.group_no = $P{GROUP_NO}
 AND a.type IN ('A3', 'A2', 'A1')
-GROUP BY a.product_id
+GROUP BY a.product_id, d.shelf, d.charge_variant
 ORDER BY d.shelf ASC]]>
 	</queryString>
 	<field name="product_id" class="java.lang.Integer">
