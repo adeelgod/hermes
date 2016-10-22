@@ -12,10 +12,6 @@ import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.persistence.IntrashipDocumentRepository;
 import com.m11n.hermes.persistence.util.QueryScheduler;
 import com.m11n.hermes.persistence.util.QueryToFieldsUtil;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.HttpUrl.Builder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -85,8 +81,6 @@ public class FormResource {
     protected String password;
 
     private ExecutorService executor = Executors.newFixedThreadPool(1);
-
-    protected OkHttpClient client = new OkHttpClient();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

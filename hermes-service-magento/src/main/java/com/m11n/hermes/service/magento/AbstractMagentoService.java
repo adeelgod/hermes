@@ -17,16 +17,37 @@ public abstract class AbstractMagentoService implements MagentoService {
 
     @Value("${hermes.magento.api.url}")
     protected String url;
-
+    
     @Value("${hermes.magento.api.username}")
     protected String username;
 
     @Value("${hermes.magento.api.password}")
     protected String password;
 
+    @Value("${hermes.shipment.api.url}")
+    protected String shipmentUrl;
+
+    @Value("${hermes.shipment.api.username}")
+    protected String shipmentUsername;
+    
+    @Value("${hermes.shipment.api.password}")
+    protected String shipmentPassword;
+    
+    @Value("${hermes.invoice.api.url}")
+    protected String invoiceUrl;
+    
+    @Value("${hermes.invoice.api.username}")
+    protected String invoiceUsername;
+    
+    @Value("${hermes.invoice.api.password}")
+    protected String invoicePassword;
+    
     @Value("${hermes.magento.api.retry.max:3}")
     protected Integer retryMax;
 
+    @Value("${hermes.magento.api.timeout:1000}")
+    protected Integer timeout;
+    
     @Value("${hermes.magento.api.retry.wait:500}")
     protected Long retryWait;
 

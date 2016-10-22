@@ -68,29 +68,39 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     protected String get(String url, DhlRequest r) {
+    	Response response = null;
         try {
             Request request = new Request.Builder()
                     .url(url + "?xml=" + URLEncoder.encode(marshal(r), encoding))
                     .addHeader(HttpHeaders.ACCEPT, MEDIA_TYPE_XML.toString())
                     .build();
-            Response response = client.newCall(request).execute();
+            response = client.newCall(request).execute();
 
             return response.body().string();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+        	try {
+        		response.body().close();
+        	} catch (Exception e) {}
         }
     }
 
     protected String get(String url) {
+    	Response response = null;
         try {
             Request request = new Request.Builder()
                     .url(url)
                     .build();
-            Response response = client.newCall(request).execute();
+            response = client.newCall(request).execute();
 
             return response.body().string();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+        	try {
+				response.body().close();
+        	} catch (Exception e) {}
         }
     }
 

@@ -47,6 +47,7 @@ import com.m11n.hermes.persistence.FormRepository;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 @Service
 public class DefaultDocumentsService implements DocumentsService {
@@ -85,13 +86,13 @@ public class DefaultDocumentsService implements DocumentsService {
     @Value("${hermes.remote.enabled:false}")
     private boolean remoteEnabled;
 
-    @Value("${hermes.invoice.api.url}")
+    @Value("${hermes.invoice.print.api.url}")
     protected String url;
 
-    @Value("${hermes.invoice.api.username}")
+    @Value("${hermes.invoice.print.api.username}")
     protected String username;
 
-    @Value("${hermes.invoice.api.password}")
+    @Value("${hermes.invoice.print.api.password}")
     protected String password;
     
     @Inject
@@ -531,7 +532,7 @@ public class DefaultDocumentsService implements DocumentsService {
 			String invoiceId;
 
 			try {
-				if (invoiceIds == null) {
+				if (invoiceIds == null || true) {
 					String stmt = "SELECT Rechnung as `invoiceId` FROM mage_custom_order WHERE Bestellung = :orderId";
 					Map<String, Object> params = ImmutableMap.<String, Object>builder()
 							.put("orderId", orderId)
@@ -543,8 +544,9 @@ public class DefaultDocumentsService implements DocumentsService {
 				}
     			String pathRemote = this.getPathRemote(orderId);
     			String filenameSource = serverResultDir + "/invoices/" + invoiceId + ".pdf";
-    			try {
-    				if (!sshService.fileExists(filenameSource)) {
+    			Response response = null;
+    			if (!sshService.fileExists(filenameSource)) {
+    				try {
     					client.setConnectTimeout(15, TimeUnit.SECONDS);
     					client.setReadTimeout(15, TimeUnit.SECONDS);
     		    		String cmd = "mkdir -p " + pathRemote + " && chmod 777 " + pathRemote;
@@ -565,10 +567,14 @@ public class DefaultDocumentsService implements DocumentsService {
     					Request request = new Request.Builder()
     							.url(httpUrl)
     							.build();
-    					com.squareup.okhttp.Response response = client.newCall(request).execute();
-    				}
-    			} catch (Exception e) {
-    				logger.error("Could not create invoice: " + e.getMessage());
+    					response = client.newCall(request).execute();
+	    			} catch (Exception e) {
+	    				logger.error("Could not create invoice: " + e.getMessage());
+	    	        } finally {
+	    	        	try {
+	    	        		response.body().close();
+	    	        	} catch (Exception e) {}
+	    			}
     			}
     			boolean success = this.create(DocumentType.INVOICE.name(), orderId, filenameSource, sshService, false);
     			logger.debug("Success: {}", success);
@@ -589,6 +595,7 @@ public class DefaultDocumentsService implements DocumentsService {
 
 	@Override
 	public Set<String> getLabels(List<String> orderIds, List<String> filenames) {
+		logger.debug("Entering getLabels {}, {}", orderIds, orderIds, filenames);
 		Set<String> labelExists = new HashSet<>();
 		if(orderIds.size() != filenames.size()) {
 			logger.error("Incorrect Array Size. orderIds: {}, paths: {}", orderIds.size(), filenames.size());

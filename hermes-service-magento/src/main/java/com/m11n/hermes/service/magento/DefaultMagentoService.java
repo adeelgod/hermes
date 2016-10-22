@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Profile("production")
 @Service
@@ -64,16 +65,28 @@ public class DefaultMagentoService extends AbstractMagentoService {
     @Override
     public void completeInvoice(String orderId) throws Exception {
         logger.debug("********* COMPLETE INVOICE: {}", orderId);
-        Request req = new Request.Builder().url(url + "/rechnung/?login=" + username + "&password=" + password + "&id=" + orderId).build();
+        Request req = new Request.Builder().url(invoiceUrl + "?login=" + invoiceUsername + "&password=" + invoicePassword + "&id=" + orderId).build();
         Response res = client.newCall(req).execute();
         logger.debug("********* COMPLETE INVOICE: {}", res.body().string());
+        try {
+        	res.body().close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
     }
 
     @Override
     protected List<String> doCreateIntrashipLabel(String orderId) throws Exception {
         logger.debug("********* DO CREATE INTRASHIP LABEL: {}", orderId);
-        Request req = new Request.Builder().url(url + "/shipment/?login=" + username + "&password=" + password + "&id=" + orderId).build();
+        client.setConnectTimeout(timeout, TimeUnit.SECONDS); // connect timeout
+        client.setReadTimeout(timeout, TimeUnit.SECONDS);    // socket timeout
+        Request req = new Request.Builder().url(shipmentUrl + "?login=" + shipmentUsername + "&password=" + shipmentPassword + "&id=" + orderId).build();
         Response res = client.newCall(req).execute();
+        try {
+        	res.body().close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
 
         return intrashipStatusTranslator.normalizeMessage(res.body().string());
     }
