@@ -1,7 +1,6 @@
 package com.m11n.hermes.service.bank;
 
 import com.m11n.hermes.core.model.BankStatement;
-import com.m11n.hermes.core.model.BankStatementPattern;
 import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.core.service.MagentoService;
@@ -41,9 +40,6 @@ public class DefaultBankService implements BankService {
     private BankStatementRepository bankStatementRepository;
 
     @Inject
-    private BankStatementPatternRepository bankStatementPatternRepository;
-
-    @Inject
     private AuswertungRepository auswertungRepository;
 
     @Inject
@@ -55,8 +51,6 @@ public class DefaultBankService implements BankService {
     @Inject
     @Named("jdbcTemplateAuswertung")
     protected NamedParameterJdbcTemplate jdbcTemplate;
-
-    private Set<BankStatementPattern> patterns = new HashSet<>();
 
     private final static BigDecimal MATCH_THRESHOLD_0 = new BigDecimal(0.0d);
 
@@ -115,15 +109,6 @@ public class DefaultBankService implements BankService {
     }
 
     public void reload() {
-        for(BankStatementPattern bsp : bankStatementPatternRepository.findAll()) {
-            if(bsp.getCaseInsensitive()) {
-                bsp.setRegex(Pattern.compile(bsp.getPattern(), Pattern.CASE_INSENSITIVE));
-            } else {
-                bsp.setRegex(Pattern.compile(bsp.getPattern()));
-            }
-
-            patterns.add(bsp);
-        }
         bankStatementMatchForm = formRepository.findByName("bank_match");
     }
 

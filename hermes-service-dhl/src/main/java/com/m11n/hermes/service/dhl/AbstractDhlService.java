@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public abstract class AbstractDhlService implements DhlService {
         try {
             List<String> lines = IOUtils.readLines(AbstractDhlService.class.getClassLoader().getResourceAsStream("status.csv"));
 
-            for(String line : lines) {
+            for (String line : lines) {
                 String[] pair = line.split("\\|");
                 statusMapping.put(pair[0].toLowerCase(), pair[1]);
             }
@@ -68,7 +69,7 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     protected String get(String url, DhlRequest r) {
-    	Response response = null;
+        Response response = null;
         try {
             Request request = new Request.Builder()
                     .url(url + "?xml=" + URLEncoder.encode(marshal(r), encoding))
@@ -80,14 +81,15 @@ public abstract class AbstractDhlService implements DhlService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-        	try {
-        		response.body().close();
-        	} catch (Exception e) {}
+            try {
+                response.body().close();
+            } catch (Exception e) {
+            }
         }
     }
 
     protected String get(String url) {
-    	Response response = null;
+        Response response = null;
         try {
             Request request = new Request.Builder()
                     .url(url)
@@ -98,9 +100,10 @@ public abstract class AbstractDhlService implements DhlService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-        	try {
-				response.body().close();
-        	} catch (Exception e) {}
+            try {
+                response.body().close();
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -117,7 +120,7 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     public void checkTracking() {
-        if(running.get()<=0) {
+        if (running.get() <= 0) {
             scheduleCheckTracking();
         } else {
             logger.warn("Please cancel first all running tracking code checks.");
@@ -145,17 +148,18 @@ public abstract class AbstractDhlService implements DhlService {
                 try {
                     List<String> codes = auswertungRepository.findPendingTrackingCodes();
 
-                    logger.debug("Checking codes: #{}", (codes!=null ? codes.size() : 0));
+                    logger.debug("Checking codes: #{}", (codes != null ? codes.size() : 0));
 
-                    for(String code : codes) {
-                        if(Thread.interrupted()) {
+                    for (String code : codes) {
+                        if (Thread.interrupted()) {
                             logger.warn("Cancelling tracking check at: {}", code);
                             running.decrementAndGet();
                             return;
                         }
 
                         DhlTrackingStatus status = getTrackingStatus(code);
-
+                        // just to avoid null value in status.date property
+                        status.setDate(status.getDate() == null ? new Date() : status.getDate());
                         auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
                         auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
                     }
@@ -169,14 +173,16 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     private String getStatus(String message) {
-        for(Map.Entry<String, String> entry : statusMapping.entrySet()) {
-            if(message!=null && message.toLowerCase().startsWith(entry.getKey())) {
+        logger.info("\n\n\nINSIDE \n CLASS == AbstractDhlService \n METHOD == getStatus(); ");
+        for (Map.Entry<String, String> entry : statusMapping.entrySet()) {
+            if (message != null && message.toLowerCase().contains(entry.getKey())) {
+                logger.info("\n\nEXITING THIS METHOD \n\n\n");
                 return entry.getValue();
             }
         }
 
         logger.error("Status not found for message: {}", message);
-
+        logger.info("\n\nEXITING THIS METHOD \n\n\n");
         return "fehler";
     }
 }

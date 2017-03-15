@@ -22,13 +22,18 @@ import java.util.Date;
 public class DefaultDhlService extends AbstractDhlService {
     private static final Logger logger = LoggerFactory.getLogger(DefaultDhlService.class);
 
+    // language code should be configurable
+    @Value("${hermes.dhl.api.language}")
     private String languageCode;
 
     private MODE mode;
 
     private String encoding = "UTF-8";
 
-    private String baseUrl = "https://cis.dhl.de/services/";
+//    OLD BASEURL
+//    private String baseUrl = "https://cis.dhl.de/services/";
+
+    private String baseUrl = "https://cig.dhl.de/services/";
 
     private String trackingUrl;
 
@@ -55,11 +60,11 @@ public class DefaultDhlService extends AbstractDhlService {
     private String cisEkp;
 
     public DefaultDhlService() throws Exception {
-        this(null, null, null, null, "en", "UTF-8", MODE.SANDBOX);
+        this(null, null, null, null, "de", "UTF-8", MODE.PRODUCTION);
     }
 
     public DefaultDhlService(String cisUsername, String cisPassword, String wsUsername, String wsPassword, MODE mode) {
-        this(cisUsername, cisPassword, wsUsername, wsPassword, "en", "UTF-8", mode);
+        this(cisUsername, cisPassword, wsUsername, wsPassword, "de", "UTF-8", mode);
     }
 
     public DefaultDhlService(final String cisUsername, final String cisPassword, String wsUsername, String wsPassword, String languageCode, String encoding, MODE mode) {
@@ -78,7 +83,7 @@ public class DefaultDhlService extends AbstractDhlService {
         this.wsPassword = wsPassword;
         this.languageCode = languageCode;
         this.encoding = encoding;
-        this.mode =  mode;
+        this.mode = mode;
         this.MEDIA_TYPE_XML = MediaType.parse("application/xml; charset=" + encoding);
 
         this.trackingUrl = baseUrl + mode.name().toLowerCase() + "/rest/sendungsverfolgung";
@@ -96,10 +101,10 @@ public class DefaultDhlService extends AbstractDhlService {
             stub.setPassword(wsPassword);
 
             // soap authentication header
-            SOAPHeaderElement authentication = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","Authentification");
-            SOAPHeaderElement user = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","user", cisUsername);
-            SOAPHeaderElement password = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","signature", cisPassword);
-            SOAPHeaderElement type = new SOAPHeaderElement("http://dhl.de/webservice/cisbase","type", "0");
+            SOAPHeaderElement authentication = new SOAPHeaderElement("http://dhl.de/webservice/cisbase", "Authentification");
+            SOAPHeaderElement user = new SOAPHeaderElement("http://dhl.de/webservice/cisbase", "user", cisUsername);
+            SOAPHeaderElement password = new SOAPHeaderElement("http://dhl.de/webservice/cisbase", "signature", cisPassword);
+            SOAPHeaderElement type = new SOAPHeaderElement("http://dhl.de/webservice/cisbase", "type", "0");
             authentication.addChild(user);
             authentication.addChild(password);
             authentication.addChild(type);
@@ -133,21 +138,27 @@ public class DefaultDhlService extends AbstractDhlService {
         GetVersionResponse res = ws.getVersion(wsVersion);
         Version v = res.getVersion();
 
-        return v.getMajorRelease() + "."  + v.getMinorRelease() + "." +  v.getBuild();
+        return v.getMajorRelease() + "." + v.getMinorRelease() + "." + v.getBuild();
     }
 
     public DhlTrackingStatus getTrackingStatus(String code) {
-        DhlRequest request = createRequest("d-get-piece");
-        request.setPieceCode(code);
+        try {
+            logger.info("\n\n\nINSIDE \n CLASS == DefaultDhlService \n METHOD == getTrackingStatus(); ");
+            DhlRequest request = createRequest("d-get-piece");
+            request.setPieceCode(code);
 
-        String response = get(trackingUrl, request);
+            String response = get(trackingUrl, request);
 
-        DhlTrackingStatus status = new DhlTrackingStatus();
-        status.setMessage(response);
+            DhlTrackingStatus status = new DhlTrackingStatus();
+            status.setMessage(response);
+            logger.info("Shipment status : " + status);
 
-        logger.debug(response);
-
-        return status;
+            logger.info("\n\nEXITING THIS METHOD \n\n\n");
+            return status;
+        } catch (Exception ex) {
+            logger.error("ERROR OCCURRED :", ex);
+            return null;
+        }
     }
 
 
@@ -157,11 +168,11 @@ public class DefaultDhlService extends AbstractDhlService {
     }
 
     /**
-    @Scheduled(cron = "${hermes.dhl.test.cron}")
-    public void testScheduler() {
-        logger.debug("----- Scheduler: {}", new Date());
-    }
-    */
+     * @Scheduled(cron = "${hermes.dhl.test.cron}")
+     * public void testScheduler() {
+     * logger.debug("----- Scheduler: {}", new Date());
+     * }
+     */
 
     private DhlRequest createRequest(String name) {
         DhlRequest request = new DhlRequest(name);

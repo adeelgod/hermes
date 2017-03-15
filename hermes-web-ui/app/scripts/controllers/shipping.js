@@ -160,7 +160,7 @@
                 $scope.checks[shipping.orderId].firstname = name.length <= 30;
                 $scope.checks[shipping.orderId].lastname = name.length <= 30;
                 $scope.checks[shipping.orderId].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
-                $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight < 31);
+                $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight < 26);
                 //$scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+)$/g)) );
                 //$scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+\s*)([a-z]*)((\s*-\s*\d+\s*)([a-z]*))?/g)) );
                 $scope.checks[shipping.orderId].street1 = (!shipping.street1 || shipping.street1.length <= 30);
@@ -168,25 +168,26 @@
                 $scope.checks[shipping.orderId].city = (!shipping.city || shipping.city.length <= 30);
                 $scope.checks[shipping.orderId].country = (!shipping.country || (shipping.country != 'CH' && shipping.country != 'HR' && shipping.country != 'LI'));
 
+                // commented countires in this switch statements are updated as per requirements mentioned in java-2 task
                 switch(shipping.country) {
                     case 'DE':
-                    case 'IT':
+                    // case 'IT':
                         $scope.checks[shipping.orderId]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 5);
                         break;
                     case 'AT':
-                    case 'BE':
                     case 'CH':
-                    case 'DK':
+                    // case 'BE':
+                    // case 'DK':
                         $scope.checks[shipping.orderId]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 4);
                         break;
                     default:
                         $scope.checks[shipping.orderId]['zip'] = true;
                         break;
                 }
-
+                // Shipments are false for the mentioned countries. for now CH should be commented as mentioned in java-2 task
                 switch(shipping.country) {
                     case 'AN':
-                    case 'CH':
+                    // case 'CH':
                     case 'LI':
                     case 'VT':
                         $scope.checks[shipping.orderId]['country'] = false;
