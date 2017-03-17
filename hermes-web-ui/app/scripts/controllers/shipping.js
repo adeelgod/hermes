@@ -25,6 +25,7 @@
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
 
+        // confirm dialog is no longer needed TASK: java-2
         var confirmModal = $modal({title: 'Errors in shipping data', content: 'Are you sure you want to proceed? Make sure you only select entries that are completely GREEN.', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
         confirmModal.$scope.confirm = function() {
             confirmModal.hide();
@@ -43,7 +44,7 @@
                 for(var j=0; j<properties.length; j++) {
                     var property = $scope.checks[ids[i]][properties[j]];
                     if(!property) {
-                        confirmModal.$promise.then(confirmModal.show);
+                        //confirmModal.$promise.then(confirmModal.show);
                         execute = false;
                         break;
                     }
@@ -51,7 +52,7 @@
             }
 
             if(execute) {
-                confirmModal.$scope.confirm();
+                //confirmModal.$scope.confirm();
             }
         };
 
@@ -62,7 +63,7 @@
                     $scope.doCheckBeforeRun();
                     break;
                 default:
-                    confirmModal.$scope.confirm();
+                    //confirmModal.$scope.confirm();
             }
         };
 
@@ -143,6 +144,7 @@
         $scope.select = function(selected) {
             angular.forEach($scope.shippings, function(shipping) {
                 shipping._selected = selected;
+                console.log("shipping._selected ::" + shipping._selected);
             });
         };
 
@@ -151,7 +153,7 @@
                 if(!$scope.checks[shipping.orderId]) {
                     $scope.checks[shipping.orderId] = {};
                 }
-
+                console.log("shipping ::" + JSON.stringify(shipping));
                 // TODO: make this configurable?!?
                 var name = (shipping.firstname || '') + ' ' + (shipping.lastname || '');
                 $scope.checks[shipping.orderId].company = (!shipping.company || shipping.company.length <= 30);
