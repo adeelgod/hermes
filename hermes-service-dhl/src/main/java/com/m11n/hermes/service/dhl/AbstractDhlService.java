@@ -9,6 +9,7 @@ import com.m11n.hermes.core.model.DhlRequest;
 import com.m11n.hermes.core.model.DhlTrackingStatus;
 import com.m11n.hermes.core.service.DhlService;
 import com.m11n.hermes.persistence.AuswertungRepository;
+import com.m11n.hermes.service.email.HermesMailer;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -46,6 +47,9 @@ public abstract class AbstractDhlService implements DhlService {
     protected ExecutorService executor = Executors.newFixedThreadPool(1);
 
     protected AtomicInteger running = new AtomicInteger(0);
+
+    @Inject
+    private HermesMailer hermesMailer;
 
     public AbstractDhlService() {
         JaxbAnnotationModule module = new JaxbAnnotationModule();
@@ -160,6 +164,9 @@ public abstract class AbstractDhlService implements DhlService {
                         DhlTrackingStatus status = getTrackingStatus(code);
                         // just to avoid null value in status.date property
                         status.setDate(status.getDate() == null ? new Date() : status.getDate());
+                        //email sending requirement should be asked with daniel in order to check
+                        // when to send an email to which user?
+                        hermesMailer.sendMail("umairb3@gmail.com", "SAMPLE", "TEST EMAIL");
                         auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
                         auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
                     }
