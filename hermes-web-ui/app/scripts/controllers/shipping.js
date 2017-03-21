@@ -217,6 +217,8 @@
                 $scope.checks[shipping.orderId]['zip'] &&
                 $scope.checks[shipping.orderId].country &&
                 $scope.checks[shipping.orderId].dhlAccount);
+
+                shipping._selected = shipping.weight > 29 ? false: true;
             });
         };
 
