@@ -217,7 +217,7 @@
                 $scope.checks[shipping.orderId]['zip'] &&
                 $scope.checks[shipping.orderId].country &&
                 $scope.checks[shipping.orderId].dhlAccount);
-                //
+                //java-2 task: minus sign must be displayed if the weight is > 30
                 shipping._selected = shipping.weight > 30 ? false: true;
             });
         };
