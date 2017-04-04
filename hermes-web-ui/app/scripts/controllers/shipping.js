@@ -52,6 +52,7 @@
             }
 
             if(execute) {
+                $scope.runStateToggle();
                 //confirmModal.$scope.confirm();
             }
         };
