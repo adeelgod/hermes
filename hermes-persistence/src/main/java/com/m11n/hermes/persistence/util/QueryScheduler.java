@@ -76,7 +76,8 @@ public class QueryScheduler {
 
     public Object query(final Form form, final boolean checkFiles, final boolean downloadFiles, Map<String, Object> parameters) {
         Object result = null;
-
+        final long startTime = System.currentTimeMillis();
+        logger.debug("START TIME OF QUERY : " + startTime);
         try {
             RowMapper<Map<String, Object>> mapper = new BaseRowMapper<Map<String, Object>>() {
                 @Override
@@ -171,6 +172,10 @@ public class QueryScheduler {
             logger.error(t.toString(), t);
         }
 
+        final long endTime = System.currentTimeMillis();
+        logger.debug("END TIME OF QUERY : " + endTime);
+        final long duration = endTime - startTime;
+        logger.debug("QUERY TOOK :::::" + duration);
         return result;
     }
 
