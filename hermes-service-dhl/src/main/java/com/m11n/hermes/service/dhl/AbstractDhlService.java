@@ -162,7 +162,6 @@ public abstract class AbstractDhlService implements DhlService {
                         }
 
                         DhlTrackingStatus status = getTrackingStatus(code);
-                        logger.debug("status :: " + status);
                         // just to avoid null value in status.date property
                         status.setDate(status.getDate() == null ? new Date() : status.getDate());
                         //email sending requirement should be asked with daniel in order to check
@@ -189,8 +188,6 @@ public abstract class AbstractDhlService implements DhlService {
                 return entry.getValue();
             }
         }
-
-        logger.error("Status not found for message: {}", message);
         logger.info("\n\nEXITING THIS METHOD \n\n\n");
         return "fehler";
     }
