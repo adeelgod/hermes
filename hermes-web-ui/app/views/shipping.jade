@@ -31,7 +31,7 @@ block content
                             .col-md-4
                                 input.form-control(name='{{field.name}}', ng-model='params[field.name]', data-time-format='HH:mm:ss', data-autoclose='1', placeholder='{{field.name}} time', bs-timepicker='', type='text')
                         br
-                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='TEXT' && field.lookup.length > 0", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
+                        button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="(field.fieldType=='TEXT' && field.lookup.length!=0)", ng-options='lookupValue as lookupValue for lookupValue in field.lookup', bs-select='')
                         button.btn.btn-default(type='button', ng-model='params[field.name]', ng-if="field.fieldType=='BOOLEAN'", bs-checkbox='')
                             i.fa(ng-class="{'fa-circle': params[field.name], 'fa-circle-o': !params[field.name]}")
                     .form-group

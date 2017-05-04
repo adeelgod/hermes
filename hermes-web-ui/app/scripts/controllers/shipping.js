@@ -9,7 +9,7 @@
         module = angular.module('hermes.ui.controller', []);
     }
 
-    module.controller('ShippingCtrl', function ($scope, $alert, $modal, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc, DocumentsSvc, $rootScope) {
+    module.controller('ShippingCtrl', function ($scope, $alert, $modal, $interval, ngAudio, ConfigurationSvc, FormSvc, ShippingSvc, DocumentsSvc) {
         $scope.debugging = false;
         $scope.busy = false;
         $scope.params = {};
@@ -25,14 +25,7 @@
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
 
-        console.log("config :: loading");
-        $rootScope.$on('config-loaded', function(){
-            console.log("INSIDE config :: loading");
-            console.log("config :: " + JSON.stringify($rootScope.config));
-            //$scope.config = $rootScope.config;
-        });
-
-        console.log("config :: loaded ");
+        // console.log("$scope.config :: " + JSON.stringify($scope.config));
 
         // confirm dialog is no longer needed TASK: java-2
         var confirmModal = $modal({title: 'Errors in shipping data', content: 'Are you sure you want to proceed? Make sure you only select entries that are completely GREEN.', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
@@ -163,7 +156,6 @@
                 if(!$scope.checks[shipping.orderId]) {
                     $scope.checks[shipping.orderId] = {};
                 }
-                console.log("shipping ::" + JSON.stringify(shipping));
                 // TODO: make this configurable?!?
                 var name = (shipping.firstname || '') + ' ' + (shipping.lastname || '');
                 $scope.checks[shipping.orderId].company = (!shipping.company || shipping.company.length <= 30);

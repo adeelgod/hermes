@@ -22,10 +22,8 @@
         $http.get('data/l-carb-config.json').
         success(function(data, status, headers, config) {
             $rootScope.config = data;
-            $rootScope.$broadcast('config-loaded');
-            console.log(JSON.stringify($rootScope.config));
         }).error(function(data, status, headers, config) {
-            console.log('error occurred while loading config.json file');
+            console.error('error occurred while loading data/l-carb-config.json file');
         });
     }).constant('HermesApi', {
             baseUrl: ''
