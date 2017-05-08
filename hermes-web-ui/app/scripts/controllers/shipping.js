@@ -132,6 +132,17 @@
             });
         };
 
+        $scope.checkField = function() {
+            angular.forEach($scope.frm.fields, function(field) {
+                if (field.fieldType=='TEXT' && (!field.lookup || field.lookup.length > 0)) { // your question said "more than one element"
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        };
+
         $scope.download = function() {
             $scope.busy = true;
 
