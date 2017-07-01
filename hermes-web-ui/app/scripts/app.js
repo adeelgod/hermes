@@ -18,7 +18,14 @@
         'ui.codemirror',
         'xeditable',
         'angularFileUpload'
-    ]).constant('HermesApi', {
+    ]).run(function($http, $rootScope){
+        $http.get('data/l-carb-config.json').
+        success(function(data, status, headers, config) {
+            $rootScope.config = data;
+        }).error(function(data, status, headers, config) {
+            console.error('error occurred while loading data/l-carb-config.json file');
+        });
+    }).constant('HermesApi', {
             baseUrl: ''
             //baseUrl: 'http://localhost:8081/'
         }

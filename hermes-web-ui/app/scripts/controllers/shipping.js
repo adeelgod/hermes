@@ -25,6 +25,8 @@
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
 
+        // console.log("$scope.config :: " + JSON.stringify($scope.config));
+
         // confirm dialog is no longer needed TASK: java-2
         var confirmModal = $modal({title: 'Errors in shipping data', content: 'Are you sure you want to proceed? Make sure you only select entries that are completely GREEN.', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
         confirmModal.$scope.confirm = function() {
@@ -130,6 +132,17 @@
             });
         };
 
+        $scope.checkField = function() {
+            angular.forEach($scope.frm.fields, function(field) {
+                if (field.fieldType=='TEXT' && (!field.lookup || field.lookup.length > 0)) { // your question said "more than one element"
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        };
+
         $scope.download = function() {
             $scope.busy = true;
 
@@ -154,7 +167,6 @@
                 if(!$scope.checks[shipping.orderId]) {
                     $scope.checks[shipping.orderId] = {};
                 }
-                console.log("shipping ::" + JSON.stringify(shipping));
                 // TODO: make this configurable?!?
                 var name = (shipping.firstname || '') + ' ' + (shipping.lastname || '');
                 $scope.checks[shipping.orderId].company = (!shipping.company || shipping.company.length <= 30);
