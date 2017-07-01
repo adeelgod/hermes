@@ -31,10 +31,15 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
     }
 
     public int update(String sqlStatement, Map<String, Object> parameters) {
-        if(!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
-            return jdbcTemplate.update(sqlStatement, parameters);
-        } else {
-            logger.warn("Query statement empty!");
+        try {
+            if (!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
+                return jdbcTemplate.update(sqlStatement, parameters);
+            } else {
+                logger.warn("Query statement empty!");
+                return 0;
+            }
+        } catch(Exception ex) {
+            logger.error("ERROR OCCURRED :: " + ex);
             return 0;
         }
     }
@@ -46,6 +51,19 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                 return rs.getString(1);
             }
         });
+    }
+
+    public List<String> findAllByQuery(final String sqlStatement) {
+        if(!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
+            return jdbcTemplate.query(sqlStatement, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return rs.getString(1);
+                }
+            });
+        } else {
+            return null;
+        }
     }
 
     public void timestampPrint(String orderId) {

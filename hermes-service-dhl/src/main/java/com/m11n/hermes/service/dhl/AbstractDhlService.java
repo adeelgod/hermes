@@ -7,8 +7,10 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.google.common.net.HttpHeaders;
 import com.m11n.hermes.core.model.DhlRequest;
 import com.m11n.hermes.core.model.DhlTrackingStatus;
+import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.DhlService;
 import com.m11n.hermes.persistence.AuswertungRepository;
+import com.m11n.hermes.persistence.FormRepository;
 import com.m11n.hermes.service.email.HermesMailer;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,16 +22,17 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractDhlService implements DhlService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractDhlService.class);
+
+    private static final String TRACKING_NUMBER_DHL_QUERY_NAME = "Traking Nummern für DHL Statusabfrage";
+    private static final String BEFORE_DHL_STATUS_QUERY_NAME = "Vor_DHL_Abfrage";
+    private static final String AFTER_DHL_STATUS_QUERY_NAME = "Nach_DHL_Abfrage";
 
     protected MediaType MEDIA_TYPE_XML;
 
@@ -39,6 +42,9 @@ public abstract class AbstractDhlService implements DhlService {
 
     @Inject
     protected AuswertungRepository auswertungRepository;
+
+    @Inject
+    private FormRepository formRepository;
 
     protected String encoding = "UTF-8";
 
@@ -150,10 +156,11 @@ public abstract class AbstractDhlService implements DhlService {
             @Override
             public void run() {
                 try {
-                    List<String> codes = auswertungRepository.findPendingTrackingCodes();
+                    List<String> codes = getTrackingCodes();
 
                     logger.debug("Checking codes: #{}", (codes != null ? codes.size() : 0));
 
+                    executeQueryBeforeDHL();
                     for (String code : codes) {
                         if (Thread.interrupted()) {
                             logger.warn("Cancelling tracking check at: {}", code);
@@ -172,6 +179,7 @@ public abstract class AbstractDhlService implements DhlService {
                         auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
                         auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
                     }
+                    executeQueryAfterDHL();
                 } catch (Throwable e) {
                     logger.error(e.toString(), e);
                 } finally {
@@ -193,5 +201,32 @@ public abstract class AbstractDhlService implements DhlService {
         logger.error("Status not found for message: {}", message);
         logger.info("\n\nEXITING THIS METHOD \n\n\n");
         return "fehler";
+    }
+
+    private List<String> getTrackingCodes() {
+        List<String> codes = null;
+        final Form form = formRepository.findByName(TRACKING_NUMBER_DHL_QUERY_NAME);
+        if(form != null) {
+            codes = auswertungRepository.findAllByQuery(form.getSqlStatement());
+        }
+        if(codes == null) {
+            codes = auswertungRepository.findPendingTrackingCodes();
+        }
+
+        return codes;
+    }
+
+    private void executeQueryBeforeDHL() {
+        final Form form = formRepository.findByName(BEFORE_DHL_STATUS_QUERY_NAME);
+        if(form != null) {
+            auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
+        }
+    }
+
+    private void executeQueryAfterDHL() {
+        final Form form = formRepository.findByName(AFTER_DHL_STATUS_QUERY_NAME);
+        if(form != null) {
+            auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
+        }
     }
 }
