@@ -214,16 +214,20 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     private void executeQueryBeforeDHL() {
+        logger.debug("INSIDE :: executeQueryBeforeDHL() ::: " + BEFORE_DHL_STATUS_QUERY_NAME);
         final Form form = formRepository.findByName(BEFORE_DHL_STATUS_QUERY_NAME);
         if(form != null) {
             auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
         }
+        logger.debug("EXITING :: executeQueryBeforeDHL()");
     }
 
     private void executeQueryAfterDHL() {
+        logger.debug("INSIDE :: executeQueryAfterDHL() ::: " + AFTER_DHL_STATUS_QUERY_NAME);
         final Form form = formRepository.findByName(AFTER_DHL_STATUS_QUERY_NAME);
         if(form != null) {
             auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
         }
+        logger.debug("EXITING :: executeQueryAfterDHL()");
     }
 }

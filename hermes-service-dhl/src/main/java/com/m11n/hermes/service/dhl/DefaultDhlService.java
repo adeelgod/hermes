@@ -3,6 +3,7 @@ package com.m11n.hermes.service.dhl;
 import com.google.common.net.HttpHeaders;
 import com.m11n.hermes.core.model.DhlRequest;
 import com.m11n.hermes.core.model.DhlTrackingStatus;
+import com.m11n.hermes.core.util.DhlApiLanguage;
 import com.squareup.okhttp.*;
 import org.apache.axis.client.Stub;
 import org.apache.axis.message.SOAPHeaderElement;
@@ -60,11 +61,11 @@ public class DefaultDhlService extends AbstractDhlService {
     private String cisEkp;
 
     public DefaultDhlService() throws Exception {
-        this(null, null, null, null, "de", "UTF-8", MODE.PRODUCTION);
+        this(null, null, null, null, DhlApiLanguage.DEUTSCHLAND.getValue(), "UTF-8", MODE.PRODUCTION);
     }
 
     public DefaultDhlService(String cisUsername, String cisPassword, String wsUsername, String wsPassword, MODE mode) {
-        this(cisUsername, cisPassword, wsUsername, wsPassword, "de", "UTF-8", mode);
+        this(cisUsername, cisPassword, wsUsername, wsPassword, DhlApiLanguage.DEUTSCHLAND.getValue(), "UTF-8", mode);
     }
 
     public DefaultDhlService(final String cisUsername, final String cisPassword, String wsUsername, String wsPassword, String languageCode, String encoding, MODE mode) {
@@ -87,10 +88,13 @@ public class DefaultDhlService extends AbstractDhlService {
         this.MEDIA_TYPE_XML = MediaType.parse("application/xml; charset=" + encoding);
 
         this.trackingUrl = baseUrl + mode.name().toLowerCase() + "/rest/sendungsverfolgung";
+
+
     }
 
     @PostConstruct
     public void init() throws Exception {
+        logger.debug("INSIDE INIT :: " + this.toString());
         this.mode = wsProduction ? MODE.PRODUCTION : MODE.SANDBOX;
         try {
             // soap
@@ -181,5 +185,14 @@ public class DefaultDhlService extends AbstractDhlService {
         request.setLanguageCode(languageCode);
 
         return request;
+    }
+
+    @Override
+    public String toString() {
+        final String dhlApiInformation = "languageCode : " + this.languageCode +
+                " wsUsername : " + this.wsUsername +
+                " wsPassword : " + this.wsPassword +
+                " wsProduction : " + this.wsProduction;
+        return dhlApiInformation;
     }
 }
