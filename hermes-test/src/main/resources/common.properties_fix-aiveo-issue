@@ -48,21 +48,21 @@ hermes.dhl.api.language=de
 #hermes.invoice.api.url=http://www.fair-unterwegs.de/rechnung_print/
 #duplicated entry
 #hermes.invoice.api.url=https://www.l-carb-shop.de/rechnung_print/
-hermes.invoice.print.api.url=http://10.8.0.1/rechnung_print/
+#hermes.invoice.print.api.url=http://10.8.0.1/rechnung_print/
 hermes.invoice.print.api.username=print4
 hermes.invoice.print.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
 # also change in magento.v2.wsdl
-hermes.magento.api.url=http://10.8.0.1/
-#hermes.magento.api.url=https://www.l-carb-shop.de/
+#hermes.magento.api.url=http://10.8.0.1/
+hermes.magento.api.url=https://www.l-carb-shop.de/
 hermes.magento.api.username=print
 hermes.magento.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
-hermes.shipment.api.url=http://10.8.0.1/shipment/
-#hermes.shipment.api.url=https://www.l-carb-shop.de/shipment/
+#hermes.shipment.api.url=http://10.8.0.1/shipment/
+hermes.shipment.api.url=https://www.l-carb-shop.de/shipment/
 hermes.shipment.api.username=print2
 hermes.shipment.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
-hermes.invoice.api.url=http://10.8.0.1/rechnung/
-#hermes.invoice.api.url=https://www.l-carb-shop.de/rechnung/
+#hermes.invoice.api.url=http://10.8.0.1/rechnung/
+hermes.invoice.api.url=https://www.l-carb-shop.de/rechnung/
 hermes.invoice.api.username=print3
 hermes.invoice.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
