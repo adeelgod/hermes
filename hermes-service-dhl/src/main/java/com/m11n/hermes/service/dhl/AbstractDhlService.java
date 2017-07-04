@@ -169,13 +169,21 @@ public abstract class AbstractDhlService implements DhlService {
                         }
 
                         DhlTrackingStatus status = getTrackingStatus(code);
+
+                        logger.debug("\n\n\n\n\n");
+                        logger.debug("status" + status);
+                        logger.debug("\n\n\n\n\n");
+                        logger.debug("status.message : " + status.getMessage());
+                        logger.debug("status.status : " + status.getStatus());
+                        logger.debug("status.date : " + status.getDate());
+                        logger.debug("\n\n\n\n\n");
                         // just to avoid null value in status.date property
-                        status.setDate(status.getDate() == null ? new Date() : status.getDate());
+                        //status.setDate(status.getDate() == null ? new Date() : status.getDate());
                         //email sending requirement should be asked with daniel in order to check
                         // when to send an email to which user?
 //                        final String emailHtmlContent = "<!DOCTYPE html><html><body><h1>This is heading 1</h1><h2>This is heading 2</h2><h3>This is heading 3</h3><h4>This is heading 4</h4><h5>This is heading 5</h5><h6>This is heading 6</h6></body></html>";
 //                        hermesMailer.sendMail("umairb3@gmail.com", "SAMPLE", emailHtmlContent);
-                        auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
+                        auswertungRepository.createDhlStatus(code, status.getDate(), status.getStatus(), status.getMessage());
                         auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
                     }
                     executeQueryAfterDHL();

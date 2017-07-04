@@ -4,24 +4,40 @@ import com.google.common.net.HttpHeaders;
 import com.m11n.hermes.core.model.DhlRequest;
 import com.m11n.hermes.core.model.DhlTrackingStatus;
 import com.m11n.hermes.core.util.DhlApiLanguage;
+import com.m11n.hermes.service.dhl.util.DHLResponseAttribute;
 import com.squareup.okhttp.*;
 import org.apache.axis.client.Stub;
 import org.apache.axis.message.SOAPHeaderElement;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 @Service
 public class DefaultDhlService extends AbstractDhlService {
     private static final Logger logger = LoggerFactory.getLogger(DefaultDhlService.class);
+
+    private static final String INVALID_STATUS = "HERMES ERROR! INVALID STATUS IN XML RESPONSE.";
+
+    private static final String DHL_TIMESTAMP_FORMAT = "MM.dd.yyyy HH:mm";
+    private static final String HERMES_STANDARD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat(HERMES_STANDARD_DATE_FORMAT);
 
     // language code should be configurable
     @Value("${hermes.dhl.api.language}")
@@ -147,17 +163,20 @@ public class DefaultDhlService extends AbstractDhlService {
 
     public DhlTrackingStatus getTrackingStatus(String code) {
         try {
-            logger.info("\n\n\nINSIDE \n CLASS == DefaultDhlService \n METHOD == getTrackingStatus(); ");
             DhlRequest request = createRequest("d-get-piece");
             request.setPieceCode(code);
 
             String response = get(trackingUrl, request);
 
+            Document doc = Jsoup.parse(response, "", Parser.xmlParser());
+            final String apiStatus = captureDHLStatus(doc);
             DhlTrackingStatus status = new DhlTrackingStatus();
+            final String[] statuses = apiStatus.split(DHLResponseAttribute.SEPARATOR.getVal());
+            status.setStatus(statuses[0]);
+            status.setDate(createDate(statuses[1]));
             status.setMessage(response);
-            logger.info("Shipment status : " + status);
 
-            logger.info("\n\nEXITING THIS METHOD \n\n\n");
+
             return status;
         } catch (Exception ex) {
             logger.error("ERROR OCCURRED :", ex);
@@ -195,4 +214,38 @@ public class DefaultDhlService extends AbstractDhlService {
                 " wsProduction : " + this.wsProduction;
         return dhlApiInformation;
     }
+
+    private String captureDHLStatus(final Document doc) {
+        if(doc.select(DHLResponseAttribute.DATA_ELE.getVal()).hasAttr(DHLResponseAttribute.ERROR_ATTR.getVal())) {
+            return doc.select(DHLResponseAttribute.DATA_ELE.getVal()).attr(DHLResponseAttribute.ERROR_ATTR.getVal()) + DHLResponseAttribute.SEPARATOR.getVal() + FORMAT.format(new Date());
+        } else {
+            final String status = doc.select(DHLResponseAttribute.DATA_ELE.getVal()).attr(DHLResponseAttribute.STATUS_ATTR.getVal());
+            if(status != null && status.length() > 0) {
+                final String statusTimeStamp = doc.select(DHLResponseAttribute.DATA_ELE.getVal()).attr(DHLResponseAttribute.STATUS_TIMESTAMP_ATTR.getVal());
+                if(statusTimeStamp != null && statusTimeStamp.length() > 0) {
+                    return status + DHLResponseAttribute.SEPARATOR.getVal() + loadHermesStandardDate(statusTimeStamp);
+                } else {
+                    return status + DHLResponseAttribute.SEPARATOR.getVal() + FORMAT.format(new Date());
+                }
+            } else {
+                return INVALID_STATUS + DHLResponseAttribute.SEPARATOR.getVal() + FORMAT.format(new Date());
+            }
+        }
+    }
+
+    private String loadHermesStandardDate(final String dateStr) {
+        TemporalAccessor temporal = DateTimeFormatter
+                .ofPattern(DHL_TIMESTAMP_FORMAT)
+                .parse(dateStr);
+        return DateTimeFormatter.ofPattern(HERMES_STANDARD_DATE_FORMAT).format(temporal);
+    }
+
+    private Date createDate(final String dateStr) {
+        try {
+            return FORMAT.parse(dateStr);
+        } catch (ParseException e) {
+           return new Date();
+        }
+    }
+
 }
