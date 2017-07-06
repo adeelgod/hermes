@@ -34,6 +34,8 @@ public class DefaultDhlService extends AbstractDhlService {
 
     private static final String INVALID_STATUS = "HERMES ERROR! INVALID STATUS IN XML RESPONSE.";
 
+    private static final String STATUS_SIMPLIFIER_REGEX = "((\\&lt\\;)|(\\&lt\\;\\/)|(<)(/)*)(\\S|\\s)+((\\&gt\\;)|(>))";
+
     private static final String DHL_TIMESTAMP_FORMAT = "MM.dd.yyyy HH:mm";
     private static final String HERMES_STANDARD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -172,7 +174,7 @@ public class DefaultDhlService extends AbstractDhlService {
             final String apiStatus = captureDHLStatus(doc);
             DhlTrackingStatus status = new DhlTrackingStatus();
             final String[] statuses = apiStatus.split(DHLResponseAttribute.SEPARATOR.getVal());
-            status.setStatus(statuses[0]);
+            status.setStatus(smplifyStatusResponse(statuses[0]));
             status.setDate(createDate(statuses[1]));
             status.setMessage(response);
 
@@ -246,6 +248,10 @@ public class DefaultDhlService extends AbstractDhlService {
         } catch (ParseException e) {
            return new Date();
         }
+    }
+
+    private String smplifyStatusResponse(String rawStatus) {
+        return rawStatus.replace(STATUS_SIMPLIFIER_REGEX, "");
     }
 
 }
