@@ -36,7 +36,7 @@ public class DefaultDhlService extends AbstractDhlService {
 
     private static final String STATUS_SIMPLIFIER_REGEX = "((\\&lt\\;)|(\\&lt\\;\\/)|(<)(/)*)(\\S|\\s)+((\\&gt\\;)|(>))";
 
-    private static final String DHL_TIMESTAMP_FORMAT = "MM.dd.yyyy HH:mm";
+    private static final String DHL_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm";
     private static final String HERMES_STANDARD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat(HERMES_STANDARD_DATE_FORMAT);
