@@ -112,7 +112,6 @@ public class DefaultDhlService extends AbstractDhlService {
 
     @PostConstruct
     public void init() throws Exception {
-        logger.debug("INSIDE INIT :: " + this.toString());
         this.mode = wsProduction ? MODE.PRODUCTION : MODE.SANDBOX;
         try {
             // soap
@@ -170,18 +169,23 @@ public class DefaultDhlService extends AbstractDhlService {
 
             String response = get(trackingUrl, request);
 
-            Document doc = Jsoup.parse(response, "", Parser.xmlParser());
-            final String apiStatus = captureDHLStatus(doc);
-            DhlTrackingStatus status = new DhlTrackingStatus();
-            final String[] statuses = apiStatus.split(DHLResponseAttribute.SEPARATOR.getVal());
-            status.setStatus(smplifyStatusResponse(statuses[0]));
-            status.setDate(createDate(statuses[1]));
-            status.setMessage(response);
+            if(response != null) {
 
+                Document doc = Jsoup.parse(response, "", Parser.xmlParser());
+                final String apiStatus = captureDHLStatus(doc);
+                logger.debug("apiStatus :: " + apiStatus);
+                DhlTrackingStatus status = new DhlTrackingStatus();
+                final String[] statuses = apiStatus.split(DHLResponseAttribute.SEPARATOR.getVal());
+                status.setStatus(smplifyStatusResponse(statuses[0]));
+                status.setDate(createDate(statuses[1]));
+                status.setMessage(response);
 
-            return status;
+                return status;
+            } else {
+                return null;
+            }
         } catch (Exception ex) {
-            logger.error("ERROR OCCURRED :", ex);
+            logger.error("getTrackingStatus(String code) [ERROR] :", ex);
             return null;
         }
     }

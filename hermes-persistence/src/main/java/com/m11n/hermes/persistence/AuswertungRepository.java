@@ -103,14 +103,14 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
     }
 
     /**
-     * Insert query of DHL status: With extra column status, Status_time, and status_xml
+     * Insert query of DHL status: With extra column status, Status_time, status_xml, request_time
      * @param code
      * @param date
      * @param status
      * @param statusXML
      */
-    public void createDhlStatus(String code, Date date, String status, String statusXML) {
-        jdbcTemplate.update("INSERT  INTO mage_custom_shipments_DHL_status (tracking_no, Status_time, Status, status_xml) VALUES ( :code, :date_status, :status ,:statusXml)", new MapSqlParameterSource().addValue(
+    public void createDhlStatus(String code, Date date, String status, String statusXML, Date requestTime) {
+        jdbcTemplate.update("INSERT  INTO mage_custom_shipments_DHL_status (tracking_no, Status_time, Status, status_xml, request_time) VALUES ( :code, :date_status, :status ,:statusXml, :request_time)", new MapSqlParameterSource().addValue(
                 "date_status",
                 new java.sql.Date(date.getTime()),
                 //new SimpleDateFormat("yyyy-MM-dd").format(date),
@@ -127,6 +127,10 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                 "statusXml",
                 statusXML,
                 Types.VARCHAR
+        ).addValue(
+                "request_time",
+                new java.sql.Date(requestTime.getTime()),
+                Types.TIMESTAMP
         ));
     }
 
@@ -153,8 +157,8 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
      * @param status
      * @param statusXML
      */
-    public void updateDhlStatus(String code, Date date, String status, String statusXML) {
-        jdbcTemplate.update("UPDATE mage_custom_shipments_DHL_status SET Status_time = :date_status, Status = :status, status_xml=:statusXml WHERE tracking_no = :code", new MapSqlParameterSource().addValue(
+    public void updateDhlStatus(String code, Date date, String status, String statusXML, Date requestTime) {
+        jdbcTemplate.update("UPDATE mage_custom_shipments_DHL_status SET Status_time = :date_status, Status = :status, status_xml=:statusXml, request_time=:requestTime WHERE tracking_no = :code", new MapSqlParameterSource().addValue(
                 "date_status",
                 new java.sql.Date(date.getTime()),
                 Types.TIMESTAMP
@@ -170,6 +174,10 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                 "statusXml",
                 statusXML,
                 Types.VARCHAR
+        ).addValue(
+                "requestTime",
+                new java.sql.Date(requestTime.getTime()),
+                Types.TIMESTAMP
         ));
     }
 

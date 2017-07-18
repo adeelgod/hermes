@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractDhlService implements DhlService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractDhlService.class);
 
-    private static final String TRACKING_NUMBER_DHL_QUERY_NAME = "Traking Nummern für DHL Statusabfrage";
+    private static final String TRACKING_NUMBER_DHL_QUERY_NAME = "Traking Nummern fÃ¼r DHL Statusabfrage";
     private static final String BEFORE_DHL_STATUS_QUERY_NAME = "Vor_DHL_Abfrage";
     private static final String AFTER_DHL_STATUS_QUERY_NAME = "Nach_DHL_Abfrage";
 
@@ -53,6 +53,10 @@ public abstract class AbstractDhlService implements DhlService {
     protected ExecutorService executor = Executors.newFixedThreadPool(1);
 
     protected AtomicInteger running = new AtomicInteger(0);
+
+
+    private static final int MAX_RETRY = 3;
+    private static int retryCount = 0;
 
     @Inject
     private HermesMailer hermesMailer;
@@ -86,10 +90,21 @@ public abstract class AbstractDhlService implements DhlService {
                     .addHeader(HttpHeaders.ACCEPT, MEDIA_TYPE_XML.toString())
                     .build();
             response = client.newCall(request).execute();
-
+            logger.debug("Response received in attempt(s) : " + (retryCount + 1));
+            retryCount = 0;
             return response.body().string();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warn("Tracking code : " + r.getPieceCode());
+            if(retryCount < MAX_RETRY) {
+                logger.warn("Issue found in capturing DHL response. Trying again.");
+                retryCount++;
+                return get(url, r);
+            } else {
+                logger.error("MAX_RETRY limit exceeded. Please try again after the process is completed. " +
+                        "get(String url, DhlRequest r) [ERROR] : ", e);
+                retryCount = 0;
+                return null;
+            }
         } finally {
             try {
                 response.body().close();
@@ -167,24 +182,21 @@ public abstract class AbstractDhlService implements DhlService {
                             running.decrementAndGet();
                             return;
                         }
-
                         DhlTrackingStatus status = getTrackingStatus(code);
+                        if(status != null) {
 
-                        logger.debug("\n\n\n\n\n");
-                        logger.debug("status" + status);
-                        logger.debug("\n\n\n\n\n");
-                        logger.debug("status.message : " + status.getMessage());
-                        logger.debug("status.status : " + status.getStatus());
-                        logger.debug("status.date : " + status.getDate());
-                        logger.debug("\n\n\n\n\n");
-                        // just to avoid null value in status.date property
-                        //status.setDate(status.getDate() == null ? new Date() : status.getDate());
-                        //email sending requirement should be asked with daniel in order to check
-                        // when to send an email to which user?
+                            logger.debug("DhlTrackingStatus : " + status);
+                            // just to avoid null value in status.date property
+                            //status.setDate(status.getDate() == null ? new Date() : status.getDate());
+                            //email sending requirement should be asked with daniel in order to check
+                            // when to send an email to which user?
 //                        final String emailHtmlContent = "<!DOCTYPE html><html><body><h1>This is heading 1</h1><h2>This is heading 2</h2><h3>This is heading 3</h3><h4>This is heading 4</h4><h5>This is heading 5</h5><h6>This is heading 6</h6></body></html>";
 //                        hermesMailer.sendMail("umairb3@gmail.com", "SAMPLE", emailHtmlContent);
-                        auswertungRepository.createDhlStatus(code, status.getDate(), status.getStatus(), status.getMessage());
-                        auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
+                            auswertungRepository.createDhlStatus(code, status.getDate(), status.getStatus(), status.getMessage(), new Date());
+                            auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
+                        } else {
+                            logger.warn("Status against [" + code + "] is null : " + status);
+                        }
                     }
                     executeQueryAfterDHL();
                 } catch (Throwable e) {
@@ -197,14 +209,11 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     private String getStatus(String message) {
-        logger.info("\n\n\nINSIDE \n CLASS == AbstractDhlService \n METHOD == getStatus(); ");
         for (Map.Entry<String, String> entry : statusMapping.entrySet()) {
             if (message != null && message.toLowerCase().contains(entry.getKey())) {
-                logger.info("\n\nEXITING THIS METHOD \n\n\n");
                 return entry.getValue();
             }
         }
-        logger.info("\n\nEXITING THIS METHOD \n\n\n");
         return "fehler";
     }
 
