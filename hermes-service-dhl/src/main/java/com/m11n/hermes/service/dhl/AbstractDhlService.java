@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractDhlService implements DhlService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractDhlService.class);
 
-    private static final String TRACKING_NUMBER_DHL_QUERY_NAME = "Traking Nummern fÃ¼r DHL Statusabfrage";
+    private static final String TRACKING_NUMBER_DHL_QUERY_NAME = "Traking Nummern für DHL Statusabfrage";
     private static final String BEFORE_DHL_STATUS_QUERY_NAME = "Vor_DHL_Abfrage";
     private static final String AFTER_DHL_STATUS_QUERY_NAME = "Nach_DHL_Abfrage";
 
