@@ -26,6 +26,20 @@
         <property name="jdbcUrl" value="${hermes.db.fairshea.url}" />
     </bean>
 
+    <bean id="dataSourceSubAuswertung" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="username" value="${hermes.db.sub.auswertung.username}" />
+        <property name="password" value="${hermes.db.sub.auswertung.password}" />
+        <property name="driverClassName" value="${hermes.db.sub.auswertung.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.sub.auswertung.url}" />
+    </bean>
+
+    <bean id="dataSourceSubFinance" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="username" value="${hermes.db.sub.finance.username}" />
+        <property name="password" value="${hermes.db.sub.finance.password}" />
+        <property name="driverClassName" value="${hermes.db.sub.finance.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.sub.finance.url}" />
+    </bean>
+
     <import resource="applicationContext-hermes-persistence-common.xml" />
 
 </beans>
