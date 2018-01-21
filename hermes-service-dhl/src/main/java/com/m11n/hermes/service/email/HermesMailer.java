@@ -29,8 +29,10 @@ public class HermesMailer {
         try {
             helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
             mimeMessage.setContent(body, "text/html");
+
             helper.setTo(to);
             helper.setSubject(subject);
+
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();

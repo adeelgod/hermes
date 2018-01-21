@@ -191,7 +191,7 @@ public class DefaultDhlService extends AbstractDhlService {
     }
 
 
-    @Scheduled(cron = "${hermes.dhl.tracking.cron}")
+//    @Scheduled(cron = "${hermes.dhl.tracking.cron}")
     public void checkTracking() {
         super.checkTracking();
     }

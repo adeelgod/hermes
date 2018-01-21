@@ -17,6 +17,13 @@
         <property name="jdbcUrl" value="${hermes.db.lcarb.url}" />
     </bean>
 
+    <bean id="dataSourcefairShea" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="username" value="${hermes.db.fairshea.username}" />
+        <property name="password" value="${hermes.db.fairshea.password}" />
+        <property name="driverClassName" value="${hermes.db.fairshea.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.fairshea.url}" />
+    </bean>
+
     <import resource="applicationContext-hermes-persistence-common.xml" />
 
 </beans>

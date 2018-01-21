@@ -37,10 +37,10 @@
 
     <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
     <!--PERSISTENCE SSH IS NORMALLY USED FOR PRODUCTION ENVIRONMENT-->
-    <import resource="applicationContext-hermes-persistence-ssh.xml" />
+    <!--<import resource="applicationContext-hermes-persistence-ssh.xml" />-->
 
     <!--IN ORDER TO USE IT LOCALLY YOU CAN CHANGE TO DIRECT-->
-    <!--<import resource="applicationContext-hermes-persistence-direct.xml" />-->
+    <import resource="applicationContext-hermes-persistence-direct.xml" />
     <import resource="applicationContext-hermes-cache.xml" />
     <import resource="applicationContext-hermes-camel.xml" />
     <import resource="applicationContext-hermes-support.xml" />

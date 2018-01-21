@@ -19,6 +19,10 @@
         <constructor-arg ref="dataSourceLCarb" />
     </bean>
 
+    <bean id="jdbcTemplateFairShea" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourcefairShea" />
+    </bean>
+
     <!-- Transaction -->
 
     <tx:annotation-driven transaction-manager="transactionManager"/>

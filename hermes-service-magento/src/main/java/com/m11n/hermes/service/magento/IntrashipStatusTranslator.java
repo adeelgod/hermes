@@ -40,6 +40,7 @@ public class IntrashipStatusTranslator {
     private String baseSplitPattern = "<br(\\s*)/>";
 
     private Pattern splitPattern = Pattern.compile("(.*)" + baseSplitPattern + "(.*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+    private Pattern splitPatternWithoutPlaceHolder = Pattern.compile(baseSplitPattern, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
     @PostConstruct
     public void init() {
@@ -85,19 +86,40 @@ public class IntrashipStatusTranslator {
     }
 
     public List<String> normalizeMessage(String message) {
+        logger.debug("normalizeMessage :: " + message);
         message = message.replaceAll("\n", "");
         List<String> result = new ArrayList<>();
         Matcher matcher = splitPattern.matcher(message);
         if(matcher.matches()) {
+            logger.debug("matcher.matches()");
             for(String m : message.split(baseSplitPattern)) {
                 m = m.trim();
                 if(!StringUtils.isEmpty(m)) {
                     result.add(m);
                 }
             }
-        } else {
-            result.add(message);
+        }  else {
+            Matcher splitMatcher = splitPatternWithoutPlaceHolder.matcher(message);
+            if(splitMatcher.matches()) {
+                logger.debug("splitMatcher.matches()");
+                for(String m : message.split(baseSplitPattern)) {
+                    m = m.trim();
+                    if(!StringUtils.isEmpty(m)) {
+                        result.add(m);
+                    }
+                }
+            } else {
+                logger.debug("matcher.matches() else");
+                message = message.replaceAll("\\<[^>]*>", "\n");
+                for(String m : message.split("\n")) {
+                    m = m.trim();
+                    if(!StringUtils.isEmpty(m)) {
+                        result.add(m);
+                    }
+                }
+            }
         }
         return result;
     }
+
 }
