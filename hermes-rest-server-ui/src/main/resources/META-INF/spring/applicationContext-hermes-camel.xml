@@ -25,6 +25,10 @@
         <property name="includes" value="*.csv"/>
     </bean>
 
+    <bean id="jpgFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*.jpg"/>
+    </bean>
+
     <!--
     <bean id="csvConfig" class="org.apache.commons.csv.writer.CSVConfig">
         <property name="fields">
@@ -103,6 +107,12 @@
                 </csv>
             </unmarshal>
             <to uri="bean:bankStatementProcessor"/>
+        </route>
+
+        <route>
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.stamps.archive.dir}}&amp;include=.*.jpg|.*.jpeg" />
+            <convertBodyTo type="java.io.File" />
+            <to uri="bean:hermesStampProcessor"/>
         </route>
 
         <!--

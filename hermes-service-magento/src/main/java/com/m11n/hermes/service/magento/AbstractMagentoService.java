@@ -156,29 +156,39 @@ public abstract class AbstractMagentoService implements MagentoService {
         try {
             List<String> messages = doCreateIntrashipLabel(orderId);
 
-            logger.debug("********* CREATE INTRASHIP: {} - {}", orderId, messages);
+            if(messages != null) {
+                display(messages);
 
-            if(!intrashipStatusTranslator.check(messages, Arrays.asList("retry"))) {
-                attempts++;
-                logger.debug("********* CREATE INTRASHIP EXIT: {}", orderId);
-                addAll(stati, messages, orderId, attempts);
-            } else {
-                for(int i=0; i<intrashipRetryCount; i++) {
+                logger.debug("********* CREATE INTRASHIP: {} - {}", orderId, messages);
+
+                if (!intrashipStatusTranslator.check(messages, Arrays.asList("retry"))) {
                     attempts++;
+                    logger.debug("********* CREATE INTRASHIP EXIT: {}", orderId);
+                    addAll(stati, messages, orderId, attempts);
+                } else {
+                    for (int i = 0; i < intrashipRetryCount; i++) {
+                        attempts++;
 
-                    messages = doCreateIntrashipLabel(orderId);
+                        messages = doCreateIntrashipLabel(orderId);
+                        if (messages != null) {
+                            display(messages);
+                            logger.debug("********* CREATE INTRASHIP RETRY: {} - # {} of {}", orderId, (i + 1), intrashipRetryCount);
 
-                    logger.debug("********* CREATE INTRASHIP RETRY: {} - # {} of {}", orderId, (i+1), intrashipRetryCount);
+                            addAll(stati, messages, orderId, i + 2);
 
-                    addAll(stati, messages, orderId, i+2);
-
-                    if(intrashipStatusTranslator.check(messages, Arrays.asList("retry"))) {
-                        logger.debug("********* CREATE INTRASHIP WAIT: {}ms", intrashipRetryWait);
-                        Thread.sleep(intrashipRetryWait);
-                    } else {
-                        return stati;
+                            if (intrashipStatusTranslator.check(messages, Arrays.asList("retry"))) {
+                                logger.debug("********* CREATE INTRASHIP WAIT: {}ms", intrashipRetryWait);
+                                Thread.sleep(intrashipRetryWait);
+                            } else {
+                                return stati;
+                            }
+                        } else {
+                            logger.debug("********* INTRASHIP RETRY BLOCK MESSAGES AGAINST : {} is NULL", orderId);
+                        }
                     }
                 }
+            } else {
+                logger.debug("********* INTRASHIP MESSAGES AGAINST : {} is NULL", orderId);
             }
         } catch(Exception e) {
             logger.error("********* CREATE INTRASHIP FAILED: {} - {} - # {}", orderId, e.getMessage(), attempts);
@@ -221,5 +231,11 @@ public abstract class AbstractMagentoService implements MagentoService {
         }
 
         return result;
+    }
+
+    private void display(List<String> messages) {
+        for(final String m : messages) {
+            logger.debug("INTRASHIP Message : " + m);
+        }
     }
 }

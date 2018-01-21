@@ -68,6 +68,8 @@ public class QueryScheduler {
     public Object query(Map<String, Object> parameters) {
         Form form = formRepository.findByName(parameters.get("_form").toString());
 
+        logger.debug("parameters ::" + parameters);
+
         boolean checkFiles = parameters.get("_checkFiles")==null ? false : (Boolean)parameters.get("_checkFiles");
         boolean downloadFiles = parameters.get("_downloadFiles")==null ? false : (Boolean)parameters.get("_downloadFiles");
 
@@ -76,8 +78,7 @@ public class QueryScheduler {
 
     public Object query(final Form form, final boolean checkFiles, final boolean downloadFiles, Map<String, Object> parameters) {
         Object result = null;
-        final long startTime = System.currentTimeMillis();
-        logger.debug("START TIME OF QUERY : " + startTime);
+
         try {
             RowMapper<Map<String, Object>> mapper = new BaseRowMapper<Map<String, Object>>() {
                 @Override
@@ -118,20 +119,21 @@ public class QueryScheduler {
                 }
                 //if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
                 if(FormField.Type.DATE.name().equals(field.getFieldType()) || FormField.Type.DATETIME.name().equals(field.getFieldType())) {
-                	String value = "";
-                	try {
-                		value = parameters.get(field.getName()).toString();
-                		DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
-                		DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                		parameters.put(field.getName(), df.print(dt));
-					} catch (Exception e) {
-						logger.error("Missing Parameter '" + field.getName() + "'. Got " + parameters);
-					}
+                    String value = "";
+                    try {
+                        value = parameters.get(field.getName()).toString();
+                        DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(value);
+                        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                        parameters.put(field.getName(), df.print(dt));
+                    } catch (Exception e) {
+                        logger.error("Missing Parameter '" + field.getName() + "'. Got " + parameters);
+                    }
                 }
             }
 
             String sqlStatement = form.getSqlStatement().toLowerCase();
 
+            logger.debug("Query ::" + sqlStatement);
             StopWatch watch = new StopWatch();
             watch.start();
             if(multipleQueries && !Boolean.TRUE.equals(form.getPrintable()) && (sqlStatement.contains("update") || sqlStatement.contains("insert") || sqlStatement.contains("delete")) ) {
@@ -147,35 +149,31 @@ public class QueryScheduler {
              *
              * TODO: experimental
              *
-            String[] statements = form.getSqlStatement().split(";");
+             String[] statements = form.getSqlStatement().split(";");
 
-            for(String statement : statements) {
-                statement = statement.trim().replaceAll("\n", "").replaceAll("\r", "");
+             for(String statement : statements) {
+             statement = statement.trim().replaceAll("\n", "").replaceAll("\r", "");
 
-                if(!StringUtils.isEmpty(statement)) {
-                    if(statement.toLowerCase().startsWith("select")) {
-                        if("auswertung".equalsIgnoreCase(form.getDb())) {
-                            result = auswertungRepository.query(statement, parameters, mapper);
-                        } else if("lcarb".equalsIgnoreCase(form.getDb())) {
-                            result = lCarbRepository.query(statement, parameters, mapper);
-                        } else {
-                            logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
-                            result = auswertungRepository.query(statement, parameters, mapper);
-                        }
-                    } else {
-                        result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
-                    }
-                }
-            }
+             if(!StringUtils.isEmpty(statement)) {
+             if(statement.toLowerCase().startsWith("select")) {
+             if("auswertung".equalsIgnoreCase(form.getDb())) {
+             result = auswertungRepository.query(statement, parameters, mapper);
+             } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+             result = lCarbRepository.query(statement, parameters, mapper);
+             } else {
+             logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+             result = auswertungRepository.query(statement, parameters, mapper);
+             }
+             } else {
+             result = Collections.singletonMap("modified", auswertungRepository.update(statement, parameters));
+             }
+             }
+             }
              */
         } catch(Throwable t) {
             logger.error(t.toString(), t);
         }
 
-        final long endTime = System.currentTimeMillis();
-        logger.debug("END TIME OF QUERY : " + endTime);
-        final long duration = endTime - startTime;
-        logger.debug("QUERY TOOK :::::" + duration);
         return result;
     }
 

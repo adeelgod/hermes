@@ -5,7 +5,7 @@
 
 	<groupId>com.m11n.hermes</groupId>
 	<artifactId>hermes</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Hermes :: Parent</name>

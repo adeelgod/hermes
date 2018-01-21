@@ -25,9 +25,6 @@
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
 
-        // console.log("$scope.config :: " + JSON.stringify($scope.config));
-
-        // confirm dialog is no longer needed TASK: java-2
         var confirmModal = $modal({title: 'Errors in shipping data', content: 'Are you sure you want to proceed? Make sure you only select entries that are completely GREEN.', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
         confirmModal.$scope.confirm = function() {
             confirmModal.hide();
@@ -46,7 +43,7 @@
                 for(var j=0; j<properties.length; j++) {
                     var property = $scope.checks[ids[i]][properties[j]];
                     if(!property) {
-                        //confirmModal.$promise.then(confirmModal.show);
+                        confirmModal.$promise.then(confirmModal.show);
                         execute = false;
                         break;
                     }
@@ -54,8 +51,7 @@
             }
 
             if(execute) {
-                $scope.runStateToggle();
-                //confirmModal.$scope.confirm();
+                confirmModal.$scope.confirm();
             }
         };
 
@@ -66,7 +62,7 @@
                     $scope.doCheckBeforeRun();
                     break;
                 default:
-                    //confirmModal.$scope.confirm();
+                    confirmModal.$scope.confirm();
             }
         };
 
@@ -132,17 +128,6 @@
             });
         };
 
-        $scope.checkField = function() {
-            angular.forEach($scope.frm.fields, function(field) {
-                if (field.fieldType=='TEXT' && (!field.lookup || field.lookup.length > 0)) { // your question said "more than one element"
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-        };
-
         $scope.download = function() {
             $scope.busy = true;
 
@@ -158,7 +143,6 @@
         $scope.select = function(selected) {
             angular.forEach($scope.shippings, function(shipping) {
                 shipping._selected = selected;
-                console.log("shipping._selected ::" + shipping._selected);
             });
         };
 
@@ -167,6 +151,7 @@
                 if(!$scope.checks[shipping.orderId]) {
                     $scope.checks[shipping.orderId] = {};
                 }
+
                 // TODO: make this configurable?!?
                 var name = (shipping.firstname || '') + ' ' + (shipping.lastname || '');
                 $scope.checks[shipping.orderId].company = (!shipping.company || shipping.company.length <= 30);
@@ -175,7 +160,7 @@
                 $scope.checks[shipping.orderId].firstname = name.length <= 30;
                 $scope.checks[shipping.orderId].lastname = name.length <= 30;
                 $scope.checks[shipping.orderId].phone = (!shipping.phone || (shipping.phone.length > 0 && shipping.phone.length <= 30) );
-                $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight < 26);
+                $scope.checks[shipping.orderId].weight = (!shipping.weight || shipping.weight < 31);
                 //$scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+)$/g)) );
                 //$scope.checks[shipping.orderId].street1 = (!shipping.street1 || (shipping.street1.length <= 30 && shipping.street1.trim().match(/([\w\d\.]+\s+)(\d+\s*)([a-z]*)((\s*-\s*\d+\s*)([a-z]*))?/g)) );
                 $scope.checks[shipping.orderId].street1 = (!shipping.street1 || shipping.street1.length <= 30);
@@ -183,26 +168,25 @@
                 $scope.checks[shipping.orderId].city = (!shipping.city || shipping.city.length <= 30);
                 $scope.checks[shipping.orderId].country = (!shipping.country || (shipping.country != 'CH' && shipping.country != 'HR' && shipping.country != 'LI'));
 
-                // commented countires in this switch statements are updated as per requirements mentioned in java-2 task
                 switch(shipping.country) {
                     case 'DE':
-                    // case 'IT':
+                    case 'IT':
                         $scope.checks[shipping.orderId]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 5);
                         break;
                     case 'AT':
+                    case 'BE':
                     case 'CH':
-                    // case 'BE':
-                    // case 'DK':
+                    case 'DK':
                         $scope.checks[shipping.orderId]['zip'] = (shipping['zip'] && (''+shipping['zip']).length === 4);
                         break;
                     default:
                         $scope.checks[shipping.orderId]['zip'] = true;
                         break;
                 }
-                // Shipments are false for the mentioned countries. for now CH should be commented as mentioned in java-2 task
+
                 switch(shipping.country) {
                     case 'AN':
-                    // case 'CH':
+                    case 'CH':
                     case 'LI':
                     case 'VT':
                         $scope.checks[shipping.orderId]['country'] = false;
@@ -230,16 +214,17 @@
                 $scope.checks[shipping.orderId]['zip'] &&
                 $scope.checks[shipping.orderId].country &&
                 $scope.checks[shipping.orderId].dhlAccount);
-                //java-2 task: minus sign must be displayed if the weight is > 30
-                shipping._selected = shipping.weight > 30 ? false: true;
             });
         };
 
         $scope.createShipmentAndLabel = function(i) {
             $scope.cancelSound();
 
+            console.log("shipments ::" + JSON.stringify($scope.shippings));
             if ($scope.shippings && i < $scope.shippings.length) {
                 var entry = $scope.shippings[i];
+
+                console.log("shipment entry ::" + JSON.stringify(entry));
 
                 if ($scope.runState === 'playing') {
                     if(entry._selected) {
@@ -248,13 +233,15 @@
                             entry.shipmentId = shipmentData.shipmentId;
 
                             ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
-                            	/*
-                            	DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(invoiceData) {
-                            		// Do nothing
-                            	}).error(function(invoiceData) {
-                            		// Do nothing
-                            	});
-                            	*/
+
+                                console.log("BLOCK ::: ShippingSvc.label({orderId: entry.orderId}).success(function(labelData)");
+                                /*
+                                 DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(invoiceData) {
+                                 // Do nothing
+                                 }).error(function(invoiceData) {
+                                 // Do nothing
+                                 });
+                                 */
                                 entry._selected = false;
 
                                 var proceed = false;
@@ -265,6 +252,7 @@
                                     $scope.logs.unshift(labelData[j]);
 
                                     // proceed only if you find acceptable status
+                                    console.log("label ::" + labelData[j]);
                                     if(labelData[j].status==='success' || labelData[j].status==='warning') {
                                         proceed = true;
                                     }
@@ -276,6 +264,7 @@
                                     i++;
                                     $scope.createShipmentAndLabel(i);
                                 } else {
+
                                     $scope.runState = 'paused';
                                     $alert({content: 'Label for order ID: ' + entry.orderId + ' was not successful. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                                     $scope.loopErrorSound();

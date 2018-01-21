@@ -80,14 +80,17 @@ public class DefaultMagentoService extends AbstractMagentoService {
         logger.debug("********* DO CREATE INTRASHIP LABEL: {}", orderId);
         client.setConnectTimeout(timeout, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(timeout, TimeUnit.SECONDS);    // socket timeout
-        Request req = new Request.Builder().url(shipmentUrl + "?login=" + shipmentUsername + "&password=" + shipmentPassword + "&id=" + orderId).build();
+        final String url = shipmentUrl + "?login=" + shipmentUsername + "&password=" + shipmentPassword + "&id=" + orderId;
+        logger.debug("Shipment URL :: " + url);
+        Request req = new Request.Builder().url(url).build();
         Response res = client.newCall(req).execute();
+        logger.debug("Response received ");
+        final String resp = res.body().string();
         try {
         	res.body().close();
         } catch(Exception e) {
-        	e.printStackTrace();
+        	logger.debug("doCreateIntrashipLabel ERROR : ", e);
         }
-
-        return intrashipStatusTranslator.normalizeMessage(res.body().string());
+        return intrashipStatusTranslator.normalizeMessage(resp);
     }
 }

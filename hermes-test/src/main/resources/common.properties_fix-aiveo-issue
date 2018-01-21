@@ -66,7 +66,7 @@ hermes.invoice.api.url=https://www.l-carb-shop.de/rechnung/
 hermes.invoice.api.username=print3
 hermes.invoice.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
-hermes.magento.intraship.status.success=DHL Intraship::pdf::0::PDF creation was successful
+hermes.magento.intraship.status.success=0::PDF creation was successful
 hermes.magento.intraship.status.error=DHL Intraship::create::(.+)::at least one shipment has errors(.+)|DHL Intraship::create::(.+)::Invalid fieldlength in(.+)|DHL Intraship::create::(.+)::Invalid value(.+)
 hermes.magento.intraship.status.retry=DHL Intraship::create::(.+)::Unable to save PDF(.+)|DHL Intraship::create::(.+)::Could not connect to host|DHL Intraship::create::(.+)::Not Found|DHL Intraship::create::(.+)::Login failed
 hermes.magento.intraship.status.retry.count=2
