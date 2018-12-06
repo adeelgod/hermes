@@ -5,7 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!-- TEST CONTEXT NEEDS TO BE ABLE TO LOAD ENCRYPTED PASSWORDS FROM THE property FILES -->
+    <bean id="properties" class="com.m11n.hermes.core.config.EncryptableBridgePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>
                 <value>classpath:common.properties</value>
@@ -16,6 +18,17 @@
         <property name="ignoreResourceNotFound" value="false"/>
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
     </bean>
+    <!--<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+        <!--<property name="locations">-->
+            <!--<list>-->
+                <!--<value>classpath:common.properties</value>-->
+                <!--<value>classpath:hermes.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="order" value="-1"/>-->
+        <!--<property name="ignoreResourceNotFound" value="false"/>-->
+        <!--<property name="ignoreUnresolvablePlaceholders" value="false"/>-->
+    <!--</bean>-->
 
     <context:component-scan base-package="com.m11n.hermes">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>

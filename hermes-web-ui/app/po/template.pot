@@ -5,6 +5,6 @@ msgstr ""
 "Project-Id-Version: \n"
 
 #: index.html:105
-#: parts\footer.html:5
+#: parts/footer.html:5
 msgid "About"
 msgstr ""

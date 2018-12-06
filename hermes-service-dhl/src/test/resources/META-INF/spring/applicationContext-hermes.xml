@@ -5,7 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="properties" class="com.m11n.hermes.core.config.EncryptableBridgePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>
                 <value>classpath:common.properties</value>
@@ -15,6 +16,41 @@
         <property name="order" value="-1"/>
         <property name="ignoreResourceNotFound" value="false"/>
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
+    </bean>
+    <!--<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+        <!--<property name="locations">-->
+            <!--<list>-->
+                <!--<value>classpath:common.properties</value>-->
+                <!--<value>classpath:hermes.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="order" value="-1"/>-->
+        <!--<property name="ignoreResourceNotFound" value="false"/>-->
+        <!--<property name="ignoreUnresolvablePlaceholders" value="false"/>-->
+    <!--</bean>-->
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${hermes.mail.host}"/>
+        <property name="port" value="${hermes.mail.port}"/>
+        <property name="username" value="${hermes.mail.username}"/>
+        <property name="password" value="${hermes.mail.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${hermes.mail.smtp.auth}</prop>
+                <prop key="mail.smtp.starttls.enable">${hermes.mail.smtp.starttls.enable}</prop>
+                <prop key="mail.smtps.auth">${hermes.mail.smtp.auth}</prop>
+                <prop key="mail.smtps.ssl.enable">${hermes.mail.smtp.ssl.enable}</prop>
+                <prop key="mail.transport.protocol">${hermes.mail.transport.protocol}</prop>
+                <prop key="mail.debug">${hermes.mail.debug}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="supportMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="${hermes.mail.from}"/>
+        <property name="to" value="${hermes.mail.to}"/>
+        <property name="subject" value="${hermes.mail.subject}"/>
+        <property name="text"><value><![CDATA[%s]]></value></property>
     </bean>
 
     <context:component-scan base-package="com.m11n.hermes">
