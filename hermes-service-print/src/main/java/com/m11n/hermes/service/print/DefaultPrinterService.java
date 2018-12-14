@@ -1,6 +1,6 @@
 package com.m11n.hermes.service.print;
 
-import com.activetree.common.conversion.DocConverter;
+//import com.activetree.common.conversion.DocConverter;
 import com.activetree.common.utils.MediaUtil;
 import com.activetree.pdfprint.SilentPdfConverter;
 import com.activetree.pdfprint.common.AtPdfStreamPrinter;
@@ -25,7 +25,7 @@ import org.ghost4j.Ghostscript;
 import org.ghost4j.GhostscriptException;
 import org.ghost4j.GhostscriptRevision;
 import org.ghost4j.display.ImageWriterDisplayCallback;
-import org.icepdf.core.util.Defs;
+//import org.icepdf.core.util.Defs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -58,20 +58,20 @@ public class DefaultPrinterService implements PrinterService {
 
     static {
         //Defs.setProperty("java.awt.headless", "true");
-        Defs.setProperty("org.icepdf.core.scaleImages", "false");
-        Defs.setProperty("org.icepdf.core.print.disableAlpha", "true");
-
-        // set the graphic rendering hints for speed, we loose quite a bit of quality
-        // when converting to TIFF, so no point painting with the extra quality
-        Defs.setProperty("org.icepdf.core.print.alphaInterpolation", "VALUE_ALPHA_INTERPOLATION_SPEED");
-        Defs.setProperty("org.icepdf.core.print.antiAliasing", "VALUE_ANTIALIAS_ON");
-        Defs.setProperty("org.icepdf.core.print.textAntiAliasing", "VALUE_TEXT_ANTIALIAS_OFF");
-        Defs.setProperty("org.icepdf.core.print.colorRender", "VALUE_COLOR_RENDER_SPEED");
-        Defs.setProperty("org.icepdf.core.print.dither", "VALUE_DITHER_DEFAULT");
-        Defs.setProperty("org.icepdf.core.print.fractionalmetrics", "VALUE_FRACTIONALMETRICS_OFF");
-        Defs.setProperty("org.icepdf.core.print.interpolation", "VALUE_INTERPOLATION_NEAREST_NEIGHBOR");
-        Defs.setProperty("org.icepdf.core.print.render", "VALUE_RENDER_SPEED");
-        Defs.setProperty("org.icepdf.core.print.stroke", "VALUE_STROKE_PURE");
+//        Defs.setProperty("org.icepdf.core.scaleImages", "false");
+//        Defs.setProperty("org.icepdf.core.print.disableAlpha", "true");
+//
+//        // set the graphic rendering hints for speed, we loose quite a bit of quality
+//        // when converting to TIFF, so no point painting with the extra quality
+//        Defs.setProperty("org.icepdf.core.print.alphaInterpolation", "VALUE_ALPHA_INTERPOLATION_SPEED");
+//        Defs.setProperty("org.icepdf.core.print.antiAliasing", "VALUE_ANTIALIAS_ON");
+//        Defs.setProperty("org.icepdf.core.print.textAntiAliasing", "VALUE_TEXT_ANTIALIAS_OFF");
+//        Defs.setProperty("org.icepdf.core.print.colorRender", "VALUE_COLOR_RENDER_SPEED");
+//        Defs.setProperty("org.icepdf.core.print.dither", "VALUE_DITHER_DEFAULT");
+//        Defs.setProperty("org.icepdf.core.print.fractionalmetrics", "VALUE_FRACTIONALMETRICS_OFF");
+//        Defs.setProperty("org.icepdf.core.print.interpolation", "VALUE_INTERPOLATION_NEAREST_NEIGHBOR");
+//        Defs.setProperty("org.icepdf.core.print.render", "VALUE_RENDER_SPEED");
+//        Defs.setProperty("org.icepdf.core.print.stroke", "VALUE_STROKE_PURE");
     }
 
     //private List<? extends Class> attributeCategories = Arrays.asList(OrientationRequested.class, Media.class, MediaTray.class, Copies.class, PageRanges.class, JobSheets.class, Chromaticity.class);
@@ -310,33 +310,33 @@ public class DefaultPrinterService implements PrinterService {
      */
 
     private void testPng(String file) throws Exception {
-        DocConverter converter = new SilentPdfConverter();
-
-        converter.setAttribute(DocConverter.DOC_TYPE, DocConverter.PNG);
-        converter.setAttribute(DocConverter.DOC_LIST, "[" + file + "]");
-        converter.setAttribute(DocConverter.OUTPUT_DIRECTORY, "/tmp/freak");
-        converter.setAttribute(DocConverter.NAME_PREFIX, file.substring(file.lastIndexOf("/")+1));
-        //converter.setAttribute(DocConverter.OUTPUT_STREAM, "/tmp/freak/" + file.substring(file.lastIndexOf("/")+1));
-        //converter.setAttribute(DocConverter.RESIZE_FACTOR, 1.0);
-        converter.setAttribute(DocConverter.PAPER_WIDTH, 826);
-        converter.setAttribute(DocConverter.PAPER_HEIGHT, 1169);
-        //converter.setAttribute(DocConverter.AUTO_MATCH_OUTPUT_TO_PAGE_SIZE, Boolean.TRUE);
-        converter.setAttribute(DocConverter.DEBUG, Boolean.TRUE);
-
-        converter.start();
-
-        PrintService service = printer("PDF");
-
-        DocPrintJob job = service.createPrintJob();
-        HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
-
-        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-        attributes.add(new Copies(1));
-        attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
-
-        Doc doc = new SimpleDoc(new FileInputStream("/tmp/freak/page_1_1.png"), DocFlavor.INPUT_STREAM.PNG, null);
-        job.print(doc, attributes);
-        watcher.waitForDone();
+//        DocConverter converter = new SilentPdfConverter();
+//
+//        converter.setAttribute(DocConverter.DOC_TYPE, DocConverter.PNG);
+//        converter.setAttribute(DocConverter.DOC_LIST, "[" + file + "]");
+//        converter.setAttribute(DocConverter.OUTPUT_DIRECTORY, "/tmp/freak");
+//        converter.setAttribute(DocConverter.NAME_PREFIX, file.substring(file.lastIndexOf("/")+1));
+//        //converter.setAttribute(DocConverter.OUTPUT_STREAM, "/tmp/freak/" + file.substring(file.lastIndexOf("/")+1));
+//        //converter.setAttribute(DocConverter.RESIZE_FACTOR, 1.0);
+//        converter.setAttribute(DocConverter.PAPER_WIDTH, 826);
+//        converter.setAttribute(DocConverter.PAPER_HEIGHT, 1169);
+//        //converter.setAttribute(DocConverter.AUTO_MATCH_OUTPUT_TO_PAGE_SIZE, Boolean.TRUE);
+//        converter.setAttribute(DocConverter.DEBUG, Boolean.TRUE);
+//
+//        converter.start();
+//
+//        PrintService service = printer("PDF");
+//
+//        DocPrintJob job = service.createPrintJob();
+//        HermesPrintJobWatcher watcher = new HermesPrintJobWatcher(job);
+//
+//        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+//        attributes.add(new Copies(1));
+//        attributes.add(new JobName(UUID.randomUUID().toString() + ".pdf", null));
+//
+//        Doc doc = new SimpleDoc(new FileInputStream("/tmp/freak/page_1_1.png"), DocFlavor.INPUT_STREAM.PNG, null);
+//        job.print(doc, attributes);
+//        watcher.waitForDone();
     }
 
     private JobStatus printPdfbox(String file, String printer) throws Exception {

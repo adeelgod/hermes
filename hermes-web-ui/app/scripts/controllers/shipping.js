@@ -220,8 +220,11 @@
         $scope.createShipmentAndLabel = function(i) {
             $scope.cancelSound();
 
+            console.log("shipments ::" + JSON.stringify($scope.shippings));
             if ($scope.shippings && i < $scope.shippings.length) {
                 var entry = $scope.shippings[i];
+
+                console.log("shipment entry ::" + JSON.stringify(entry));
 
                 if ($scope.runState === 'playing') {
                     if(entry._selected) {
@@ -230,13 +233,15 @@
                             entry.shipmentId = shipmentData.shipmentId;
 
                             ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
-                            	/*
-                            	DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(invoiceData) {
-                            		// Do nothing
-                            	}).error(function(invoiceData) {
-                            		// Do nothing
-                            	});
-                            	*/
+
+                                console.log("BLOCK ::: ShippingSvc.label({orderId: entry.orderId}).success(function(labelData)");
+                                /*
+                                 DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(invoiceData) {
+                                 // Do nothing
+                                 }).error(function(invoiceData) {
+                                 // Do nothing
+                                 });
+                                 */
                                 entry._selected = false;
 
                                 var proceed = false;
@@ -247,6 +252,7 @@
                                     $scope.logs.unshift(labelData[j]);
 
                                     // proceed only if you find acceptable status
+                                    console.log("label ::" + labelData[j]);
                                     if(labelData[j].status==='success' || labelData[j].status==='warning') {
                                         proceed = true;
                                     }
@@ -258,6 +264,7 @@
                                     i++;
                                     $scope.createShipmentAndLabel(i);
                                 } else {
+
                                     $scope.runState = 'paused';
                                     $alert({content: 'Label for order ID: ' + entry.orderId + ' was not successful. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                                     $scope.loopErrorSound();

@@ -5,8 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!-- TEST CONTEXT NEEDS TO BE ABLE TO LOAD ENCRYPTED PASSWORDS FROM THE property FILES -->
+    <bean id="properties" class="com.m11n.hermes.core.config.EncryptableBridgePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
         <property name="locations">
             <list>
                 <value>classpath:common.properties</value>

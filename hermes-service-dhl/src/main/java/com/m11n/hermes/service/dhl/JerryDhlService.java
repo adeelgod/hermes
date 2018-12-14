@@ -29,7 +29,9 @@ public class JerryDhlService extends AbstractDhlService {
 
     private static final String PENDING_PROCESSED_PARCEL_CENTER_MESSAGE = "The shipment has been processed in the parcel center".toLowerCase();
 
-    private static final String ERROR_MESSAGE = "we do not currently have information about shipment".toLowerCase();
+    private static final String ERROR_MESSAGE_OLD = "we do not currently have information about shipment".toLowerCase();
+
+    private static final String ERROR_MESSAGE = "No information is currently available for this shipment".toLowerCase();
 
     private static final int ROWS_OFFSET = 2;
 
@@ -48,8 +50,10 @@ public class JerryDhlService extends AbstractDhlService {
             String html = get("http://nolp.dhl.de/nextt-online-public/set_identcodes.do?idc=" + code);
 
             Jerry doc = Jerry.jerry(html);
+//            OLD ERROR MESSAGE
+//            String error = doc.$(".col > h2:nth-child(1)").text();
 
-            String error = doc.$(".col > h2:nth-child(1)").text();
+            String error = doc.$(".panel-heading > h1.panel-title").text();
 
             DhlTrackingStatus status = new DhlTrackingStatus();
 

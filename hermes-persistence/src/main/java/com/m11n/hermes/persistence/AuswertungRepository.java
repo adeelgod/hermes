@@ -31,10 +31,15 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
     }
 
     public int update(String sqlStatement, Map<String, Object> parameters) {
-        if(!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
-            return jdbcTemplate.update(sqlStatement, parameters);
-        } else {
-            logger.warn("Query statement empty!");
+        try {
+            if (!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
+                return jdbcTemplate.update(sqlStatement, parameters);
+            } else {
+                logger.warn("Query statement empty!");
+                return 0;
+            }
+        } catch(Exception ex) {
+            logger.error("ERROR OCCURRED :: " + ex);
             return 0;
         }
     }
@@ -46,6 +51,19 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                 return rs.getString(1);
             }
         });
+    }
+
+    public List<String> findAllByQuery(final String sqlStatement) {
+        if(!StringUtils.isEmpty(sqlStatement) && !StringUtils.isEmpty(sqlStatement.trim())) {
+            return jdbcTemplate.query(sqlStatement, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return rs.getString(1);
+                }
+            });
+        } else {
+            return null;
+        }
     }
 
     public void timestampPrint(String orderId) {
@@ -84,6 +102,38 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
         ));
     }
 
+    /**
+     * Insert query of DHL status: With extra column status, Status_time, status_xml, request_time
+     * @param code
+     * @param date
+     * @param status
+     * @param statusXML
+     */
+    public void createDhlStatus(String code, Date date, String status, String statusXML, Date requestTime) {
+        jdbcTemplate.update("INSERT  INTO mage_custom_shipments_DHL_status (tracking_no, Status_time, Status, status_xml, request_time) VALUES ( :code, :date_status, :status ,:statusXml, :request_time)", new MapSqlParameterSource().addValue(
+                "date_status",
+                new java.sql.Date(date.getTime()),
+                //new SimpleDateFormat("yyyy-MM-dd").format(date),
+                Types.TIMESTAMP
+        ).addValue(
+                "code",
+                code,
+                Types.VARCHAR
+        ).addValue(
+                "status",
+                status,
+                Types.VARCHAR
+        ).addValue(
+                "statusXml",
+                statusXML,
+                Types.VARCHAR
+        ).addValue(
+                "request_time",
+                new java.sql.Date(requestTime.getTime()),
+                Types.TIMESTAMP
+        ));
+    }
+
     public void updateDhlStatus(String code, Date date, String status) {
         jdbcTemplate.update("UPDATE mage_custom_shipments_DHL_status SET Status_time = :date_status, Status = :status WHERE tracking_no = :code", new MapSqlParameterSource().addValue(
                 "date_status",
@@ -97,6 +147,37 @@ public class AuswertungRepository extends AbstractAuswertungRepository {
                 "status",
                 status,
                 Types.VARCHAR
+        ));
+    }
+
+    /**
+     * update query of DHL Status: with status, Status_Time and Status_xml
+     * @param code
+     * @param date
+     * @param status
+     * @param statusXML
+     */
+    public void updateDhlStatus(String code, Date date, String status, String statusXML, Date requestTime) {
+        jdbcTemplate.update("UPDATE mage_custom_shipments_DHL_status SET Status_time = :date_status, Status = :status, status_xml=:statusXml, request_time=:requestTime WHERE tracking_no = :code", new MapSqlParameterSource().addValue(
+                "date_status",
+                new java.sql.Date(date.getTime()),
+                Types.TIMESTAMP
+        ).addValue(
+                "code",
+                code,
+                Types.VARCHAR
+        ).addValue(
+                "status",
+                status,
+                Types.VARCHAR
+        ).addValue(
+                "statusXml",
+                statusXML,
+                Types.VARCHAR
+        ).addValue(
+                "requestTime",
+                new java.sql.Date(requestTime.getTime()),
+                Types.TIMESTAMP
         ));
     }
 

@@ -27,7 +27,9 @@ public class SshServiceTest {
     @Test
     public void testCopy() throws Exception {
         sshService.connect();
-        sshService.copy("/home/l-carb-shop.de/public_html/var/intraship/documents/pdf--1/pdf--1f/pdf--1f8/label-00340433836188599101.pdf", "target/result.pdf");
+        sshService.copy(
+                "/home/l-carb-shop/public_html/var/intraship/documents/pdf--1/pdf--1f/pdf--1f8/label-00340433836188599101.pdf",
+                "target/result.pdf");
         sshService.disconnect();
     }
 
@@ -35,9 +37,9 @@ public class SshServiceTest {
     public void testExec() throws Exception {
         int status;
         sshService.connect();
-        status = sshService.exec("ls -la /home/l-carb-shop.de/public_html/var/intraship/documents\n");
+        status = sshService.exec("ls -la /home/l-carb-shop/public_html/var/intraship/documents\n");
         logger.info("Exec status: {}", status);
-        status = sshService.exec("ls -la /home/l-carb-shop.de/public_html/var/intraship/documents/pdf--f\n");
+        status = sshService.exec("ls -la /home/l-carb-shop/public_html/var/intraship/documents/pdf--f\n");
         logger.info("Exec status: {}", status);
         sshService.disconnect();
     }

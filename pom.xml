@@ -5,7 +5,7 @@
 
 	<groupId>com.m11n.hermes</groupId>
 	<artifactId>hermes</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Hermes :: Parent</name>
@@ -32,7 +32,7 @@
 			<name>bintray</name>
 			<url>http://jcenter.bintray.com</url>
 		</repository>
-		<!-- <repository> <id>ice-maven-release</id> <name>Ice Maven Release Repository</name> 
+		<!-- <repository> <id>ice-maven-release</id> <name>Ice Maven Release Repository</name>
 			<url>http://anonsvn.icesoft.org/repo/maven2/releases</url> </repository> -->
 	</repositories>
 
@@ -141,7 +141,6 @@
 				<artifactId>ecj</artifactId>
 				<version>4.4</version>
 			</dependency>
-
 			<dependency>
 				<groupId>net.sourceforge.dynamicreports</groupId>
 				<artifactId>dynamicreports-core</artifactId>
@@ -171,8 +170,8 @@
 				<artifactId>pdf-renderer</artifactId>
 				<version>1.0.5</version>
 			</dependency>
-			<!-- <dependency> <groupId>org.icepdf.os</groupId> <artifactId>icepdf-core</artifactId> 
-				<version>5.1.0</version> </dependency> <dependency> <groupId>org.icepdf.os</groupId> 
+			<!-- <dependency> <groupId>org.icepdf.os</groupId> <artifactId>icepdf-core</artifactId>
+				<version>5.1.0</version> </dependency> <dependency> <groupId>org.icepdf.os</groupId>
 				<artifactId>icepdf-viewer</artifactId> <version>5.1.0</version> </dependency> -->
 
 			<dependency>
@@ -336,6 +335,11 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
+				<version>4.1.6.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
 				<version>4.1.6.RELEASE</version>
 			</dependency>
 			<dependency>
@@ -612,7 +616,7 @@
 							<shadedClassifierName>shaded</shadedClassifierName>
 						</configuration>
 					</execution>
-				</executions>	
+				</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -656,7 +660,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId> 
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId>
 				</plugin> -->
 
 			<plugin>
@@ -666,10 +670,10 @@
 					<username>${bitbucket.username}</username>
 					<password>${bitbucket.password}</password>
 				</configuration>
-				<!-- <configuration> <configuration> <flowInitContext> <masterBranchName>master</masterBranchName> 
-					<developBranchName>development</developBranchName> <featureBranchPrefix>feature/</featureBranchPrefix> 
-					<releaseBranchPrefix>release/</releaseBranchPrefix> <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix> 
-					<versionTagPrefix></versionTagPrefix> </flowInitContext> </configuration> 
+				<!-- <configuration> <configuration> <flowInitContext> <masterBranchName>master</masterBranchName>
+					<developBranchName>development</developBranchName> <featureBranchPrefix>feature/</featureBranchPrefix>
+					<releaseBranchPrefix>release/</releaseBranchPrefix> <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+					<versionTagPrefix></versionTagPrefix> </flowInitContext> </configuration>
 					</configuration> -->
 			</plugin>
 

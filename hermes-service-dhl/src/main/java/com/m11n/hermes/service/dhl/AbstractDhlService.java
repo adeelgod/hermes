@@ -7,8 +7,11 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.google.common.net.HttpHeaders;
 import com.m11n.hermes.core.model.DhlRequest;
 import com.m11n.hermes.core.model.DhlTrackingStatus;
+import com.m11n.hermes.core.model.Form;
 import com.m11n.hermes.core.service.DhlService;
 import com.m11n.hermes.persistence.AuswertungRepository;
+import com.m11n.hermes.persistence.FormRepository;
+import com.m11n.hermes.service.email.HermesMailer;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -19,15 +22,17 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractDhlService implements DhlService {
     private static final Logger logger = LoggerFactory.getLogger(AbstractDhlService.class);
+
+    private static final String TRACKING_NUMBER_DHL_QUERY_NAME = "Traking Nummern für DHL Statusabfrage";
+    private static final String BEFORE_DHL_STATUS_QUERY_NAME = "Vor_DHL_Abfrage";
+    private static final String AFTER_DHL_STATUS_QUERY_NAME = "Nach_DHL_Abfrage";
 
     protected MediaType MEDIA_TYPE_XML;
 
@@ -38,6 +43,9 @@ public abstract class AbstractDhlService implements DhlService {
     @Inject
     protected AuswertungRepository auswertungRepository;
 
+    @Inject
+    private FormRepository formRepository;
+
     protected String encoding = "UTF-8";
 
     protected Map<String, String> statusMapping = new HashMap<>();
@@ -45,6 +53,13 @@ public abstract class AbstractDhlService implements DhlService {
     protected ExecutorService executor = Executors.newFixedThreadPool(1);
 
     protected AtomicInteger running = new AtomicInteger(0);
+
+
+    private static final int MAX_RETRY = 3;
+    private static int retryCount = 0;
+
+//    @Inject
+//    private HermesMailer hermesMailer;
 
     public AbstractDhlService() {
         JaxbAnnotationModule module = new JaxbAnnotationModule();
@@ -58,7 +73,7 @@ public abstract class AbstractDhlService implements DhlService {
         try {
             List<String> lines = IOUtils.readLines(AbstractDhlService.class.getClassLoader().getResourceAsStream("status.csv"));
 
-            for(String line : lines) {
+            for (String line : lines) {
                 String[] pair = line.split("\\|");
                 statusMapping.put(pair[0].toLowerCase(), pair[1]);
             }
@@ -68,26 +83,38 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     protected String get(String url, DhlRequest r) {
-    	Response response = null;
+        Response response = null;
         try {
             Request request = new Request.Builder()
                     .url(url + "?xml=" + URLEncoder.encode(marshal(r), encoding))
                     .addHeader(HttpHeaders.ACCEPT, MEDIA_TYPE_XML.toString())
                     .build();
             response = client.newCall(request).execute();
-
+            logger.debug("Response received in attempt(s) : " + (retryCount + 1));
+            retryCount = 0;
             return response.body().string();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warn("Tracking code : " + r.getPieceCode());
+            if(retryCount < MAX_RETRY) {
+                logger.warn("Issue found in capturing DHL response. Trying again.");
+                retryCount++;
+                return get(url, r);
+            } else {
+                logger.error("MAX_RETRY limit exceeded. Please try again after the process is completed. " +
+                        "get(String url, DhlRequest r) [ERROR] : ", e);
+                retryCount = 0;
+                return null;
+            }
         } finally {
-        	try {
-        		response.body().close();
-        	} catch (Exception e) {}
+            try {
+                response.body().close();
+            } catch (Exception e) {
+            }
         }
     }
 
     protected String get(String url) {
-    	Response response = null;
+        Response response = null;
         try {
             Request request = new Request.Builder()
                     .url(url)
@@ -98,9 +125,10 @@ public abstract class AbstractDhlService implements DhlService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-        	try {
-				response.body().close();
-        	} catch (Exception e) {}
+            try {
+                response.body().close();
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -117,7 +145,7 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     public void checkTracking() {
-        if(running.get()<=0) {
+        if (running.get() <= 0) {
             scheduleCheckTracking();
         } else {
             logger.warn("Please cancel first all running tracking code checks.");
@@ -143,22 +171,34 @@ public abstract class AbstractDhlService implements DhlService {
             @Override
             public void run() {
                 try {
-                    List<String> codes = auswertungRepository.findPendingTrackingCodes();
+                    List<String> codes = getTrackingCodes();
 
-                    logger.debug("Checking codes: #{}", (codes!=null ? codes.size() : 0));
+                    logger.debug("Checking codes: #{}", (codes != null ? codes.size() : 0));
 
-                    for(String code : codes) {
-                        if(Thread.interrupted()) {
+                    executeQueryBeforeDHL();
+                    for (String code : codes) {
+                        if (Thread.interrupted()) {
                             logger.warn("Cancelling tracking check at: {}", code);
                             running.decrementAndGet();
                             return;
                         }
-
                         DhlTrackingStatus status = getTrackingStatus(code);
+                        if(status != null) {
 
-                        auswertungRepository.createDhlStatus(code, status.getDate(), status.getMessage());
-                        auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
+                            logger.debug("DhlTrackingStatus : " + status);
+                            // just to avoid null value in status.date property
+                            //status.setDate(status.getDate() == null ? new Date() : status.getDate());
+                            //email sending requirement should be asked with daniel in order to check
+                            // when to send an email to which user?
+//                            final String emailHtmlContent = "<!DOCTYPE html><html><body><h1>This is heading 1</h1><h2>This is heading 2</h2><h3>This is heading 3</h3><h4>This is heading 4</h4><h5>This is heading 5</h5><h6>This is heading 6</h6></body></html>";
+//                            hermesMailer.sendMail("umairb3@gmail.com", "SAMPLE", emailHtmlContent);
+                            auswertungRepository.createDhlStatus(code, status.getDate(), status.getStatus(), status.getMessage(), new Date());
+                            auswertungRepository.updateOrderLastStatus(code, getStatus(status.getMessage()));
+                        } else {
+                            logger.warn("Status against [" + code + "] is null : " + status);
+                        }
                     }
+                    executeQueryAfterDHL();
                 } catch (Throwable e) {
                     logger.error(e.toString(), e);
                 } finally {
@@ -169,14 +209,42 @@ public abstract class AbstractDhlService implements DhlService {
     }
 
     private String getStatus(String message) {
-        for(Map.Entry<String, String> entry : statusMapping.entrySet()) {
-            if(message!=null && message.toLowerCase().startsWith(entry.getKey())) {
+        for (Map.Entry<String, String> entry : statusMapping.entrySet()) {
+            if (message != null && message.toLowerCase().contains(entry.getKey())) {
                 return entry.getValue();
             }
         }
-
-        logger.error("Status not found for message: {}", message);
-
         return "fehler";
+    }
+
+    private List<String> getTrackingCodes() {
+        List<String> codes = null;
+        final Form form = formRepository.findByName(TRACKING_NUMBER_DHL_QUERY_NAME);
+        if(form != null) {
+            codes = auswertungRepository.findAllByQuery(form.getSqlStatement());
+        }
+        if(codes == null) {
+            codes = auswertungRepository.findPendingTrackingCodes();
+        }
+
+        return codes;
+    }
+
+    private void executeQueryBeforeDHL() {
+        logger.debug("INSIDE :: executeQueryBeforeDHL() ::: " + BEFORE_DHL_STATUS_QUERY_NAME);
+        final Form form = formRepository.findByName(BEFORE_DHL_STATUS_QUERY_NAME);
+        if(form != null) {
+            auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
+        }
+        logger.debug("EXITING :: executeQueryBeforeDHL()");
+    }
+
+    private void executeQueryAfterDHL() {
+        logger.debug("INSIDE :: executeQueryAfterDHL() ::: " + AFTER_DHL_STATUS_QUERY_NAME);
+        final Form form = formRepository.findByName(AFTER_DHL_STATUS_QUERY_NAME);
+        if(form != null) {
+            auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
+        }
+        logger.debug("EXITING :: executeQueryAfterDHL()");
     }
 }

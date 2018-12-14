@@ -1,4 +1,4 @@
-package com.m11n.hermes.rest.server.core.config;
+package com.m11n.hermes.core.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;

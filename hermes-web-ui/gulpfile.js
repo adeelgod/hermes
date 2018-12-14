@@ -150,7 +150,7 @@ gulp.task('images', function () {
 
 // fonts
 gulp.task('fonts', function () {
-    return gulp.src(['bower_components/**/fonts/*.{eot,otf,svg,ttf,woff}', 'bower_components/**/font/*.{eot,otf,svg,ttf,woff}'])
+    return gulp.src(['bower_components/**/fonts/*.*', 'bower_components/**/font/*.*'])
         .pipe($.flatten())
         .pipe(gulp.dest('dist/fonts'));
 });
