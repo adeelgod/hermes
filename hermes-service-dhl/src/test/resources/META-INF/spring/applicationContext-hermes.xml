@@ -17,17 +17,6 @@
         <property name="ignoreResourceNotFound" value="false"/>
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
     </bean>
-    <!--<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-        <!--<property name="locations">-->
-            <!--<list>-->
-                <!--<value>classpath:common.properties</value>-->
-                <!--<value>classpath:hermes.properties</value>-->
-            <!--</list>-->
-        <!--</property>-->
-        <!--<property name="order" value="-1"/>-->
-        <!--<property name="ignoreResourceNotFound" value="false"/>-->
-        <!--<property name="ignoreUnresolvablePlaceholders" value="false"/>-->
-    <!--</bean>-->
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${hermes.mail.host}"/>
