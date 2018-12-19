@@ -25,13 +25,7 @@
 
             $scope.bankStatements = null;
 
-            var queryFn;
-
-            if(step==='step1') {
-                queryFn = BankSvc.listMatched;
-            } else {
-                queryFn = BankSvc.listUnmatched;
-            }
+            var queryFn = BankSvc.listMatched;
 
             $scope.stopWatch = undefined;
             var start = new Date().getTime();
@@ -41,15 +35,11 @@
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
                     $scope.stopWatch = moment(new Date().getTime()-start).format('mm:ss');
-                    if($scope.step==='step2') {
-                        $scope.filter();
-                    } else {
-                        angular.forEach($scope.bankStatements, function(bs) {
-                            if(bs.matching > 0.8) {
-                                bs._selected = true;
-                            }
-                        });
-                    }
+                    angular.forEach($scope.bankStatements, function(bs) {
+                        if(bs.matching > 0.8) {
+                            bs._selected = true;
+                        }
+                    });
                 }
                 $scope.busy = false;
                 $scope.loading = false;
@@ -89,9 +79,7 @@
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
-                    if($scope.step==='step1') {
-                        $scope.filter();
-                    }
+                    $scope.filter();
                 }
                 $scope.busy = false;
             }).error(function(data) {
@@ -129,32 +117,6 @@
             $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
         };
 
-        $scope.next = function() {
-            $scope.select(false);
-            $scope.orders = null;
-            $scope.currentBankStatementIndex++;
-            if($scope.currentBankStatementIndex>=$scope.bankStatements.length) {
-                $scope.currentBankStatementIndex = 0;
-            }
-            $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
-            $scope.currentBankStatement._selected = true;
-            $scope.search = {};
-            $scope.filter();
-        };
-
-        $scope.previous = function() {
-            $scope.select(false);
-            $scope.orders = null;
-            $scope.currentBankStatementIndex--;
-            if($scope.currentBankStatementIndex<0) {
-                $scope.currentBankStatementIndex = $scope.bankStatements.length-1;
-            }
-            $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
-            $scope.currentBankStatement._selected = true;
-            $scope.search = {};
-            $scope.filter();
-        };
-
         $scope.save = function() {
             if($scope.currentBankStatement) {
                 BankSvc.save($scope.currentBankStatement);
@@ -183,10 +145,6 @@
                 $scope.busy = false;
                 $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 5});
                 $scope.processStatusCheck();
-
-                if($scope.step==='step2') {
-                    $scope.next();
-                }
             }).error(function(data) {
                 $scope.busy = false;
                 $alert({content: 'Bank statement processing error.', placement: 'top', type: 'danger', show: true, duration: 5});
@@ -238,17 +196,6 @@
                 $scope.busy = false;
                 $alert({content: 'Could not find any matches.', placement: 'top', type: 'danger', show: true, duration: 5});
             });
-        };
-
-        $scope.toggleAdvanced = function() {
-            $scope.advanced = !$scope.advanced;
-
-            if($scope.advanced) {
-                $scope.formName = 'bank_advanced';
-            } else {
-                $scope.formName = 'bank';
-            }
-            $scope.getForm();
         };
 
         $scope.getForm();

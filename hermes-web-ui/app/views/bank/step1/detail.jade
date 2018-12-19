@@ -2,26 +2,12 @@ extends /layouts/_page
 block content
     .row
         .col-md-4
-            //
-                .btn-group.btn-group-lg(ng-show='bankStatements')
-                    button.btn.btn-primary(type='button', ng-click='match()', ng-hide='matchRunning')
-                        i.fa.fa-exchange
-                        | &nbsp;Match
-                    button.btn.btn-danger(type='button', ng-click='matchCancel()', ng-show='matchRunning')
-                        i.fa.fa-exchange
-                        | &nbsp;Cancel
             .btn-group.btn-group-lg(ng-show='bankStatements')
                 button.btn.btn-success(type='button', ng-click="process('confirm')", ng-hide='processRunning')
                     i.fa.fa-check
-                //
-                    button.btn.btn-danger(type='button', ng-click="process('ignore')", ng-hide='processRunning')
-                        i.fa.fa-ban
-                    button.btn.btn-default(type='button', ng-click="process('reset')", ng-hide='processRunning')
-                        i.fa.fa-undo
                 button.btn.btn-danger(type='button', ng-click='processCancel()', ng-show='processRunning')
                     i.fa.fa-cog.fa-spin
                     | &nbsp;Cancel
-            //i.fa.fa-2x.fa-cog.fa-spin(ng-show='busy')
         .col-md-4
             form.form-inline(ng-show='bankStatements')
                 .form-group
@@ -35,80 +21,47 @@ block content
             table.table.table-striped.table-condensed(ng-show='bankStatements')
                 thead
                     tr
-                        td(style='min-width: 100px')
+                        td(style='width:75px')
                             .btn-group.btn-group-sm
                                 button.btn.btn-default(type='button', ng-click='select(true)', ng-disabled='busy')
                                     i.fa.fa-check
                                 button.btn.btn-default(type='button', ng-click='select(false)', ng-disabled='busy')
                                     i.fa.fa-minus
-                        td
-                        td.text-left(style='width:600px')
-                            h4 Desc.
-                        td.text-right
-                            h4 Amount&nbsp;(B)
-                        td.text-center
-                            h4 Date&nbsp;(B)
-                        td.text-right
-                            h4 Amount&nbsp;(O)
-                        td.text-center
-                            h4 Date&nbsp;(O)
-                        td.text-center
-                            h4 Cust.
-                        td.text-center
-                            h4 Cust.&nbsp;ID
-                        td.text-center
-                            h4 Ebay
-                        td.text-center
-                            h4 Inv.
-                        td.text-center
+                        td.text-center(style="40px")
+                        td.text-center(colspan=2)
+                            h4 Date/Amount&nbsp;
+                        td.text-center(style='width:120px')
                             h4 Order
-                        td.text-center
-                            h4 Match
-                    tr
-                        td
-                        td
-                        td.text-left
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.description', placeholder='Description...', style='max-width: 160px')
                         td.text-right
-                            input.form-control.input-sm.pull-right(type='number', ng-model='step1Filter.amount', placeholder='Amount Bank...', style='max-width: 80px')
-                        td
-                        td.text-right
-                            input.form-control.input-sm.pull-right(type='number', ng-model='step1Filter.amountOrder', placeholder='Amount Order...', style='max-width: 80px')
-                        td
-                        td.text-left
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.lastname', placeholder='Lastname...', style='max-width: 160px')
-                        td.text-left
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.customerId', placeholder='Customer ID...')
+                            h4 Name
+                        td.text-left(style='width:600px')
+                            h4 Bank Text
                         td.text-center
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.ebayName', placeholder='Ebay Name...', style='max-width: 80px')
-                        td
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.invoiceId', placeholder='Invoice ID...', style='max-width: 80px')
-                        td
-                            input.form-control.input-sm(type='text', ng-model='step1Filter.orderId', placeholder='Order ID...', style='max-width: 80px')
-                        td
-                            input.form-control.input-sm(type='number', step='0.1' ng-model='step1Filter.matching', style='width: 60px')
-                        //td
+                            h4 Score
                 tbody
                     tr.valign(ng-repeat='entry in bankStatements | filter:step1Filter:strict')
                         td
-                            button.btn.btn-sm.btn-default(type='button', ng-click="entry._selected=!entry._selected", ng-disabled='busy')
+                            button.btn.btn-sm.btn-default(type='button', ng-click="entry._selected=!entry._selected")
                                 i.fa(ng-class="{ 'fa-check': entry._selected, 'fa-minus': !entry._selected }")
-                        td.text-center(style='padding-top:2px')
-                            .btn-group.btn-group-sm
-                                button.btn(type='button', disabled='true', ng-class="{'btn-default': entry.status=='new', 'btn-success': entry.status=='confirm', 'btn-danger': entry.status=='ignore'}")
-                                    i.fa.fa-exclamation-circle(ng-show="entry.status=='new'")
-                                    i.fa.fa-check-circle(ng-show="entry.status=='confirm'")
-                                    i.fa.fa-ban(ng-show="entry.status=='ignore'")
-                        td.text-left(style='width:600px') {{entry.description}}
-                        td.text-right(ng-class="{'danger': entry.amount!=entry.amountOrder}") {{entry.amount | currency:'':2}}
-                        td.text-center {{entry.transferDate | date:'dd.MM.yyyy'}}
-                        td.text-right {{entry.amountOrder | currency:'':2}}
-                        td.text-center {{entry.orderDate | date:'dd.MM.yyyy'}}
-                        td.text-left {{entry.firstname}}&nbsp;{{entry.lastname}}
-                        td.text-left {{entry.customerId}}
-                        td.text-right {{entry.ebayName}}
-                        td.text-right {{entry.invoiceId}}
-                        td.text-center
-                            | {{entry.orderId}}
+                        td.text.center(class="bank-details-cell")
+                            a(href='', data-placement='bottom-left', data-type='info', bs-tooltip="{title: 'BANK: {{entry.bank}}\r\nSHOP: {{entry.shop}}\r\nTYP: {{entry.type}}\r\nORDER STATUS: {{entry.orderStatus}}', placement: 'bottom', type: 'info'}")
+                                img(src='/images/ico/{{entry.orderIcon}}')
+                                img(src='/images/ico/{{entry.bankIcon}}')
+                        td.text-left(ng-class="{'danger': entry.amount!=entry.amountOrder}" style="width: 50px")
+                            | {{entry.orderDate | date:'dd.MM.yyyy'}}<br />
+                            | {{entry.transferDate | date:'dd.MM.yyyy'}}<br />
+                        td.text-right(ng-class="{'danger': entry.amount!=entry.amountOrder}")
+                            | {{entry.amountOrder | currency:'':2}}<br />
+                            | {{entry.amount | currency:'':2}}
+                        td.text-left
+                            | O: {{entry.orderId}}
                             span(ng-show='entry.orderIds.length > 0') ({{entry.orderIds}})
-                        td.text-center {{entry.matching * 100}}&nbsp;%
+                            | <br />R: {{entry.invoiceId}} <br />
+                            | B: {{entry.id}}
+                        td.text-left
+                            | {{entry.firstName}}&nbsp;{{entry.lastName}}<br />
+                            | {{entry.customerId}},&nbsp;{{entry.company}}<br />
+                            | {{entry.ebayName}}
+                        td.text-left(style='width:600px')
+                            span(style='width:500px; word-wrap:break-word; display:inline-block;') {{entry.text}}
+                        td.text-center(class='bank-score') {{entry.matching * 100}}&nbsp;%
