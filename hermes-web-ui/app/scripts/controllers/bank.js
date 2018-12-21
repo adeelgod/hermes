@@ -141,13 +141,15 @@
                 }
             }
 
+            $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 2});
+
+            $scope.processStatusCheck();
             BankSvc.process(bankStatements).success(function(data) {
                 $scope.busy = false;
-                $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 5});
-                $scope.processStatusCheck();
+                $alert({content: 'Bank statement processing is done.', placement: 'top', type: 'success', show: true, duration: 5});
             }).error(function(data) {
                 $scope.busy = false;
-                $alert({content: 'Bank statement processing error.', placement: 'top', type: 'danger', show: true, duration: 5});
+                $alert({content: 'Bank statement processing cancelled or finished with errors.', placement: 'top', type: 'danger', show: true, duration: 5});
             });
         };
 
@@ -155,7 +157,7 @@
             if($scope.processStatusJob) {
                 $interval.cancel($scope.processStatusJob);
             }
-            $scope.processStatus();
+
             $scope.processStatusJob = $interval(function() {
                 $scope.processStatus();
             }, 2000);
@@ -163,7 +165,9 @@
 
         $scope.processStatus = function() {
             BankSvc.processStatus().success(function(data) {
-                $scope.processRunning = Boolean(data);
+                $scope.processRunning = Boolean(data.running);
+                var notice = 'Database updates '+data.dbUpdates+'/'+data.totalStatements+', Magento updates '+data.magentoUpdates+'/'+data.totalStatements+'.';
+                $alert({content: notice, placement: 'top', type: 'success', show: true, duration: 2});
                 $log.info(data);
                 if($scope.processRunning===false && $scope.processStatusJob) {
                     $interval.cancel($scope.processStatusJob);

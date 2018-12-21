@@ -19,18 +19,19 @@
 
 
     <logger name="org.springframework" level="DEBUG" />
-    <logger name="org.springframework.beans.factory" level="DEBUG" />
-    <logger name="org.apache.shiro" level="DEBUG" />
-    <logger name="org.glassfish" level="DEBUG" />
-    <logger name="org.eclipse.jetty" level="ERROR" />
+    <logger name="org.springframework.beans.factory" level="INFO" />
+    <logger name="org.apache.shiro" level="INFO" />
+    <logger name="org.glassfish" level="INFO" />
+    <logger name="org.eclipse.jetty" level="INFO" />
 
     <logger name="com.m11n.hermes" level="DEBUG" />
 
     <logger name="org.hibernate.type" level="WARN" />
     <logger name="org.hibernate" level="WARN" />
-    <logger name="org.hibernate.engine.jdbc" level="ERROR" />
+    <logger name="org.hibernate.engine.jdbc" level="INFO" />
+    <logger name="org.apache.camel" level="INFO" />
 
-    <root level="ERROR">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>

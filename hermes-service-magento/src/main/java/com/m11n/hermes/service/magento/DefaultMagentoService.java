@@ -1,5 +1,7 @@
 package com.m11n.hermes.service.magento;
 
+import com.m11n.hermes.core.dto.MagentoOrderServiceResponseDTO;
+import com.m11n.hermes.core.model.MagentoOrderServiceAction;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -73,6 +75,24 @@ public class DefaultMagentoService extends AbstractMagentoService {
         } catch(Exception e) {
         	e.printStackTrace();
         }
+    }
+
+    @Override
+    public MagentoOrderServiceResponseDTO callOrderService(String orderId, MagentoOrderServiceAction action) {
+        logger.debug("################ CALL ORDER SERVICE: order id {}, action {}", orderId, action.getValue());
+
+        Map<String,String> params = new HashMap<>();
+        params.put("name", orderServiceName);
+        params.put("login", orderServiceUsername);
+        params.put("password", orderServicePassword);
+        params.put("id", orderId);
+        params.put("action", action.getValue());
+
+        return restTemplate.getForObject(
+                orderServiceUrl,
+                MagentoOrderServiceResponseDTO.class,
+                params
+        );
     }
 
     @Override

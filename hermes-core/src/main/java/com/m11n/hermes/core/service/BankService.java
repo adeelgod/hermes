@@ -1,6 +1,9 @@
 package com.m11n.hermes.core.service;
 
 import com.m11n.hermes.core.dto.BankStatementDTO;
+import com.m11n.hermes.core.dto.BankStatementProcessStatusDTO;
+import com.m11n.hermes.core.exception.BankStatementDBUpdateException;
+import com.m11n.hermes.core.exception.BankStatementMagentoUpdateException;
 import com.m11n.hermes.core.model.BankMatchIcon;
 import com.m11n.hermes.core.model.BankStatement;
 
@@ -21,9 +24,9 @@ public interface BankService {
 
     List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or);
 
-    boolean processRunning();
+    BankStatementProcessStatusDTO processStatus();
 
-    void process(List<BankStatementDTO> bankStatements);
+    void process(List<BankStatementDTO> bankStatements) throws BankStatementDBUpdateException, BankStatementMagentoUpdateException;
 
     void processCancel();
 }

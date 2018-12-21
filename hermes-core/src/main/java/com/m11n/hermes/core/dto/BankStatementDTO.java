@@ -1,6 +1,5 @@
 package com.m11n.hermes.core.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +12,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BankStatementDTO {
-    private static final String BANK_FIDOR = "fidor";
-    private static final String BANK_HYPOVEIREINSBANK = "hypovereinsbank";
-
     private String orderId;
     private String invoiceId;
     private String bank;
+    private String bankIcon;
     private String shop;
     private String type;
     private String orderStatus;
@@ -40,8 +37,8 @@ public class BankStatementDTO {
     private String action1;
     private String action2;
 
-    @JsonProperty("bankIcon")
-    public String getBankIcon() {
-        return String.format("30_30_%s.bmp", bank);
+    public void setBank(String bank) {
+        this.bank = bank;
+        this.bankIcon = String.format("30_30_%s.bmp", bank);
     }
 }

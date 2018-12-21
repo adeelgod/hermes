@@ -5,16 +5,11 @@
 
 	<groupId>com.m11n.hermes</groupId>
 	<artifactId>hermes</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Hermes :: Parent</name>
-	<inceptionYear>2014-2015</inceptionYear>
-
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://xray691.startdedicated.com:8080/</url>
-	</ciManagement>
+	<inceptionYear>2014-2019</inceptionYear>
 
 	<properties>
 		<hermes.build.timestamp>${maven.build.timestamp}</hermes.build.timestamp>
