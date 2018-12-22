@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -143,7 +144,7 @@ public class DefaultBankService implements BankService {
     @Override
     @Transactional
     public List<BankStatementDTO> listMatched() {
-        //sync();
+        sync();
 
         List<BankMatchIcon> bankMatchIcons = bankRepository.getAllBankMatchIconAndActions();
 
@@ -228,12 +229,14 @@ public class DefaultBankService implements BankService {
             try {
                 for (BankStatementDTO statement : bankStatements) {
                     if (statement.getAction2() != null) {
-                        log.debug("Invoke '{}' magento service for : action {}, order id {}",
+                        log.debug("Invoke '{}' magento service for : action {}, shop {}, order id {}",
                                 getMagentoAction(statement.getAction2()),
+                                statement.getShop(),
                                 statement.getAction2(),
                                 statement.getOrderId());
 
                         magentoService.callOrderService(
+                                statement.getShop(),
                                 statement.getOrderId(),
                                 getMagentoAction(statement.getAction2()));
 

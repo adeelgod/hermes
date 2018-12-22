@@ -102,8 +102,8 @@ public class DebugMagentoService extends AbstractMagentoService {
     }
 
     @Override
-    public MagentoOrderServiceResponseDTO callOrderService(String orderId, MagentoOrderServiceAction action) {
-        logger.debug("################ DEBUG - CALL ORDER SERVICE: order id {}, action {}", orderId, action.getValue());
+    public MagentoOrderServiceResponseDTO callOrderService(String shop, String orderId, MagentoOrderServiceAction action) {
+        logger.debug("################ DEBUG - CALL ORDER SERVICE: shop {}, order id {}, action {}", shop, orderId, action.getValue());
         return new MagentoOrderServiceResponseDTO("success", "Success");
     }
 

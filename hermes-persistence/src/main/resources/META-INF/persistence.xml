@@ -7,12 +7,13 @@
         <class>com.m11n.hermes.core.model.Form</class>
         <class>com.m11n.hermes.core.model.FormField</class>
         <class>com.m11n.hermes.core.model.BankStatement</class>
-        <class>com.m11n.hermes.core.model.BankMatchIcon</class>
+        <!--<class>com.m11n.hermes.core.model.BankMatchIcon</class>-->
         <class>com.m11n.hermes.core.model.DocumentsDocuments</class>
         <class>com.m11n.hermes.core.model.DocumentsPrintjob</class>
         <class>com.m11n.hermes.core.model.DocumentsPrintjobItem</class>
         <class>com.m11n.hermes.core.model.DocumentsOrders</class>
         <class>com.m11n.hermes.core.model.DocumentsTub</class>
         <class>com.m11n.hermes.core.model.DocumentsTubGroup</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
     </persistence-unit>
 </persistence>

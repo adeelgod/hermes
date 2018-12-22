@@ -22,5 +22,5 @@ public interface MagentoService {
 
     List<String> getIntrashipStatuses(String orderId);
 
-    MagentoOrderServiceResponseDTO callOrderService(String orderId, MagentoOrderServiceAction action);
+    MagentoOrderServiceResponseDTO callOrderService(String shop, String orderId, MagentoOrderServiceAction action);
 }

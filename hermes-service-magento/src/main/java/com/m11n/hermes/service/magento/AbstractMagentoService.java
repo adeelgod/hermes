@@ -6,6 +6,9 @@ import com.m11n.hermes.persistence.SalesFlatShipmentCommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
@@ -94,6 +97,14 @@ public abstract class AbstractMagentoService implements MagentoService {
         } catch (Exception e) {
             logger.error(e.toString(), e);
         }
+
+        // Note: here we are making this converter to process any kind of response,
+        // not only application/*json, which is the default behaviour
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+        restTemplate.setMessageConverters(messageConverters);
     }
 
     protected boolean checkSession() {
