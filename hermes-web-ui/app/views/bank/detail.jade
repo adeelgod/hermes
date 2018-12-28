@@ -7,22 +7,8 @@ block content
                     include /parts/form_search
                     .form-group
                         .row
-                            .col-md-6
-                                .btn-group.btn-group-lg
-                                    button.btn.btn-default(type='button', ng-click='toggleAdvanced()', ng-disabled='busy')
-                                        i.fa.fa-cogs
-                                        | &nbsp;
-                                        span(ng-show='advanced') Simple
-                                        span(ng-hide='advanced') Advanced
-                            .col-md-6
+                            .col-md-12
                                 p(ng-show='stopWatch', ng-click='stopWatch=undefined').alert.alert-info {{stopWatch}}
-    .row
-        .col-md-12
-            ul.nav.nav-tabs.nav-justified
-                li(role='presentation', ng-class="{active: step=='step1'}")
-                    a(href='', ng-click="selectStep('step1')") Step 1
-                li(role='presentation', ng-class="{active: step=='step2'}")
-                    a(href='', ng-click="selectStep('step2')") Step 2
     .row(ng-show='loading')
         .col-md-12
             .progress

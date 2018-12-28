@@ -1,5 +1,8 @@
 package com.m11n.hermes.core.service;
 
+import com.m11n.hermes.core.dto.MagentoOrderServiceResponseDTO;
+import com.m11n.hermes.core.model.MagentoOrderServiceAction;
+
 import java.util.List;
 import java.util.Map;
 
@@ -18,4 +21,6 @@ public interface MagentoService {
     List<Map<String, Object>> createIntrashipLabel(String orderId) throws Exception;
 
     List<String> getIntrashipStatuses(String orderId);
+
+    MagentoOrderServiceResponseDTO callOrderService(String shop, String orderId, MagentoOrderServiceAction action);
 }

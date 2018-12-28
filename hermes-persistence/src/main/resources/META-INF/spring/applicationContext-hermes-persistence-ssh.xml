@@ -26,6 +26,14 @@
         <property name="jdbcUrl" value="${hermes.db.fairshea.url}" />
     </bean>
 
+    <bean id="dataSourceFinance" class="com.zaxxer.hikari.HikariDataSource" depends-on="sshTunnel">
+        <property name="username" value="${hermes.db.finance.username}" />
+        <property name="password" value="${hermes.db.finance.password}" />
+        <property name="driverClassName" value="${hermes.db.finance.driver}" />
+        <property name="jdbcUrl" value="${hermes.db.finance.url}" />
+        <property name="autoCommit" value="false" />
+    </bean>
+
     <bean id="dataSourceSubAuswertung" class="com.zaxxer.hikari.HikariDataSource">
         <property name="username" value="${hermes.db.sub.auswertung.username}" />
         <property name="password" value="${hermes.db.sub.auswertung.password}" />

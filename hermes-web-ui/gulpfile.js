@@ -148,6 +148,24 @@ gulp.task('images', function () {
         .pipe(gulp.dest('dist/images'));
 });
 
+gulp.task('assets-tmp', function () {
+    gulp.src(['app/images/**/*'])
+        .pipe($.cache($.imagemin({
+            optimizationLevel: 3,
+            progressive: true,
+            interlaced: true
+        })))
+        .pipe(gulp.dest('.tmp/images'));
+
+    return gulp.src(['app/**/*.json', 'app/**/*.mp3', 'app/**/*.webm'])
+        .pipe($.cache($.imagemin({
+            optimizationLevel: 3,
+            progressive: true,
+            interlaced: true
+        })))
+        .pipe(gulp.dest('.tmp'));
+});
+
 // fonts
 gulp.task('fonts', function () {
     return gulp.src(['bower_components/**/fonts/*.*', 'bower_components/**/font/*.*'])
@@ -196,7 +214,7 @@ gulp.task('connect-dist', function () {
 });
 
 // watch
-gulp.task('watch', ['connect-dev'], function () {
+gulp.task('watch', ['assets-tmp', 'connect-dev'], function () {
     // watch for changes
 
     gulp.watch('app/styles/**/*.less', ['styles']);

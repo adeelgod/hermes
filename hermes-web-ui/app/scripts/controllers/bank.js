@@ -25,13 +25,7 @@
 
             $scope.bankStatements = null;
 
-            var queryFn;
-
-            if(step==='step1') {
-                queryFn = BankSvc.listMatched;
-            } else {
-                queryFn = BankSvc.listUnmatched;
-            }
+            var queryFn = BankSvc.listMatched;
 
             $scope.stopWatch = undefined;
             var start = new Date().getTime();
@@ -41,15 +35,11 @@
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
                     $scope.stopWatch = moment(new Date().getTime()-start).format('mm:ss');
-                    if($scope.step==='step2') {
-                        $scope.filter();
-                    } else {
-                        angular.forEach($scope.bankStatements, function(bs) {
-                            if(bs.matching > 0.8) {
-                                bs._selected = true;
-                            }
-                        });
-                    }
+                    angular.forEach($scope.bankStatements, function(bs) {
+                        if(bs.matching > 0.8) {
+                            bs._selected = true;
+                        }
+                    });
                 }
                 $scope.busy = false;
                 $scope.loading = false;
@@ -89,9 +79,7 @@
                 $scope.bankStatements = data;
                 if($scope.bankStatements.length>0) {
                     $scope.edit(0);
-                    if($scope.step==='step1') {
-                        $scope.filter();
-                    }
+                    $scope.filter();
                 }
                 $scope.busy = false;
             }).error(function(data) {
@@ -129,32 +117,6 @@
             $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
         };
 
-        $scope.next = function() {
-            $scope.select(false);
-            $scope.orders = null;
-            $scope.currentBankStatementIndex++;
-            if($scope.currentBankStatementIndex>=$scope.bankStatements.length) {
-                $scope.currentBankStatementIndex = 0;
-            }
-            $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
-            $scope.currentBankStatement._selected = true;
-            $scope.search = {};
-            $scope.filter();
-        };
-
-        $scope.previous = function() {
-            $scope.select(false);
-            $scope.orders = null;
-            $scope.currentBankStatementIndex--;
-            if($scope.currentBankStatementIndex<0) {
-                $scope.currentBankStatementIndex = $scope.bankStatements.length-1;
-            }
-            $scope.currentBankStatement = $scope.bankStatements[$scope.currentBankStatementIndex];
-            $scope.currentBankStatement._selected = true;
-            $scope.search = {};
-            $scope.filter();
-        };
-
         $scope.save = function() {
             if($scope.currentBankStatement) {
                 BankSvc.save($scope.currentBankStatement);
@@ -179,17 +141,15 @@
                 }
             }
 
+            $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 2});
+
+            $scope.processStatusCheck();
             BankSvc.process(bankStatements).success(function(data) {
                 $scope.busy = false;
-                $alert({content: 'Bank statement are being processed.', placement: 'top', type: 'success', show: true, duration: 5});
-                $scope.processStatusCheck();
-
-                if($scope.step==='step2') {
-                    $scope.next();
-                }
+                $alert({content: 'Bank statement processing is done.', placement: 'top', type: 'success', show: true, duration: 5});
             }).error(function(data) {
                 $scope.busy = false;
-                $alert({content: 'Bank statement processing error.', placement: 'top', type: 'danger', show: true, duration: 5});
+                $alert({content: 'Bank statement processing cancelled or finished with errors.', placement: 'top', type: 'danger', show: true, duration: 5});
             });
         };
 
@@ -197,7 +157,7 @@
             if($scope.processStatusJob) {
                 $interval.cancel($scope.processStatusJob);
             }
-            $scope.processStatus();
+
             $scope.processStatusJob = $interval(function() {
                 $scope.processStatus();
             }, 2000);
@@ -205,7 +165,9 @@
 
         $scope.processStatus = function() {
             BankSvc.processStatus().success(function(data) {
-                $scope.processRunning = Boolean(data);
+                $scope.processRunning = Boolean(data.running);
+                var notice = 'Database updates '+data.dbUpdates+'/'+data.totalStatements+', Magento updates '+data.magentoUpdates+'/'+data.totalStatements+'.';
+                $alert({content: notice, placement: 'top', type: 'success', show: true, duration: 2});
                 $log.info(data);
                 if($scope.processRunning===false && $scope.processStatusJob) {
                     $interval.cancel($scope.processStatusJob);
@@ -238,17 +200,6 @@
                 $scope.busy = false;
                 $alert({content: 'Could not find any matches.', placement: 'top', type: 'danger', show: true, duration: 5});
             });
-        };
-
-        $scope.toggleAdvanced = function() {
-            $scope.advanced = !$scope.advanced;
-
-            if($scope.advanced) {
-                $scope.formName = 'bank_advanced';
-            } else {
-                $scope.formName = 'bank';
-            }
-            $scope.getForm();
         };
 
         $scope.getForm();

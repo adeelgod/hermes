@@ -1,5 +1,7 @@
 package com.m11n.hermes.service.magento;
 
+import com.m11n.hermes.core.dto.MagentoOrderServiceResponseDTO;
+import com.m11n.hermes.core.model.MagentoOrderServiceAction;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
@@ -97,6 +99,12 @@ public class DebugMagentoService extends AbstractMagentoService {
         logger.debug("################ DEBUG - COMPLETE INVOICE: {}", orderId);
         checkSession();
         Thread.sleep(500L);
+    }
+
+    @Override
+    public MagentoOrderServiceResponseDTO callOrderService(String shop, String orderId, MagentoOrderServiceAction action) {
+        logger.debug("################ DEBUG - CALL ORDER SERVICE: shop {}, order id {}, action {}", shop, orderId, action.getValue());
+        return new MagentoOrderServiceResponseDTO("success", "Success");
     }
 
     @Override

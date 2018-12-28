@@ -1,43 +1,44 @@
 package com.m11n.hermes.service.bank;
 
-import com.m11n.hermes.core.model.BankStatement;
-import com.m11n.hermes.core.model.Form;
+import com.m11n.hermes.core.dto.BankStatementDTO;
+import com.m11n.hermes.core.dto.BankStatementProcessStatusDTO;
+import com.m11n.hermes.core.exception.BankStatementDBUpdateException;
+import com.m11n.hermes.core.exception.BankStatementMagentoUpdateException;
+import com.m11n.hermes.core.exception.BankStatementTerminateException;
+import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.core.service.MagentoService;
 import com.m11n.hermes.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @DependsOn("dataInitializer")
-@Transactional
+@Slf4j
 public class DefaultBankService implements BankService {
-
-    private static final Logger logger = LoggerFactory.getLogger(DefaultBankService.class);
 
     @Inject
     private BankStatementRepository bankStatementRepository;
+
+    @Inject
+    private BankRepository bankRepository;
+
+    @Inject
+    private FinanceDao finance;
 
     @Inject
     private AuswertungRepository auswertungRepository;
@@ -47,20 +48,6 @@ public class DefaultBankService implements BankService {
 
     @Inject
     private FormRepository formRepository;
-
-    @Inject
-    @Named("jdbcTemplateAuswertung")
-    protected NamedParameterJdbcTemplate jdbcTemplate;
-
-    private final static BigDecimal MATCH_THRESHOLD_0 = new BigDecimal(0.0d);
-
-    private final static BigDecimal MATCH_THRESHOLD_80 = new BigDecimal(0.8d);
-
-    private final static BigDecimal MATCH_THRESHOLD_100 = new BigDecimal(1.0d);
-
-    private final static String[] ORDER_ATTRIBUTES = new String[] {
-            "orderId", "amount", "ebayName", "firstname", "lastname", "matching"
-    };
 
     private final static String[] REPLACEMENTS = new String[] {
             " ", "\\.", ",", ";", "-", "\\?", ":",
@@ -87,15 +74,11 @@ public class DefaultBankService implements BankService {
     @Value("${hermes.bank.statement.auto.assignment.threshold:90}")
     private int autoAssignmentThreshold = 90;
 
-    private Form bankStatementMatchForm;
-
-    protected ExecutorService matchExecutor = Executors.newFixedThreadPool(1);
-
-    protected AtomicInteger matchRunning = new AtomicInteger(0);
-
-    protected ExecutorService processExecutor = Executors.newFixedThreadPool(1);
-
-    protected AtomicInteger processRunning = new AtomicInteger(0);
+    private AtomicBoolean processRunning = new AtomicBoolean(false);
+    private AtomicBoolean processTerminate = new AtomicBoolean(false);
+    private AtomicInteger dbUpdatesDone = new AtomicInteger(0);
+    private AtomicInteger magentoUpdatesDone = new AtomicInteger(0);
+    private AtomicInteger totalUpdates = new AtomicInteger(0);
 
     @Value("${hermes.bank.statement.invoice.create:true}")
     private boolean createInvoiceEnabled = true;
@@ -103,25 +86,19 @@ public class DefaultBankService implements BankService {
     @Value("${hermes.bank.statement.invoice.complete:true}")
     private boolean completeInvoiceEnabled = true;
 
-    @PostConstruct
-    public void init() {
-        reload();
-    }
-
-    public void reload() {
-        bankStatementMatchForm = formRepository.findByName("bank_match");
-    }
-
+    @Transactional
     public BankStatement save(BankStatement bs) {
         return bankStatementRepository.save(bs);
     }
 
+    @Transactional
     public boolean exists(BankStatement bs) {
         long count = bankStatementRepository.exists(bs.getAccount(), bs.getTransferDate(), bs.getDescriptionb(), bs.getAmount(), bs.getCurrency());
-        logger.info("Bank statement exists: {} - {}", count, bs);
+        log.info("Bank statement exists: {} - {}", count, bs);
         return (count>0L);
     }
 
+    @Transactional
     public BankStatement convert(Map<String, String> entry) throws Exception {
         DecimalFormat nf = (DecimalFormat)DecimalFormat.getInstance(Locale.GERMAN);
         nf.setMaximumFractionDigits(3);
@@ -165,182 +142,156 @@ public class DefaultBankService implements BankService {
     }
 
     @Override
-    public List<BankStatement> listMatched() {
+    @Transactional
+    public List<BankStatementDTO> listMatched() {
         sync();
 
-        Form form = formRepository.findByName("bank_list_matched");
+        List<BankMatchIcon> bankMatchIcons = bankRepository.getAllBankMatchIconAndActions();
 
-        return jdbcTemplate.query(form.getSqlStatement(), Collections.<String, Object>emptyMap(), new BankStatementMapper());
+        return bankRepository
+                .getAllMatched()
+                .stream()
+                .peek((s)-> {
+                    Optional<BankMatchIcon> bm = matchIconAndActions(bankMatchIcons, s.getShop(), s.getType(), s.getOrderStatus());
+                    if (bm.isPresent()) {
+                        s.setOrderIcon(bm.get().getIcon());
+                        s.setAction1(bm.get().getAction1());
+                        s.setAction2(bm.get().getAction2());
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public List<BankStatement> listUnmatched() {
-        return bankStatementRepository.findByStatusAndAmountGreaterThan("new", new BigDecimal(0.0));
+    public Optional<BankMatchIcon> matchIconAndActions(List<BankMatchIcon> bankMatchIcons, String shop, String type, String status) {
+        return bankMatchIcons
+                .stream()
+                .filter(m -> shop.equalsIgnoreCase(m.getShop()) && status.equalsIgnoreCase(m.getStatus()))
+                .filter(m -> m.getType().equals("%") || type.equalsIgnoreCase(m.getType()))
+                .findFirst();
     }
 
-    @Deprecated
-    @Override
-    public void match() {
-        if(matchRunning.get()<=0) {
-            matchRunning.incrementAndGet();
+    private boolean eligibleForAction(String actualAction, String expectedAction) {
+        return (actualAction != null && actualAction.equalsIgnoreCase(expectedAction));
+    }
 
-            matchExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        sync();
+    private MagentoOrderServiceAction getMagentoAction(String bankMatchAction2) {
+        if (eligibleForAction(bankMatchAction2, "shop_generate_invoice")) {
+            return MagentoOrderServiceAction.GENERATE_INVOICE;
+        } else if(eligibleForAction(bankMatchAction2, "shop_complete_after_inkasso")) {
+            return MagentoOrderServiceAction.SET_STATUS_TO_COMPLETED;
+        } else if(eligibleForAction(bankMatchAction2, "shop_complete")) {
+            return MagentoOrderServiceAction.SET_STATUS_TO_COMPLETED;
+        }
+        return null;
+    }
 
-                        // TODO: implement this
-                        logger.debug("Trigger match statement here...");
-                        Thread.sleep(10000);
-                    } catch (Throwable e) {
-                        logger.error(e.toString(), e);
-                    } finally {
-                        matchRunning.set(0);
+    @Transactional(value="financeTransactionManager", rollbackFor = Exception.class)
+    public void process(final List<BankStatementDTO> bankStatements) throws BankStatementDBUpdateException, BankStatementMagentoUpdateException {
+        if (!processRunning.get()) {
+            processRunning.set(true);
+            processTerminate.set(false);
+            dbUpdatesDone.set(0);
+            magentoUpdatesDone.set(0);
+            totalUpdates.set(bankStatements.size());
+
+            // Process action 1 (bank update) for each bank statement
+            try {
+                for (BankStatementDTO statement : bankStatements) {
+
+                    if (eligibleForAction(statement.getAction1(), "change_bank")) {
+                        log.debug("Update {} bank for: {} - {} - {}",
+                                statement.getBank(),
+                                statement.getShop(),
+                                statement.getOrderId(),
+                                statement.getId());
+
+                        finance.updateBank(
+                                Bank.getBank(statement.getBank()),
+                                statement.getShop(),
+                                statement.getOrderId(),
+                                statement.getId());
+                        dbUpdatesDone.incrementAndGet();
+                    }
+
+                    if (processTerminate.get()) {
+                        throw new BankStatementTerminateException("Bank service terminating as DB operations");
                     }
                 }
-            });
-        } else {
-            logger.warn("Please cancel first all match jobs.");
-        }
-    }
+            } catch (Exception ex) {
+                log.error("Error while processing action1 for statements: {}", ex.toString());
+                throw new BankStatementDBUpdateException(ex);
+            } finally {
+                processTerminate.set(false);
+                processRunning.set(false);
+            }
 
-    @Override
-    public boolean matchRunning() {
-        return (matchRunning.get() > 0);
-    }
+            // Process action 2 (magento service call) for each bank statement
+            try {
+                for (BankStatementDTO statement : bankStatements) {
+                    if (statement.getAction2() != null) {
+                        log.debug("Invoke '{}' magento service for : action {}, shop {}, order id {}",
+                                getMagentoAction(statement.getAction2()),
+                                statement.getShop(),
+                                statement.getAction2(),
+                                statement.getOrderId());
 
-    @Override
-    public void matchCancel() {
-        try {
-            matchExecutor.shutdownNow();
-            matchExecutor= Executors.newSingleThreadExecutor();
-        } catch (Exception e) {
-            // ignore
-        }
-        matchRunning.set(0);
+                        magentoService.callOrderService(
+                                statement.getShop(),
+                                statement.getOrderId(),
+                                getMagentoAction(statement.getAction2()));
 
-        logger.warn("Match cancelled.");
-    }
+                        magentoUpdatesDone.incrementAndGet();
+                    }
 
-    public boolean processRunning() {
-        return (processRunning.get() > 0);
-    }
-
-    public void process(final List<BankStatement> bankStatements) {
-        if(processRunning.get()<=0) {
-            processRunning.incrementAndGet();
-
-            processExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        sync();
-
-                        for (BankStatement bankStatement : bankStatements) {
-                            BankStatement orig = bankStatementRepository.findOne(bankStatement.getId());
-
-                            orig.setInvoiceId(bankStatement.getInvoiceId());
-                            orig.setCustomerId(bankStatement.getCustomerId());
-                            orig.setStatus(bankStatement.getStatus());
-                            orig.setOrderId(bankStatement.getOrderId());
-                            orig.setEbayName(bankStatement.getEbayName());
-                            orig.setFirstname(bankStatement.getFirstname());
-                            orig.setLastname(bankStatement.getLastname());
-
-                            bankStatementRepository.save(orig);
-
-                            auswertungRepository.updateOrderPaymentId(bankStatement.getOrderId(), bankStatement.getId());
-
-                            try {
-                                if("confirm".equals(bankStatement.getStatus())) {
-                                    List<Map<String, Object>> orders = auswertungRepository.findOrdersByOrderId(bankStatement.getOrderId());
-
-                                    if(orders!=null && !orders.isEmpty()) {
-                                        Map<String, Object> order = orders.get(0);
-
-                                        String status = order.get("status").toString();
-                                        String type = order.get("type").toString();
-
-                                        if("ebay_vorkasse".equalsIgnoreCase(type) || "shop_vorkasse".equalsIgnoreCase(type)) {
-                                            if(createInvoiceEnabled) {
-                                                logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                                magentoService.createSalesOrderInvoice(bankStatement.getOrderId());
-                                                // TODO: maybe set flag that webservice was executed
-                                            } else {
-                                                logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                            }
-                                        } else if("shop_rechnung".equalsIgnoreCase(type)) {
-                                            if(completeInvoiceEnabled) {
-                                                logger.debug("Invoke webservice for (*** ENABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                                magentoService.completeInvoice(bankStatement.getOrderId());
-                                                // TODO: maybe set flag that webservice was executed
-                                            } else {
-                                                logger.debug("Invoke webservice for (*** DISABLED ***): {} - {} - {}", order.get("orderId"), type, status);
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (Throwable t) {
-                                logger.warn("Magento service call failed: {}", t.getMessage());
-                            }
-                        }
-                    } catch (Throwable e) {
-                        logger.error(e.toString(), e);
-                    } finally {
-                        processRunning.set(0);
+                    if (processTerminate.get()) {
+                        throw new BankStatementTerminateException("Bank service terminating at magento operations");
                     }
                 }
-            });
+            } catch (Exception ex) {
+                log.error("Error while processing action2 (magento update) for statements: {}", ex.toString());
+                throw new BankStatementMagentoUpdateException(ex);
+            } finally {
+                processTerminate.set(false);
+                processRunning.set(false);
+            }
         } else {
-            logger.warn("Please cancel first all bank statement jobs.");
+            log.warn("Please cancel all bank statement jobs first.");
         }
+    }
+
+    public synchronized BankStatementProcessStatusDTO processStatus() {
+        return new BankStatementProcessStatusDTO(
+                magentoUpdatesDone.get(),
+                dbUpdatesDone.get(),
+                totalUpdates.get(),
+                processRunning.get()
+        );
     }
 
     public synchronized void processCancel() {
         try {
-            processExecutor.shutdownNow();
-            processExecutor = Executors.newSingleThreadExecutor();
+            processTerminate.set(true);
         } catch (Exception e) {
-            // ignore
+            log.error("Bank statement processing cancellation failed.", e);
         }
-        processRunning.set(0);
+        processRunning.set(false);
 
-        logger.warn("Bank statement processing cancelled.");
+        log.warn("Bank statement processing cancelled.");
     }
 
+    @Transactional
     public List<Map<String, Object>> filter(String uuid, String lastnameCriteria, boolean amount, boolean amountDiff, boolean lastname, String orderId, boolean or) {
         return auswertungRepository.findBankStatementOrderByFilter(uuid, lastnameCriteria, amount, amountDiff, lastname, orderId, or);
     }
 
-    private void sync() {
-        Form form = formRepository.findByName("update");
-        auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
+    @Transactional
+    public void sync() {
+        // Leaving this for a record only, according to chat with Daniel
+        // "general sync is not needed here, it should be run only on global sync and application startup"
+        // Form updateForm = formRepository.findByName("update");
+        // auswertungRepository.update(updateForm.getSqlStatement(), Collections.emptyMap());
 
-        form = formRepository.findByName("bank_sync");
-        auswertungRepository.update(form.getSqlStatement(), Collections.<String, Object>emptyMap());
-    }
-
-    public static class BankStatementMapper extends BaseRowMapper<BankStatement> {
-        @Override
-        public BankStatement mapRow(ResultSet resultSet, int i) throws SQLException {
-            BankStatement bs = new BankStatement();
-            ResultSetMetaData metaData = resultSet.getMetaData();
-
-            for(int j=1; j<=metaData.getColumnCount(); j++) {
-                String name = getLabel(metaData, j);
-                Object value = getValue(resultSet, j);
-
-                if(value!=null && ("matching".equals(name)
-                        || "amount".equals(name)
-                        || "amountDiff".equals(name)
-                        || "amountOrder".equals(name))) {
-                    value = new BigDecimal(((Double)value));
-                }
-                bs.property(name).set(value);
-            }
-
-            return bs;
-        }
+        Form bankSyncForm = formRepository.findByName("bank_sync_new");
+        auswertungRepository.update(bankSyncForm.getSqlStatement(), Collections.emptyMap());
     }
 }

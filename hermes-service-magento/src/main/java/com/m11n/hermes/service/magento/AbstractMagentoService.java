@@ -6,6 +6,10 @@ import com.m11n.hermes.persistence.SalesFlatShipmentCommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -41,6 +45,18 @@ public abstract class AbstractMagentoService implements MagentoService {
     
     @Value("${hermes.invoice.api.password}")
     protected String invoicePassword;
+
+    @Value("${hermes.order.service.api.url}")
+    protected String orderServiceUrl;
+
+    @Value("${hermes.order.service.api.name}")
+    protected String orderServiceName;
+
+    @Value("${hermes.order.service.api.username}")
+    protected String orderServiceUsername;
+
+    @Value("${hermes.order.service.api.password}")
+    protected String orderServicePassword;
     
     @Value("${hermes.magento.api.retry.max:3}")
     protected Integer retryMax;
@@ -72,6 +88,8 @@ public abstract class AbstractMagentoService implements MagentoService {
 
     protected Mage_Api_Model_Server_V2_HandlerPortType magentoService;
 
+    protected RestTemplate restTemplate = new RestTemplate();
+
     protected void init() throws Exception {
         try {
             MagentoServiceLocator locator = new MagentoServiceLocator();
@@ -79,6 +97,14 @@ public abstract class AbstractMagentoService implements MagentoService {
         } catch (Exception e) {
             logger.error(e.toString(), e);
         }
+
+        // Note: here we are making this converter to process any kind of response,
+        // not only application/*json, which is the default behaviour
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+        restTemplate.setMessageConverters(messageConverters);
     }
 
     protected boolean checkSession() {
