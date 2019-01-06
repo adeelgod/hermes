@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -96,6 +95,22 @@ public class DefaultBankService implements BankService {
         long count = bankStatementRepository.exists(bs.getAccount(), bs.getTransferDate(), bs.getDescriptionb(), bs.getAmount(), bs.getCurrency());
         log.info("Bank statement exists: {} - {}", count, bs);
         return (count>0L);
+    }
+
+    @Transactional
+    public IntegrationReport importStatements(FinanceChannel channel, List<Map<String, String>> entries) {
+        IntegrationReport report =  new IntegrationReport();
+        for(Map<String, String> entry : entries) {
+            report.incrementProcessed();
+            try {
+                // TODO support also other banks
+                finance.importFidor(entry);
+                report.incrementSuccess();
+            } catch (Exception e) {
+                report.reportFailureOnCurrentProcessed(e.getMessage());
+            }
+        }
+        return report;
     }
 
     @Transactional
@@ -206,7 +221,7 @@ public class DefaultBankService implements BankService {
                                 statement.getId());
 
                         finance.updateBank(
-                                Bank.getBank(statement.getBank()),
+                                FinanceChannel.getBank(statement.getBank()),
                                 statement.getShop(),
                                 statement.getOrderId(),
                                 statement.getId());

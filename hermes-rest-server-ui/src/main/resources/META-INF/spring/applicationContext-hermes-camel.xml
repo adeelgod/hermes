@@ -5,12 +5,12 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    <!-- pdf -->
-
+    <!-- TODO\ pdf - do we need it -->
     <bean id="pdfFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*.pdf"/>
     </bean>
 
+    <!-- TODO\ splits - do we need it -->
     <bean id="splitFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
         <property name="fileStore">
             <bean class="java.io.File">
@@ -19,67 +19,39 @@
         </property>
     </bean>
 
-    <!-- csv -->
-
-    <bean id="csvFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
-        <property name="includes" value="*.csv"/>
+    <!-- bank statements -->
+    <bean id="csvFidor" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*Fidorpay-Transaktionen.csv"/>
+    </bean>
+    <bean id="csvHypovereinsbank" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*13536163_Umsatzliste*.csv"/>
+    </bean>
+    <bean id="csvPaypal" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*TRR*.csv"/>
+    </bean>
+    <bean id="tabPaypal" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*TRR*.tab"/>
     </bean>
 
+    <!-- stamps -->
     <bean id="jpgFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*.jpg"/>
     </bean>
 
-    <!--
-    <bean id="csvConfig" class="org.apache.commons.csv.writer.CSVConfig">
-        <property name="fields">
-            <list>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="account" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="transferDate" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="valutaDate" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="receiver1" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="receiver2" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="description" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="amount" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="currency" />
-                </bean>
-            </list>
-        </property>
-    </bean>
-    -->
-
-    <bean id="excelFormat" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-        <property name="staticField" value="org.apache.commons.csv.CSVFormat.EXCEL" />
-    </bean>
-
     <!-- zip -->
-
     <bean id="zipFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*.zip"/>
     </bean>
-
     <bean id="zipSplitter" class="org.apache.camel.dataformat.zipfile.ZipSplitter" />
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <!-- TODO: DO WE NEED IT -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}?readLock=rename&amp;move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
             <to uri="bean:documentSplitProcessor"/>
         </route>
 
+        <!-- zips -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}/?move={{hermes.archive.dir}}&amp;filter=#zipFilter" />
             <split streaming="true">
@@ -89,41 +61,39 @@
             </split>
         </route>
 
+        <!-- fidor -->
         <route>
-            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvFidor&amp;charset=UTF-8" />
             <unmarshal>
-                <!--
-                <csv skipFirstLine="true" autogenColumns="false" delimiter=";" configRef="csvConfig" strategyRef="excelStrategy" useMaps="true" />
-                -->
-                <csv skipHeaderRecord="true" allowMissingColumnNames="false" formatName="EXCEL" delimiter=";" useMaps="true">
-                    <header>account</header>
-                    <header>transferDate</header>
-                    <header>valutaDate</header>
-                    <header>receiver1</header>
-                    <header>receiver2</header>
-                    <header>description</header>
-                    <header>amount</header>
-                    <header>currency</header>
-                </csv>
+                <csv delimiter=";"/>
             </unmarshal>
-            <to uri="bean:bankStatementProcessor"/>
+            <to uri="bean:fidorStatementsProcessor"/>
         </route>
 
+        <!-- hypovereins -->
+        <route>
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvHypovereinsbank&amp;charset=WINDOWS-1252" />
+            <unmarshal>
+                <csv delimiter=";"/>
+            </unmarshal>
+            <to uri="bean:hypovereinsStatementsProcessor"/>
+        </route>
+
+        <!-- paypal -->
+        <route>
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvPaypal&amp;charset=UTF-8" />
+            <unmarshal>
+                <csv delimiter=";"/>
+            </unmarshal>
+            <to uri="bean:paypalStatementsProcessor"/>
+        </route>
+
+        <!-- stamps -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}?move={{hermes.stamps.archive.dir}}&amp;include=.*.jpg|.*.jpeg" />
             <convertBodyTo type="java.io.File" />
             <to uri="bean:hermesStampProcessor"/>
         </route>
-
-        <!--
-        <route>
-            <from uri="file://{{hermes.extract.dir}}?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
-            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... ${file:name}" />
-            <to uri="bean:documentMetaDataProcessor"/>
-            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... type: ${headers.HERMES_DOCUMENT_TYPE} id: ${headers.HERMES_ORDER_ID}" />
-            <to uri="file://./result/" />
-        </route>
-        -->
     </camelContext>
 
 </beans>

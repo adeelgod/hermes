@@ -6,6 +6,8 @@ import com.m11n.hermes.core.exception.BankStatementDBUpdateException;
 import com.m11n.hermes.core.exception.BankStatementMagentoUpdateException;
 import com.m11n.hermes.core.model.BankMatchIcon;
 import com.m11n.hermes.core.model.BankStatement;
+import com.m11n.hermes.core.model.FinanceChannel;
+import com.m11n.hermes.core.model.IntegrationReport;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,8 @@ public interface BankService {
     BankStatement save(BankStatement bs);
 
     boolean exists(BankStatement bs);
+
+    IntegrationReport importStatements(FinanceChannel channel, List<Map<String, String>> entries);
 
     List<BankStatementDTO> listMatched();
 
