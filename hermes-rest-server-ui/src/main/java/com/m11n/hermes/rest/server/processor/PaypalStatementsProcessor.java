@@ -23,8 +23,11 @@ public class PaypalStatementsProcessor {
     private BankService bankService;
 
     @Transactional
-    public void process(List<Map<String, String>> entries) {
+    public void process(List<List<String>> entries) {
+        log.info("Starting Paypal import for {} entries", entries.size());
         IntegrationReport report = bankService.importStatements(FinanceChannel.PAYPAL, entries);
-        log.info("Paypal import done. {}", report.getSummary());
+        log.info("Paypal import {}. {}",
+                report.getFailCount()>0 ? "FAILED" : "COMPLETED",
+                report.getSummary());
     }
 }

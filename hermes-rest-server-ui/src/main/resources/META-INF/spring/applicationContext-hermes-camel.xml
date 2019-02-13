@@ -27,7 +27,7 @@
         <property name="includes" value="*13536163_Umsatzliste*.csv"/>
     </bean>
     <bean id="csvPaypal" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
-        <property name="includes" value="*TRR*.csv"/>
+        <property name="includes" value="*TRR*.CSV"/>
     </bean>
     <bean id="tabPaypal" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*TRR*.tab"/>
@@ -72,18 +72,20 @@
 
         <!-- hypovereins -->
         <route>
-            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvHypovereinsbank&amp;charset=WINDOWS-1252" />
-            <unmarshal>
-                <csv delimiter=";"/>
-            </unmarshal>
-            <to uri="bean:hypovereinsStatementsProcessor"/>
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvHypovereinsbank" />
+            <convertBodyTo type="java.lang.String" charset="ISO-8859-1"/>
+            <to uri="file://{{hermes.archive.dir}}?filename=output.csv&amp;charset=UTF-8" />
+            <!--<unmarshal>-->
+                <!--<csv delimiter=";"/>-->
+            <!--</unmarshal>-->
+            <!--<to uri="bean:hypovereinsStatementsProcessor"/>-->
         </route>
 
         <!-- paypal -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvPaypal&amp;charset=UTF-8" />
             <unmarshal>
-                <csv delimiter=";"/>
+                <csv delimiter=","/>
             </unmarshal>
             <to uri="bean:paypalStatementsProcessor"/>
         </route>

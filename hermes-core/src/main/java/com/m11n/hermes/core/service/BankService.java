@@ -20,7 +20,7 @@ public interface BankService {
 
     boolean exists(BankStatement bs);
 
-    IntegrationReport importStatements(FinanceChannel channel, List<Map<String, String>> entries);
+    IntegrationReport importStatements(FinanceChannel channel, List<List<String>> entries);
 
     List<BankStatementDTO> listMatched();
 

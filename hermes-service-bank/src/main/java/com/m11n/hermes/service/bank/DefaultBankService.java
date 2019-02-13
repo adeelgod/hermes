@@ -8,6 +8,7 @@ import com.m11n.hermes.core.exception.BankStatementTerminateException;
 import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.core.service.MagentoService;
+import com.m11n.hermes.core.util.ExceptionUtil;
 import com.m11n.hermes.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -97,17 +98,16 @@ public class DefaultBankService implements BankService {
         return (count>0L);
     }
 
-    @Transactional
-    public IntegrationReport importStatements(FinanceChannel channel, List<Map<String, String>> entries) {
+    @Transactional(value="financeTransactionManager", rollbackFor = Exception.class)
+    public IntegrationReport importStatements(FinanceChannel channel, List<List<String>> entries) {
         IntegrationReport report =  new IntegrationReport();
-        for(Map<String, String> entry : entries) {
+        for(List<String> entry : entries) {
             report.incrementProcessed();
             try {
-                // TODO support also other banks
-                finance.importFidor(entry);
+                finance.importFinanceData(channel, entry);
                 report.incrementSuccess();
             } catch (Exception e) {
-                report.reportFailureOnCurrentProcessed(e.getMessage());
+                report.reportFailureOnCurrentProcessed(ExceptionUtil.unwindException(e).getMessage());
             }
         }
         return report;

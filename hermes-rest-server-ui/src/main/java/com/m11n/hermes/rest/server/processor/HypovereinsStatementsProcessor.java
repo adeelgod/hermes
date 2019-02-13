@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -18,8 +17,11 @@ public class HypovereinsStatementsProcessor {
     private BankService bankService;
 
     @Transactional
-    public void process(List<Map<String, String>> entries) {
+    public void process(List<List<String>> entries) {
+        log.info("Starting Hypovereinsbank import for {} entries", entries.size());
         IntegrationReport report = bankService.importStatements(FinanceChannel.HYPOVEREINSBANK, entries);
-        log.info("Hypovereinsbank import done. {}", report.getSummary());
+        log.info("Hypovereinsbank import {}. {}",
+                report.getFailCount()>0 ? "FAILED" : "COMPLETED",
+                report.getSummary());
     }
 }

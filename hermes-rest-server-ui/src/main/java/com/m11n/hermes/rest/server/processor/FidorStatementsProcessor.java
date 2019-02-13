@@ -18,8 +18,11 @@ public class FidorStatementsProcessor {
     private BankService bankService;
 
     @Transactional
-    public void process(List<Map<String, String>> entries) {
+    public void process(List<List<String>> entries) {
+        log.info("Starting Fidor import for {} entries", entries.size());
         IntegrationReport report = bankService.importStatements(FinanceChannel.FIDOR, entries);
-        log.info("Fidor import done. {}", report.getSummary());
+        log.info("Fidor import {}. {}",
+                report.getFailCount()>0 ? "FAILED" : "COMPLETED",
+                report.getSummary());
     }
 }
