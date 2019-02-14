@@ -72,13 +72,12 @@
 
         <!-- hypovereins -->
         <route>
-            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvHypovereinsbank" />
-            <convertBodyTo type="java.lang.String" charset="ISO-8859-1"/>
-            <to uri="file://{{hermes.archive.dir}}?filename=output.csv&amp;charset=UTF-8" />
-            <!--<unmarshal>-->
-                <!--<csv delimiter=";"/>-->
-            <!--</unmarshal>-->
-            <!--<to uri="bean:hypovereinsStatementsProcessor"/>-->
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvHypovereinsbank&amp;charset=UTF-16LE" />
+            <convertBodyTo type="java.lang.String" charset="UTF-16LE"/>
+            <unmarshal>
+                <csv delimiter=";"/>
+            </unmarshal>
+            <to uri="bean:hypovereinsStatementsProcessor"/>
         </route>
 
         <!-- paypal -->
