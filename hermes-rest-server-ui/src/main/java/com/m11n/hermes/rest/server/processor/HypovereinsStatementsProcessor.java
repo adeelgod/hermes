@@ -16,12 +16,15 @@ public class HypovereinsStatementsProcessor {
     @Inject
     private BankService bankService;
 
-    @Transactional
+    @Transactional(value="financeTransactionManager", rollbackFor = Exception.class)
     public void process(List<List<String>> entries) {
         log.info("Starting Hypovereinsbank import for {} entries", entries.size());
         IntegrationReport report = bankService.importStatements(FinanceChannel.HYPOVEREINSBANK, entries);
         log.info("Hypovereinsbank import {}. {}",
                 report.getFailCount()>0 ? "FAILED" : "COMPLETED",
                 report.getSummary());
+        if (report.getFailCount()>0) {
+            throw new RuntimeException("Import failed");
+        }
     }
 }

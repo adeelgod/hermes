@@ -98,7 +98,6 @@ public class DefaultBankService implements BankService {
         return (count>0L);
     }
 
-    @Transactional(value="financeTransactionManager", rollbackFor = Exception.class)
     public IntegrationReport importStatements(FinanceChannel channel, List<List<String>> entries) {
         IntegrationReport report =  new IntegrationReport();
         for(List<String> entry : entries) {

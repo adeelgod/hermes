@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -17,12 +16,15 @@ public class FidorStatementsProcessor {
     @Inject
     private BankService bankService;
 
-    @Transactional
+    @Transactional(value="financeTransactionManager", rollbackFor = Exception.class)
     public void process(List<List<String>> entries) {
         log.info("Starting Fidor import for {} entries", entries.size());
         IntegrationReport report = bankService.importStatements(FinanceChannel.FIDOR, entries);
         log.info("Fidor import {}. {}",
                 report.getFailCount()>0 ? "FAILED" : "COMPLETED",
                 report.getSummary());
+        if (report.getFailCount()>0) {
+            throw new RuntimeException("Import failed");
+        }
     }
 }

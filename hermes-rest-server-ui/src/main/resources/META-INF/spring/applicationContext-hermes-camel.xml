@@ -45,6 +45,15 @@
     <bean id="zipSplitter" class="org.apache.camel.dataformat.zipfile.ZipSplitter" />
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <onException>
+            <exception>java.lang.Exception</exception>
+            <redeliveryPolicy disableRedelivery="true" />
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <to uri="log:error processing message"/>
+        </onException>
+
         <!-- TODO: DO WE NEED IT -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}?readLock=rename&amp;move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
