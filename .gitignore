@@ -32,3 +32,5 @@ hermes-rest-server-ui/inbox
 hermes-rest-server-ui/result
 hermes-rest-server-ui/templates
 hermes-rest-server-ui/.splitcache
+
+.DS_Store

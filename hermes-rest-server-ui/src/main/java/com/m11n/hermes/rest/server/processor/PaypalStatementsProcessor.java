@@ -17,7 +17,8 @@ public class PaypalStatementsProcessor {
     @Inject
     private BankService bankService;
 
-    @Transactional(value="financeTransactionManager", rollbackFor = Exception.class)
+    // Explicitly requested not to rollback when one of rows failed to be inserted
+    @Transactional(value="financeTransactionManager", noRollbackFor = Exception.class)
     public void process(List<List<String>> entries) {
         log.info("Starting Paypal import for {} entries", entries.size());
         IntegrationReport report = bankService.importStatements(FinanceChannel.PAYPAL, entries);
