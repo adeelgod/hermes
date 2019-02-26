@@ -28,6 +28,9 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
+    <bean class="com.m11n.hermes.rest.server.conf.CamelNonProductionConfig"/>
+    <bean class="com.m11n.hermes.rest.server.conf.CamelProductionConfig"/>
+
     <context:component-scan base-package="com.m11n.hermes">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
@@ -41,7 +44,6 @@
     <!--IN ORDER TO USE IT LOCALLY YOU CAN CHANGE TO DIRECT-->
     <!--<import resource="applicationContext-hermes-persistence-direct.xml" />-->
     <import resource="applicationContext-hermes-cache.xml" />
-    <import resource="applicationContext-hermes-camel.xml" />
     <import resource="applicationContext-hermes-support.xml" />
 
     <bean class="com.m11n.hermes.similarity.StringSimilarityServiceImpl">

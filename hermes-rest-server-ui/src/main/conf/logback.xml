@@ -16,6 +16,9 @@
     </appender>
 
     <logger name="com.m11n.hermes" level="DEBUG" />
+    <logger name="com.zaxxer.hikari" level="INFO" />
+    <logger name="org.spring.jdbc.core" level="INFO" />
+    <logger name="org.spring.orm.jpa.JpaTransactionManager" level="INFO" />
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

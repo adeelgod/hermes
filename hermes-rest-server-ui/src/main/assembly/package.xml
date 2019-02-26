@@ -12,24 +12,12 @@
             <outputDirectory>${project.artifactId}</outputDirectory>
             <destName>${project.artifactId}.jar</destName>
         </file>
-        <!--
         <file>
-            <source>${project.build.directory}/${project.artifactId}.exe</source>
+            <source>${basedir}/src/main/resources/META-INF/spring/applicationContext-hermes-camel.xml</source>
             <outputDirectory>${project.artifactId}</outputDirectory>
-            <destName>${project.artifactId}.exe</destName>
         </file>
-        -->
     </files>
     <fileSets>
-        <!--
-        <fileSet>
-            <directory>${project.build.directory}</directory>
-            <outputDirectory>${project.artifactId}</outputDirectory>
-            <includes>
-                <include>${project.artifactId}-${project.version}-shaded.jar</include>
-            </includes>
-        </fileSet>
-        -->
         <fileSet>
             <directory>${basedir}/src/main/conf</directory>
             <outputDirectory>${project.artifactId}</outputDirectory>
@@ -37,15 +25,6 @@
                 <include>**/*</include>
             </includes>
         </fileSet>
-        <!--
-        <fileSet>
-            <directory>${basedir}/src/main/examples</directory>
-            <outputDirectory>${project.artifactId}/examples</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
-        -->
         <fileSet>
             <directory>${basedir}/src/main/templates</directory>
             <outputDirectory>${project.artifactId}/templates</outputDirectory>
@@ -60,15 +39,5 @@
                 <include>**/*</include>
             </includes>
         </fileSet>
-        <!-- 
-        <fileSet>
-            <directory>${basedir}/../hermes-doc/target/generated-docs</directory>
-            <outputDirectory>${project.artifactId}/doc</outputDirectory>
-            <includes>
-                <include>**/*.pdf</include>
-                <include>**/*.html</include>
-            </includes>
-        </fileSet>
-         -->
     </fileSets>
 </assembly>

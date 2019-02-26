@@ -5,12 +5,12 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    <!-- pdf -->
-
+    <!-- TODO\ pdf - do we need it -->
     <bean id="pdfFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*.pdf"/>
     </bean>
 
+    <!-- TODO\ splits - do we need it -->
     <bean id="splitFileRepo" class="org.apache.camel.processor.idempotent.FileIdempotentRepository">
         <property name="fileStore">
             <bean class="java.io.File">
@@ -19,67 +19,48 @@
         </property>
     </bean>
 
-    <!-- csv -->
-
-    <bean id="csvFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
-        <property name="includes" value="*.csv"/>
+    <!-- bank statements filters -->
+    <bean id="csvFidor" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*Fidorpay-Transaktionen.csv"/>
+    </bean>
+    <bean id="csvHypovereinsbank" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*13536163_Umsatzliste*.csv"/>
+    </bean>
+    <bean id="csvPaypal" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*TRR*.CSV"/>
+    </bean>
+    <bean id="tabPaypal" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
+        <property name="includes" value="*TRR*.tab"/>
     </bean>
 
+    <!-- stamps -->
     <bean id="jpgFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*.jpg"/>
     </bean>
 
-    <!--
-    <bean id="csvConfig" class="org.apache.commons.csv.writer.CSVConfig">
-        <property name="fields">
-            <list>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="account" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="transferDate" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="valutaDate" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="receiver1" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="receiver2" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="description" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="amount" />
-                </bean>
-                <bean class="org.apache.commons.csv.writer.CSVField">
-                    <property name="name" value="currency" />
-                </bean>
-            </list>
-        </property>
-    </bean>
-    -->
-
-    <bean id="excelFormat" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-        <property name="staticField" value="org.apache.commons.csv.CSVFormat.EXCEL" />
-    </bean>
-
     <!-- zip -->
-
     <bean id="zipFilter" class="org.apache.camel.component.file.AntPathMatcherGenericFileFilter">
         <property name="includes" value="*.zip"/>
     </bean>
-
     <bean id="zipSplitter" class="org.apache.camel.dataformat.zipfile.ZipSplitter" />
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <onException>
+            <exception>java.lang.Exception</exception>
+            <redeliveryPolicy disableRedelivery="true" />
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <to uri="log:error processing message"/>
+        </onException>
+
+        <!-- TODO: DO WE NEED IT -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}?readLock=rename&amp;move={{hermes.archive.dir}}&amp;idempotentKey=${file:name}-${file:size}-${file:modified}&amp;idempotentRepository=#splitFileRepo&amp;filter=#pdfFilter" />
             <to uri="bean:documentSplitProcessor"/>
         </route>
 
+        <!-- zips -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}/?move={{hermes.archive.dir}}&amp;filter=#zipFilter" />
             <split streaming="true">
@@ -89,41 +70,73 @@
             </split>
         </route>
 
+        <!-- bank statement integration -->
         <route>
-            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvFilter&amp;charset=WINDOWS-1252" />
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvFidor&amp;charset=UTF-8" />
+            <setProperty propertyName="name"><constant>fidor</constant></setProperty>
+            <setProperty propertyName="statement"><constant>INSERT INTO fidor_raw(`date`, `text`, `text2`, `value`) VALUES (:1, :2, :3, :4)</constant></setProperty>
+            <setProperty propertyName="expectedColumns"><constant>4</constant></setProperty>
             <unmarshal>
-                <!--
-                <csv skipFirstLine="true" autogenColumns="false" delimiter=";" configRef="csvConfig" strategyRef="excelStrategy" useMaps="true" />
-                -->
-                <csv skipHeaderRecord="true" allowMissingColumnNames="false" formatName="EXCEL" delimiter=";" useMaps="true">
-                    <header>account</header>
-                    <header>transferDate</header>
-                    <header>valutaDate</header>
-                    <header>receiver1</header>
-                    <header>receiver2</header>
-                    <header>description</header>
-                    <header>amount</header>
-                    <header>currency</header>
-                </csv>
+                <csv delimiter=";"/>
             </unmarshal>
-            <to uri="bean:bankStatementProcessor"/>
+            <to uri="bean:bankStatementsProcessor"/>
         </route>
 
+        <!-- hypovereins -->
+        <route>
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvHypovereinsbank&amp;charset=UTF-16LE" />
+            <convertBodyTo type="java.lang.String" charset="UTF-16LE"/>
+            <setProperty propertyName="name"><constant>hypovereinsbank</constant></setProperty>
+            <setProperty propertyName="statement"><constant>
+                INSERT INTO `hypovereinsbank_raw` (`Kontonummer`, `Buchungsdatum`, `Valuta`, `Empfaenger_1`, `Empfaenger_2`, `Verwendungszweck`, `Betrag`, `Waehrung`)
+                VALUES (:1, :2, :3, :4, :5, :6, :7, :8)
+            </constant></setProperty>
+            <setProperty propertyName="expectedColumns"><constant>8</constant></setProperty>
+            <unmarshal>
+                <csv delimiter=";"/>
+            </unmarshal>
+            <to uri="bean:bankStatementsProcessor"/>
+        </route>
+
+        <!-- paypal -->
+        <route>
+            <from uri="file://{{hermes.inbox.dir}}?move={{hermes.archive.dir}}&amp;filter=#csvPaypal&amp;charset=UTF-8" />
+            <setProperty propertyName="name"><constant>paypal</constant></setProperty>
+            <setProperty propertyName="statement"><constant>
+                INSERT INTO `paypal_raw` (`code1`, `Transaktionscode`, `Rechnungsnummer`, `PayPal-Referenznummer`,
+                `PayPal-Referenznummer_Typ`, `Transaktionsereigniscode`, `Transaktionseinleitungsdatum`,
+                `Transaktionsabschlussdatum`, `Transaktion_Gutschrift_oder_Belastung`, `Bruttotransaktionsbetrag`,
+                `Währung_der_Transaktion`, `Gebühr_Soll_oder_Haben`, `Gebührenbetrag`, `Währung_der_Gebühr`,
+                `Transaktionsstatus`, `Versicherungsbetrag`, `Umsatzsteuerbetrag`, `Versandkosten`, `Transaktionsgegenstand`,
+                `Transaktionshinweis`, `Kontokennung_des_Käufers`, `Adressenstatus_des_Käufers`, `Artikelbezeichnung`,
+                `Artikelnummer`, `Name_Option_1`, `Wert_Option_1`, `Name_Option_2`, `Wert_Option_2`, `Auktions-Site`,
+                `Käufer-ID`, `Auktionsende`, `Versandadresse_Zeile_1`, `Lieferadresse_Zeile_2`, `Versandadresse_Ort`,
+                `Lieferadresse_Bundesland`, `Lieferadresse_PLZ`, `Versandadresse_Land`, `Versandmethode`,
+                `Benutzerdefiniertes_Feld`, `Rechnungsadresse_Zeile_1`, `Rechnungsadresse_Zeile_2`, `Rechnungsadresse_Ort`,
+                `Rechnungsadresse_Staat`, `Rechnungsadresse_PLZ`, `Rechnungsadresse_Land`, `Kundennummer`, `Vorname`,
+                `Nachname`, `Firmenname`, `Kartentyp`, `Zahlungsquelle`, `Versandname`, `Autorisierungsstatus`,
+                `Anspruch_auf_Verkäuferschutz`, `Zahlungsverfolgungs-ID`, `Filiale`, `Kasse`, `Gutscheine`,
+                `Sonderangebote`, `Kundenkartennummer`, `Zahlungstyp`, `Alternative_Lieferadresse_Zeile_1`,
+                `Alternative_Lieferadresse_Zeile_2`, `Alternative_Lieferadresse_Ort`, `Alternative_Lieferadresse_Bundesland`,
+                `Alternative_Lieferadresse_Land`, `Alternative_Lieferadresse_PLZ`, `3PL-Referenznummer`, `Geschenkkartennummer`)
+                VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17, :18, :19, :20, :21,
+                :22, :23, :24, :25, :26, :27, :28, :29, :30, :31, :32, :33, :34, :35, :36, :37, :38, :39, :40, :41,
+                :42, :43, :44, :45, :46, :47, :48, :49, :50, :51, :52, :53, :54, :55, :56, :57, :58, :59, :60, :61,
+                :62, :63, :64, :65, :66, :67, :68, :69)
+            </constant></setProperty>
+            <setProperty propertyName="expectedColumns"><constant>69</constant></setProperty>
+            <unmarshal>
+                <csv delimiter=","/>
+            </unmarshal>
+            <to uri="bean:bankStatementsProcessor"/>
+        </route>
+
+        <!-- stamps -->
         <route>
             <from uri="file://{{hermes.inbox.dir}}?move={{hermes.stamps.archive.dir}}&amp;include=.*.jpg|.*.jpeg" />
             <convertBodyTo type="java.io.File" />
             <to uri="bean:hermesStampProcessor"/>
         </route>
-
-        <!--
-        <route>
-            <from uri="file://{{hermes.extract.dir}}?delete=false&amp;idempotent=false&amp;filter=#pdfFilter" />
-            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... ${file:name}" />
-            <to uri="bean:documentMetaDataProcessor"/>
-            <log logName="com.m11n.hermes" loggingLevel="DEBUG" message="########## META DATA PDF... type: ${headers.HERMES_DOCUMENT_TYPE} id: ${headers.HERMES_ORDER_ID}" />
-            <to uri="file://./result/" />
-        </route>
-        -->
     </camelContext>
 
 </beans>

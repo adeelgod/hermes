@@ -8,6 +8,7 @@ import com.m11n.hermes.core.exception.BankStatementTerminateException;
 import com.m11n.hermes.core.model.*;
 import com.m11n.hermes.core.service.BankService;
 import com.m11n.hermes.core.service.MagentoService;
+import com.m11n.hermes.core.util.ExceptionUtil;
 import com.m11n.hermes.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -96,6 +96,20 @@ public class DefaultBankService implements BankService {
         long count = bankStatementRepository.exists(bs.getAccount(), bs.getTransferDate(), bs.getDescriptionb(), bs.getAmount(), bs.getCurrency());
         log.info("Bank statement exists: {} - {}", count, bs);
         return (count>0L);
+    }
+
+    public IntegrationReport importStatements(String statement, Integer expectedColumns, List<List<String>> entries) {
+        IntegrationReport report =  new IntegrationReport();
+        for(List<String> entry : entries) {
+            report.incrementProcessed();
+            try {
+                finance.importBankData(statement, expectedColumns, entry);
+                report.incrementSuccess();
+            } catch (Exception e) {
+                report.reportFailureOnCurrentProcessed(ExceptionUtil.unwindException(e).getMessage());
+            }
+        }
+        return report;
     }
 
     @Transactional
@@ -206,7 +220,7 @@ public class DefaultBankService implements BankService {
                                 statement.getId());
 
                         finance.updateBank(
-                                Bank.getBank(statement.getBank()),
+                                FinanceChannel.getBank(statement.getBank()),
                                 statement.getShop(),
                                 statement.getOrderId(),
                                 statement.getId());
