@@ -29,59 +29,8 @@ public class FinanceDao extends AbstractFinanceDao {
         jdbcTemplate.update(sql, Collections.EMPTY_MAP);
     }
 
-    public void importFinanceData(FinanceChannel channel, List<String> row) {
-        switch (channel) {
-            case FIDOR: importFidor(row); return;
-            case HYPOVEREINSBANK: importHypovereinsbank(row); return;
-            case PAYPAL: importPayPal(row); return;
-            default: throw new UnsupportedOperationException(String.format("Unsupported bank import: %s", channel));
-        }
-    }
-
-    private void importHypovereinsbank(List<String> row) {
-        if (validate(row, 8)) {
-            String sql = "INSERT INTO `hypovereinsbank_raw` (`Kontonummer`, `Buchungsdatum`, `Valuta`, `Empfaenger_1`, `Empfaenger_2`, `Verwendungszweck`, `Betrag`, `Waehrung`)" +
-                    " VALUES (:account, :date, :value, :recipient1, :recipient2, :reason, :amount, :currency)";
-            Map<String, Object> parameters = new HashMap<String, Object>() {
-                {
-                    put("account", row.get(0));
-                    put("date", row.get(1));
-                    put("value", row.get(2));
-                    put("recipient1", row.get(3));
-                    put("recipient2", row.get(4));
-                    put("reason", row.get(5));
-                    put("amount", row.get(6));
-                    put("currency", row.get(7));
-                }
-            };
-
-            jdbcTemplate.update(sql, parameters);
-        }
-    }
-
-    private void importPayPal(List<String> row) {
-        if (validate(row, 69)) {
-            String sql = "INSERT INTO `paypal_raw` (`code1`, `Transaktionscode`, `Rechnungsnummer`, `PayPal-Referenznummer`, " +
-                    "`PayPal-Referenznummer_Typ`, `Transaktionsereigniscode`, `Transaktionseinleitungsdatum`, " +
-                    "`Transaktionsabschlussdatum`, `Transaktion_Gutschrift_oder_Belastung`, `Bruttotransaktionsbetrag`, " +
-                    "`Währung_der_Transaktion`, `Gebühr_Soll_oder_Haben`, `Gebührenbetrag`, `Währung_der_Gebühr`, " +
-                    "`Transaktionsstatus`, `Versicherungsbetrag`, `Umsatzsteuerbetrag`, `Versandkosten`, `Transaktionsgegenstand`, " +
-                    "`Transaktionshinweis`, `Kontokennung_des_Käufers`, `Adressenstatus_des_Käufers`, `Artikelbezeichnung`, " +
-                    "`Artikelnummer`, `Name_Option_1`, `Wert_Option_1`, `Name_Option_2`, `Wert_Option_2`, `Auktions-Site`, " +
-                    "`Käufer-ID`, `Auktionsende`, `Versandadresse_Zeile_1`, `Lieferadresse_Zeile_2`, `Versandadresse_Ort`, " +
-                    "`Lieferadresse_Bundesland`, `Lieferadresse_PLZ`, `Versandadresse_Land`, `Versandmethode`, " +
-                    "`Benutzerdefiniertes_Feld`, `Rechnungsadresse_Zeile_1`, `Rechnungsadresse_Zeile_2`, `Rechnungsadresse_Ort`, " +
-                    "`Rechnungsadresse_Staat`, `Rechnungsadresse_PLZ`, `Rechnungsadresse_Land`, `Kundennummer`, `Vorname`, " +
-                    "`Nachname`, `Firmenname`, `Kartentyp`, `Zahlungsquelle`, `Versandname`, `Autorisierungsstatus`, " +
-                    "`Anspruch_auf_Verkäuferschutz`, `Zahlungsverfolgungs-ID`, `Filiale`, `Kasse`, `Gutscheine`, " +
-                    "`Sonderangebote`, `Kundenkartennummer`, `Zahlungstyp`, `Alternative_Lieferadresse_Zeile_1`, " +
-                    "`Alternative_Lieferadresse_Zeile_2`, `Alternative_Lieferadresse_Ort`, `Alternative_Lieferadresse_Bundesland`, " +
-                    "`Alternative_Lieferadresse_Land`, `Alternative_Lieferadresse_PLZ`, `3PL-Referenznummer`, `Geschenkkartennummer`) " +
-                    "VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17, :18, :19, :20, :21, " +
-                    ":22, :23, :24, :25, :26, :27, :28, :29, :30, :31, :32, :33, :34, :35, :36, :37, :38, :39, :40, :41, " +
-                    ":42, :43, :44, :45, :46, :47, :48, :49, :50, :51, :52, :53, :54, :55, :56, :57, :58, :59, :60, :61, " +
-                    ":62, :63, :64, :65, :66, :67, :68, :69)";
-
+    public void importBankData(String insertStatement, int expectedColumns, List<String> row) {
+        if (validate(row, expectedColumns)) {
             SqlParameterSource parameters = new MapSqlParameterSource();
             int number = 1;
             for (String val : row) {
@@ -89,23 +38,7 @@ public class FinanceDao extends AbstractFinanceDao {
                 number++;
             }
 
-            jdbcTemplate.update(sql, parameters);
-        }
-    }
-
-    private void importFidor(List<String> row) {
-        if (validate(row, 4)) {
-            String sql = "INSERT INTO fidor_raw(`date`, `text`, `text2`, `value`) VALUES (:date, :text, :text2, :value)";
-            Map<String, Object> parameters = new HashMap<String, Object>() {
-                {
-                    put("date", row.get(0));
-                    put("text", row.get(1));
-                    put("text2", row.get(2));
-                    put("value", row.get(3));
-                }
-            };
-
-            jdbcTemplate.update(sql, parameters);
+            jdbcTemplate.update(insertStatement, parameters);
         }
     }
 

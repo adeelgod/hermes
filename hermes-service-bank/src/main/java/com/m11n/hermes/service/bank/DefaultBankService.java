@@ -98,12 +98,12 @@ public class DefaultBankService implements BankService {
         return (count>0L);
     }
 
-    public IntegrationReport importStatements(FinanceChannel channel, List<List<String>> entries) {
+    public IntegrationReport importStatements(String statement, Integer expectedColumns, List<List<String>> entries) {
         IntegrationReport report =  new IntegrationReport();
         for(List<String> entry : entries) {
             report.incrementProcessed();
             try {
-                finance.importFinanceData(channel, entry);
+                finance.importBankData(statement, expectedColumns, entry);
                 report.incrementSuccess();
             } catch (Exception e) {
                 report.reportFailureOnCurrentProcessed(ExceptionUtil.unwindException(e).getMessage());
