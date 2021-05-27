@@ -2,6 +2,7 @@ package com.m11n.hermes.service.magento;
 
 import com.m11n.hermes.core.dto.MagentoOrderServiceResponseDTO;
 import com.m11n.hermes.core.model.MagentoOrderServiceAction;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -11,10 +12,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import org.json.JSONObject;
 
 @Profile("production")
 @Service
@@ -46,14 +46,94 @@ public class DefaultMagentoService extends AbstractMagentoService {
         return result;
     }
 
+    public Properties getApiConfig(String target, String action) throws Exception {
+        Properties config = PropertiesUtil.getProperties();
+        Properties apiConfig = new Properties();
+
+        String configkey = "";
+        switch(action) {
+            case "shipment":
+                configkey = "hermes.shipment." + target + ".api1.url";
+                apiConfig.setProperty("url", config.getProperty(configkey));
+
+                configkey = "hermes.shipment." + target + ".api.username";
+                apiConfig.setProperty("username", config.getProperty(configkey));
+
+                configkey = "hermes.shipment." + target + ".api.password";
+                apiConfig.setProperty("password", config.getProperty(configkey));
+
+                break;
+            case "label":
+                configkey = "hermes.shipment." + target + ".api2.url";
+                apiConfig.setProperty("url", config.getProperty(configkey));
+
+                configkey = "hermes.shipment." + target + ".api.username";
+                apiConfig.setProperty("username", config.getProperty(configkey));
+
+                configkey = "hermes.shipment." + target + ".api.password";
+                apiConfig.setProperty("password", config.getProperty(configkey));
+                break;
+            default:
+                break;
+        }
+
+        return apiConfig;
+    }
+
+    public String convertResponseToString(String strJson) {
+        JSONObject jsonObject = new JSONObject(strJson);
+        String strResult = (String)jsonObject.get("result");
+        String strMessage = (String)jsonObject.get("message");
+
+        String result = strResult + " :: " + strMessage;
+
+        return result;
+    }
+
     @Override
-    public String createShipment(String orderId) throws Exception {
-        checkSession();
-        String shipmentId = magentoService.salesOrderShipmentCreate(sessionId, orderId, new OrderItemIdQty[0], "", 0, 0);
+    public String createShipment(String target, String orderId) throws Exception {
+        //orderId = "300277659";
 
-        logger.info("********* CREATE SHIPMENT: {} - {}", orderId, shipmentId);
+		logger.debug("********* Create Shipment: {}", orderId);
+		
+        Properties apiConfig = getApiConfig(target, "shipment");
+        String url = apiConfig.getProperty("url") + "&login=" + apiConfig.getProperty("username") + "&password=" + apiConfig.getProperty("password") + "&id=" + orderId;
+		
+		logger.debug("Shipment API URL :: " + url);
 
-        return shipmentId;
+        Request req = new Request.Builder().url(url).build();
+        Response res = client.newCall(req).execute();
+        logger.debug("Response received ");
+        final String resp = res.body().string();
+        try {
+            res.body().close();
+        } catch(Exception e) {
+            logger.debug("createShipment ERROR : ", e);
+        }
+
+        return resp;
+
+    }
+
+    @Override
+    public String createShippingLabel(String target, String orderId) throws Exception {
+        //orderId = "300277659";
+        Properties apiConfig = getApiConfig(target, "label");
+
+        String url = apiConfig.getProperty("url") + "&login=" + apiConfig.getProperty("username") + "&password=" + apiConfig.getProperty("password") + "&id=" + orderId;
+
+        Request req = new Request.Builder().url(url).build();
+        Response res = client.newCall(req).execute();
+        logger.debug("Response received ");
+        final String resp = res.body().string();
+        try {
+            res.body().close();
+        } catch(Exception e) {
+            logger.debug("createShippingLabel ERROR : ", e);
+        }
+
+        return resp;
+
     }
 
     @Override
@@ -96,16 +176,19 @@ public class DefaultMagentoService extends AbstractMagentoService {
     }
 
     @Override
-    protected List<String> doCreateIntrashipLabel(String orderId) throws Exception {
+    protected List<String> doCreateIntrashipLabel(String target, String orderId) throws Exception {
+        //orderId = "300277659";
+        Properties apiConfig = getApiConfig(target, "label");
         logger.debug("********* DO CREATE INTRASHIP LABEL: {}", orderId);
         client.setConnectTimeout(timeout, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(timeout, TimeUnit.SECONDS);    // socket timeout
-        final String url = shipmentUrl + "?login=" + shipmentUsername + "&password=" + shipmentPassword + "&id=" + orderId;
-        logger.debug("Shipment URL :: " + url);
+        final String url = apiConfig.getProperty("url") + "&login=" + apiConfig.getProperty("username") + "&password=" + apiConfig.getProperty("password") + "&id=" + orderId;
+        logger.debug("Shipping Label API URL :: " + url);
         Request req = new Request.Builder().url(url).build();
         Response res = client.newCall(req).execute();
         logger.debug("Response received ");
-        final String resp = res.body().string();
+        String resp = res.body().string();
+        resp = convertResponseToString(resp);
         try {
         	res.body().close();
         } catch(Exception e) {

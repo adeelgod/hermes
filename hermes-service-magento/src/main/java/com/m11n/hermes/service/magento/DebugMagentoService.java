@@ -79,11 +79,19 @@ public class DebugMagentoService extends AbstractMagentoService {
     }
 
     @Override
-    public String createShipment(String orderId) throws Exception {
+    public String createShipment(String target, String orderId) throws Exception {
         logger.debug("################ DEBUG - CREATE SHIPMENT: {}", orderId);
-        checkSession();
-        Thread.sleep(500L);
-        return new Date().getTime()+"";
+
+
+        return "success";
+    }
+
+    @Override
+    public String createShippingLabel(String target, String orderId) throws Exception {
+        logger.debug("################ DEBUG - CREATE SHIPMENT: {}", orderId);
+
+
+        return "success";
     }
 
     @Override
@@ -108,7 +116,7 @@ public class DebugMagentoService extends AbstractMagentoService {
     }
 
     @Override
-    protected List<String> doCreateIntrashipLabel(String orderId) throws Exception {
+    protected List<String> doCreateIntrashipLabel(String target, String orderId) throws Exception {
         logger.debug("################ DEBUG - DO CREATE INTRASHIP LABEL: {}", orderId);
         checkSession();
         Thread.sleep(2000L);

@@ -3,6 +3,7 @@ package com.m11n.hermes.service.magento;
 import com.m11n.hermes.core.service.MagentoService;
 import com.m11n.hermes.persistence.AuswertungRepository;
 import com.m11n.hermes.persistence.SalesFlatShipmentCommentRepository;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.inject.Inject;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Properties;
 
 public abstract class AbstractMagentoService implements MagentoService {
 
@@ -174,13 +176,13 @@ public abstract class AbstractMagentoService implements MagentoService {
     }
 
     @Override
-    public List<Map<String, Object>> createIntrashipLabel(String orderId) throws Exception {
+    public List<Map<String, Object>> createIntrashipLabel(String target, String orderId) throws Exception {
         List<Map<String, Object>> stati = new ArrayList<>();
 
         int attempts = 0;
 
         try {
-            List<String> messages = doCreateIntrashipLabel(orderId);
+            List<String> messages = doCreateIntrashipLabel(target, orderId);
 
             if(messages != null) {
                 display(messages);
@@ -195,7 +197,7 @@ public abstract class AbstractMagentoService implements MagentoService {
                     for (int i = 0; i < intrashipRetryCount; i++) {
                         attempts++;
 
-                        messages = doCreateIntrashipLabel(orderId);
+                        messages = doCreateIntrashipLabel(target, orderId);
                         if (messages != null) {
                             display(messages);
                             logger.debug("********* CREATE INTRASHIP RETRY: {} - # {} of {}", orderId, (i + 1), intrashipRetryCount);
@@ -234,7 +236,7 @@ public abstract class AbstractMagentoService implements MagentoService {
         }
     }
 
-    abstract protected List<String> doCreateIntrashipLabel(String orderId) throws Exception;
+    abstract protected List<String> doCreateIntrashipLabel(String target, String orderId) throws Exception;
 
     protected Map<String, Object> createIntrashipResponse(String orderId, String status, String message, int count) {
         Map<String, Object> response = new HashMap<>();
@@ -264,4 +266,6 @@ public abstract class AbstractMagentoService implements MagentoService {
             logger.debug("INTRASHIP Message : " + m);
         }
     }
+
+
 }

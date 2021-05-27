@@ -21,6 +21,7 @@
         $scope.logging = true;
         $scope.logs = [];
         $scope.loading = true;
+        $scope.active_target = '';
 
         $scope.successSound = ngAudio.load("audio/success.mp3");
         $scope.errorSound = ngAudio.load("audio/error.mp3");
@@ -115,7 +116,8 @@
         };
 
         $scope.query = function() {
-            $scope.params['_form'] = $scope.configuration['hermes.shipping.form'];
+            const formKey = $scope.getFormKey();
+            $scope.params['_form'] = $scope.configuration[formKey];
             $scope.busy = true;
             $scope.shippings = null;
             FormSvc.query($scope.params).success(function(data) {
@@ -217,6 +219,18 @@
             });
         };
 
+        $scope.addFlatLogging = function(orderId, message, status) {
+            let line = {
+                status: status,
+                orderId: orderId,
+                message: message,
+                createdAt: moment(),
+                count: 0
+            };
+
+            $scope.logs.unshift(line);
+        };
+
         $scope.createShipmentAndLabel = function(i) {
             $scope.cancelSound();
 
@@ -228,25 +242,26 @@
 
                 if ($scope.runState === 'playing') {
                     if(entry._selected) {
-                        ShippingSvc.shipment({orderId: entry.orderId}).success(function(shipmentData) {
+                        //$scope.addFlatLogging(entry.orderId, "Start (create shipment) :: " + entry.orderId, 'info');
+
+                        ShippingSvc.shipment({ target: $scope.active_target, orderId: entry.orderId }).success(function(shipmentData) {
                             entry._updatedAt = moment();
-                            entry.shipmentId = shipmentData.shipmentId;
+                            //entry.shipmentId = shipmentData.shipmentId;
+                            if(shipmentData.result == 'error') {
+                                shipmentData.result = 'warning';
+                            }else{
+                                shipmentData.message = "Shipment is created successfully";
+                            }
+                            $scope.addFlatLogging(entry.orderId, shipmentData.message, shipmentData.result);
+                            //$scope.addFlatLogging(entry.orderId, "Start (generate label) :: " + entry.orderId, 'info');
 
-                            ShippingSvc.label({orderId: entry.orderId}).success(function(labelData) {
-
+                            ShippingSvc.label({ target: $scope.active_target, orderId: entry.orderId }).success(function(labelData) {
                                 console.log("BLOCK ::: ShippingSvc.label({orderId: entry.orderId}).success(function(labelData)");
-                                /*
-                                 DocumentsSvc.get_invoice({orderId: entry.orderId}).success(function(invoiceData) {
-                                 // Do nothing
-                                 }).error(function(invoiceData) {
-                                 // Do nothing
-                                 });
-                                 */
-                                entry._selected = false;
 
                                 var proceed = false;
 
                                 // store all messages
+								var msgSuccess = "Shipping Label is generated successfully";
                                 for(var j=0; j<labelData.length; j++) {
                                     labelData[j].createdAt = moment();
                                     $scope.logs.unshift(labelData[j]);
@@ -254,6 +269,9 @@
                                     // proceed only if you find acceptable status
                                     console.log("label ::" + labelData[j]);
                                     if(labelData[j].status==='success' || labelData[j].status==='warning') {
+                                        if(labelData[j].status==='warning') {
+                                            msgSuccess = labelData[j].message;
+                                        }
                                         proceed = true;
                                     }
                                 }
@@ -261,16 +279,24 @@
                                 $scope.status(entry);
 
                                 if(proceed) {
+                                    entry._selected = false;
+                                    $scope.addFlatLogging(entry.orderId, msgSuccess, 'success');
                                     i++;
                                     $scope.createShipmentAndLabel(i);
                                 } else {
-
+                                    $scope.addFlatLogging(entry.orderId, "Shipping Label is not generated", 'error');
                                     $scope.runState = 'paused';
                                     $alert({content: 'Label for order ID: ' + entry.orderId + ' was not successful. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                                     $scope.loopErrorSound();
                                     $scope.download();
                                 }
                             }).error(function(labelData) {
+                                for(var j=0; j<labelData.length; j++) {
+                                    labelData[j].createdAt = moment();
+                                    $scope.logs.unshift(labelData[j]);
+                                }
+                                $scope.addFlatLogging(entry.orderId, "Shipping Label is not generated", 'error');
+
                                 $scope.status(entry);
                                 $scope.runState = 'paused';
                                 $alert({content: 'Label for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
@@ -278,8 +304,10 @@
                                 $scope.download();
                             });
                         }).error(function(shipmentData) {
+                            $scope.addFlatLogging(entry.orderId, "Shipment is not generated successfully :: " + shipmentData, 'error');
+
                             $scope.runState = 'paused';
-                            $alert({content: 'Shipment for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
+                            $alert({content: shipmentData.message + ' >>> Shipment for order ID: ' + entry.orderId + ' has an error. Please check! Processing paused.', placement: 'top', type: 'danger', show: true});
                             $scope.loopErrorSound();
                             $scope.download();
                         });
@@ -356,7 +384,7 @@
         $scope.createShipment = function(entry) {
             return ShippingSvc.shipment({orderId: entry.orderId}).success(function(data) {
                 entry._updatedAt = moment();
-                entry.shipmentId = data.shipmentId;
+                //entry.shipmentId = data.shipmentId;
             });
         };
 
@@ -405,10 +433,18 @@
             return 'default';
         };
 
+        $scope.getFormKey = function() {
+            if($scope.active_target == '') {
+                $scope.active_target = 1;
+            }
+            return "hermes.shipment." + $scope.active_target +  ".SQL_hermes_form_name";
+        }
+
         ConfigurationSvc.list().success(function(data) {
             $scope.configuration = data.properties;
 
-            $scope.getForm($scope.configuration['hermes.shipping.form']);
+            const formKey = $scope.getFormKey();
+            $scope.getForm($scope.configuration[formKey]);
         });
 
         //FormSvc.synchronize($scope);

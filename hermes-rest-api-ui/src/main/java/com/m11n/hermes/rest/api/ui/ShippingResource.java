@@ -2,6 +2,7 @@ package com.m11n.hermes.rest.api.ui;
 
 import com.m11n.hermes.core.service.MagentoService;
 import com.m11n.hermes.core.service.SshService;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,9 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+import org.json.JSONObject;
 
 @Path("/shipping")
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,15 +37,62 @@ public class ShippingResource {
     @GET
     @Path("/shipment")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createShipment(@QueryParam("orderId") String orderId) throws Exception {
-        return Response.ok(Collections.singletonMap("shipmentId", magentoService.createShipment(orderId))).build();
+    public Response createShipment(@QueryParam("target") String target, @QueryParam("orderId") String orderId) throws Exception {
+        //return Response.ok(Collections.singletonMap("shipmentId", magentoService.createShipment(target, orderId))).build();
+        Properties config = PropertiesUtil.getProperties();
+        String warnMsg = config.getProperty("hermes.shipment.status.warning");
+
+        String result = magentoService.createShipment(target, orderId);
+
+        JSONObject jsonObject = new JSONObject(result);
+        String strResult = (String)jsonObject.get("result");
+        String strMessage = (String)jsonObject.get("message");
+
+        //logger.debug("Shipment WarnMsg : " + warnMsg);
+
+        if(strResult.equals("error") && !strMessage.equals(warnMsg)) {
+			logger.debug("********* Shipment Error: {}", strMessage); 
+            return Response.serverError()
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(result)
+                    .build();
+        }
+
+		if(strMessage.equals(warnMsg)) {
+			logger.debug("********* Shipment Warning: {}", strMessage); 
+		}else{
+			logger.debug("********* Shipment is created successfully."); 
+		}
+		
+        return Response.ok(result).build();
     }
+
+    /*@GET
+    @Path("/label")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createLabel(@QueryParam("target") String target, @QueryParam("orderId") String orderId) throws Exception {
+        String result = magentoService.createShippingLabel(target, orderId);
+
+        JSONObject jsonObject = new JSONObject(result);
+        String strResult = (String)jsonObject.get("result");
+        String strMessage = (String)jsonObject.get("message");
+
+        if(strResult.equals("error")) {
+            return Response.serverError()
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(result)
+                    .build();
+        }
+
+        return Response.ok(result).build();
+    }*/
 
     @GET
     @Path("/label")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLabel(@QueryParam("orderId") String orderId) throws Exception {
-        List<Map<String, Object>> result = magentoService.createIntrashipLabel(orderId);
+    public Response createLabel(@QueryParam("target") String target, @QueryParam("orderId") String orderId) throws Exception {
+        List<Map<String, Object>> result = magentoService.createIntrashipLabel(target, orderId);
+
         return Response.ok(result).build();
     }
 

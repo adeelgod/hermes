@@ -19,6 +19,11 @@ block content
                                 i.fa.fa-list
                             button.btn(type='button', ng-click='debug()', ng-class="{'btn-danger': debugging, 'btn-default': !debugging}")
                                 i.fa.fa-bug
+                        select(ng-model="active_target")
+                            option(value='') Choose Site
+                            option(value=1, 'selected') L-carb-shop
+                            option(value=2) Fair-shea
+                            option(value=2) L-carb-handel
                     hr
                     .form-group(ng-repeat="field in frm.fields | filter:{parameter:true} | orderBy: 'position'")
                         label(for='{{field.name}}') {{field.description}}

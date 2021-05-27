@@ -12,13 +12,15 @@ public interface MagentoService {
 
     Map<String, Object> getShipmentInfo(String shipmentId) throws Exception;
 
-    String createShipment(String orderId) throws Exception;
+    String createShipment(String target, String orderId) throws Exception;
 
     String createSalesOrderInvoice(String orderId) throws Exception;
 
     void completeInvoice(String orderId) throws Exception;
 
-    List<Map<String, Object>> createIntrashipLabel(String orderId) throws Exception;
+    List<Map<String, Object>> createIntrashipLabel(String target, String orderId) throws Exception;
+
+    String createShippingLabel(String target, String orderId) throws Exception;
 
     List<String> getIntrashipStatuses(String orderId);
 

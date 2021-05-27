@@ -1,7 +1,7 @@
 package com.m11n.hermes.rest.api.ui;
 
-import com.m11n.hermes.service.dhl.DefaultDhlService;
-import com.m11n.hermes.service.dhl.JerryDhlService;
+//import com.m11n.hermes.service.dhl.DefaultDhlService;
+//import com.m11n.hermes.service.dhl.JerryDhlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +26,14 @@ public class DhlResource {
 
     //    DHL api integrated class
     @Inject
-    private DefaultDhlService defaultDhlService;
+    //private DefaultDhlService defaultDhlService;
 
     @GET
     @Path("/tracking/check/status")
     @Produces(MediaType.APPLICATION_JSON)
     public Response status() {
-        return Response.ok(defaultDhlService.trackingCheckStatus()).build();
+        return Response.ok().build();
+        //return Response.ok(defaultDhlService.trackingCheckStatus()).build();
         // html parser technique is no more useful
 //        return Response.ok(dhlService.trackingCheckStatus()).build();
     }
@@ -44,7 +45,7 @@ public class DhlResource {
         try {
             // html parser technique is no more useful
 //            dhlService.checkTracking();
-            defaultDhlService.checkTracking();
+            //defaultDhlService.checkTracking();
         } catch (Exception ex) {
             logger.error("ERROR : ", ex);
         }
@@ -57,7 +58,7 @@ public class DhlResource {
     public Response cancel() throws Exception {
         // html parser technique is no more useful
 //        dhlService.cancelTracking();
-        defaultDhlService.cancelTracking();
+        //defaultDhlService.cancelTracking();
         return Response.ok().build();
     }
 
@@ -65,7 +66,8 @@ public class DhlResource {
     @Path("/tracking/status")
     @Produces(MediaType.APPLICATION_JSON)
     public Response track(@QueryParam("code") String code) {
-        return Response.status(Response.Status.OK).entity(defaultDhlService.getTrackingStatus(code)).build();
+        return Response.ok().build();
+        //return Response.status(Response.Status.OK).entity(defaultDhlService.getTrackingStatus(code)).build();
         // html parser technique is no more useful
 //        return Response.status(Response.Status.OK).entity(dhlService.getTrackingStatus(code)).build();
     }

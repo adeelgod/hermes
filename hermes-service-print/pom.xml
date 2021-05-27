@@ -42,6 +42,102 @@
             <artifactId>icepdf-viewer</artifactId>
         </dependency>
 		 -->
+        <!--<dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>bfopdf</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/bfopdf.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>bfopdf-qrcode</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/bfopdf-qrcode.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>icepdf-core</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/icepdf-core-5.1.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>icepdf-viewer</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/icepdf-viewer-5.1.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>jai_codec</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jai_codec.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>jPDFPrint</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jPDFPrint.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>smartjcommon</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/smartjcommon.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>smartjprint</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/smartjprint.jar</systemPath>
+        </dependency> -->
+        <!--<dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>bfopdf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>bfopdf-qrcode</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>icepdf-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>icepdf-viewer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>jai_codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>jPDFPrint</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>smartjcommon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.m11.lib</groupId>
+            <artifactId>smartjprint</artifactId>
+        </dependency>-->
+
     </dependencies>
 
     <build>

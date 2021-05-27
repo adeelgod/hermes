@@ -31,6 +31,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+
 @Singleton
 @Path("/printers")
 @Produces(MediaType.APPLICATION_JSON)
@@ -83,6 +86,13 @@ public class PrinterResource {
     @Produces(MediaType.APPLICATION_JSON)
     public synchronized Response printAll(final PrintRequest req) throws Exception {
         try {
+            ClassLoader cl = ClassLoader.getSystemClassLoader();
+            logger.debug("Printer Started ABC");
+            URL[] urls = ((URLClassLoader)cl).getURLs();
+
+            for(URL url: urls){
+                logger.debug(url.getFile());
+            }
             if(running.get()<=0) {
                 for(PrintRequestCharge charge : req.getCharges()) {
                     if(charge.getOrders()!=null && !charge.getOrders().isEmpty()) {

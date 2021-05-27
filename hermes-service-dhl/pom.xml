@@ -99,9 +99,7 @@
                 <artifactId>axistools-maven-plugin</artifactId>
                 <configuration>
                     <packageSpace>com.m11n.hermes.service.dhl</packageSpace>
-                    <!--
-                    <testPackageSpace>com.m11n.hermes.service.dhl</testPackageSpace>
-                    -->
+
                 </configuration>
                 <executions>
                     <execution>

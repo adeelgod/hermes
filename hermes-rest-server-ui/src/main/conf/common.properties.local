@@ -151,10 +151,10 @@ hermes.mail.subject=SUPPORT - Hermes
 
 hermes.shipment.1.name=l-carb-shop
 hermes.shipment.1.SQL_hermes_form_name=shipping
-hermes.shipment.1.api1.url=http://10.8.0.1:34443/orders_service/?name=l-carb-shop&action=shipment
-hermes.shipment.1.api2.url=http://10.8.0.1:34443/orders_service/?name=l-carb-shop&action=shipping
-hermes.shipment.1.api.username=print2
-hermes.shipment.1.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
+hermes.shipment.1.api1.url=http://dev.daniel.com/orders_service_api/?name=test-l-carb-shop&action=shipment
+hermes.shipment.1.api2.url=http://dev.daniel.com/orders_service_api/?name=test-l-carb-shop&action=shipping
+hermes.shipment.1.api.username=api_test
+hermes.shipment.1.api.password=api_test
 
 hermes.shipment.2.name=fair_shea
 hermes.shipment.2.SQL_hermes_form_name=shipping_fair_shea
@@ -170,5 +170,4 @@ hermes.shipment.3.api2.url=http://10.8.0.1:34443/orders_service/?name=l-carb-han
 hermes.shipment.3.api3.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=shipping&
 hermes.shipment.3.api.username=print2
 hermes.shipment.3.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
-
 hermes.shipment.status.warning=Shipment already there

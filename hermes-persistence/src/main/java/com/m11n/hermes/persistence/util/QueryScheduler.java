@@ -206,6 +206,23 @@ public class QueryScheduler {
 
     // NOTE: only works as an update statement
     private Object executeBatch(Form form, Map<String, Object> parameters) {
+        /*int result;
+
+        String statement = form.getSqlStatement().replaceAll("\n", " ").replaceAll("\r", "");
+
+        if("auswertung".equalsIgnoreCase(form.getDb())) {
+            result = auswertungRepository.update(statement, parameters);
+        } else if("lcarb".equalsIgnoreCase(form.getDb())) {
+            result = lCarbRepository.update(statement, parameters);
+        } else if("fair-shea".equalsIgnoreCase(form.getDb())) {
+            result = lCarbRepository.update(statement, parameters);
+        } else {
+            logger.warn("################### DB is not set in form: {}. Setting default (auswertung).", form.getName());
+            result = auswertungRepository.update(statement, parameters);
+        }
+
+        return Collections.singletonMap("modified", result);*/
+
         int result;
 
         String statement = form.getSqlStatement().replaceAll("\n", " ").replaceAll("\r", "");

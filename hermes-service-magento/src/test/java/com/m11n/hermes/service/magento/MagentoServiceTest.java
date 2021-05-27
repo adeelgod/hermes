@@ -26,7 +26,7 @@ public class MagentoServiceTest {
 
     @Test
     public void testCreateIntrashipLabel() throws Exception {
-        List<Map<String, Object>> messages = magentoService.createIntrashipLabel("30000001");
+        List<Map<String, Object>> messages = magentoService.createIntrashipLabel("1", "30000001");
 
         logger.info("+++++++++++++++++ MESSAGES: {}", messages);
     }

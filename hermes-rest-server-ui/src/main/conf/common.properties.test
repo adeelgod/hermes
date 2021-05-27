@@ -3,24 +3,24 @@ hermes.profile=production
 #Database Configuration
 hermes.db.multiple.queries=true
 hermes.db.lcarb.driver=com.mysql.jdbc.Driver
-hermes.db.lcarb.url=jdbc:mysql://127.0.0.1:13306/l_carb_shop_de?allowMultiQueries=${hermes.db.multiple.queries}
+hermes.db.lcarb.url=jdbc:mysql://127.0.0.1:13306/sub_l_carb_shop_de?allowMultiQueries=${hermes.db.multiple.queries}
 hermes.db.lcarb.username=print
 hermes.db.lcarb.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
 hermes.db.auswertung.driver=com.mysql.jdbc.Driver
-hermes.db.auswertung.url=jdbc:mysql://127.0.0.1:13306/Auswertung?allowMultiQueries=${hermes.db.multiple.queries}
+hermes.db.auswertung.url=jdbc:mysql://127.0.0.1:13306/sub_Auswertung?allowMultiQueries=${hermes.db.multiple.queries}
 hermes.db.auswertung.username=print
 hermes.db.auswertung.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
 hermes.db.fairshea.driver=com.mysql.jdbc.Driver
-hermes.db.fairshea.url=jdbc:mysql://127.0.0.1:13306/fair_shea?allowMultiQueries=${hermes.db.multiple.queries}
+hermes.db.fairshea.url=jdbc:mysql://127.0.0.1:13306/sub_fair_shea?allowMultiQueries=${hermes.db.multiple.queries}
 hermes.db.fairshea.username=print
 hermes.db.fairshea.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
 hermes.stamps.archive.dir=P\:/App_results/stamps
 
 hermes.db.finance.driver=com.mysql.jdbc.Driver
-hermes.db.finance.url=jdbc:mysql://127.0.0.1:13306/finance?allowMultiQueries=${hermes.db.multiple.queries}
+hermes.db.finance.url=jdbc:mysql://127.0.0.1:13306/sub_finance?allowMultiQueries=${hermes.db.multiple.queries}
 hermes.db.finance.username=print
 hermes.db.finance.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
@@ -62,21 +62,25 @@ hermes.dhl.test.cron=*/25 * * * * *
 
 #hermes.invoice.api.url=http://www.fair-unterwegs.de/rechnung_print/
 #hermes.invoice.api.url=https://www.l-carb-shop.de/rechnung_print/
-hermes.invoice.print.api.url=http://10.8.0.1/rechnung_print/
+hermes.invoice.api.url=https://sub.l-carb-shop.de/rechnung_print/
+#hermes.invoice.print.api.url=http://10.8.0.1/rechnung_print/
 hermes.invoice.print.api.username=print4
 hermes.invoice.print.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
 # also change in magento.v2.wsdl
-hermes.magento.api.url=http://10.8.0.1/
+#hermes.magento.api.url=http://10.8.0.1/
+hermes.magento.api.url=https://sub.l-carb-shop.de/
 #hermes.magento.api.url=https://www.l-carb-shop.de/
 hermes.magento.api.username=print
 hermes.magento.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
-hermes.shipment.api.url=http://10.8.0.1/shipment/
+#hermes.shipment.api.url=http://10.8.0.1/shipment/
 #hermes.shipment.api.url=https://www.l-carb-shop.de/shipment/
+hermes.shipment.api.url=https://sub.l-carb-shop.de/shipment/
 hermes.shipment.api.username=print2
 hermes.shipment.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
-hermes.invoice.api.url=http://10.8.0.1/rechnung/
+#hermes.invoice.api.url=http://10.8.0.1/rechnung/
 #hermes.invoice.api.url=https://www.l-carb-shop.de/rechnung/
+hermes.invoice.api.url=https://sub.l-carb-shop.de/rechnung/
 hermes.invoice.api.username=print3
 hermes.invoice.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
@@ -144,24 +148,24 @@ hermes.mail.transport.protocol=smtps
 hermes.mail.smtp.auth=true
 hermes.mail.smtp.ssl.enable=true
 hermes.mail.smtp.starttls.enable=false
-hermes.mail.debug=false
+hermes.mail.debug=true
 hermes.mail.from=info@l-carb-shop.de
-hermes.mail.to=bartek@datic.pl
+hermes.mail.to=info@l-carb-shop.de
 hermes.mail.subject=SUPPORT - Hermes
 
 hermes.shipment.1.name=l-carb-shop
 hermes.shipment.1.SQL_hermes_form_name=shipping
-hermes.shipment.1.api1.url=http://10.8.0.1:34443/orders_service/?name=l-carb-shop&action=shipment
-hermes.shipment.1.api2.url=http://10.8.0.1:34443/orders_service/?name=l-carb-shop&action=shipping
-hermes.shipment.1.api.username=print2
-hermes.shipment.1.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
+hermes.shipment.1.api1.url=http://10.8.0.1:34443/orders_service/?name=test-l-carb-shop&action=shipment
+hermes.shipment.1.api2.url=http://10.8.0.1:34443/orders_service/?name=test-l-carb-shop&action=shipping
+hermes.shipment.1.api.username=api_test
+hermes.shipment.1.api.password=api_test
 
 hermes.shipment.2.name=fair_shea
 hermes.shipment.2.SQL_hermes_form_name=shipping_fair_shea
-hermes.shipment.2.api1.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipment
-hermes.shipment.2.api2.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipping
-hermes.shipment.2.api.username=print2
-hermes.shipment.2.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
+hermes.shipment.2.api1.url=http://10.8.0.1:34443/orders_service/?name=test-fair-shea&action=shipment
+hermes.shipment.2.api2.url=http://10.8.0.1:34443/orders_service/?name=test-fair-shea&action=shipping
+hermes.shipment.2.api.username=api_test2
+hermes.shipment.2.api.password=api_test2
 
 hermes.shipment.3.name=l-carb-handel
 hermes.shipment.3.SQL_hermes_form_name=shipping-handel
