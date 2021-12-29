@@ -49,7 +49,7 @@
 
     </dependencies>
 
-    <profiles>
+    <!--<profiles>
         <profile>
             <id>hermes.local</id>
             <activation>
@@ -78,7 +78,7 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+    </profiles>-->
 
     <build>
         <plugins>

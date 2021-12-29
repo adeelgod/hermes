@@ -156,19 +156,41 @@ hermes.shipment.1.api2.url=http://10.8.0.1:34443/orders_service/?name=l-carb-sho
 hermes.shipment.1.api.username=print2
 hermes.shipment.1.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
-hermes.shipment.2.name=fair_shea
-hermes.shipment.2.SQL_hermes_form_name=shipping_fair_shea
+hermes.shipment.2.name=fair_shea_DHL
+hermes.shipment.2.SQL_hermes_form_name=shipping_fair_shea_DHL
 hermes.shipment.2.api1.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipment
-hermes.shipment.2.api2.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipping
+hermes.shipment.2.api2.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipping_DHL
 hermes.shipment.2.api.username=print2
 hermes.shipment.2.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
 
-hermes.shipment.3.name=l-carb-handel
-hermes.shipment.3.SQL_hermes_form_name=shipping-handel
-hermes.shipment.3.api1.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=multible&
-hermes.shipment.3.api2.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=shipment_m&
-hermes.shipment.3.api3.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=shipping&
+hermes.shipment.3.name=fair_shea_DHL_post
+hermes.shipment.3.SQL_hermes_form_name=shipping_fair_shea_post
+hermes.shipment.3.api1.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipment
+hermes.shipment.3.api2.url=http://10.8.0.1:34443/orders_service/?name=fair-shea&action=shipping_post
 hermes.shipment.3.api.username=print2
 hermes.shipment.3.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
+
+hermes.shipment.4.name=l-carb-handel
+hermes.shipment.4.SQL_hermes_form_name=shipping-handel
+hermes.shipment.4.api1.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=multible&
+hermes.shipment.4.api2.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=shipment_m&
+hermes.shipment.4.api3.url=http://10.8.0.1:34443/orders_service/?name=l-carb-handel&action=shipping&
+hermes.shipment.4.api.username=print2
+hermes.shipment.4.api.password=ENC(UoOmmQclZmYg1A9bey80lq0nl6LShVED)
+
+hermes.print.1.name=l-carb-shop
+hermes.print.1.SQL_hermes_form_name=orders
+hermes.print.1.unprinted.SQL_hermes_form_name=orders_unprinted
+hermes.print.1.prints=report,invoice,label
+
+hermes.print.2.name=fair_shea_DHL
+hermes.print.2.SQL_hermes_form_name=orders_fair_shea_DHL
+hermes.print.2.unprinted.SQL_hermes_form_name=orders_fair_shea_DHL_unprinted
+hermes.print.2.prints=report,invoice,label
+
+hermes.print.3.name=fair_shea_post
+hermes.print.3.SQL_hermes_form_name=orders_fair_shea_post
+hermes.print.3.unprinted.SQL_hermes_form_name=orders_fair_shea_post_unprinted
+hermes.print.3.prints=report,invoice
 
 hermes.shipment.status.warning=Shipment already there

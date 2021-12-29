@@ -4,10 +4,10 @@ import com.m11n.hermes.core.model.DocumentType;
 import com.m11n.hermes.core.model.PrintJob;
 import com.m11n.hermes.core.model.PrintRequest;
 import com.m11n.hermes.core.model.PrintRequestCharge;
+import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.core.service.PrinterService;
 import com.m11n.hermes.core.service.ReportService;
 import com.m11n.hermes.core.util.PathUtil;
-import com.m11n.hermes.core.util.PropertiesUtil;
 import com.m11n.hermes.persistence.AuswertungRepository;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,9 +30,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import java.net.URL;
-import java.net.URLClassLoader;
 
 @Singleton
 @Path("/printers")
@@ -86,24 +83,21 @@ public class PrinterResource {
     @Produces(MediaType.APPLICATION_JSON)
     public synchronized Response printAll(final PrintRequest req) throws Exception {
         try {
-            ClassLoader cl = ClassLoader.getSystemClassLoader();
-            logger.debug("Printer Started ABC");
-            URL[] urls = ((URLClassLoader)cl).getURLs();
+            Integer target = req.getTarget();
+            logger.debug("API [/print/all] is started");
+            logger.info("Target: {}", target);
 
-            for(URL url: urls){
-                logger.debug(url.getFile());
-            }
             if(running.get()<=0) {
                 for(PrintRequestCharge charge : req.getCharges()) {
                     if(charge.getOrders()!=null && !charge.getOrders().isEmpty()) {
                         Map<String, Object> params = new HashMap<>();
                         params.put("_charge", charge.getPos());
                         params.put("_order_ids", charge.getOrders());
-                        print(new PrintJob(DocumentType.REPORT.name(), null, params, req.getChargeSize()));
+                        print(target, new PrintJob(DocumentType.REPORT.name(), null, params, req.getChargeSize()));
 
                         for(String orderId : charge.getOrders()) {
-                            Future<Boolean> invoiceSuccess = print(new PrintJob(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
-                            Future<Boolean> labelSuccess = print(new PrintJob(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
+                            Future<Boolean> invoiceSuccess = print(target, new PrintJob(DocumentType.INVOICE.name(), orderId, req.getChargeSize()));
+                            Future<Boolean> labelSuccess = print(target, new PrintJob(DocumentType.LABEL.name(), orderId, req.getChargeSize()));
 
                             // TODO: check if this doesn't block
                             if(invoiceSuccess.get() && labelSuccess.get()) {
@@ -127,7 +121,7 @@ public class PrinterResource {
         return Response.ok().build();
     }
 
-    private Future<Boolean> print(final PrintJob req) {
+    private Future<Boolean> print(Integer target, final PrintJob req) {
         running.incrementAndGet();
 
         return executor.submit(new Callable<Boolean>() {
@@ -152,13 +146,26 @@ public class PrinterResource {
 
                     String printer = null;
 
-                    if (documentType.equals(DocumentType.INVOICE)) {
-                        printer = p.getProperty("hermes.printer.invoice");
-                    } else if (documentType.equals(DocumentType.LABEL)) {
-                        printer = p.getProperty("hermes.printer.label");
-                    } else if (documentType.equals(DocumentType.REPORT)) {
-                        printer = p.getProperty("hermes.printer.report");
+                    String targetName = p.getProperty("hermes.print." + target + ".name");
+
+                    String printScope = p.getProperty("hermes.print." + target + ".prints");
+                    printScope = printScope.toUpperCase();
+
+                    String arrPrintScopes[] = StringUtils.trimToEmpty(printScope).split(",");
+                    if(!Arrays.asList(arrPrintScopes).contains(documentType.name())) {
+                        logger.warn("Skipping print: prints[{}] - type[{}] - target[{}]", printScope, documentType.name(), targetName);
+                        return false;
                     }
+
+                    if (documentType.equals(DocumentType.INVOICE)) {
+                        printer = p.getProperty("hermes." + targetName + ".printer.invoice");
+                    } else if (documentType.equals(DocumentType.LABEL)) {
+                        printer = p.getProperty("hermes." + targetName + ".printer.label");
+                    } else if (documentType.equals(DocumentType.REPORT)) {
+                        printer = p.getProperty("hermes." + targetName + ".printer.report");
+                    }
+
+                    logger.info("Info: prints[{}] - type[{}] - target[{}] - printer[{}]", printScope, documentType, targetName, printer);
 
                     if (documentType.equals(DocumentType.INVOICE) || documentType.equals(DocumentType.LABEL)) {
                         print(documentType, printer, dir + "/" + PathUtil.segment(req.getOrderId()) + "/" + req.getType().toLowerCase() + ".pdf", fast);

@@ -51,7 +51,7 @@ public class ConfigurationResource {
         Map<String, Object> configuration = new HashMap<>();
 
         configuration.put("properties", p);
-        configuration.put("forms", formRepository.findAll());
+            configuration.put("forms", formRepository.findAll());
 
         if(printerService!=null) {
             configuration.put("printers", printerService.printers());

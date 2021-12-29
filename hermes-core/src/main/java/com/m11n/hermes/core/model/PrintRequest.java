@@ -33,6 +33,10 @@ public class PrintRequest extends DirectBean
 
     @PropertyDefinition
     @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+    private Integer target;
+
+    @PropertyDefinition
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private Integer chargeSize;
 
     @PropertyDefinition
@@ -81,6 +85,31 @@ public class PrintRequest extends DirectBean
      */
     public final Property<String> templates() {
         return metaBean().templates().createProperty(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the target.
+     * @return the value of the property
+     */
+    public Integer getTarget() {
+        return target;
+    }
+
+    /**
+     * Sets the target.
+     * @param target  the new value of the property
+     */
+    public void setTarget(Integer target) {
+        this.target = target;
+    }
+
+    /**
+     * Gets the the {@code target} property.
+     * @return the property, not null
+     */
+    public final Property<Integer> target() {
+        return metaBean().target().createProperty(this);
     }
 
     //-----------------------------------------------------------------------
@@ -147,6 +176,7 @@ public class PrintRequest extends DirectBean
         if (obj != null && obj.getClass() == this.getClass()) {
             PrintRequest other = (PrintRequest) obj;
             return JodaBeanUtils.equal(getTemplates(), other.getTemplates()) &&
+                    JodaBeanUtils.equal(getTarget(), other.getTarget()) &&
                     JodaBeanUtils.equal(getChargeSize(), other.getChargeSize()) &&
                     JodaBeanUtils.equal(getCharges(), other.getCharges());
         }
@@ -157,6 +187,7 @@ public class PrintRequest extends DirectBean
     public int hashCode() {
         int hash = getClass().hashCode();
         hash = hash * 31 + JodaBeanUtils.hashCode(getTemplates());
+        hash = hash * 31 + JodaBeanUtils.hashCode(getTarget());
         hash = hash * 31 + JodaBeanUtils.hashCode(getChargeSize());
         hash = hash * 31 + JodaBeanUtils.hashCode(getCharges());
         return hash;
@@ -177,6 +208,7 @@ public class PrintRequest extends DirectBean
 
     protected void toString(StringBuilder buf) {
         buf.append("templates").append('=').append(JodaBeanUtils.toString(getTemplates())).append(',').append(' ');
+        buf.append("target").append('=').append(JodaBeanUtils.toString(getTarget())).append(',').append(' ');
         buf.append("chargeSize").append('=').append(JodaBeanUtils.toString(getChargeSize())).append(',').append(' ');
         buf.append("charges").append('=').append(JodaBeanUtils.toString(getCharges())).append(',').append(' ');
     }
@@ -196,6 +228,11 @@ public class PrintRequest extends DirectBean
          */
         private final MetaProperty<String> templates = DirectMetaProperty.ofReadWrite(
                 this, "templates", PrintRequest.class, String.class);
+        /**
+         * The meta-property for the {@code target} property.
+         */
+        private final MetaProperty<Integer> target = DirectMetaProperty.ofReadWrite(
+                this, "target", PrintRequest.class, Integer.class);
         /**
          * The meta-property for the {@code chargeSize} property.
          */
@@ -227,6 +264,8 @@ public class PrintRequest extends DirectBean
             switch (propertyName.hashCode()) {
                 case 1981727545:  // templates
                     return templates;
+                case 1418067158:  // chargeSize
+                    return target;
                 case 1418067157:  // chargeSize
                     return chargeSize;
                 case 739062847:  // charges
@@ -260,6 +299,14 @@ public class PrintRequest extends DirectBean
         }
 
         /**
+         * The meta-property for the {@code target} property.
+         * @return the meta-property, not null
+         */
+        public final MetaProperty<Integer> target() {
+            return target;
+        }
+
+        /**
          * The meta-property for the {@code chargeSize} property.
          * @return the meta-property, not null
          */
@@ -281,6 +328,8 @@ public class PrintRequest extends DirectBean
             switch (propertyName.hashCode()) {
                 case 1981727545:  // templates
                     return ((PrintRequest) bean).getTemplates();
+                case 1418067158:  // chargeSize
+                    return ((PrintRequest) bean).getTarget();
                 case 1418067157:  // chargeSize
                     return ((PrintRequest) bean).getChargeSize();
                 case 739062847:  // charges
@@ -295,6 +344,9 @@ public class PrintRequest extends DirectBean
             switch (propertyName.hashCode()) {
                 case 1981727545:  // templates
                     ((PrintRequest) bean).setTemplates((String) newValue);
+                    return;
+                case 1418067158:  // chargeSize
+                    ((PrintRequest) bean).setTarget((Integer) newValue);
                     return;
                 case 1418067157:  // chargeSize
                     ((PrintRequest) bean).setChargeSize((Integer) newValue);

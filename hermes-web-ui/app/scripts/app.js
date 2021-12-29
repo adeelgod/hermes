@@ -8,6 +8,7 @@
         'ngAnimate',
         'ngTouch',
         'ngSanitize',
+        'ui.bootstrap',
         'hermes.ui.views',
         'hermes.ui.service',
         'hermes.ui.controller',
@@ -27,7 +28,6 @@
         });
     }).constant('HermesApi', {
             baseUrl: ''
-            //baseUrl: 'http://localhost:8081/'
         }
     ).config(function ($locationProvider, $stateProvider, $urlRouterProvider, $modalProvider, $asideProvider, $sceDelegateProvider) {
         // TODO: remove this in production; just to avoid CORS problems
@@ -48,8 +48,8 @@
             .state('home', {
                 abstract: false,
                 url: '/',
-                templateUrl: 'views/orders.html',
-                controller: 'OrderCtrl'
+                templateUrl: 'views/ordersMaster.html',
+                controller: 'OrderMasterCtrl'
             })
             .state('shipping', {
                 abstract: false,

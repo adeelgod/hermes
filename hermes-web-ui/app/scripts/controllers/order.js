@@ -20,6 +20,10 @@
 
         $scope.currentOrder = {};
 
+        $scope.formPrefix = '';
+
+        $scope.active_target = '';
+
         var confirmModal = $modal({title: 'Order print files missing', content: 'Are you sure you want to proceed?', scope: $scope, template: 'parts/confirm.html', show: false, placement: 'center'});
         confirmModal.$scope.confirm = function() {
             confirmModal.hide();
@@ -28,6 +32,10 @@
         confirmModal.$scope.close = function() {
             confirmModal.hide();
         };
+
+        $scope.init = function(formPrefix) {
+            $scope.formPrefix = formPrefix;
+        }
 
         $scope.checkBeforePrint = function() {
             var execute = true;
@@ -74,7 +82,8 @@
 
             $scope.selectedOrders = [];
 
-            $scope.params['_form'] = $scope.configuration['hermes.orders.form'];
+            const formKey = $scope.getFormKey();
+            $scope.params['_form'] = $scope.configuration[formKey];
             $scope.params['_checkFiles'] = true;
             $scope.params['_downloadFiles'] = true;
             $scope.busy = true;
@@ -241,7 +250,7 @@
             $scope.busy = true;
 
             // new approach
-            var req = {charges: [], chargeSize: $scope.configuration['hermes.charge.size']};
+            var req = {target: $scope.active_target, charges: [], chargeSize: $scope.configuration['hermes.charge.size']};
 
             var prevCharge = 0;
             var charge = {};
@@ -309,12 +318,25 @@
             });
         };
 
+        $scope.getFormKey = function() {
+            if($scope.active_target == '') {
+                $scope.active_target = 1;
+            }
+            var key = "hermes.print." + $scope.active_target;
+            if($scope.formPrefix != '') {
+                key += "." + $scope.formPrefix;
+            }
+            return key +  ".SQL_hermes_form_name";
+        }
+
         ConfigurationSvc.list().success(function(data) {
             $scope.loading = true;
 
             $scope.configuration = data.properties;
 
-            $scope.getForm($scope.configuration['hermes.orders.form']);
+            const formKey = $scope.getFormKey();
+
+            $scope.getForm($scope.configuration[formKey]);
         });
 
         //FormSvc.synchronize($scope);

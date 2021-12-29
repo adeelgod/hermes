@@ -105,42 +105,49 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/smartjprint.jar</systemPath>
         </dependency> -->
-        <!--<dependency>
+        <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>bfopdf</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>bfopdf-qrcode</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>icepdf-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>icepdf-viewer</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>jai_codec</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>jPDFPrint</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>smartjcommon</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.m11.lib</groupId>
             <artifactId>smartjprint</artifactId>
-        </dependency>-->
-
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
-    <build>
+    <!--<build>
         <plugins>
             <plugin>
                 <groupId>com.googlecode.addjars-maven-plugin</groupId>
@@ -161,6 +168,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>

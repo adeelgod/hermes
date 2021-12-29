@@ -1,0 +1,18 @@
+extends /layouts/_page
+block content
+    br
+    br
+    br
+    br
+    .row
+        .col-md-12
+            tabset
+                tab(heading='Unprinted') 
+                    br
+                    div(ng-controller="OrderCtrl", ng-init="init('unprinted')")
+                        include ./ordersUnprinted.jade
+                tab(heading='Timeframe') 
+                    br
+                    div(ng-controller="OrderCtrl")
+                        include ./orders.jade
+    
