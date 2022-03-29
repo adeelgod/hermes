@@ -138,15 +138,26 @@ public class PrinterResource {
                     String dir = p.getProperty("hermes.print.dir");
                     boolean fast = StringUtils.isEmpty(p.getProperty("hermes.printer.fast")) ? false : Boolean.valueOf(p.getProperty("hermes.printer.fast"));
 
-                    if (StringUtils.isEmpty(req.getTemplates())) {
-                        req.setTemplates(p.getProperty("hermes.reporting.template.report"));
-                    }
+
 
                     DocumentType documentType = DocumentType.valueOf(req.getType());
 
                     String printer = null;
 
                     String targetName = p.getProperty("hermes.print." + target + ".name");
+
+                    if (StringUtils.isEmpty(req.getTemplates())) {
+                        String defaultReport = p.getProperty("hermes.reporting.template.report");
+                        String targetReport = p.getProperty("hermes.reporting.template.report." + targetName);
+
+                        if(StringUtils.isEmpty(targetReport)) {
+                            targetReport = defaultReport;
+                        }
+
+                        req.setTemplates(targetReport);
+
+                        logger.info("Info: Report Template: {}", targetReport);
+                    }
 
                     String printScope = p.getProperty("hermes.print." + target + ".prints");
                     printScope = printScope.toUpperCase();
